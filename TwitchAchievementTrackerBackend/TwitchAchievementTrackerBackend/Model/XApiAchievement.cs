@@ -23,5 +23,6 @@ namespace TwitchAchievementTrackerBackend.Model
         public string Description { get; set; }
         public string LockedDescription { get; set; }
         public XApiRarity Rarity { get; set; }
+        public XApiAchievementReward[] Rewards { get; set; }
     }
 }

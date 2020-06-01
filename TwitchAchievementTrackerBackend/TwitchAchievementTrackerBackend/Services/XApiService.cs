@@ -42,7 +42,8 @@ namespace TwitchAchievementTrackerBackend.Services
                     {
                         PropertyNameCaseInsensitive = true
                     });
-                    _cache.Set(cacheKey, result);
+                    // Cache for 1 minute (configurable)
+                    _cache.Set(cacheKey, result, _options.ResultCacheTime);
                 }
             }
 
