@@ -20,7 +20,8 @@ Launch the application TwitchAchievementBackend, it will start and listen on htt
 
 #### dotnet cli (multiplatform)
 
-`` 
+cd to the project directory (TwitchAchievementTrackerExtension/TwitchAchievementTrackerExtension)
+`dotnet run` 
 
 ### Secrets
 Secrets are loaded as configuration.
