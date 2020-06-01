@@ -33,5 +33,5 @@ For deployment, Env variables will be loaded for configuration.
   ENV var name: xapi__XApiKey
 
 #### Twitch configuration
-- twitch.ExtensionSecret : Twitch extension secret key, used to validate Extension calls
-  ENV var name: twitch__ExtensionSecret
+- twitch.ExtensionSecrets : List of enabled Twitch extension secret keys, used to validate Extension calls
+  ENV var name: twitch__ExtensionSecrets__0, twitch__ExtensionSecrets__1, ...
