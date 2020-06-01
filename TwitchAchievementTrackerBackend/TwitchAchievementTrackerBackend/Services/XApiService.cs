@@ -33,7 +33,7 @@ namespace TwitchAchievementTrackerBackend.Services
 
         public async Task<XApiAchievement[]> GetAchievementsAsync(string xuid, string titleId)
         {
-            var cacheKey = $"{xuid}:{titleId}";
+            var cacheKey = $"achievements:{xuid}:{titleId}";
             if (! _cache.TryGetValue<XApiAchievement[]>(cacheKey, out var result))
             {
                 using (var responseStream = await _httpClient.GetStreamAsync($"{xuid}/achievements/{titleId}"))
@@ -44,6 +44,25 @@ namespace TwitchAchievementTrackerBackend.Services
                     });
                     // Cache for 1 minute (configurable)
                     _cache.Set(cacheKey, result, _options.ResultCacheTime);
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<XApiMarketplaceTitleInfo> GetMarketplaceAsync(string titleId)
+        {
+            var cacheKey = $"marketplace:{titleId}";
+            if (!_cache.TryGetValue<XApiMarketplaceTitleInfo>(cacheKey, out var result))
+            {
+                using (var responseStream = await _httpClient.GetStreamAsync($"marketplace/show/{titleId}"))
+                {
+                    result = await JsonSerializer.DeserializeAsync<XApiMarketplaceTitleInfo>(responseStream, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                    // Cache indefinitly
+                    _cache.Set(cacheKey, result);
                 }
             }
 

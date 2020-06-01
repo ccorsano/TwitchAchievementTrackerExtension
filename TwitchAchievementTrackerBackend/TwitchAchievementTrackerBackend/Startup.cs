@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -60,20 +61,16 @@ namespace TwitchAchievementTrackerBackend
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    var secretBase64 = Configuration.GetValue<string>("twitch:ExtensionSecret");
+                    var secretsBase64 = new List<string>();
+                    Configuration.GetSection("twitch:ExtensionSecrets").Bind(secretsBase64);
+                    var signingKeys = secretsBase64.Select(base64Secret => new SymmetricSecurityKey(Convert.FromBase64String(base64Secret)));
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(secretBase64)),
+                        IssuerSigningKeys = signingKeys,
                         ValidateAudience = false, // No audience on extension tokens
                         ValidateIssuer = false, // No issuer either
                     };
                 });
-                //.AddOpenIdConnect(options =>
-                //{
-                //    options.Authority = "https://id.twitch.tv";
-                //    options.ClientId = "04ijuz20mxlw1wk5b6alh6l4mb48zu";
-                //    options.ClientSecret = "IHp/3dvc00rXf0DFL1IQhFYT2AN3jNFKpZvwDlOZKAw=";
-                //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
