@@ -96,7 +96,9 @@
       }
     },
     "whitelistedConfigUrls": [],
-    "whitelistedPanelUrls": []
+    "whitelistedPanelUrls": [
+      "video_overlay.html"
+    ]
   },
   "frontendCommand": "",
   "frontendFolderName": "TwitchAchivementTrackerFrontend\\public",

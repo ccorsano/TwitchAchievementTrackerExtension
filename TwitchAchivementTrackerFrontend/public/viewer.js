@@ -52,7 +52,6 @@ twitch.onAuthorized(function(auth) {
     setAuth(token);
     $.ajax(requests.titleInfo);
     $.ajax(requests.summary);
-    // $.ajax(requests.listAchievement);
 
     $('#showDetails').click(function() {
         if (detailsVisible)
@@ -67,6 +66,15 @@ twitch.onAuthorized(function(auth) {
             detailsVisible = true;
         }
     });
+
+    // Refresh the data every minute
+    setInterval(function() {
+        $.ajax(requests.summary);
+        if (detailsVisible)
+        {
+            $.ajax(requests.listAchievement);
+        }
+    }, 60000);
 });
 
 function updateTitle(titleInfo) {
