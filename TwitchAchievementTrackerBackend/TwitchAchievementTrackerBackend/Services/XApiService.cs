@@ -27,6 +27,8 @@ namespace TwitchAchievementTrackerBackend.Services
             }
             _options = options.Value;
             _httpClient.DefaultRequestHeaders.Add("X-AUTH", _options.XApiKey);
+            _httpClient.DefaultRequestHeaders.Add("Accept-Language", "fr-FR,fr;q=1.0");
+            _httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
             _httpClient.BaseAddress = new Uri("https://xapi.us/v2/");
             _cache = memoryCache;
         }
