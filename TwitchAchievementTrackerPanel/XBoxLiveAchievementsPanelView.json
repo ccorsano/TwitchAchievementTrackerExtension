@@ -1,47 +1,24 @@
 {
   "allowHttpBackend": false,
-  "backendCommand": "dotnet run --launch-profile TwitchAchievementTrackerBackend",
-  "backendFolderName": "TwitchAchievementTrackerBackend\\TwitchAchievementTrackerBackend",
+  "backendCommand": "node backend -c \"uejn27umunb5osi0mqehynxrbtt3au\" -s \"7Haf2eF2+xme7nhrQ3/aesgTczycbNfXu6lIsNvGjks=\" -o \"158511925\"",
+  "backendFolderName": "extensions-hello-world\\services",
   "certificateExceptions": [],
   "extensionViews": [
     {
       "id": "1",
-      "label": "Test",
+      "label": "AchievementTracking",
       "channelId": "158511925",
-      "configurationAnchor": "video_overlay",
+      "configurationAnchor": "panel",
       "displayChannelName": "miekyld",
-      "type": "video_overlay",
-      "features": {
-        "isBitsEnabled": true,
-        "isChatEnabled": true,
-        "isSubscriptionStatusAvailable": true
-      },
-      "linked": false,
-      "linkedUserId": "",
-      "mode": "viewer",
-      "isPopout": false,
-      "role": "Logged-In Viewer",
-      "orientation": "Portrait",
-      "frameSize": {
-        "width": 1280,
-        "height": 720
-      }
-    },
-    {
-      "id": "2",
-      "label": "Configuration",
-      "channelId": "158511925",
-      "configurationAnchor": "video_overlay",
-      "displayChannelName": "miekyld",
-      "type": "config",
+      "type": "panel",
       "features": {
         "isBitsEnabled": false,
         "isChatEnabled": false,
         "isSubscriptionStatusAvailable": false
       },
-      "linked": true,
-      "linkedUserId": "265737932",
-      "mode": "config",
+      "linked": false,
+      "linkedUserId": "",
+      "mode": "viewer",
       "isPopout": false,
       "role": "Broadcaster",
       "orientation": "Portrait",
@@ -52,9 +29,9 @@
     }
   ],
   "manifest": {
-    "anchor": "video_overlay",
+    "anchor": "panel",
     "assetUrls": [],
-    "authorName": "Miekyll",
+    "authorName": "Miekyld",
     "bitsEnabled": false,
     "canInstall": true,
     "configUrl": "https://localhost:8080/config.html",
@@ -64,11 +41,11 @@
     "hasChatSupport": false,
     "iconUrl": "",
     "iconUrls": {},
-    "id": "04ijuz20mxlw1wk5b6alh6l4mb48zu",
+    "id": "uejn27umunb5osi0mqehynxrbtt3au",
     "installationCount": -42,
     "liveConfigUrl": "",
-    "name": "XBoxLiveAchievementTracker",
-    "panelHeight": 0,
+    "name": "XBoxLiveAchievementsPanelView",
+    "panelHeight": 300,
     "privacyPolicyUrl": "",
     "requestIdentityLink": false,
     "requiredBroadcasterAbilities": [],
@@ -77,17 +54,18 @@
     "state": "Testing",
     "subscriptionsSupportLevel": "none",
     "summary": "",
-    "supportEmail": "",
+    "supportEmail": "christian.corsano@gmail.com",
     "vendorCode": "",
     "version": "0.0.1",
     "viewerSummary": "",
-    "viewerUrl": "",
+    "viewerUrl": "https://localhost:8080/panel.html",
     "viewerUrls": {
-      "videoOverlay": "https://localhost:8080/video_overlay.html"
+      "panel": "https://localhost:8080/panel.html"
     },
     "views": {
-      "videoOverlay": {
-        "viewerUrl": "https://localhost:8080/video_overlay.html",
+      "panel": {
+        "viewerUrl": "https://localhost:8080/panel.html",
+        "height": 300,
         "canLinkExternalContent": false
       },
       "config": {
@@ -99,7 +77,7 @@
     "whitelistedPanelUrls": []
   },
   "frontendCommand": "",
-  "frontendFolderName": "TwitchAchivementTrackerFrontend\\public",
-  "name": "XBoxLiveAchievementTracker",
+  "frontendFolderName": "extensions-hello-world\\public",
+  "name": "XBoxLiveAchievementsPanelView",
   "version": 1
 }

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Viewer Page</title>
+    <style>
+        .overlayBox {
+            background-color: aliceblue;
+            display: block;
+            width: 30em;
+            height: fit-content;
+        }
+
+        .overlayBox h2 {
+            font-size: 1em;
+        }
+
+        .gameLogo {
+            height: 6em;
+            width: 6em;
+            float: left;
+            margin-right: 1em;
+        }
+
+        #gameLogo {
+            width: 100%;
+            height: 100%;
+        }
+
+        #showDetails {
+            width: 100%;
+            height: 3em;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #showDetails:hover {
+            background-color: darkgrey;
+        }
+
+        #list {
+            max-height: 10em;
+            overflow-y: scroll;
+        }
+
+        #list li {
+            background-position: top left;
+            background-size: 2em;
+            background-repeat: no-repeat;
+            min-width: 2em;
+            min-height: 2em;
+            padding-left: 2em;
+            list-style: none;
+            padding-bottom: 1em;
+        }
+
+        #list li.completed {
+            background-image: url("check.png");
+        }
+
+        #list li.notCompleted {
+            background-image: url("cross.png");
+        }
+
+        #list .achievementDescription {
+            font-size: 0.7em;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+    <div id="app" class="full-height"></div>
+    <script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
+    <!-- If you use any external libraries, such as jQuery, you must include
+      them as part of your extension.  Twitch does not allow extensions to link
+      to external libraries. -->
+    <script src="jquery-3.3.1.min.js" type="text/javascript"></script>
+    <script src="viewer.js" type="text/javascript"></script>
+    <div class="overlayBox">
+        <div class="gameLogo">
+            <img id="gameLogo" src="" alt="logo" />
+        </div>
+        <h2 id="gameTitle"></h2>
+        <div id="completionHeadline">
+            Completion
+        </div>
+        <div id="achievementsPanel">
+            <div id="showDetails">
+            </div>
+            <div id="list">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
