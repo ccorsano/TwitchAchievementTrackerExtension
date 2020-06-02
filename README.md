@@ -1,4 +1,8 @@
-# TwitchAchievementTrackerExtension
+# TwitchAchievementTrackerExtension : Frontend
+
+Twitch extension frontend, just static html / js files...
+
+# TwitchAchievementTrackerExtension : Backend
 Backend for the Twitch XBox Achievement Tracker Extension.
 
 Grab achievements from xapi.us for a given streamer and game, and display stats on the stream.
