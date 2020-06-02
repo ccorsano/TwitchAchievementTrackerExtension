@@ -2,6 +2,13 @@ var token = "";
 var tuid = "";
 var ebs = "";
 var detailsVisible = false;
+var server = "twitchext.conceptoire.com"
+
+var urlParams = new URLSearchParams(this.location.search);
+if (urlParams.get('state') == "testing")
+{
+    server = "localhost:8081"
+}
 
 // because who wants to type this every time?
 var twitch = window.Twitch.ext;
@@ -14,10 +21,10 @@ var requests = {
 };
 
 function createAchievementsRequest(type, method, callback) {
-    twitch.rig.log('Create request ' + location.protocol + '//localhost:8081/api/achievements/' + method);
+    twitch.rig.log('Create request ' + location.protocol + '//' + server + '/api/achievements/' + method);
     return {
         type: type,
-        url: location.protocol + '//localhost:8081/api/achievements/' + method,
+        url: location.protocol + '//' + server + '/api/achievements/' + method,
         success: callback,
         error: logError
     }
