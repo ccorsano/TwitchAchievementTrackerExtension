@@ -1,0 +1,19 @@
+﻿//****************************************************
+// Configuration schema file
+//  compact format to store and transmit stream config
+//****************************************************
+
+namespace TwitchAchievementTracker;
+
+// Type holding configuration for a Stream
+table Configuration
+{
+    // Private key for xapi.us
+    xApiKey: string;
+    // XBoxLive XUID of the streamer
+    streamerXuid: ulong;
+    // TitleId for the played game
+    titleId: uint;
+}
+
+root_type Configuration;
