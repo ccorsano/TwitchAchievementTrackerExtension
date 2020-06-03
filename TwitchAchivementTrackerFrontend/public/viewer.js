@@ -92,11 +92,22 @@ function updateSummary(summary) {
 function updateBlock(achievements) {
     var container = $('#list');
     achievements.forEach(achievement => {
-        var listItem = document.createElement("li");
-        var nameDiv = document.createElement("div");
-        nameDiv.className = "achievementTitle";
-        var descriptionDiv = document.createElement("div");
-        descriptionDiv.className = "achievementDescription";
+        var listItemId = 'achievement_' + achievement.id;
+        var listItem = $('#' + listItemId);
+        var nameDiv = $(listItem).children('div.achievementTitle');
+        var descriptionDiv = $(listItem).children('div.achievementDescription');
+        if (! listItem.length)
+        {
+            listItem = document.createElement("li");
+            $(listItem).attr('id', listItemId);
+            nameDiv = document.createElement("div");
+            nameDiv.className = "achievementTitle";
+            descriptionDiv = document.createElement("div");
+            descriptionDiv.className = "achievementDescription";
+            $(listItem).append(nameDiv);
+            $(listItem).append(descriptionDiv);
+            container.append(listItem);
+        }
         var progressIcon = "";
         switch (achievement.progressState) {
             case "Achieved":
@@ -109,9 +120,6 @@ function updateBlock(achievements) {
                 break;
         }
         $(nameDiv).text(achievement.name);
-        $(listItem).append(nameDiv);
-        $(listItem).append(descriptionDiv);
-        container.append(listItem);
     });
 }
 
