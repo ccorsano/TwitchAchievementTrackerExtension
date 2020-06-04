@@ -1,0 +1,28 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using TwitchAchievementTrackerBackend.Model;
+using TwitchAchievementTrackerBackend.Services;
+
+namespace TwitchAchievementTrackerBackend.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ConfigurationController : ControllerBase
+    {
+        private ConfigurationTokenService _service;
+
+        public ConfigurationController(ConfigurationTokenService service)
+        {
+            _service = service;
+        }
+
+        [HttpPost("")]
+        public ConfigurationToken SetConfiguration(ExtensionConfiguration configuration)
+        {
+            return new ConfigurationToken
+            {
+                ConfigToken = Convert.ToBase64String(_service.EncryptConfigurationToken(configuration))
+            };
+        }
+    }
+}

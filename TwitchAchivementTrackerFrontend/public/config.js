@@ -15,3 +15,11 @@ twitch.onAuthorized((auth) => {
 function setConfig(summary) {
   twitch.ext.configuration.set('broadcaster', '0.0.1');
 }
+
+window.onload = function()
+{
+  $('#searchTitle').onclick = function()
+  {
+    // TODO
+  };
+}

@@ -20,6 +20,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using TwitchAchievementTrackerBackend.Configuration;
+using TwitchAchievementTrackerBackend.Helpers;
 using TwitchAchievementTrackerBackend.Services;
 
 namespace TwitchAchievementTrackerBackend
@@ -55,7 +56,9 @@ namespace TwitchAchievementTrackerBackend
             services.AddHttpClient();
             services.Configure<XApiOptions>(Configuration.GetSection("xapi"));
             services.Configure<TwitchOptions>(Configuration.GetSection("twitch"));
+            services.Configure<ConfigurationTokenOptions>(Configuration.GetSection("config"));
             services.AddSingleton<XApiService>();
+            services.AddSingleton<ConfigurationTokenService>();
             services.AddMemoryCache();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -87,13 +90,34 @@ namespace TwitchAchievementTrackerBackend
             app.UseCors(config =>
             {
                 config.AllowAnyOrigin();
-                config.WithHeaders("Authorization");
+                config.WithHeaders("Authorization", "X-Config-Token");
             });
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.Use((context, next) =>
+            {
+                if (context.Request.Headers.ContainsKey("X-Config-Token"))
+                {
+                    var token = context.Request.Headers["X-Config-Token"].First();
+                    var configService = context.RequestServices.GetRequiredService<ConfigurationTokenService>();
+
+                    try
+                    {
+                        var configuration = configService.DecryptConfigurationToken(Convert.FromBase64String(token));
+                        context.SetExtensionConfiguration(configuration);
+                    }
+                    catch(Exception ex)
+                    {
+                        
+                    }
+                }
+
+                return next();
+            });
 
             app.UseEndpoints(endpoints =>
             {

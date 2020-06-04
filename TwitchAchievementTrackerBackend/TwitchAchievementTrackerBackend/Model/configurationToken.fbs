@@ -14,6 +14,8 @@ table Configuration
     streamerXuid: ulong;
     // TitleId for the played game
     titleId: uint;
+    // Locale
+    locale: string;
 }
 
 root_type Configuration;

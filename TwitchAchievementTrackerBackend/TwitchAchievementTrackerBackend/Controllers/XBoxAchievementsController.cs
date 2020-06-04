@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TwitchAchievementTrackerBackend.Model;
 using TwitchAchievementTrackerBackend.Services;
+using TwitchAchievementTrackerBackend.Helpers;
 
 namespace TwitchAchievementTrackerBackend.Controllers
 {
@@ -16,19 +17,23 @@ namespace TwitchAchievementTrackerBackend.Controllers
     public class XBoxAchievementsController : ControllerBase
     {
         public readonly XApiService _xApiService;
+        public readonly ConfigurationTokenService _configurationService;
         // TEMP hard code Nuja and "Ori and the will of the wisps"
         public const string TITLE_ID = "1659804324";
         public const string STREAMER_XUID = "2535467661815558";
 
-        public XBoxAchievementsController(XApiService xApiService)
+        public XBoxAchievementsController(XApiService xApiService, ConfigurationTokenService configurationService)
         {
-           _xApiService = xApiService;
+            _xApiService = xApiService;
+            _configurationService = configurationService;
         }
 
         [HttpGet("title")]
         public async Task<TitleInfo> GetTitleInfo()
         {
-            var titleInfo = await _xApiService.GetMarketplaceAsync(TITLE_ID);
+            var config = this.GetExtensionConfiguration();
+
+            var titleInfo = await _xApiService.GetMarketplaceAsync(config);
 
             return new TitleInfo
             {
@@ -38,10 +43,29 @@ namespace TwitchAchievementTrackerBackend.Controllers
             };
         }
 
+        [HttpGet("search/title")]
+        public async Task<IEnumerable<TitleInfo>> SearchTitleInfo(string query)
+        {
+            var config = this.GetExtensionConfiguration();
+
+            var searchResult = await _xApiService.SearchTitle(query);
+
+            return searchResult.Products.Select(product =>
+                new TitleInfo
+                {
+                    ProductTitle = product.LocalizedProperties?.FirstOrDefault()?.ProductTitle ?? "Unknown",
+                    ProductDescription = product.LocalizedProperties?.FirstOrDefault()?.ProductDescription ?? "-",
+                    LogoUri = product.LocalizedProperties?.FirstOrDefault()?.Images?.FirstOrDefault(i => i.ImagePurpose == "Logo")?.Uri,
+                }
+            );
+        }
+
         [HttpGet("summary")]
         public async Task<AchievementSummary> GetSummary()
         {
-            var achievements = await _xApiService.GetAchievementsAsync(STREAMER_XUID, TITLE_ID);
+            var config = this.GetExtensionConfiguration();
+
+            var achievements = await _xApiService.GetAchievementsAsync(config);
             var stateSummary = achievements.GroupBy(a => a.ProgressState).ToDictionary(a => a.Key, a => a.Count());
 
             return new AchievementSummary
@@ -61,7 +85,9 @@ namespace TwitchAchievementTrackerBackend.Controllers
         [HttpGet("list")]
         public Task<XApiAchievement[]> GetAchievements()
         {
-            return _xApiService.GetAchievementsAsync(STREAMER_XUID, TITLE_ID);
+            var config = this.GetExtensionConfiguration();
+
+            return _xApiService.GetAchievementsAsync(config);
         }
     }
 }
