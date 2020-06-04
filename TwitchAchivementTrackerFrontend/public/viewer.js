@@ -45,9 +45,9 @@ twitch.onContext(function(context) {
 });
 
 twitch.configuration.onChanged(function(){
-    if (twitch.configuration.broadcaster)
+    if (! twitch.configuration.broadcaster)
     {
-        $.ajax(requests.titleInfo);
+        throw 'Could not load broadcaster config';
     }
 })
 
@@ -56,8 +56,7 @@ twitch.onAuthorized(function(auth) {
     token = auth.token;
     tuid = auth.userId;
 
-    // TEMP for testing
-    var configToken = "EAAAAAwAHAAEABAACAAMAAwAAAAkAAAApJruYhAAAAAGb1KR/gEJAAAAAAAFAAAAZnItRlIAAAAoAAAAYTVjMTliMGVlZjY4NjQxNjc1Y2U1NTU3OTcwNGIwMzBhMWNlNjAyNgAAAAA=";
+    var configToken = twitch.configuration.broadcaster.content;
 
     // enable the button
     $('#cycle').removeAttr('disabled');

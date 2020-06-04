@@ -90,7 +90,7 @@ namespace TwitchAchievementTrackerBackend
             app.UseCors(config =>
             {
                 config.AllowAnyOrigin();
-                config.WithHeaders("Authorization", "X-Config-Token");
+                config.WithHeaders("Authorization", "X-Config-Token", "Content-Type");
             });
 
             app.UseRouting();
