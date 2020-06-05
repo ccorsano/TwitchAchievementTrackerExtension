@@ -55,6 +55,7 @@ namespace TwitchAchievementTrackerBackend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddRazorPages();
             services.AddHttpClient();
             services.Configure<XApiOptions>(Configuration.GetSection("xapi"));
             services.Configure<TwitchOptions>(Configuration.GetSection("twitch"));
@@ -113,6 +114,7 @@ namespace TwitchAchievementTrackerBackend
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapRazorPages();
             });
         }
     }
