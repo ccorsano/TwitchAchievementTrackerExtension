@@ -34,6 +34,11 @@ namespace TwitchAchievementTrackerBackend.Services
             _cache = memoryCache;
         }
 
+        public string GetCacheKey(string call, ExtensionConfiguration config)
+        {
+            return $"{call}:{config.TitleId}:{config.StreamerXuid}:{config.Locale}";
+        }
+
         public async Task<XApiMarketplaceSearchResult> SearchTitle(string query)
         {
             var cacheKey = $"titlesearch:{query}";
@@ -55,12 +60,32 @@ namespace TwitchAchievementTrackerBackend.Services
             return result;
         }
 
+        public async Task<string> ResolveXuid(string gamerTag)
+        {
+            var cacheKey = $"xuid:{gamerTag}";
+
+            if (!_cache.TryGetValue<string>(cacheKey, out var result))
+            {
+                var message = new HttpRequestMessage(HttpMethod.Get, $"xuid/{gamerTag}");
+                var response = await _httpClient.SendAsync(message);
+                result = await response.Content.ReadAsStringAsync();
+                _cache.Set(cacheKey, result);
+            }
+
+            return result;
+        }
+
         public async Task<XApiAchievement[]> GetAchievementsAsync(ExtensionConfiguration config)
         {
+            if (config == null)
+            {
+                throw new ArgumentNullException("config");
+            }
+
             string xuid = config.StreamerXuid;
             string titleId = config.TitleId;
 
-            var cacheKey = $"achievements:{xuid}:{titleId}";
+            var cacheKey = GetCacheKey($"achievements", config);
             if (! _cache.TryGetValue<XApiAchievement[]>(cacheKey, out var result))
             {
                 var message = new HttpRequestMessage(HttpMethod.Get, $"{xuid}/achievements/{titleId}");
@@ -83,9 +108,14 @@ namespace TwitchAchievementTrackerBackend.Services
 
         public async Task<XApiMarketplaceTitleInfo> GetMarketplaceAsync(ExtensionConfiguration config)
         {
+            if (config == null)
+            {
+                throw new ArgumentNullException("config");
+            }
+
             string titleId = config.TitleId;
 
-            var cacheKey = $"marketplace:{titleId}";
+            var cacheKey = GetCacheKey($"marketplace", config);
             if (!_cache.TryGetValue<XApiMarketplaceTitleInfo>(cacheKey, out var result))
             {
                 var message = new HttpRequestMessage(HttpMethod.Get, $"marketplace/show/{titleId}");

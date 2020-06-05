@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using System;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using TwitchAchievementTrackerBackend.Configuration;
@@ -12,54 +13,71 @@ namespace TwitchAchievementTrackerBackend.Services
     public class ConfigurationTokenService
     {
         private readonly ConfigurationTokenOptions _options;
-        private readonly byte[] _key;
-        private readonly byte[] _iv;
 
         public ConfigurationTokenService(IOptions<ConfigurationTokenOptions> options)
         {
             _options = options.Value;
-            var keys = GetHashKeys(_options.EncryptionSecret);
-            _key = keys[0];
-            _iv = keys[1];
-
         }
 
-        private Aes CreateAes()
+        /// <summary>
+        /// Generates a 128bit random salt using the system provided crypto RNG
+        /// </summary>
+        /// <returns>16 bytes salt</returns>
+        private byte[] GenerateSalt()
         {
-            var aes = new AesManaged();
-            aes.Padding = PaddingMode.PKCS7;
-            aes.Key = _key;
-            aes.IV = _iv;
+            // Create a byte array to hold the random value.
+            byte[] salt = new byte[16];
+            using (var rngCsp = new RNGCryptoServiceProvider())
+            {
+                // Fill the array with a random value.
+                rngCsp.GetBytes(salt);
+            }
+            return salt;
+        }
+
+        /// <summary>
+        /// Initialize an AES cipher using a random salt and the configured EncryptionSecret
+        /// </summary>
+        /// <param name="salt"></param>
+        /// <returns></returns>
+        private Aes CreateAes(byte[] salt)
+        {
+            var rfc = new Rfc2898DeriveBytes(_options.EncryptionSecret, salt);
+            byte[] Key = rfc.GetBytes(16);
+            byte[] IV = rfc.GetBytes(16);
+
+            var aes = Aes.Create();
+            aes.Padding = PaddingMode.ISO10126;
+            aes.Key = Key;
+            aes.IV = IV;
             aes.Mode = CipherMode.CBC;
             return aes;
         }
 
         public byte[] EncryptConfigurationToken(ExtensionConfiguration configuration)
         {
+            // Generate the Flatbuffer token payload
             var builder = new FlatBufferBuilder(512);
+
             var apiKeyString = builder.CreateString(configuration.XApiKey);
             var xuid64 = UInt64.Parse(configuration.StreamerXuid);
             var titleId32 = UInt32.Parse(configuration.TitleId);
             var localeString = builder.CreateString(configuration.Locale ?? "en-US");
+
             var configOffset = TwitchAchievementTracker.Configuration.CreateConfiguration(builder, apiKeyString, xuid64, titleId32, localeString);
             builder.Finish(configOffset.Value);
             var payload = builder.SizedByteArray();
 
-            //using (Aes myAes = CreateAes())
-            //{
-            //    return Encrypt(payload);
-            //}
-            return payload;
+            // Encrypt the token
+            return Encrypt(payload);
         }
 
         public ExtensionConfiguration DecryptConfigurationToken(byte[] payload)
         {
-            byte[] decrypted = payload;
-            //using (Aes myAes = CreateAes())
-            //{
-            //    decrypted = Decrypt(payload);
-            //}
+            // Decrypt the token
+            byte[] decrypted = Decrypt(payload);
 
+            // Initialize Flatbuffer
             var fbConfig = TwitchAchievementTracker.Configuration.GetRootAsConfiguration(new ByteBuffer(decrypted));
             var testKey = fbConfig.GetXApiKeyBytes();
 
@@ -74,68 +92,36 @@ namespace TwitchAchievementTrackerBackend.Services
 
         byte[] Encrypt(byte[] payload)
         {
-            byte[] encrypted;
-            // Create a new AesManaged.    
-            using (Aes aes = CreateAes())
+            // Generate salt to derive secret Key and Initialization Vectory, will store the salt as a prefix of the payload
+            var salt = GenerateSalt();
+            // Create Aes, will derive Key and IV
+            using (Aes aes = CreateAes(salt))
             {
-                // Create encryptor    
+                // Create encryptor with generated Key and IV
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-                // Create MemoryStream    
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    // Create crypto stream using the CryptoStream class. This class is the key to encryption    
-                    // and encrypts and decrypts data from any given stream. In this case, we will pass a memory stream    
-                    // to encrypt    
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
-                    {
-                        cs.Write(payload, 0, payload.Length);
-                        encrypted = ms.ToArray();
-                    }
-                }
+                // Encrypt message
+                byte[] encryptedMessage = encryptor.TransformFinalBlock(payload, 0, payload.Length);
+                // Create output with extra space to store salt as prefix
+                byte[] output = new byte[aes.IV.Length + encryptedMessage.Length];
+                // Store salt as prefix to the encrypted payload
+                Array.Copy(salt, output, salt.Length);
+                // Copy message payload
+                Array.Copy(encryptedMessage, 0, output, salt.Length, encryptedMessage.Length);
+
+                return output;
             }
-            // Return encrypted data    
-            return encrypted;
         }
+
         byte[] Decrypt(byte[] payload)
         {
-            byte[] decrypted = new byte[payload.Length*2];
-            // Create AesManaged    
-            using (Aes aes = CreateAes())
+            // Extract salt prefix to derive secret Key and IV
+            byte[] salt = payload.Take(16).ToArray();
+            using (Aes aes = CreateAes(salt))
             {
-                // Create a decryptor    
                 ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-                // Create the streams used for decryption.    
-                using (MemoryStream ms = new MemoryStream(payload))
-                {
-                    // Create crypto stream    
-                    using (CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
-                    {
-                        cs.Read(decrypted, 0, payload.Length);
-                    }
-                }
+                // Decrypt the message payload
+                return decryptor.TransformFinalBlock(payload, salt.Length, payload.Length - salt.Length);
             }
-            return decrypted;
-        }
-
-        private byte[][] GetHashKeys(string key)
-        {
-            byte[][] result = new byte[2][];
-            Encoding enc = Encoding.UTF8;
-
-            SHA256 sha2 = new SHA256CryptoServiceProvider();
-
-            byte[] rawKey = enc.GetBytes(key);
-            byte[] rawIV = enc.GetBytes(key);
-
-            byte[] hashKey = sha2.ComputeHash(rawKey);
-            byte[] hashIV = sha2.ComputeHash(rawIV);
-
-            Array.Resize(ref hashIV, 16);
-
-            result[0] = hashKey;
-            result[1] = hashIV;
-
-            return result;
         }
     }
 }

@@ -14,11 +14,15 @@ namespace TwitchAchievementTrackerBackend.Helpers
 
         public static ExtensionConfiguration GetExtensionConfiguration(this ControllerBase controller)
         {
-            return controller.HttpContext.Items[CONFIGURATION_KEY] as ExtensionConfiguration;
+            return controller.HttpContext.GetExtensionConfiguration();
         }
 
         public static ExtensionConfiguration GetExtensionConfiguration(this HttpContext context)
         {
+            if (!context.Items.ContainsKey(CONFIGURATION_KEY))
+            {
+                throw new InvalidOperationException("Configuration header is missing");
+            }
             return context.Items[CONFIGURATION_KEY] as ExtensionConfiguration;
         }
 

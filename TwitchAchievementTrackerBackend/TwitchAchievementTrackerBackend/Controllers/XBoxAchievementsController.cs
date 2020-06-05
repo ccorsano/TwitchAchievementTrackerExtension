@@ -29,6 +29,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
         }
 
         [HttpGet("title")]
+        [HttpGet("/api/title")]
         public async Task<TitleInfo> GetTitleInfo()
         {
             var config = this.GetExtensionConfiguration();
@@ -37,28 +38,35 @@ namespace TwitchAchievementTrackerBackend.Controllers
 
             return new TitleInfo
             {
+                TitleId = config.TitleId,
                 ProductTitle = titleInfo.Products.FirstOrDefault()?.LocalizedProperties?.FirstOrDefault()?.ProductTitle ?? "Unknown",
                 ProductDescription = titleInfo.Products.FirstOrDefault()?.LocalizedProperties?.FirstOrDefault()?.ProductDescription ?? "-",
-                LogoUri = titleInfo.Products.FirstOrDefault()?.LocalizedProperties?.FirstOrDefault()?.Images?.FirstOrDefault(i => i.ImagePurpose == "Logo")?.Uri,
+                LogoUri = titleInfo.Products.FirstOrDefault()?.LocalizedProperties?.FirstOrDefault()?.Images?.FirstOrDefault(i => i.ImagePurpose == "Logo" || i.ImagePurpose == "BoxArt" || i.ImagePurpose == "FeaturePromotionalSquareArt")?.Uri,
             };
         }
 
-        [HttpGet("search/title")]
+        [HttpGet("/api/title/search/{query}")]
         public async Task<IEnumerable<TitleInfo>> SearchTitleInfo(string query)
         {
-            var config = this.GetExtensionConfiguration();
-
             var searchResult = await _xApiService.SearchTitle(query);
 
             return searchResult.Products.Select(product =>
                 new TitleInfo
                 {
+                    TitleId = product.AlternateIds?.FirstOrDefault(id => id.IdType == "XboxTitleId")?.Value ?? "",
                     ProductTitle = product.LocalizedProperties?.FirstOrDefault()?.ProductTitle ?? "Unknown",
                     ProductDescription = product.LocalizedProperties?.FirstOrDefault()?.ProductDescription ?? "-",
-                    LogoUri = product.LocalizedProperties?.FirstOrDefault()?.Images?.FirstOrDefault(i => i.ImagePurpose == "Logo")?.Uri,
+                    LogoUri = product.LocalizedProperties?.FirstOrDefault()?.Images?.FirstOrDefault(i => i.ImagePurpose == "Logo" || i.ImagePurpose == "BoxArt" || i.ImagePurpose == "FeaturePromotionalSquareArt")?.Uri,
                 }
             );
         }
+
+        [HttpGet("/api/xuid/{gamertag}")]
+        public async Task<string> ResolveXuid(string gamerTag)
+        {
+            return await _xApiService.ResolveXuid(gamerTag);
+        }
+
 
         [HttpGet("summary")]
         public async Task<AchievementSummary> GetSummary()
