@@ -20,6 +20,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using TwitchAchievementTrackerBackend.Configuration;
+using TwitchAchievementTrackerBackend.Helpers;
+using TwitchAchievementTrackerBackend.Middleware;
 using TwitchAchievementTrackerBackend.Services;
 
 namespace TwitchAchievementTrackerBackend
@@ -56,7 +58,9 @@ namespace TwitchAchievementTrackerBackend
             services.AddHttpClient();
             services.Configure<XApiOptions>(Configuration.GetSection("xapi"));
             services.Configure<TwitchOptions>(Configuration.GetSection("twitch"));
+            services.Configure<ConfigurationTokenOptions>(Configuration.GetSection("config"));
             services.AddSingleton<XApiService>();
+            services.AddSingleton<ConfigurationTokenService>();
             services.AddMemoryCache();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -87,14 +91,23 @@ namespace TwitchAchievementTrackerBackend
 
             app.UseCors(config =>
             {
-                config.AllowAnyOrigin();
-                config.WithHeaders("Authorization");
+                if (env.IsDevelopment())
+                {
+                    config.AllowAnyOrigin();
+                }
+                else
+                {
+                    config.WithOrigins("*.ext-twitch.tv");
+                }
+                config.WithHeaders("Authorization", "X-Config-Token", "Content-Type");
             });
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
+            // Register Twitch configuration middleware
+            app.UseMiddleware<ConfigurationHeaderMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

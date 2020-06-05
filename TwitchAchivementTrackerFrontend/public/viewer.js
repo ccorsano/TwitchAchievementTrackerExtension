@@ -30,10 +30,13 @@ function createAchievementsRequest(type, method, callback) {
     }
 }
 
-function setAuth(token) {
+function setAuth(token, config) {
     Object.keys(requests).forEach((req) => {
         twitch.rig.log('Setting auth headers');
-        requests[req].headers = { 'Authorization': 'Bearer ' + token }
+        requests[req].headers = {
+            'Authorization': 'Bearer ' + token,
+            'X-Config-Token': config
+        }
     });
 }
 
@@ -41,15 +44,24 @@ twitch.onContext(function(context) {
     twitch.rig.log(context);
 });
 
+twitch.configuration.onChanged(function(){
+    if (! twitch.configuration.broadcaster)
+    {
+        throw 'Could not load broadcaster config';
+    }
+})
+
 twitch.onAuthorized(function(auth) {
     // save our credentials
     token = auth.token;
     tuid = auth.userId;
 
+    var configToken = twitch.configuration.broadcaster.content;
+
     // enable the button
     $('#cycle').removeAttr('disabled');
 
-    setAuth(token);
+    setAuth(token, configToken);
     $.ajax(requests.titleInfo);
     $.ajax(requests.summary);
 
