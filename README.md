@@ -39,3 +39,6 @@ For deployment, Env variables will be loaded for configuration.
 #### Twitch configuration
 - twitch.ExtensionSecrets : List of enabled Twitch extension secret keys, used to validate Extension calls
   ENV var name: twitch__ExtensionSecrets__0, twitch__ExtensionSecrets__1, ...
+  
+- config.EncryptionSecret : Secret key used to encrypt the configuration token
+  ENV var name: config__EncryptionSecret
