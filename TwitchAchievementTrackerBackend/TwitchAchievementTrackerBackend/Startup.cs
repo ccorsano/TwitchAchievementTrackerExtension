@@ -20,6 +20,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using TwitchAchievementTrackerBackend.Configuration;
+using TwitchAchievementTrackerBackend.Helpers;
+using TwitchAchievementTrackerBackend.Middleware;
 using TwitchAchievementTrackerBackend.Services;
 
 namespace TwitchAchievementTrackerBackend
@@ -48,14 +50,18 @@ namespace TwitchAchievementTrackerBackend
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime. Use this method to add services to the container. 
+        // Ceci est un commentaire
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddRazorPages();
             services.AddHttpClient();
             services.Configure<XApiOptions>(Configuration.GetSection("xapi"));
             services.Configure<TwitchOptions>(Configuration.GetSection("twitch"));
+            services.Configure<ConfigurationTokenOptions>(Configuration.GetSection("config"));
             services.AddSingleton<XApiService>();
+            services.AddSingleton<ConfigurationTokenService>();
             services.AddMemoryCache();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -86,18 +92,29 @@ namespace TwitchAchievementTrackerBackend
 
             app.UseCors(config =>
             {
-                config.AllowAnyOrigin();
-                config.WithHeaders("Authorization");
+                if (env.IsDevelopment())
+                {
+                    config.AllowAnyOrigin();
+                }
+                else
+                {
+                    config.WithOrigins("https://*.ext-twitch.tv")
+                        .SetIsOriginAllowedToAllowWildcardSubdomains();
+                }
+                config.WithHeaders("Authorization", "X-Config-Token", "Content-Type");
             });
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
+            // Register Twitch configuration middleware
+            app.UseMiddleware<ConfigurationHeaderMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapRazorPages();
             });
         }
     }

@@ -1,4 +1,8 @@
-# TwitchAchievementTrackerExtension
+# TwitchAchievementTrackerExtension : Frontend
+
+Twitch extension frontend, just static html / js files...
+
+# TwitchAchievementTrackerExtension : Backend
 Backend for the Twitch XBox Achievement Tracker Extension.
 
 Grab achievements from xapi.us for a given streamer and game, and display stats on the stream.
@@ -35,3 +39,6 @@ For deployment, Env variables will be loaded for configuration.
 #### Twitch configuration
 - twitch.ExtensionSecrets : List of enabled Twitch extension secret keys, used to validate Extension calls
   ENV var name: twitch__ExtensionSecrets__0, twitch__ExtensionSecrets__1, ...
+  
+- config.EncryptionSecret : Secret key used to encrypt the configuration token
+  ENV var name: config__EncryptionSecret

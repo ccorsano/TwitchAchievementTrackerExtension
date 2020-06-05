@@ -2,6 +2,13 @@ var token = "";
 var tuid = "";
 var ebs = "";
 var detailsVisible = false;
+var server = "twitchext.conceptoire.com"
+
+var urlParams = new URLSearchParams(this.location.search);
+if (urlParams.get('state') == "testing")
+{
+    server = "localhost:8081"
+}
 
 // because who wants to type this every time?
 var twitch = window.Twitch.ext;
@@ -14,19 +21,22 @@ var requests = {
 };
 
 function createAchievementsRequest(type, method, callback) {
-    twitch.rig.log('Create request ' + location.protocol + '//localhost:8081/api/achievements/' + method);
+    twitch.rig.log('Create request ' + location.protocol + '//' + server + '/api/achievements/' + method);
     return {
         type: type,
-        url: location.protocol + '//localhost:8081/api/achievements/' + method,
+        url: location.protocol + '//' + server + '/api/achievements/' + method,
         success: callback,
         error: logError
     }
 }
 
-function setAuth(token) {
+function setAuth(token, config) {
     Object.keys(requests).forEach((req) => {
         twitch.rig.log('Setting auth headers');
-        requests[req].headers = { 'Authorization': 'Bearer ' + token }
+        requests[req].headers = {
+            'Authorization': 'Bearer ' + token,
+            'X-Config-Token': config
+        }
     });
 }
 
@@ -34,20 +44,30 @@ twitch.onContext(function(context) {
     twitch.rig.log(context);
 });
 
+twitch.configuration.onChanged(function(){
+    if (! twitch.configuration.broadcaster)
+    {
+        throw 'Could not load broadcaster config';
+    }
+})
+
 twitch.onAuthorized(function(auth) {
     // save our credentials
     token = auth.token;
     tuid = auth.userId;
 
+    var configToken = twitch.configuration.broadcaster.content;
+
     // enable the button
     $('#cycle').removeAttr('disabled');
 
-    setAuth(token);
+    setAuth(token, configToken);
     $.ajax(requests.titleInfo);
     $.ajax(requests.summary);
-    // $.ajax(requests.listAchievement);
 
     $('#showDetails').click(function() {
+        $("#showDetails").addClass(detailsVisible ? "collapsed" : "open");
+        $("#showDetails").removeClass(detailsVisible ? "open" : "collapsed");
         if (detailsVisible)
         {
             $("#list").css('display', 'none')
@@ -60,6 +80,15 @@ twitch.onAuthorized(function(auth) {
             detailsVisible = true;
         }
     });
+
+    // Refresh the data every minute
+    setInterval(function() {
+        $.ajax(requests.summary);
+        if (detailsVisible)
+        {
+            $.ajax(requests.listAchievement);
+        }
+    }, 60000);
 });
 
 function updateTitle(titleInfo) {
@@ -77,11 +106,22 @@ function updateSummary(summary) {
 function updateBlock(achievements) {
     var container = $('#list');
     achievements.forEach(achievement => {
-        var listItem = document.createElement("li");
-        var nameDiv = document.createElement("div");
-        nameDiv.className = "achievementTitle";
-        var descriptionDiv = document.createElement("div");
-        descriptionDiv.className = "achievementDescription";
+        var listItemId = 'achievement_' + achievement.id;
+        var listItem = $('#' + listItemId);
+        var nameDiv = $(listItem).children('div.achievementTitle');
+        var descriptionDiv = $(listItem).children('div.achievementDescription');
+        if (! listItem.length)
+        {
+            listItem = document.createElement("li");
+            $(listItem).attr('id', listItemId);
+            nameDiv = document.createElement("div");
+            nameDiv.className = "achievementTitle";
+            descriptionDiv = document.createElement("div");
+            descriptionDiv.className = "achievementDescription";
+            $(listItem).append(nameDiv);
+            $(listItem).append(descriptionDiv);
+            container.append(listItem);
+        }
         var progressIcon = "";
         switch (achievement.progressState) {
             case "Achieved":
@@ -94,9 +134,6 @@ function updateBlock(achievements) {
                 break;
         }
         $(nameDiv).text(achievement.name);
-        $(listItem).append(nameDiv);
-        $(listItem).append(descriptionDiv);
-        container.append(listItem);
     });
 }
 
