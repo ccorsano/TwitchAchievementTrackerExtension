@@ -62,8 +62,12 @@
     "description": "Prototype of an XBoxLive Achievement Tracker extension",
     "eulaTosUrl": "",
     "hasChatSupport": false,
-    "iconUrl": "",
-    "iconUrls": {},
+    "iconUrl": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/logoe86e0697-dd30-46a1-8b6f-5e4946b94d62",
+    "iconUrls": {
+      "100x100": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/logoe86e0697-dd30-46a1-8b6f-5e4946b94d62",
+      "24x24": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/taskbardc4d27e4-a354-482b-bf55-27b51f7cf4d7",
+      "300x200": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/discovery75188d83-8d74-4e47-bb8e-d69f4b971baf"
+    },
     "id": "04ijuz20mxlw1wk5b6alh6l4mb48zu",
     "installationCount": -42,
     "liveConfigUrl": "",
@@ -77,7 +81,7 @@
     "state": "Testing",
     "subscriptionsSupportLevel": "none",
     "summary": "Prototype of an XBoxLive Achievement Tracker extension",
-    "supportEmail": "",
+    "supportEmail": "christian.corsano@gmail.com",
     "vendorCode": "",
     "version": "0.0.1",
     "viewerSummary": "Prototype pour suivre le 100% quest de Nuja !",

@@ -4,14 +4,20 @@
     <title>Viewer Page</title>
     <style>
         .overlayBox {
-            background-color: aliceblue;
+            background-color: rgb(55,56,64);
             display: block;
             width: 30em;
             height: fit-content;
+            margin-top: 5rem;
+            color: white;
         }
 
         .overlayBox h2 {
             font-size: 1em;
+        }
+
+        .card-container {
+            padding-top: 0.5rem;
         }
 
         .gameLogo {
@@ -28,10 +34,22 @@
 
         #showDetails {
             width: 100%;
-            height: 3em;
+            height: 1.5em;
             text-align: right;
             vertical-align: bottom;
             cursor: pointer;
+            background-position: bottom right;
+            background-repeat: no-repeat;
+            background-size: 2rem;
+        }
+
+        #showDetails.collapsed {
+            background-color: rgba(255,255,255,0.3);
+            background-image: url('nujaDown.png');
+        }
+
+        #showDetails.open {
+            background-image: url('nujaUp.png');
         }
 
         #showDetails:hover {
@@ -39,7 +57,7 @@
         }
 
         #list {
-            max-height: 10em;
+            max-height: 20rem;
             overflow-y: scroll;
         }
 
@@ -80,13 +98,16 @@
         <div class="gameLogo">
             <img id="gameLogo" src="nuja.png" alt="logo" />
         </div>
-        <h2 id="gameTitle">Game</h2>
-        <div id="completionHeadline">
-            Completion
+        <div class="card-container">
+            <h2 id="gameTitle">
+                Game
+            </h2>
+            <div id="completionHeadline">
+                Completion
+            </div>
         </div>
         <div id="achievementsPanel">
-            <div id="showDetails">
-                ➕
+            <div id="showDetails" class="collapsed">
             </div>
             <div id="list">
             </div>

@@ -66,6 +66,8 @@ twitch.onAuthorized(function(auth) {
     $.ajax(requests.summary);
 
     $('#showDetails').click(function() {
+        $("#showDetails").addClass(detailsVisible ? "collapsed" : "open");
+        $("#showDetails").removeClass(detailsVisible ? "open" : "collapsed");
         if (detailsVisible)
         {
             $("#list").css('display', 'none')
