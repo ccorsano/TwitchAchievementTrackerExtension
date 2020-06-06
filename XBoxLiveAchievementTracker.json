@@ -59,8 +59,8 @@
     "canInstall": true,
     "configUrl": "https://localhost:8080/config.html",
     "configurationLocation": "hosted",
-    "description": "Prototype of an XBoxLive Achievement Tracker extension",
-    "eulaTosUrl": "",
+    "description": "First MVP version of the extension dedicated to Nuja's 100% Quest program !\n\nThis overlay shows XBoxLive achievements for a given player and a given game.\nOnce configured, your viewers can keep track of how many achievements are left to unlock when streaming to complete a game 100%.\n\nPre-requisite: this extension uses xapi.us to query XBoxLive, the configuration will require to input an API key from xapi.us.",
+    "eulaTosUrl": "https://twitchext.conceptoire.com/EULA",
     "hasChatSupport": false,
     "iconUrl": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/logoe86e0697-dd30-46a1-8b6f-5e4946b94d62",
     "iconUrls": {
@@ -71,27 +71,45 @@
     "id": "04ijuz20mxlw1wk5b6alh6l4mb48zu",
     "installationCount": -42,
     "liveConfigUrl": "",
-    "name": "XBoxLiveAchievementTracker",
+    "name": "Nuja 100% Quest Tracker",
     "panelHeight": 0,
-    "privacyPolicyUrl": "",
+    "privacyPolicyUrl": "https://twitchext.conceptoire.com/PrivacyPolicy",
     "requestIdentityLink": false,
     "requiredBroadcasterAbilities": [],
-    "screenshotUrls": [],
+    "screenshotUrls": [
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/screenshot37b2bf85-bfdb-4d49-8eb0-093fcca76e55",
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/screenshot0d0a0191-c0a1-4926-85f6-d455dbe56a13"
+    ],
     "sku": "",
     "state": "Testing",
     "subscriptionsSupportLevel": "none",
-    "summary": "Prototype of an XBoxLive Achievement Tracker extension",
+    "summary": "Tracker for the 100% Quest program on Nuja's stream",
     "supportEmail": "christian.corsano@gmail.com",
     "vendorCode": "",
     "version": "0.0.1",
     "viewerSummary": "Prototype pour suivre le 100% quest de Nuja !",
     "viewerUrl": "",
     "viewerUrls": {
-      "videoOverlay": "https://localhost:8080/video_overlay.html"
+      "videoOverlay": "https://localhost:8080/video_overlay.html",
+      "component": "https://localhost:8080/video_component.html"
     },
     "views": {
       "videoOverlay": {
         "viewerUrl": "https://localhost:8080/video_overlay.html",
+        "canLinkExternalContent": false
+      },
+      "component": {
+        "viewerUrl": "https://localhost:8080/video_component.html",
+        "aspectWidth": 0,
+        "aspectHeight": 0,
+        "aspectRatioX": 300,
+        "aspectRatioY": 200,
+        "autoscale": true,
+        "scalePixels": 1024,
+        "targetHeight": 3000,
+        "size": 0,
+        "zoom": false,
+        "zoomPixels": 0,
         "canLinkExternalContent": false
       },
       "config": {
@@ -101,7 +119,7 @@
     },
     "whitelistedConfigUrls": [],
     "whitelistedPanelUrls": [
-      "video_overlay.html"
+      ""
     ]
   },
   "frontendCommand": "",
