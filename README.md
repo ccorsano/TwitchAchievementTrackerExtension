@@ -19,23 +19,34 @@ As it is completely stateless it would be well-suited for a serverless / SaaS de
 - optionally, docker
 - Twitch Developer Rig to run the extension
 
+### Using Twitch Developer Rig
+
+There is a Twitch Extension manifest included, configured for Rig local file hosting, and to launch the dotnet backend as a backend.
+Just run the local files and backend, after having configured the secrets, and you should be set.
+
 ### Development mode
+
+Check the section about secrets before being able to run the backend !
+
 #### Visual Studio
 Launch the application TwitchAchievementBackend, it will start and listen on https 8080 / http 8081 (which is what the Twitch Developer Rig uses with the extension project).
 
 #### dotnet cli (multiplatform)
 
-cd to the project directory (TwitchAchievementTrackerExtension/TwitchAchievementTrackerExtension)
-`dotnet run` 
+```
+cd TwitchAchievementTrackerBackend/TwitchAchievementTrackerBackend
+dotnet run
+```
 
 ### Secrets
 Secrets are loaded as configuration.
 For development, use the User Secrets feature or the Development appsetting.json (but careful not to submit).
 For deployment, Env variables will be loaded for configuration.
 
-#### Setting required secrets
+#### Setting required secrets for development
 This is the crossplatform way, using the dotnet cli:
 ```
+cd TwitchAchievementTrackerBackend/TwitchAchievementTrackerBackend
 dotnet user-secrets set "twitch:ExtensionSecrets:0" "<your_twitch_extension_secret>"
 dotnet user-secrets set "config:EncryptionSecret" "<a_random_string_used_as_encryption_password>"
 dotnet user-secrets set "xapi:XApiKey" "<a_default_xapius_api_key>"
