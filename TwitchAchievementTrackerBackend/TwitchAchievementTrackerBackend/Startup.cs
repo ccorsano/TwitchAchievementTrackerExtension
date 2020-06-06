@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -64,6 +66,12 @@ namespace TwitchAchievementTrackerBackend
             services.AddSingleton<ConfigurationTokenService>();
             services.AddMemoryCache();
 
+            // For development mode
+            if (Configuration.GetValue<bool>("config:IgnoreAuthentication", false))
+            {
+                // Disable authentication and authorization.
+                services.AddSingleton<IPolicyEvaluator, DisableAuthenticationPolicyEvaluator>();
+            }
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -88,6 +96,7 @@ namespace TwitchAchievementTrackerBackend
                 IdentityModelEventSource.ShowPII = true;
             }
 
+            // Note: I am deploying this behind an HTTPS reverse proxy, so the HTTPs redirection is handled there.
             //app.UseHttpsRedirection();
 
             app.UseCors(config =>

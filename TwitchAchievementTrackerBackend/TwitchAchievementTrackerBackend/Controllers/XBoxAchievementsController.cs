@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using TwitchAchievementTrackerBackend.Model;
 using TwitchAchievementTrackerBackend.Services;
 using TwitchAchievementTrackerBackend.Helpers;
+using System.ComponentModel;
 
 namespace TwitchAchievementTrackerBackend.Controllers
 {
@@ -91,11 +92,11 @@ namespace TwitchAchievementTrackerBackend.Controllers
         }
 
         [HttpGet("list")]
-        public Task<XApiAchievement[]> GetAchievements()
+        public async Task<IEnumerable<XApiAchievement>> GetAchievements()
         {
             var config = this.GetExtensionConfiguration();
 
-            return _xApiService.GetAchievementsAsync(config);
+            return await _xApiService.GetAchievementsAsync(config).ContinueWith(t => t.Result.OrderByDescending(a => $"{a.ProgressState}:{a.Id}"));
         }
     }
 }

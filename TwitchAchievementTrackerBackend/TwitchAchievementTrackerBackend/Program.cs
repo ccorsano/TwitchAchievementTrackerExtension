@@ -20,8 +20,10 @@ namespace TwitchAchievementTrackerBackend
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(configureDelegate =>
+                .ConfigureAppConfiguration((context, configureDelegate) =>
                 {
+                    configureDelegate.AddJsonFile("appsettings.json");
+                    configureDelegate.AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true);
                     configureDelegate.AddUserSecrets(typeof(Program).Assembly);
                     configureDelegate.AddEnvironmentVariables();
                 })
