@@ -17,31 +17,26 @@ public struct Configuration : IFlatbufferObject
   public void __init(int _i, ByteBuffer _bb) { __p.bb_pos = _i; __p.bb = _bb; }
   public Configuration __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public string XApiKey { get { int o = __p.__offset(4); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
-  public ArraySegment<byte>? GetXApiKeyBytes() { return __p.__vector_as_arraysegment(4); }
-  public ulong StreamerXuid { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetUlong(o + __p.bb_pos) : (ulong)0; } }
-  public uint TitleId { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetUint(o + __p.bb_pos) : (uint)0; } }
-  public string Locale { get { int o = __p.__offset(10); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
-  public ArraySegment<byte>? GetLocaleBytes() { return __p.__vector_as_arraysegment(10); }
+  public string Version { get { int o = __p.__offset(4); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
+  public ArraySegment<byte>? GetVersionBytes() { return __p.__vector_as_arraysegment(4); }
+  public PlatformConfiguration ConfigType { get { int o = __p.__offset(6); return o != 0 ? (PlatformConfiguration)__p.bb.Get(o + __p.bb_pos) : PlatformConfiguration.NONE; } }
+  public TTable? Config<TTable>() where TTable : struct, IFlatbufferObject { int o = __p.__offset(8); return o != 0 ? (TTable?)__p.__union<TTable>(o) : null; }
 
   public static Offset<Configuration> CreateConfiguration(FlatBufferBuilder builder,
-      StringOffset xApiKeyOffset = default(StringOffset),
-      ulong streamerXuid = 0,
-      uint titleId = 0,
-      StringOffset localeOffset = default(StringOffset)) {
-    builder.StartObject(4);
-    Configuration.AddStreamerXuid(builder, streamerXuid);
-    Configuration.AddLocale(builder, localeOffset);
-    Configuration.AddTitleId(builder, titleId);
-    Configuration.AddXApiKey(builder, xApiKeyOffset);
+      StringOffset versionOffset = default(StringOffset),
+      PlatformConfiguration config_type = PlatformConfiguration.NONE,
+      int configOffset = 0) {
+    builder.StartObject(3);
+    Configuration.AddConfig(builder, configOffset);
+    Configuration.AddVersion(builder, versionOffset);
+    Configuration.AddConfigType(builder, config_type);
     return Configuration.EndConfiguration(builder);
   }
 
-  public static void StartConfiguration(FlatBufferBuilder builder) { builder.StartObject(4); }
-  public static void AddXApiKey(FlatBufferBuilder builder, StringOffset xApiKeyOffset) { builder.AddOffset(0, xApiKeyOffset.Value, 0); }
-  public static void AddStreamerXuid(FlatBufferBuilder builder, ulong streamerXuid) { builder.AddUlong(1, streamerXuid, 0); }
-  public static void AddTitleId(FlatBufferBuilder builder, uint titleId) { builder.AddUint(2, titleId, 0); }
-  public static void AddLocale(FlatBufferBuilder builder, StringOffset localeOffset) { builder.AddOffset(3, localeOffset.Value, 0); }
+  public static void StartConfiguration(FlatBufferBuilder builder) { builder.StartObject(3); }
+  public static void AddVersion(FlatBufferBuilder builder, StringOffset versionOffset) { builder.AddOffset(0, versionOffset.Value, 0); }
+  public static void AddConfigType(FlatBufferBuilder builder, PlatformConfiguration configType) { builder.AddByte(1, (byte)configType, 0); }
+  public static void AddConfig(FlatBufferBuilder builder, int configOffset) { builder.AddOffset(2, configOffset, 0); }
   public static Offset<Configuration> EndConfiguration(FlatBufferBuilder builder) {
     int o = builder.EndObject();
     return new Offset<Configuration>(o);

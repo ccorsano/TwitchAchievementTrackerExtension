@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TwitchAchievementTrackerBackend.Model;
 using TwitchAchievementTrackerBackend.Services;
 using TwitchAchievementTrackerBackend.Helpers;
-using System.ComponentModel;
+using TwitchAchievementTrackerBackend.Model.XApi;
 
 namespace TwitchAchievementTrackerBackend.Controllers
 {
@@ -18,11 +16,13 @@ namespace TwitchAchievementTrackerBackend.Controllers
     public class XBoxAchievementsController : ControllerBase
     {
         public readonly XApiService _xApiService;
+        public readonly SteamApiService _steamApiService;
         public readonly ConfigurationTokenService _configurationService;
 
-        public XBoxAchievementsController(XApiService xApiService, ConfigurationTokenService configurationService)
+        public XBoxAchievementsController(XApiService xApiService, SteamApiService steamApiService, ConfigurationTokenService configurationService)
         {
             _xApiService = xApiService;
+            _steamApiService = steamApiService;
             _configurationService = configurationService;
         }
 
@@ -31,12 +31,13 @@ namespace TwitchAchievementTrackerBackend.Controllers
         public async Task<TitleInfo> GetTitleInfo()
         {
             var config = this.GetExtensionConfiguration();
+            var xConfig = config.XBoxLiveConfig;
 
-            var titleInfo = await _xApiService.GetMarketplaceAsync(config);
+            var titleInfo = await _xApiService.GetMarketplaceAsync(xConfig);
 
             return new TitleInfo
             {
-                TitleId = config.TitleId,
+                TitleId = xConfig.TitleId,
                 ProductTitle = titleInfo.Products.FirstOrDefault()?.LocalizedProperties?.FirstOrDefault()?.ProductTitle ?? "Unknown",
                 ProductDescription = titleInfo.Products.FirstOrDefault()?.LocalizedProperties?.FirstOrDefault()?.ProductDescription ?? "-",
                 LogoUri = titleInfo.Products.FirstOrDefault()?.LocalizedProperties?.FirstOrDefault()?.Images?.FirstOrDefault(i => i.ImagePurpose == "Logo" || i.ImagePurpose == "BoxArt" || i.ImagePurpose == "FeaturePromotionalSquareArt")?.Uri,
@@ -47,6 +48,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
         public async Task<IEnumerable<TitleInfo>> SearchTitleInfo(string query)
         {
             var searchResult = await _xApiService.SearchTitle(query);
+            //return await _steamApiService.SearchTitle(query);
 
             return searchResult.Products.Select(product =>
                 new TitleInfo
@@ -71,7 +73,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
         {
             var config = this.GetExtensionConfiguration();
 
-            var achievements = await _xApiService.GetAchievementsAsync(config);
+            var achievements = await _xApiService.GetAchievementsAsync(config.XBoxLiveConfig);
             var stateSummary = achievements.GroupBy(a => a.ProgressState).ToDictionary(a => a.Key, a => a.Count());
 
             return new AchievementSummary
@@ -93,7 +95,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
         {
             var config = this.GetExtensionConfiguration();
 
-            return await _xApiService.GetAchievementsAsync(config).ContinueWith(t => t.Result.OrderByDescending(a => $"{a.ProgressState}:{a.Id}"));
+            return await _xApiService.GetAchievementsAsync(config.XBoxLiveConfig).ContinueWith(t => t.Result.OrderByDescending(a => $"{a.ProgressState}:{a.Id}"));
         }
     }
 }

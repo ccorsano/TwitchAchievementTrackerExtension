@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace TwitchAchievementTrackerBackend.Model
+namespace TwitchAchievementTrackerBackend.Model.XApi
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum ProgressState

@@ -136,10 +136,13 @@ window.onload = function()
   $('#saveConfig').click(function()
   {
     var config = {
-      'xApiKey': $('input[name=xapiKey]').val(),
-      'streamerXuid': $('input[name=streamerXuid]').val(),
-      'titleId': $('input[name=titleId]').val(),
-      'locale': $('input[name=locale]').val(),
+      'version': '0.0.1',
+      'xBoxLiveConfig': {
+        'xApiKey': $('input[name=xapiKey]').val(),
+        'streamerXuid': $('input[name=streamerXuid]').val(),
+        'titleId': $('input[name=titleId]').val(),
+        'locale': $('input[name=locale]').val(),
+      }
     };
     var request = {
       type: 'POST',
