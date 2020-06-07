@@ -60,9 +60,11 @@ namespace TwitchAchievementTrackerBackend
             services.AddRazorPages();
             services.AddHttpClient();
             services.Configure<XApiOptions>(Configuration.GetSection("xapi"));
+            services.Configure<SteamApiOptions>(Configuration.GetSection("steam"));
             services.Configure<TwitchOptions>(Configuration.GetSection("twitch"));
             services.Configure<ConfigurationTokenOptions>(Configuration.GetSection("config"));
             services.AddSingleton<XApiService>();
+            services.AddSingleton<SteamApiService>();
             services.AddSingleton<ConfigurationTokenService>();
             services.AddMemoryCache();
 

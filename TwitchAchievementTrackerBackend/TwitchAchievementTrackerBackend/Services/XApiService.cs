@@ -1,16 +1,12 @@
-﻿using Google.FlatBuffers;
-using Microsoft.CodeAnalysis.Operations;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TwitchAchievementTrackerBackend.Configuration;
 using TwitchAchievementTrackerBackend.Model;
+using TwitchAchievementTrackerBackend.Model.XApi;
 
 namespace TwitchAchievementTrackerBackend.Services
 {
@@ -34,7 +30,7 @@ namespace TwitchAchievementTrackerBackend.Services
             _cache = memoryCache;
         }
 
-        public string GetCacheKey(string call, ExtensionConfiguration config)
+        public string GetCacheKey(string call, XApiConfiguration config)
         {
             return $"{call}:{config.TitleId}:{config.StreamerXuid}:{config.Locale}";
         }
@@ -75,7 +71,7 @@ namespace TwitchAchievementTrackerBackend.Services
             return result;
         }
 
-        public async Task<XApiAchievement[]> GetAchievementsAsync(ExtensionConfiguration config)
+        public async Task<XApiAchievement[]> GetAchievementsAsync(XApiConfiguration config)
         {
             if (config == null)
             {
@@ -106,7 +102,7 @@ namespace TwitchAchievementTrackerBackend.Services
             return result;
         }
 
-        public async Task<XApiMarketplaceTitleInfo> GetMarketplaceAsync(ExtensionConfiguration config)
+        public async Task<XApiMarketplaceTitleInfo> GetMarketplaceAsync(XApiConfiguration config)
         {
             if (config == null)
             {
