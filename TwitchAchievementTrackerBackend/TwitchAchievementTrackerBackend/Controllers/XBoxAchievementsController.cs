@@ -19,9 +19,6 @@ namespace TwitchAchievementTrackerBackend.Controllers
     {
         public readonly XApiService _xApiService;
         public readonly ConfigurationTokenService _configurationService;
-        // TEMP hard code Nuja and "Ori and the will of the wisps"
-        public const string TITLE_ID = "1659804324";
-        public const string STREAMER_XUID = "2535467661815558";
 
         public XBoxAchievementsController(XApiService xApiService, ConfigurationTokenService configurationService)
         {
