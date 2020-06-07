@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Folder Include="Model\Generated\TwitchAchievementTracker\" />
+    <Folder Include="Model\XApi\" />
   </ItemGroup>
 
 
