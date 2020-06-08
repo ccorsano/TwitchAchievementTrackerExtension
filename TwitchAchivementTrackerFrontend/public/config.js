@@ -65,10 +65,10 @@ function onSearchTitle(result)
 
 function onGetConfig(config)
 {
-  $('input[name=xapiKey]').val(config.xApiKey)
-  $('input[name=streamerXuid]').val(config.streamerXuid)
-  $('input[name=titleId]').val(config.titleId)
-  $('input[name=locale]').val(config.locale)
+  $('input[name=xapiKey]').val(config.xBoxLiveConfig.xApiKey)
+  $('input[name=streamerXuid]').val(config.xBoxLiveConfig.streamerXuid)
+  $('input[name=titleId]').val(config.xBoxLiveConfig.titleId)
+  $('input[name=locale]').val(config.xBoxLiveConfig.locale)
 }
 
 function onPackConfig(config)
