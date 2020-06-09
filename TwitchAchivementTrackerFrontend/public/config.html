@@ -14,13 +14,13 @@
     <script src="jquery-3.3.1.min.js" type="text/javascript"></script>
     <script src="config.js" type="text/javascript"></script>
     <form>
-      <h2>Achievement tracker configuration</h2>
+      <h2>XBoxLive Achievement tracker configuration</h2>
       <fieldset class="utilities container">
-        <legend>Search game titleId</legend>
+        <legend>Search the Game XBL identifier (TitleId)</legend>
         <div class="row col-md-12">
           <div class="row col-md-6">
             <div class="col-sm-12 col-md-6">
-              <label for="gameQuery">Search TitleId</label>
+              <label for="gameQuery">Game name</label>
             </div>
             <div class="col-sm-12 col-md">
               <input type="text" name="gameQuery" id="#gameQueryInput"></input>
@@ -34,7 +34,7 @@
         <input type="button" id="searchTitle" value="Search" />
       </fieldset>
       <fieldset class="utilities container">
-        <legend>Resolve XUID from gamertag</legend>
+        <legend>Get the XBoxLive Id (XUID) from a gamertag</legend>
         <div class="row">
           <div class="col-sm-12 col-md-3">
             <label for="gamertag">Gamertag</label>
@@ -48,8 +48,8 @@
       </fieldset>
       <fieldset class="configuration container">
         <legend>Configuration</legend>
+        <strong>Make sure you connect to xapi.us and refresh your XBoxLive token there before going live !</strong>
         <div class="row">
-          Note: Make sure you connect to xapi.us and refresh your XBoxLive token there before going live !
           <div class="col-sm-12 col-md-3">
             <label for="xapiKey">xapi.us private key</label>
           </div>
@@ -59,7 +59,7 @@
         </div>
         <div class="row">
           <div class="col-sm-12 col-md-3">
-            <label for="streamerXuid">Streamer XUID</label>
+            <label for="streamerXuid">Streamer XBoxLive identifier (XUID)</label>
           </div>
           <div class="col-sm-12 col-md">
             <input type="text" name="streamerXuid"></input>
@@ -67,7 +67,7 @@
         </div>
         <div class="row">
           <div class="col-sm-12 col-md-3">
-            <label for="titleId">Game Title Id</label>
+            <label for="titleId">Game identifier (TitleId)</label>
           </div>
           <div class="col-sm-12 col-md">
             <input type="text" name="titleId"></input>

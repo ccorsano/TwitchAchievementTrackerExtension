@@ -137,6 +137,7 @@ window.onload = function()
   {
     var config = {
       'version': '0.0.1',
+      'activeConfig': 'XBoxLive',
       'xBoxLiveConfig': {
         'xApiKey': $('input[name=xapiKey]').val(),
         'streamerXuid': $('input[name=streamerXuid]').val(),
