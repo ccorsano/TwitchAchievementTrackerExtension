@@ -104,6 +104,7 @@ namespace TwitchAchievementTrackerBackend.Services
             byte[] decrypted = Decrypt(payload);
 
             IPlatformConfiguration platformConfiguration;
+            ActiveConfig activeConfig;
 
             // Initialize Flatbuffer
             var fbConfig = TwitchAchievementTracker.Configuration.GetRootAsConfiguration(new ByteBuffer(decrypted));
@@ -113,6 +114,7 @@ namespace TwitchAchievementTrackerBackend.Services
 
                     var xConfig = fbConfig.Config<TwitchAchievementTracker.XApiConfiguration>().GetValueOrDefault();
 
+                    activeConfig = ActiveConfig.XBoxLive;
                     platformConfiguration = new Model.XApiConfiguration
                     {
                         XApiKey = xConfig.XApiKey,
@@ -125,6 +127,7 @@ namespace TwitchAchievementTrackerBackend.Services
 
                     var steamConfig = fbConfig.Config<TwitchAchievementTracker.SteamConfiguration>().GetValueOrDefault();
 
+                    activeConfig = ActiveConfig.Steam;
                     platformConfiguration = new Model.SteamConfiguration
                     {
                         WebApiKey = steamConfig.WebApiKey,
@@ -140,6 +143,7 @@ namespace TwitchAchievementTrackerBackend.Services
             return new ExtensionConfiguration
             {
                 Version = fbConfig.Version,
+                ActiveConfig = activeConfig,
                 XBoxLiveConfig = platformConfiguration as Model.XApiConfiguration,
                 SteamConfig = platformConfiguration as Model.SteamConfiguration
             };
