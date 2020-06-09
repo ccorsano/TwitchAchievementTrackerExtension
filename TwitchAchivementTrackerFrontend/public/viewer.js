@@ -118,21 +118,13 @@ function updateBlock(achievements) {
             nameDiv.className = "achievementTitle";
             descriptionDiv = document.createElement("div");
             descriptionDiv.className = "achievementDescription";
+            $(descriptionDiv).text(achievement.description);
             $(listItem).append(nameDiv);
             $(listItem).append(descriptionDiv);
             container.append(listItem);
         }
-        var progressIcon = "";
-        switch (achievement.progressState) {
-            case "Achieved":
-                listItem.className = "completed";
-                $(descriptionDiv).text(achievement.description);
-                break;
-            default:
-                listItem.className = "notCompleted";
-                $(descriptionDiv).text(achievement.lockedDescription);
-                break;
-        }
+        listItem.className = achievement.completed ? "completed" : "notCompleted";
+        
         $(nameDiv).text(achievement.name);
     });
 }

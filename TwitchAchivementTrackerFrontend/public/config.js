@@ -65,10 +65,10 @@ function onSearchTitle(result)
 
 function onGetConfig(config)
 {
-  $('input[name=xapiKey]').val(config.xApiKey)
-  $('input[name=streamerXuid]').val(config.streamerXuid)
-  $('input[name=titleId]').val(config.titleId)
-  $('input[name=locale]').val(config.locale)
+  $('input[name=xapiKey]').val(config.xBoxLiveConfig.xApiKey)
+  $('input[name=streamerXuid]').val(config.xBoxLiveConfig.streamerXuid)
+  $('input[name=titleId]').val(config.xBoxLiveConfig.titleId)
+  $('input[name=locale]').val(config.xBoxLiveConfig.locale)
 }
 
 function onPackConfig(config)
@@ -136,10 +136,13 @@ window.onload = function()
   $('#saveConfig').click(function()
   {
     var config = {
-      'xApiKey': $('input[name=xapiKey]').val(),
-      'streamerXuid': $('input[name=streamerXuid]').val(),
-      'titleId': $('input[name=titleId]').val(),
-      'locale': $('input[name=locale]').val(),
+      'version': '0.0.1',
+      'xBoxLiveConfig': {
+        'xApiKey': $('input[name=xapiKey]').val(),
+        'streamerXuid': $('input[name=streamerXuid]').val(),
+        'titleId': $('input[name=titleId]').val(),
+        'locale': $('input[name=locale]').val(),
+      }
     };
     var request = {
       type: 'POST',
