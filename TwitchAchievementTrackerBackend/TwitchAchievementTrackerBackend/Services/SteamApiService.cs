@@ -24,7 +24,7 @@ namespace TwitchAchievementTrackerBackend.Services
             _httpClient = httpClientFactory.CreateClient();
             if (string.IsNullOrEmpty(options.Value.WebApiKey))
             {
-                throw new ArgumentNullException("Could not find XApi key in configuration");
+                throw new ArgumentNullException("Could not find Steam WebApi key in configuration");
             }
             _options = options.Value;
             _httpClient.DefaultRequestHeaders.Add("x-webapi-key", _options.WebApiKey);
