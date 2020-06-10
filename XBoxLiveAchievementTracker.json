@@ -59,19 +59,19 @@
     "canInstall": true,
     "configUrl": "https://localhost:8080/config.html",
     "configurationLocation": "hosted",
-    "description": "First MVP version of the extension dedicated to Nuja's 100% Quest program !\n\nThis overlay shows XBoxLive achievements for a given player and a given game.\nOnce configured, your viewers can keep track of how many achievements are left to unlock when streaming to complete a game 100%.\n\nPre-requisite: this extension uses xapi.us to query XBoxLive, the configuration will require to input an API key from xapi.us.",
+    "description": "First MVP version of the extension dedicated to Nuja's 100% Quest program !\ntwitch.tv/nuja\n\nThis overlay shows XBoxLive achievements for a given player and a given game.\nOnce configured, your viewers can keep track of how many achievements are left to unlock when streaming to complete a game 100%.\n\nVersion 0.0.1:\nThis is very MVP, configuration is just functional and the overlay is taking more space than it should.\nImprovements are on their way !\n\nPre-requisite: This extension uses xapi.us to query XBoxLive, the configuration will require the streamer to input an API key from xapi.us.\n\nAuthors:\nNuja's Community\ntwitch.tv/miekyld\ntwitch.tv/xenomorpheapeuree",
     "eulaTosUrl": "https://twitchext.conceptoire.com/EULA",
     "hasChatSupport": false,
-    "iconUrl": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/logoe86e0697-dd30-46a1-8b6f-5e4946b94d62",
+    "iconUrl": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/logo808776b9-3269-473e-bc44-6566dc3f995a",
     "iconUrls": {
-      "100x100": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/logoe86e0697-dd30-46a1-8b6f-5e4946b94d62",
+      "100x100": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/logo808776b9-3269-473e-bc44-6566dc3f995a",
       "24x24": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/taskbardc4d27e4-a354-482b-bf55-27b51f7cf4d7",
-      "300x200": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/discovery75188d83-8d74-4e47-bb8e-d69f4b971baf"
+      "300x200": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/discovery62785bd4-e588-45af-b319-9a5c0cb93a0a"
     },
     "id": "04ijuz20mxlw1wk5b6alh6l4mb48zu",
     "installationCount": -42,
     "liveConfigUrl": "",
-    "name": "Nuja 100% Quest Tracker",
+    "name": "Nuja 100% Quest XBoxLive Tracker",
     "panelHeight": 0,
     "privacyPolicyUrl": "https://twitchext.conceptoire.com/PrivacyPolicy",
     "requestIdentityLink": false,
@@ -83,33 +83,18 @@
     "sku": "",
     "state": "Testing",
     "subscriptionsSupportLevel": "none",
-    "summary": "Tracker for the 100% Quest program on Nuja's stream",
-    "supportEmail": "christian.corsano@gmail.com",
+    "summary": "XBoxLive Achievement Tracker for the 100% Quest program on Nuja's stream",
+    "supportEmail": "twitchext@conceptoire.com",
     "vendorCode": "",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "viewerSummary": "Prototype pour suivre le 100% quest de Nuja !",
     "viewerUrl": "",
     "viewerUrls": {
-      "videoOverlay": "https://localhost:8080/video_overlay.html",
-      "component": "https://localhost:8080/video_component.html"
+      "videoOverlay": "https://localhost:8080/video_overlay.html"
     },
     "views": {
       "videoOverlay": {
         "viewerUrl": "https://localhost:8080/video_overlay.html",
-        "canLinkExternalContent": false
-      },
-      "component": {
-        "viewerUrl": "https://localhost:8080/video_component.html",
-        "aspectWidth": 0,
-        "aspectHeight": 0,
-        "aspectRatioX": 300,
-        "aspectRatioY": 200,
-        "autoscale": true,
-        "scalePixels": 1024,
-        "targetHeight": 3000,
-        "size": 0,
-        "zoom": false,
-        "zoomPixels": 0,
         "canLinkExternalContent": false
       },
       "config": {
