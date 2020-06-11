@@ -68,6 +68,8 @@ namespace TwitchAchievementTrackerBackend
             services.AddSingleton<ConfigurationTokenService>();
             services.AddMemoryCache();
 
+            services.AddApplicationInsightsTelemetry();
+
             // For development mode
             if (Configuration.GetValue<bool>("config:IgnoreAuthentication", false))
             {
