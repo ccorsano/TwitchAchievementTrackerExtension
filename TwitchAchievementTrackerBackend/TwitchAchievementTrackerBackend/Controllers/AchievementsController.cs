@@ -78,6 +78,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
             var config = this.GetExtensionConfiguration();
             if (config.ActiveConfig == ActiveConfig.XBoxLive)
             {
+
                 var searchResult = await _xApiService.SearchTitle(query);
 
                 return searchResult.Products.Select(product =>

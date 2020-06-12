@@ -4,22 +4,6 @@
     <title>Config Page</title>
     <link rel="stylesheet" href="mini-default.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      .collapse > div
-      {
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-      .collapse > div > form
-      {
-        margin: 0;
-        padding: 0;
-      }
-      .collapse>:checked+label:before
-      {
-        content: "[Active] ";
-      }
-    </style>
 </head>
 <body style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
     <div id="app"></div>
@@ -28,146 +12,134 @@
       them as part of your extension.  Twitch does not allow extensions to link
       to external libraries. -->
     <script src="jquery-3.3.1.min.js" type="text/javascript"></script>
-      <script src="config.js" type="text/javascript"></script>
-    <div class="collapse">
-      <input type="radio" id="collapse-xbl" checked aria-hidden="true" name="platform">
-      <label for="collapse-xbl" aria-hidden="true">XBoxLive</label>
-      <div>
-        <form>
-          <h2>XBoxLive Achievement tracker configuration</h2>
-          <fieldset class="utilities container">
-            <legend>Search the Game XBL identifier (TitleId)</legend>
-            <div class="row col-md-12">
-              <div class="row col-md-6">
-                <div class="col-sm-12 col-md-6">
-                  <label for="gameQuery">Game name</label>
-                </div>
-                <div class="col-sm-12 col-md">
-                  <input type="text" name="gameQuery" id="#gameQueryInput"></input>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-6" id="gameQueryResult">
-                <ul>
-                </ul>
-              </div>
+    <script src="config.js" type="text/javascript"></script>
+    <form>
+      <h2>XBoxLive Achievement tracker configuration</h2>
+      <fieldset class="utilities container">
+        <legend>Search the Game XBL identifier (TitleId)</legend>
+        <div class="row col-md-12">
+          <div class="row col-md-6">
+            <div class="col-sm-12 col-md-6">
+              <label for="gameQuery">Game name</label>
             </div>
-            <input type="button" id="searchTitle" value="Search" />
-          </fieldset>
-          <fieldset class="utilities container">
-            <legend>Get the XBoxLive Id (XUID) from a gamertag</legend>
-            <div class="row">
-              <div class="col-sm-12 col-md-3">
-                <label for="gamertag">Gamertag</label>
-              </div>
-              <div class="col-sm-12 col-md">
-                <input type="text" name="gamertag"></input>
-                <span id="resolvedXuid"></span>
-              </div>
+            <div class="col-sm-12 col-md">
+              <input type="text" name="gameQuery" id="#gameQueryInput"></input>
             </div>
-            <input type="button" id="resolveXuid" value="Resolve" />
-          </fieldset>
-          <fieldset class="configuration container">
-            <legend>Configuration</legend>
-            <strong>Make sure you connect to xapi.us and refresh your XBoxLive token there before going live !</strong>
-            <div class="row">
-              <div class="col-sm-12 col-md-3">
-                <label for="xapiKey">xapi.us private key</label>
-              </div>
-              <div class="col-sm-12 col-md">
-                <input type="text" name="xapiKey"></input>
-              </div>
+          </div>
+          <div class="col-sm-12 col-md-6" id="gameQueryResult">
+            <ul>
+            </ul>
+          </div>
+        </div>
+        <input type="button" id="searchTitle" value="Search" />
+      </fieldset>
+      <fieldset class="utilities container">
+        <legend>Get the XBoxLive Id (XUID) from a gamertag</legend>
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="gamertag">Gamertag</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input type="text" name="gamertag"></input>
+            <span id="resolvedXuid"></span>
+          </div>
+        </div>
+        <input type="button" id="resolveXuid" value="Resolve" />
+      </fieldset>
+      <fieldset class="configuration container">
+        <legend>Configuration</legend>
+        <strong>Make sure you connect to xapi.us and refresh your XBoxLive token there before going live !</strong>
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="xapiKey">xapi.us private key</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input type="text" name="xapiKey"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="streamerXuid">Streamer XBoxLive identifier (XUID)</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input type="text" name="streamerXuid"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="titleId">Game identifier (TitleId)</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input type="text" name="titleId"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="titleId">Locale</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input type="text" name="locale" placeholder="fr-FR"></input>
+          </div>
+        </div>
+        <input type="button" id="saveConfig" value="Save"></input>
+      </fieldset>
+    </form>
+    <form>
+      <h2>Steam Achievement tracker configuration</h2>
+      <fieldset class="utilities container">
+        <legend>Search the Game Steam identifier (AppId)</legend>
+        <div class="row col-md-12">
+          <div class="row col-md-6">
+            <div class="col-sm-12 col-md-6">
+              <label for="steamGameQuery">Game name</label>
             </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-3">
-                <label for="streamerXuid">Streamer XBoxLive identifier (XUID)</label>
-              </div>
-              <div class="col-sm-12 col-md">
-                <input type="text" name="streamerXuid"></input>
-              </div>
+            <div class="col-sm-12 col-md">
+              <input type="text" name="steamGameQuery" id="#steamGameQueryInput"></input>
             </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-3">
-                <label for="titleId">Game identifier (TitleId)</label>
-              </div>
-              <div class="col-sm-12 col-md">
-                <input type="text" name="titleId"></input>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-3">
-                <label for="titleId">Locale</label>
-              </div>
-              <div class="col-sm-12 col-md">
-                <input type="text" name="locale" placeholder="fr-FR"></input>
-              </div>
-            </div>
-          </fieldset>
-        </form>
-          
-      </div>
-    </div>
-    <div class="collapse">
-      <input type="radio" id="collapse-steam" aria-hidden="true" name="platform">
-      <label for="collapse-steam" aria-hidden="true">Steam</label>
-      <div>
-        <form>
-          <h2>Steam Achievement tracker configuration</h2>
-          <fieldset class="utilities container">
-            <legend>Search the Game Steam identifier (AppId)</legend>
-            <div class="row col-md-12">
-              <div class="row col-md-6">
-                <div class="col-sm-12 col-md-6">
-                  <label for="steamGameQuery">Game name</label>
-                </div>
-                <div class="col-sm-12 col-md">
-                  <input type="text" name="steamGameQuery" id="#steamGameQueryInput"></input>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-6" id="steamGameQueryResult">
-                <ul>
-                </ul>
-              </div>
-            </div>
-            <input type="button" id="steamSearchTitle" value="Search" />
-          </fieldset>
-          <fieldset class="configuration container">
-            <legend>Configuration</legend>
-            <div class="row">
-              <div class="col-sm-12 col-md-3">
-                <label for="steamWebApiKey">Steam WebApi private key</label>
-              </div>
-              <div class="col-sm-12 col-md">
-                <input type="text" name="steamWebApiKey"></input>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-3">
-                <label for="streamerSteamId">Streamer Steam identifier (SteamID)</label>
-              </div>
-              <div class="col-sm-12 col-md">
-                <input type="text" name="streamerSteamId"></input>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-3">
-                <label for="steamAppId">Game identifier (AppId)</label>
-              </div>
-              <div class="col-sm-12 col-md">
-                <input type="text" name="steamAppId"></input>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-3">
-                <label for="steamLocale">Locale</label>
-              </div>
-              <div class="col-sm-12 col-md">
-                <input type="text" name="steamLocale" placeholder="french"></input>
-              </div>
-            </div>
-          </fieldset>
-        </form>
-      </div>
-    </div>
-    <input type="button" id="saveActiveConfig" value="Save"></input>
+          </div>
+          <div class="col-sm-12 col-md-6" id="steamGameQueryResult">
+            <ul>
+            </ul>
+          </div>
+        </div>
+        <input type="button" id="steamSearchTitle" value="Search" />
+      </fieldset>
+      <fieldset class="configuration container">
+        <legend>Configuration</legend>
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="steamWebApiKey">Steam WebApi private key</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input type="text" name="steamWebApiKey"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="streamerSteamId">Streamer Steam identifier (SteamID)</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input type="text" name="streamerSteamId"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="steamAppId">Game identifier (AppId)</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input type="text" name="steamAppId"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="steamLocale">Locale</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input type="text" name="steamLocale" placeholder="french"></input>
+          </div>
+        </div>
+        <input type="button" id="saveSteamConfig" value="Save"></input>
+      </fieldset>
+    </form>
 </body>
 </html>

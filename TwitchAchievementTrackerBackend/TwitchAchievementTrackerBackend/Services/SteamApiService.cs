@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -47,8 +46,6 @@ namespace TwitchAchievementTrackerBackend.Services
             var cacheKey = "steam:applist";
             var message = new HttpRequestMessage(HttpMethod.Get, $"ISteamApps/GetAppList/v2/");
             var response = await _httpClient.SendAsync(message);
-            response.EnsureSuccessStatusCode();
-            
             using (var responseStream = await response.Content.ReadAsStreamAsync())
             {
                 var result = await JsonSerializer.DeserializeAsync<SteamAppListResult>(responseStream, new JsonSerializerOptions
@@ -72,10 +69,7 @@ namespace TwitchAchievementTrackerBackend.Services
 
             if (! _cache.TryGetValue(cacheKey, out SteamStoreDetails result))
             {
-                var response = await _storeClient.GetAsync($"api/appdetails/?appids={appId}");
-                response.EnsureSuccessStatusCode();
-
-                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                using (var responseStream = await _storeClient.GetStreamAsync($"api/appdetails/?appids={appId}"))
                 {
                     var wrapper = await JsonSerializer.DeserializeAsync<SteamStoreResult>(responseStream, new JsonSerializerOptions
                     {
@@ -114,10 +108,7 @@ namespace TwitchAchievementTrackerBackend.Services
 
             if (!_cache.TryGetValue(cacheKey, out SteamPlayerAchievement[] result))
             {
-                var response = await _httpClient.GetAsync($"ISteamUserStats/GetPlayerAchievements/v1/?steamid={steamConfig.SteamId}&appid={steamConfig.AppId}");
-                response.EnsureSuccessStatusCode();
-
-                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                using (var responseStream = await _httpClient.GetStreamAsync($"ISteamUserStats/GetPlayerAchievements/v1/?steamid={steamConfig.SteamId}&appid={steamConfig.AppId}"))
                 {   
                     var wrapper = await JsonSerializer.DeserializeAsync<SteamUserStatsAchievementsResult>(responseStream, new JsonSerializerOptions
                     {
@@ -139,10 +130,7 @@ namespace TwitchAchievementTrackerBackend.Services
 
             if (!_cache.TryGetValue(cacheKey, out SteamUserStatsGameSchema result))
             {
-                var response = await _httpClient.GetAsync($"ISteamUserStats/GetSchemaForGame/v2/?appid={steamConfig.AppId}&l={steamConfig.Locale}");
-                response.EnsureSuccessStatusCode();
-
-                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                using (var responseStream = await _httpClient.GetStreamAsync($"ISteamUserStats/GetSchemaForGame/v2/?appid={steamConfig.AppId}&l={steamConfig.Locale}"))
                 {
                     var wrapper = await JsonSerializer.DeserializeAsync<SteamUserStatsGameSchemaResult>(responseStream, new JsonSerializerOptions
                     {
