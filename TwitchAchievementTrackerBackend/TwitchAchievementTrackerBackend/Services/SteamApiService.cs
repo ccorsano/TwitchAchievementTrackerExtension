@@ -45,7 +45,6 @@ namespace TwitchAchievementTrackerBackend.Services
         {
             var cacheKey = "steam:applist";
             var message = new HttpRequestMessage(HttpMethod.Get, $"ISteamApps/GetAppList/v2/");
-            _httpClient.DefaultRequestHeaders.Add("x-webapi-key", _options.WebApiKey);
             var response = await _httpClient.SendAsync(message);
             using (var responseStream = await response.Content.ReadAsStreamAsync())
             {
@@ -59,9 +58,9 @@ namespace TwitchAchievementTrackerBackend.Services
             }
         }
 
-        public Task GetAppInfo(SteamConfiguration steamConfig)
+        public async Task GetAppInfo(SteamConfiguration steamConfig)
         {
-            throw new NotImplementedException();
+            var storeDetails = await GetStoreDetails(uint.Parse(steamConfig.AppId));
         }
 
         public async Task<SteamStoreDetails> GetStoreDetails(uint appId)
@@ -110,7 +109,7 @@ namespace TwitchAchievementTrackerBackend.Services
             if (!_cache.TryGetValue(cacheKey, out SteamPlayerAchievement[] result))
             {
                 using (var responseStream = await _httpClient.GetStreamAsync($"ISteamUserStats/GetPlayerAchievements/v1/?steamid={steamConfig.SteamId}&appid={steamConfig.AppId}"))
-                {
+                {   
                     var wrapper = await JsonSerializer.DeserializeAsync<SteamUserStatsAchievementsResult>(responseStream, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true

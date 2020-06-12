@@ -17,8 +17,8 @@ namespace TwitchAchievementTrackerBackend.Middleware
     {
         public class ConfigurationHeaderException : Exception
         {
-            public ConfigurationHeaderException(string errorMessage)
-                :base(errorMessage)
+            public ConfigurationHeaderException(string errorMessage, Exception innerException)
+                :base(errorMessage, innerException)
             {
 
             }
@@ -34,7 +34,7 @@ namespace TwitchAchievementTrackerBackend.Middleware
         public Task InvokeAsync(HttpContext context)
         {
             if (context.Request.Headers.ContainsKey("X-Config-Token"))
-            {
+            {   
                 var token = context.Request.Headers["X-Config-Token"].First();
                 var configService = context.RequestServices.GetRequiredService<ConfigurationTokenService>();
 
@@ -43,9 +43,9 @@ namespace TwitchAchievementTrackerBackend.Middleware
                     var configuration = configService.DecryptConfigurationToken(Convert.FromBase64String(token));
                     context.SetExtensionConfiguration(configuration);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    throw new ConfigurationHeaderException("Error reading configuration token");
+                    throw new ConfigurationHeaderException("Error reading configuration token", ex);
                 }
             }
 

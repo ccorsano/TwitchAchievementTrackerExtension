@@ -84,5 +84,62 @@
         <input type="button" id="saveConfig" value="Save"></input>
       </fieldset>
     </form>
+    <form>
+      <h2>Steam Achievement tracker configuration</h2>
+      <fieldset class="utilities container">
+        <legend>Search the Game Steam identifier (AppId)</legend>
+        <div class="row col-md-12">
+          <div class="row col-md-6">
+            <div class="col-sm-12 col-md-6">
+              <label for="steamGameQuery">Game name</label>
+            </div>
+            <div class="col-sm-12 col-md">
+              <input type="text" name="steamGameQuery" id="#steamGameQueryInput"></input>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6" id="steamGameQueryResult">
+            <ul>
+            </ul>
+          </div>
+        </div>
+        <input type="button" id="steamSearchTitle" value="Search" />
+      </fieldset>
+      <fieldset class="configuration container">
+        <legend>Configuration</legend>
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="steamWebApiKey">Steam WebApi private key</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input type="text" name="steamWebApiKey"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="streamerSteamId">Streamer Steam identifier (SteamID)</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input type="text" name="streamerSteamId"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="steamAppId">Game identifier (AppId)</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input type="text" name="steamAppId"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="steamLocale">Locale</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input type="text" name="steamLocale" placeholder="french"></input>
+          </div>
+        </div>
+        <input type="button" id="saveSteamConfig" value="Save"></input>
+      </fieldset>
+    </form>
 </body>
 </html>

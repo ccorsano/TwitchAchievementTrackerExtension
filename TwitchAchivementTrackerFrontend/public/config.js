@@ -63,6 +63,20 @@ function onSearchTitle(result)
   });
 }
 
+function onSearchSteamTitle(result)
+{
+  $('#searchSteamTitle').prop('disabled', false);
+  $('#steamGameQueryResult > ul').empty();
+  result.forEach(titleInfo => {
+    if (titleInfo.titleId)
+    {
+      listItem = document.createElement("li");
+      $(listItem).text(titleInfo.titleId + ': ' + titleInfo.productTitle);
+      $('#steamGameQueryResult > ul').append(listItem);
+    }
+  });
+}
+
 function onGetConfig(config)
 {
   $('input[name=xapiKey]').val(config.xBoxLiveConfig.xApiKey)
@@ -71,9 +85,29 @@ function onGetConfig(config)
   $('input[name=locale]').val(config.xBoxLiveConfig.locale)
 }
 
+function xboxLiveConfig()
+{
+  return {
+    'xApiKey': $('input[name=xapiKey]').val(),
+    'streamerXuid': $('input[name=streamerXuid]').val(),
+    'titleId': $('input[name=titleId]').val(),
+    'locale': $('input[name=locale]').val(),
+  };
+}
+
+function steamConfig()
+{
+  return {
+    'webApiKey': $('input[name=steamWebApiKey]').val(),
+    'steamId': $('input[name=streamerSteamId]').val(),
+    'appId': $('input[name=steamAppId]').val(),
+    'locale': $('input[name=steamLocale]').val(),
+  };
+}
+
 function onPackConfig(config)
 {
-  twitch.configuration.set('broadcaster', '0.0.1', config.configToken);
+  twitch.configuration.set('broadcaster', '0.0.2', config.configToken);
 }
 
 function onResolveXuid(result)
@@ -138,12 +172,55 @@ window.onload = function()
     var config = {
       'version': '0.0.1',
       'activeConfig': 'XBoxLive',
-      'xBoxLiveConfig': {
-        'xApiKey': $('input[name=xapiKey]').val(),
-        'streamerXuid': $('input[name=streamerXuid]').val(),
-        'titleId': $('input[name=titleId]').val(),
-        'locale': $('input[name=locale]').val(),
+      'xBoxLiveConfig': xboxLiveConfig(),
+      'steamConfig': steamConfig()
+    };
+    var request = {
+      type: 'POST',
+      url: location.protocol + '//' + server + '/api/configuration',
+      success: onPackConfig,
+      error: logError,
+      data: JSON.stringify(config),
+      contentType : 'application/json; charset=UTF-8',
+      headers: {
+        'Authorization': 'Bearer ' + token
       }
+    };
+    $.ajax(request);
+  });
+  
+  $('#steamSearchTitle').click(function()
+  {
+    $('#steamGameQueryResult > ul').empty();
+    
+    $('#steamSearchTitle').prop('disabled', true);
+    var reenableButton = function(result, error, status)
+    {
+      $('#steamSearchTitle').prop('disabled', false);
+      logError(result, error, status);
+    };
+
+    var query = $('input[name=steamGameQuery]').val();
+    var request = {
+      type: 'GET',
+      url: location.protocol + '//' + server + '/api/title/steam/search/' + encodeURIComponent(query),
+      success: onSearchSteamTitle,
+      error: reenableButton,
+      contentType : 'application/json; charset=UTF-8',
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    };
+    $.ajax(request);
+  });
+
+  $('#saveSteamConfig').click(function()
+  {
+    var config = {
+      'version': '0.0.2',
+      'activeConfig': 'Steam',
+      'xBoxLiveConfig': xboxLiveConfig(),
+      'steamConfig': steamConfig()
     };
     var request = {
       type: 'POST',

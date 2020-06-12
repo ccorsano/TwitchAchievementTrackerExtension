@@ -52,35 +52,49 @@ namespace TwitchAchievementTrackerBackend.Controllers
             {
                 var steamConfig = config.SteamConfig;
 
-                //var titleInfo = await _steamApiService.GetAppInfo(steamConfig);
+                var titleInfo = await _steamApiService.GetStoreDetails(uint.Parse(steamConfig.AppId));
 
                 return new TitleInfo
                 {
-                    TitleId = "",
-                    ProductTitle = "Unknown",
-                    ProductDescription = "-",
-                    LogoUri = "",
+                    TitleId = titleInfo.SteamAppid.ToString(),
+                    ProductTitle = titleInfo.Name,
+                    ProductDescription = titleInfo.ShortDescription,
+                    LogoUri = titleInfo.HeaderImage.ToString(),
                 };
             }
 
             throw new NotSupportedException("No active config");
         }
 
+        [HttpGet("/api/title/steam/search/{query}")]
+        public async Task<IEnumerable<TitleInfo>> SearchSteamTitleInfo(string query)
+        {
+            return await _steamApiService.SearchTitle(query);
+        }
+
         [HttpGet("/api/title/search/{query}")]
         public async Task<IEnumerable<TitleInfo>> SearchTitleInfo(string query)
         {
-            var searchResult = await _xApiService.SearchTitle(query);
-            //return await _steamApiService.SearchTitle(query);
+            var config = this.GetExtensionConfiguration();
+            if (config.ActiveConfig == ActiveConfig.XBoxLive)
+            {
 
-            return searchResult.Products.Select(product =>
-                new TitleInfo
-                {
-                    TitleId = product.AlternateIds?.FirstOrDefault(id => id.IdType == "XboxTitleId")?.Value ?? "",
-                    ProductTitle = product.LocalizedProperties?.FirstOrDefault()?.ProductTitle ?? "Unknown",
-                    ProductDescription = product.LocalizedProperties?.FirstOrDefault()?.ProductDescription ?? "-",
-                    LogoUri = product.LocalizedProperties?.FirstOrDefault()?.Images?.FirstOrDefault(i => i.ImagePurpose == "Logo" || i.ImagePurpose == "BoxArt" || i.ImagePurpose == "FeaturePromotionalSquareArt")?.Uri,
-                }
-            );
+                var searchResult = await _xApiService.SearchTitle(query);
+
+                return searchResult.Products.Select(product =>
+                    new TitleInfo
+                    {
+                        TitleId = product.AlternateIds?.FirstOrDefault(id => id.IdType == "XboxTitleId")?.Value ?? "",
+                        ProductTitle = product.LocalizedProperties?.FirstOrDefault()?.ProductTitle ?? "Unknown",
+                        ProductDescription = product.LocalizedProperties?.FirstOrDefault()?.ProductDescription ?? "-",
+                        LogoUri = product.LocalizedProperties?.FirstOrDefault()?.Images?.FirstOrDefault(i => i.ImagePurpose == "Logo" || i.ImagePurpose == "BoxArt" || i.ImagePurpose == "FeaturePromotionalSquareArt")?.Uri,
+                    }
+                );
+            }
+            else
+            {
+                return await _steamApiService.SearchTitle(query);
+            }
         }
 
         [HttpGet("/api/xuid/{gamertag}")]
@@ -97,6 +111,10 @@ namespace TwitchAchievementTrackerBackend.Controllers
 
             if (config.ActiveConfig == ActiveConfig.XBoxLive)
             {
+                if (string.IsNullOrEmpty(config.XBoxLiveConfig.TitleId))
+                {
+
+                }
 
                 var achievements = await _xApiService.GetAchievementsAsync(config.XBoxLiveConfig);
                 var stateSummary = achievements.GroupBy(a => a.ProgressState).ToDictionary(a => a.Key, a => a.Count());
@@ -160,12 +178,12 @@ namespace TwitchAchievementTrackerBackend.Controllers
                     return new Achievement
                     {
                         Id = aDev.Name,
-                        Name = aDev.Name,
+                        Name = aDev.DisplayName,
                         Completed = userAchievement.Achieved != 0,
                         Description = aDev.Hidden == 0 ? aDev.Description : "*************",
                         UnlockTime = userAchievement.Unlocktime != 0 ? DateTime.UnixEpoch.AddSeconds(userAchievement.Unlocktime) : DateTimeOffset.MinValue,
                     };
-                });
+                }).OrderBy(a => a.Completed);
             }
 
             throw new NotSupportedException("No active config");
