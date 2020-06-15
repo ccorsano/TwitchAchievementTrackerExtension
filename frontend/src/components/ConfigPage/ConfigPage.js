@@ -1,0 +1,54 @@
+import React from 'react'
+
+import './Config.css'
+import '../../../public/mini-default.min.css'
+
+export default class ConfigPage extends React.Component{
+    constructor(props){
+        super(props)
+        //if the extension is running on twitch or dev rig, set the shorthand here. otherwise, set to null. 
+        this.twitch = window.Twitch ? window.Twitch.ext : null
+        this.state={
+            finishedLoading:false,
+            theme:'light'
+        }
+    }
+
+    contextUpdate(context, delta){
+        if(delta.includes('theme')){
+            this.setState(()=>{
+                return {theme:context.theme}
+            })
+        }
+    }
+
+    componentDidMount(){
+        // do config page setup as needed here
+        if(this.twitch){
+            this.twitch.onAuthorized((auth)=>{
+                if(!this.state.finishedLoading){
+                    // if the component hasn't finished loading (as in we've not set up after getting a token), let's set it up now.
+    
+                    // now we've done the setup for the component, let's set the state to true to force a rerender with the correct data.
+                    this.setState(()=>{
+                        return {finishedLoading:true}
+                    })
+                }
+            })
+    
+            this.twitch.onContext((context,delta)=>{
+                this.contextUpdate(context,delta)
+            })
+        }
+    }
+
+    render(){
+        return(
+            <div className="Config">
+                <div className={this.state.theme==='light' ? 'Config-light' : 'Config-dark'}>
+                    There is no configuration needed for this extension!
+                </div>
+            </div>
+        )
+    }
+}
