@@ -79,10 +79,24 @@ function onSearchSteamTitle(result)
 
 function onGetConfig(config)
 {
-  $('input[name=xapiKey]').val(config.xBoxLiveConfig.xApiKey)
-  $('input[name=streamerXuid]').val(config.xBoxLiveConfig.streamerXuid)
-  $('input[name=titleId]').val(config.xBoxLiveConfig.titleId)
-  $('input[name=locale]').val(config.xBoxLiveConfig.locale)
+  if (config.xBoxLiveConfig)
+  {
+    $('input[name=xapiKey]').val(config.xBoxLiveConfig.xApiKey);
+    $('input[name=streamerXuid]').val(config.xBoxLiveConfig.streamerXuid);
+    $('input[name=titleId]').val(config.xBoxLiveConfig.titleId);
+    $('input[name=locale]').val(config.xBoxLiveConfig.locale);
+  }
+  if (config.steamConfig)
+  {
+    $('input[name=steamWebApiKey]').val(config.steamConfig.webApiKey);
+    $('input[name=streamerSteamId]').val(config.steamConfig.steamId);
+    $('input[name=steamAppId]').val(config.steamConfig.appId);
+    $('input[name=steamLocale]').val(config.steamConfig.locale);
+  }
+  if (config.activeConfig == 'Steam')
+  {
+    $('#collapse-steam').attr('checked', true);
+  }
 }
 
 function xboxLiveConfig()
@@ -234,5 +248,10 @@ window.onload = function()
       }
     };
     $.ajax(request);
+  });
+
+  $('#saveActiveConfig').click(function()
+  {
+    var checkedId = $('div.collapse > input[checked=checked]').attr('id')
   });
 }
