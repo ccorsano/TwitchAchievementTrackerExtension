@@ -122,8 +122,8 @@
       ""
     ]
   },
-  "frontendCommand": "",
-  "frontendFolderName": "TwitchAchivementTrackerFrontend\\public",
+  "frontendCommand": "npm run host",
+  "frontendFolderName": "frontend",
   "name": "XBoxLiveAchievementTracker",
   "version": 1
 }
