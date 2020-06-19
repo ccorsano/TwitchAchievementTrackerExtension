@@ -181,27 +181,6 @@ window.onload = function()
     };
     $.ajax(request);
   });
-  $('#saveConfig').click(function()
-  {
-    var config = {
-      'version': '0.0.1',
-      'activeConfig': 'XBoxLive',
-      'xBoxLiveConfig': xboxLiveConfig(),
-      'steamConfig': steamConfig()
-    };
-    var request = {
-      type: 'POST',
-      url: location.protocol + '//' + server + '/api/configuration',
-      success: onPackConfig,
-      error: logError,
-      data: JSON.stringify(config),
-      contentType : 'application/json; charset=UTF-8',
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    };
-    $.ajax(request);
-  });
   
   $('#steamSearchTitle').click(function()
   {
@@ -228,14 +207,29 @@ window.onload = function()
     $.ajax(request);
   });
 
-  $('#saveSteamConfig').click(function()
+
+  $('#saveActiveConfig').click(function()
   {
     var config = {
       'version': '0.0.2',
-      'activeConfig': 'Steam',
+      'activeConfig': undefined,
       'xBoxLiveConfig': xboxLiveConfig(),
       'steamConfig': steamConfig()
     };
+
+    var checkedId = $('div.collapse > input[type=radio]:checked').attr('id');
+    switch (checkedId) {
+      case 'collapse-xbl':
+        config.activeConfig = 'XBoxLive';
+        break;
+      case 'collapse-steam':
+        config.activeConfig = 'Steam';
+        break;
+    
+      default:
+        break;
+    }
+
     var request = {
       type: 'POST',
       url: location.protocol + '//' + server + '/api/configuration',
@@ -248,10 +242,5 @@ window.onload = function()
       }
     };
     $.ajax(request);
-  });
-
-  $('#saveActiveConfig').click(function()
-  {
-    var checkedId = $('div.collapse > input[checked=checked]').attr('id')
   });
 }

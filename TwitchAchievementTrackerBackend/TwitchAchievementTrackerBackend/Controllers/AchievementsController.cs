@@ -75,26 +75,17 @@ namespace TwitchAchievementTrackerBackend.Controllers
         [HttpGet("/api/title/search/{query}")]
         public async Task<IEnumerable<TitleInfo>> SearchTitleInfo(string query)
         {
-            var config = this.GetExtensionConfiguration();
-            if (config.ActiveConfig == ActiveConfig.XBoxLive)
-            {
+            var searchResult = await _xApiService.SearchTitle(query);
 
-                var searchResult = await _xApiService.SearchTitle(query);
-
-                return searchResult.Products.Select(product =>
-                    new TitleInfo
-                    {
-                        TitleId = product.AlternateIds?.FirstOrDefault(id => id.IdType == "XboxTitleId")?.Value ?? "",
-                        ProductTitle = product.LocalizedProperties?.FirstOrDefault()?.ProductTitle ?? "Unknown",
-                        ProductDescription = product.LocalizedProperties?.FirstOrDefault()?.ProductDescription ?? "-",
-                        LogoUri = product.LocalizedProperties?.FirstOrDefault()?.Images?.FirstOrDefault(i => i.ImagePurpose == "Logo" || i.ImagePurpose == "BoxArt" || i.ImagePurpose == "FeaturePromotionalSquareArt")?.Uri,
-                    }
-                );
-            }
-            else
-            {
-                return await _steamApiService.SearchTitle(query);
-            }
+            return searchResult.Products.Select(product =>
+                new TitleInfo
+                {
+                    TitleId = product.AlternateIds?.FirstOrDefault(id => id.IdType == "XboxTitleId")?.Value ?? "",
+                    ProductTitle = product.LocalizedProperties?.FirstOrDefault()?.ProductTitle ?? "Unknown",
+                    ProductDescription = product.LocalizedProperties?.FirstOrDefault()?.ProductDescription ?? "-",
+                    LogoUri = product.LocalizedProperties?.FirstOrDefault()?.Images?.FirstOrDefault(i => i.ImagePurpose == "Logo" || i.ImagePurpose == "BoxArt" || i.ImagePurpose == "FeaturePromotionalSquareArt")?.Uri,
+                }
+            );
         }
 
         [HttpGet("/api/xuid/{gamertag}")]

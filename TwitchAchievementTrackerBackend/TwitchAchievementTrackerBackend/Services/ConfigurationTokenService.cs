@@ -66,30 +66,42 @@ namespace TwitchAchievementTrackerBackend.Services
             var xConfig = configuration.XBoxLiveConfig as Model.XApiConfiguration;
             var steamConfig = configuration.SteamConfig as Model.SteamConfiguration;
 
+            ActiveConfiguration activeConfig;
+            Offset<TwitchAchievementTracker.XApiConfiguration> xConfigOffset = new Offset<TwitchAchievementTracker.XApiConfiguration>();
+            Offset<TwitchAchievementTracker.SteamConfiguration> steamConfigOffset = new Offset<TwitchAchievementTracker.SteamConfiguration>();
+
+            if (xConfig != null)
+            {
+                var apiKeyString = builder.CreateString(xConfig.XApiKey);
+                var xuid64 = string.IsNullOrEmpty(xConfig.StreamerXuid) ? 0 : UInt64.Parse(xConfig.StreamerXuid);
+                var titleId32 = string.IsNullOrEmpty(xConfig.TitleId) ? 0 : UInt32.Parse(xConfig.TitleId);
+                var liveLocale = builder.CreateString(xConfig.Locale ?? "en-US");
+                xConfigOffset = TwitchAchievementTracker.XApiConfiguration.CreateXApiConfiguration(builder, apiKeyString, xuid64, titleId32, liveLocale);
+            }
+
+            if (steamConfig != null)
+            {
+                var webKeyString = builder.CreateString(steamConfig.WebApiKey);
+                var steamId = UInt64.Parse(steamConfig.SteamId);
+                var appId = steamConfig.AppId;
+                var steamLocale = builder.CreateString(steamConfig.Locale ?? "english");
+
+                steamConfigOffset = TwitchAchievementTracker.SteamConfiguration.CreateSteamConfiguration(builder, webKeyString, uint.Parse(appId), steamId, steamLocale);
+            }
+
             switch (configuration.ActiveConfig)
             {
                 case ActiveConfig.XBoxLive:
-                    var apiKeyString = builder.CreateString(xConfig.XApiKey);
-                    var xuid64 = string.IsNullOrEmpty(xConfig.StreamerXuid) ? 0 : UInt64.Parse(xConfig.StreamerXuid);
-                    var titleId32 = string.IsNullOrEmpty(xConfig.TitleId) ? 0 : UInt32.Parse(xConfig.TitleId);
-                    var liveLocale = builder.CreateString(xConfig.Locale ?? "en-US");
-
-                    var xConfigOffset = TwitchAchievementTracker.XApiConfiguration.CreateXApiConfiguration(builder, apiKeyString, xuid64, titleId32, liveLocale);
-                    configurationOffset = TwitchAchievementTracker.Configuration.CreateConfiguration(builder, version, TwitchAchievementTracker.PlatformConfiguration.XApiConfiguration, xConfigOffset.Value);
-
+                    activeConfig = ActiveConfiguration.XApiConfiguration;
                     break;
                 case ActiveConfig.Steam:
-                    var webKeyString = builder.CreateString(steamConfig.WebApiKey);
-                    var steamId = UInt64.Parse(steamConfig.SteamId);
-                    var appId = steamConfig.AppId;
-                    var steamLocale = builder.CreateString(steamConfig.Locale ?? "english");
-
-                    var steamConfigOffset = TwitchAchievementTracker.SteamConfiguration.CreateSteamConfiguration(builder, webKeyString, uint.Parse(appId), steamId, steamLocale);
-                    configurationOffset = TwitchAchievementTracker.Configuration.CreateConfiguration(builder, version, TwitchAchievementTracker.PlatformConfiguration.SteamConfiguration, steamConfigOffset.Value);
+                    activeConfig = ActiveConfiguration.SteamConfiguration;
                     break;
                 default:
                     throw new NotSupportedException("Unknown configuration platform");
             }
+
+            configurationOffset = TwitchAchievementTracker.Configuration.CreateConfiguration(builder, version, activeConfig, xConfigOffset, steamConfigOffset);
 
             builder.Finish(configurationOffset.Value);
             var payload = builder.SizedByteArray();
@@ -103,38 +115,45 @@ namespace TwitchAchievementTrackerBackend.Services
             // Decrypt the token
             byte[] decrypted = Decrypt(payload);
 
-            IPlatformConfiguration platformConfiguration;
             ActiveConfig activeConfig;
+            Model.XApiConfiguration xApiConfiguration = null;
+            Model.SteamConfiguration steamConfiguration = null;
 
             // Initialize Flatbuffer
             var fbConfig = TwitchAchievementTracker.Configuration.GetRootAsConfiguration(new ByteBuffer(decrypted));
-            switch(fbConfig.ConfigType)
+
+            if (fbConfig.XBoxLiveConfig.HasValue)
             {
-                case PlatformConfiguration.XApiConfiguration:
+                var xConfig = fbConfig.XBoxLiveConfig.Value;
+                xApiConfiguration = new Model.XApiConfiguration
+                {
+                    XApiKey = xConfig.XApiKey,
+                    StreamerXuid = xConfig.StreamerXuid == 0 ? null : xConfig.StreamerXuid.ToString(),
+                    TitleId = xConfig.TitleId == 0 ? null : xConfig.TitleId.ToString(),
+                    Locale = xConfig.Locale,
+                };
+            }
 
-                    var xConfig = fbConfig.Config<TwitchAchievementTracker.XApiConfiguration>().GetValueOrDefault();
+            if (fbConfig.SteamConfig.HasValue)
+            {
+                var steamConfig = fbConfig.SteamConfig.Value;
 
+                steamConfiguration = new Model.SteamConfiguration
+                {
+                    WebApiKey = steamConfig.WebApiKey,
+                    SteamId = steamConfig.SteamId == 0 ? null : steamConfig.SteamId.ToString(),
+                    AppId = steamConfig.AppId == 0 ? null : steamConfig.AppId.ToString(),
+                    Locale = steamConfig.Locale,
+                };
+            }
+
+            switch(fbConfig.Active)
+            {
+                case ActiveConfiguration.XApiConfiguration:
                     activeConfig = ActiveConfig.XBoxLive;
-                    platformConfiguration = new Model.XApiConfiguration
-                    {
-                        XApiKey = xConfig.XApiKey,
-                        StreamerXuid = xConfig.StreamerXuid == 0 ? null : xConfig.StreamerXuid.ToString(),
-                        TitleId = xConfig.TitleId == 0 ? null : xConfig.TitleId.ToString(),
-                        Locale = xConfig.Locale,
-                    };
                     break;
-                case PlatformConfiguration.SteamConfiguration:
-
-                    var steamConfig = fbConfig.Config<TwitchAchievementTracker.SteamConfiguration>().GetValueOrDefault();
-
+                case ActiveConfiguration.SteamConfiguration:
                     activeConfig = ActiveConfig.Steam;
-                    platformConfiguration = new Model.SteamConfiguration
-                    {
-                        WebApiKey = steamConfig.WebApiKey,
-                        SteamId = steamConfig.SteamId == 0 ? null :steamConfig.SteamId.ToString(),
-                        AppId = steamConfig.AppId == 0 ? null : steamConfig.AppId.ToString(),
-                        Locale = steamConfig.Locale,
-                    };
                     break;
                 default:
                     throw new NotSupportedException("Unknown type");
@@ -144,8 +163,8 @@ namespace TwitchAchievementTrackerBackend.Services
             {
                 Version = fbConfig.Version,
                 ActiveConfig = activeConfig,
-                XBoxLiveConfig = platformConfiguration as Model.XApiConfiguration,
-                SteamConfig = platformConfiguration as Model.SteamConfiguration
+                XBoxLiveConfig = xApiConfiguration,
+                SteamConfig = steamConfiguration,
             };
         }
 

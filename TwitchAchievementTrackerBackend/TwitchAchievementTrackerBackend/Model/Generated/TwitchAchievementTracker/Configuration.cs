@@ -19,24 +19,28 @@ public struct Configuration : IFlatbufferObject
 
   public string Version { get { int o = __p.__offset(4); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
   public ArraySegment<byte>? GetVersionBytes() { return __p.__vector_as_arraysegment(4); }
-  public PlatformConfiguration ConfigType { get { int o = __p.__offset(6); return o != 0 ? (PlatformConfiguration)__p.bb.Get(o + __p.bb_pos) : PlatformConfiguration.NONE; } }
-  public TTable? Config<TTable>() where TTable : struct, IFlatbufferObject { int o = __p.__offset(8); return o != 0 ? (TTable?)__p.__union<TTable>(o) : null; }
+  public ActiveConfiguration Active { get { int o = __p.__offset(6); return o != 0 ? (ActiveConfiguration)__p.bb.GetSbyte(o + __p.bb_pos) : ActiveConfiguration.XApiConfiguration; } }
+  public XApiConfiguration? XBoxLiveConfig { get { int o = __p.__offset(8); return o != 0 ? (XApiConfiguration?)(new XApiConfiguration()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public SteamConfiguration? SteamConfig { get { int o = __p.__offset(10); return o != 0 ? (SteamConfiguration?)(new SteamConfiguration()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
 
   public static Offset<Configuration> CreateConfiguration(FlatBufferBuilder builder,
       StringOffset versionOffset = default(StringOffset),
-      PlatformConfiguration config_type = PlatformConfiguration.NONE,
-      int configOffset = 0) {
-    builder.StartObject(3);
-    Configuration.AddConfig(builder, configOffset);
+      ActiveConfiguration active = ActiveConfiguration.XApiConfiguration,
+      Offset<XApiConfiguration> xBoxLiveConfigOffset = default(Offset<XApiConfiguration>),
+      Offset<SteamConfiguration> steamConfigOffset = default(Offset<SteamConfiguration>)) {
+    builder.StartObject(4);
+    Configuration.AddSteamConfig(builder, steamConfigOffset);
+    Configuration.AddXBoxLiveConfig(builder, xBoxLiveConfigOffset);
     Configuration.AddVersion(builder, versionOffset);
-    Configuration.AddConfigType(builder, config_type);
+    Configuration.AddActive(builder, active);
     return Configuration.EndConfiguration(builder);
   }
 
-  public static void StartConfiguration(FlatBufferBuilder builder) { builder.StartObject(3); }
+  public static void StartConfiguration(FlatBufferBuilder builder) { builder.StartObject(4); }
   public static void AddVersion(FlatBufferBuilder builder, StringOffset versionOffset) { builder.AddOffset(0, versionOffset.Value, 0); }
-  public static void AddConfigType(FlatBufferBuilder builder, PlatformConfiguration configType) { builder.AddByte(1, (byte)configType, 0); }
-  public static void AddConfig(FlatBufferBuilder builder, int configOffset) { builder.AddOffset(2, configOffset, 0); }
+  public static void AddActive(FlatBufferBuilder builder, ActiveConfiguration active) { builder.AddSbyte(1, (sbyte)active, 0); }
+  public static void AddXBoxLiveConfig(FlatBufferBuilder builder, Offset<XApiConfiguration> xBoxLiveConfigOffset) { builder.AddOffset(2, xBoxLiveConfigOffset.Value, 0); }
+  public static void AddSteamConfig(FlatBufferBuilder builder, Offset<SteamConfiguration> steamConfigOffset) { builder.AddOffset(3, steamConfigOffset.Value, 0); }
   public static Offset<Configuration> EndConfiguration(FlatBufferBuilder builder) {
     int o = builder.EndObject();
     return new Offset<Configuration>(o);
