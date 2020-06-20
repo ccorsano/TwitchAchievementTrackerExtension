@@ -1,5 +1,5 @@
 let token, userId;
-var server = "twitchext.conceptoire.com"
+var server = "twitchext.conceptoire.com/v2"
 
 var urlParams = new URLSearchParams(this.location.search);
 if (urlParams.get('state') == "testing")
@@ -28,6 +28,7 @@ twitch.onAuthorized((auth) => {
       headers: {
         'Authorization': 'Bearer ' + token,
         'X-Config-Token': twitch.configuration.broadcaster.content,
+        'X-Config-Version': twitch.configuration.broadcaster.version,
       }
     };
     $.ajax(request);
@@ -79,10 +80,44 @@ function onSearchSteamTitle(result)
 
 function onGetConfig(config)
 {
-  $('input[name=xapiKey]').val(config.xBoxLiveConfig.xApiKey)
-  $('input[name=streamerXuid]').val(config.xBoxLiveConfig.streamerXuid)
-  $('input[name=titleId]').val(config.xBoxLiveConfig.titleId)
-  $('input[name=locale]').val(config.xBoxLiveConfig.locale)
+  if (config.xBoxLiveConfig)
+  {
+    $('input[name=xapiKey]').val(config.xBoxLiveConfig.xApiKey);
+    $('input[name=streamerXuid]').val(config.xBoxLiveConfig.streamerXuid);
+    $('input[name=titleId]').val(config.xBoxLiveConfig.titleId);
+    $('input[name=locale]').val(config.xBoxLiveConfig.locale);
+  }
+  if (config.steamConfig)
+  {
+    $('input[name=steamWebApiKey]').val(config.steamConfig.webApiKey);
+    $('input[name=streamerSteamId]').val(config.steamConfig.steamId);
+    $('input[name=steamAppId]').val(config.steamConfig.appId);
+    $('input[name=steamLocale]').val(config.steamConfig.locale);
+  }
+  if (config.activeConfig == 'Steam')
+  {
+    $('#collapse-steam').attr('checked', true);
+  }
+}
+
+function xboxLiveConfig()
+{
+  return {
+    'xApiKey': $('input[name=xapiKey]').val(),
+    'streamerXuid': $('input[name=streamerXuid]').val(),
+    'titleId': $('input[name=titleId]').val(),
+    'locale': $('input[name=locale]').val(),
+  };
+}
+
+function steamConfig()
+{
+  return {
+    'webApiKey': $('input[name=steamWebApiKey]').val(),
+    'steamId': $('input[name=streamerSteamId]').val(),
+    'appId': $('input[name=steamAppId]').val(),
+    'locale': $('input[name=steamLocale]').val(),
+  };
 }
 
 function xboxLiveConfig()
@@ -107,7 +142,7 @@ function steamConfig()
 
 function onPackConfig(config)
 {
-  twitch.configuration.set('broadcaster', '0.0.2', config.configToken);
+  twitch.configuration.set('broadcaster', '0.0.3', config.configToken);
 }
 
 function onResolveXuid(result)
@@ -167,27 +202,6 @@ window.onload = function()
     };
     $.ajax(request);
   });
-  $('#saveConfig').click(function()
-  {
-    var config = {
-      'version': '0.0.1',
-      'activeConfig': 'XBoxLive',
-      'xBoxLiveConfig': xboxLiveConfig(),
-      'steamConfig': steamConfig()
-    };
-    var request = {
-      type: 'POST',
-      url: location.protocol + '//' + server + '/api/configuration',
-      success: onPackConfig,
-      error: logError,
-      data: JSON.stringify(config),
-      contentType : 'application/json; charset=UTF-8',
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    };
-    $.ajax(request);
-  });
   
   $('#steamSearchTitle').click(function()
   {
@@ -214,14 +228,29 @@ window.onload = function()
     $.ajax(request);
   });
 
-  $('#saveSteamConfig').click(function()
+
+  $('#saveActiveConfig').click(function()
   {
     var config = {
-      'version': '0.0.2',
-      'activeConfig': 'Steam',
+      'version': '0.0.3',
+      'activeConfig': undefined,
       'xBoxLiveConfig': xboxLiveConfig(),
       'steamConfig': steamConfig()
     };
+
+    var checkedId = $('div.collapse > input[type=radio]:checked').attr('id');
+    switch (checkedId) {
+      case 'collapse-xbl':
+        config.activeConfig = 'XBoxLive';
+        break;
+      case 'collapse-steam':
+        config.activeConfig = 'Steam';
+        break;
+    
+      default:
+        break;
+    }
+
     var request = {
       type: 'POST',
       url: location.protocol + '//' + server + '/api/configuration',
