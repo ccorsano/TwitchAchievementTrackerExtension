@@ -2,7 +2,7 @@ var token = "";
 var tuid = "";
 var ebs = "";
 var detailsVisible = false;
-var server = "twitchext.conceptoire.com"
+var server = "twitchext.conceptoire.com/v2"
 
 var urlParams = new URLSearchParams(this.location.search);
 if (urlParams.get('state') == "testing")
