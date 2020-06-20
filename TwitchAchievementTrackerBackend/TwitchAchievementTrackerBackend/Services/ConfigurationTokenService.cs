@@ -21,45 +21,29 @@ namespace TwitchAchievementTrackerBackend.Services
         }
 
         /// <summary>
-        /// Generates a 128bit random salt using the system provided crypto RNG
+        /// Serialize and encrypt configuration object
         /// </summary>
-        /// <returns>16 bytes salt</returns>
-        private byte[] GenerateSalt()
+        /// <param name="configuration"></param>
+        /// <returns></returns>
+        public byte[] EncodeConfigurationToken(ExtensionConfiguration configuration)
         {
-            // Create a byte array to hold the random value.
-            byte[] salt = new byte[16];
-            using (var rngCsp = new RNGCryptoServiceProvider())
-            {
-                // Fill the array with a random value.
-                rngCsp.GetBytes(salt);
-            }
-            return salt;
+            byte[] payload = SerializeConfigurationToken(configuration);
+
+            // Encrypt the token
+            return Encrypt(payload);
         }
 
         /// <summary>
-        /// Initialize an AES cipher using a random salt and the configured EncryptionSecret
+        /// Serialize configuration object to a flatbuffer binary representation
         /// </summary>
-        /// <param name="salt"></param>
+        /// <param name="configuration"></param>
         /// <returns></returns>
-        private Aes CreateAes(byte[] salt)
-        {
-            var rfc = new Rfc2898DeriveBytes(_options.EncryptionSecret, salt);
-            byte[] Key = rfc.GetBytes(16);
-            byte[] IV = rfc.GetBytes(16);
-
-            var aes = Aes.Create();
-            aes.Padding = PaddingMode.ISO10126;
-            aes.Key = Key;
-            aes.IV = IV;
-            aes.Mode = CipherMode.CBC;
-            return aes;
-        }
-
-        public byte[] EncryptConfigurationToken(ExtensionConfiguration configuration)
+        private static byte[] SerializeConfigurationToken(ExtensionConfiguration configuration)
         {
             // Generate the Flatbuffer token payload
             var builder = new FlatBufferBuilder(512);
 
+            // Flatbuffer serialization: we serialize inside-out and set buffer offsets
             Offset<TwitchAchievementTracker.Configuration> configurationOffset;
             var version = builder.CreateString(configuration.Version);
 
@@ -105,68 +89,29 @@ namespace TwitchAchievementTrackerBackend.Services
 
             builder.Finish(configurationOffset.Value);
             var payload = builder.SizedByteArray();
-
-            // Encrypt the token
-            return Encrypt(payload);
+            return payload;
         }
 
-        // Legacy token decryption from published version v0.1.1
-        public ExtensionConfiguration DecryptConfigurationToken_v1(byte[] payload)
+        /// <summary>
+        /// Decrypt and deserialize configuration token
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public ExtensionConfiguration DecodeConfigurationToken(byte[] token)
         {
             // Decrypt the token
-            byte[] decrypted = Decrypt(payload);
+            byte[] decrypted = Decrypt(token);
 
-            IPlatformConfiguration platformConfiguration;
-            ActiveConfig activeConfig;
-
-            // Initialize Flatbuffer
-            var fbConfig = TwitchAchievementTracker_v1.Configuration.GetRootAsConfiguration(new ByteBuffer(decrypted));
-            switch (fbConfig.ConfigType)
-            {
-                case TwitchAchievementTracker_v1.PlatformConfiguration.XApiConfiguration:
-
-                    var xConfig = fbConfig.Config<TwitchAchievementTracker_v1.XApiConfiguration>().GetValueOrDefault();
-
-                    activeConfig = ActiveConfig.XBoxLive;
-                    platformConfiguration = new Model.XApiConfiguration
-                    {
-                        XApiKey = xConfig.XApiKey,
-                        StreamerXuid = xConfig.StreamerXuid == 0 ? null : xConfig.StreamerXuid.ToString(),
-                        TitleId = xConfig.TitleId == 0 ? null : xConfig.TitleId.ToString(),
-                        Locale = xConfig.Locale,
-                    };
-                    break;
-                case TwitchAchievementTracker_v1.PlatformConfiguration.SteamConfiguration:
-
-                    var steamConfig = fbConfig.Config<TwitchAchievementTracker_v1.SteamConfiguration>().GetValueOrDefault();
-
-                    activeConfig = ActiveConfig.Steam;
-                    platformConfiguration = new Model.SteamConfiguration
-                    {
-                        WebApiKey = steamConfig.WebApiKey,
-                        SteamId = steamConfig.SteamId == 0 ? null : steamConfig.SteamId.ToString(),
-                        AppId = steamConfig.AppId == 0 ? null : steamConfig.AppId.ToString(),
-                        Locale = steamConfig.Locale,
-                    };
-                    break;
-                default:
-                    throw new NotSupportedException("Unknown type");
-            }
-
-            return new ExtensionConfiguration
-            {
-                Version = fbConfig.Version,
-                ActiveConfig = activeConfig,
-                XBoxLiveConfig = platformConfiguration as Model.XApiConfiguration,
-                SteamConfig = platformConfiguration as Model.SteamConfiguration
-            };
+            return DeserializeConfigurationToken(decrypted);
         }
 
-        public ExtensionConfiguration DecryptConfigurationToken(byte[] payload)
+        /// <summary>
+        /// Deserialize a Flatbuffer configuration payload to an ExtensionConfiguration object
+        /// </summary>
+        /// <param name="decrypted">Flatbuffer token</param>
+        /// <returns>Configuration object</returns>
+        private static ExtensionConfiguration DeserializeConfigurationToken(byte[] decrypted)
         {
-            // Decrypt the token
-            byte[] decrypted = Decrypt(payload);
-
             ActiveConfig activeConfig;
             Model.XApiConfiguration xApiConfiguration = null;
             Model.SteamConfiguration steamConfiguration = null;
@@ -199,7 +144,7 @@ namespace TwitchAchievementTrackerBackend.Services
                 };
             }
 
-            switch(fbConfig.Active)
+            switch (fbConfig.Active)
             {
                 case ActiveConfiguration.XApiConfiguration:
                     activeConfig = ActiveConfig.XBoxLive;
@@ -220,7 +165,48 @@ namespace TwitchAchievementTrackerBackend.Services
             };
         }
 
-        byte[] Encrypt(byte[] payload)
+
+        /// <summary>
+        /// Generates a 128bit random salt using the system provided crypto RNG
+        /// </summary>
+        /// <returns>16 bytes salt</returns>
+        private byte[] GenerateSalt()
+        {
+            // Create a byte array to hold the random value.
+            byte[] salt = new byte[16];
+            using (var rngCsp = new RNGCryptoServiceProvider())
+            {
+                // Fill the array with a random value.
+                rngCsp.GetBytes(salt);
+            }
+            return salt;
+        }
+
+        /// <summary>
+        /// Initialize an AES cipher using a random salt and the configured EncryptionSecret
+        /// </summary>
+        /// <param name="salt"></param>
+        /// <returns></returns>
+        private Aes CreateAes(byte[] salt)
+        {
+            var rfc = new Rfc2898DeriveBytes(_options.EncryptionSecret, salt);
+            byte[] Key = rfc.GetBytes(16);
+            byte[] IV = rfc.GetBytes(16);
+
+            var aes = Aes.Create();
+            aes.Padding = PaddingMode.ISO10126;
+            aes.Key = Key;
+            aes.IV = IV;
+            aes.Mode = CipherMode.CBC;
+            return aes;
+        }
+
+        /// <summary>
+        /// Encrypt a binary payload using AES CBC
+        /// </summary>
+        /// <param name="payload">Binary payload to encrypt</param>
+        /// <returns>Encrypted payload, 16bit salt as a prefix, then AES encrypted payload</returns>
+        public byte[] Encrypt(byte[] payload)
         {
             // Generate salt to derive secret Key and Initialization Vectory, will store the salt as a prefix of the payload
             var salt = GenerateSalt();
@@ -242,7 +228,12 @@ namespace TwitchAchievementTrackerBackend.Services
             }
         }
 
-        byte[] Decrypt(byte[] payload)
+        /// <summary>
+        /// Decrypt an AES CBC binary payload
+        /// </summary>
+        /// <param name="payload">Encrypted payload, 16bit salt as a prefix, then AES encrypted payload</param>
+        /// <returns>Decrypted buffer</returns>
+        public byte[] Decrypt(byte[] payload)
         {
             // Extract salt prefix to derive secret Key and IV
             byte[] salt = payload.Take(16).ToArray();

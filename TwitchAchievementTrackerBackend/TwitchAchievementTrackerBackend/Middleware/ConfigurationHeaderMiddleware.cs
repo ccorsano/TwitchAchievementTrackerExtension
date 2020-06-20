@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TwitchAchievementTrackerBackend.Extensions;
 using TwitchAchievementTrackerBackend.Helpers;
 using TwitchAchievementTrackerBackend.Model;
 using TwitchAchievementTrackerBackend.Services;
@@ -32,6 +33,13 @@ namespace TwitchAchievementTrackerBackend.Middleware
             _next = next;
         }
 
+        /// <summary>
+        /// Middleware Invoke method.
+        /// Read custom HTTP headers X-Config-Version, X-Config-Token, decode the configuration token,
+        /// and inject the resulting configuration object into the HTTP context.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public Task InvokeAsync(HttpContext context)
         {
             var version = "0.0.1";
@@ -51,12 +59,12 @@ namespace TwitchAchievementTrackerBackend.Middleware
                     {
                         // Legacy versions
                         case "0.0.1":
-                            configuration = configService.DecryptConfigurationToken_v1(Convert.FromBase64String(token));
+                            configuration = configService.DecodeConfigurationToken_v1(Convert.FromBase64String(token));
                             break;
 
                         // Current version
                         case "0.0.2":
-                            configuration = configService.DecryptConfigurationToken(Convert.FromBase64String(token));
+                            configuration = configService.DecodeConfigurationToken(Convert.FromBase64String(token));
                             break;
 
                         default:
