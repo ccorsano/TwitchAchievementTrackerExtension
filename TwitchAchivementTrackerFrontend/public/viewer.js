@@ -1,4 +1,4 @@
-var token = "";
+var token = undefined;
 var tuid = "";
 var ebs = "";
 var detailsVisible = false;
@@ -33,7 +33,7 @@ function createAchievementsRequest(type, method, callback) {
 
 function setAuth(token, config, version) {
     Object.keys(requests).forEach((req) => {
-        twitch.rig.log('Setting auth headers');
+        twitch.rig.log('Setting auth headers for request ' + req);
         requests[req].headers = {
             'Authorization': 'Bearer ' + token,
             'X-Config-Token': config,
@@ -46,7 +46,13 @@ twitch.onContext(function(context) {
     twitch.rig.log(context);
 });
 
-function refreshConfiguration() {
+function tryRefreshConfiguration() {
+    if (! token || ! twitch.configuration.broadcaster)
+    {
+        twitch.rig.log('Delaying config refresh, extension not ready yet');
+        return false;
+    }
+
     var configToken = twitch.configuration.broadcaster.content;
     var configVersion = twitch.configuration.broadcaster.version;
 
@@ -66,22 +72,24 @@ function refreshConfiguration() {
             $.ajax(requests.listAchievement);
         }
     }, 60000);
+
+    return true;
 }
+
+twitch.configuration.onChanged(function(){
+    if (! twitch.configuration.broadcaster)
+    {
+        throw 'Could not load broadcaster config';
+    }
+    tryRefreshConfiguration();
+})
 
 twitch.onAuthorized(function(auth) {
     // save our credentials
     token = auth.token;
     tuid = auth.userId;
 
-    refreshConfiguration();
-    
-    twitch.configuration.onChanged(function(){
-        if (! twitch.configuration.broadcaster)
-        {
-            throw 'Could not load broadcaster config';
-        }
-        refreshConfiguration();
-    })
+    tryRefreshConfiguration();
 });
 
 function updateTitle(titleInfo) {
