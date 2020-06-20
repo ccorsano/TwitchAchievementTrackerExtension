@@ -1,5 +1,5 @@
 let token, userId;
-var server = "twitchext.conceptoire.com"
+var server = "twitchext.conceptoire.com/v2"
 
 var urlParams = new URLSearchParams(this.location.search);
 if (urlParams.get('state') == "testing")
