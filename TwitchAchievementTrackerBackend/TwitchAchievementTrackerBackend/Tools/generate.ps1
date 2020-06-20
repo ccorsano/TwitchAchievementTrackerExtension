@@ -1,3 +1,5 @@
+&$PSScriptRoot/flatc --csharp -o $PSScriptRoot/../Model/Generated $PSScriptRoot/../Model/configurationToken_v0_0_1.fbs
+
 &$PSScriptRoot/flatc --csharp -o $PSScriptRoot/../Model/Generated $PSScriptRoot/../Model/configurationToken.fbs
 
 Push-Location $PSScriptRoot/../Model/Generated

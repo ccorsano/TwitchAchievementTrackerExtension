@@ -68,6 +68,8 @@ namespace TwitchAchievementTrackerBackend
             services.AddSingleton<ConfigurationTokenService>();
             services.AddMemoryCache();
 
+            services.AddApplicationInsightsTelemetry();
+
             // For development mode
             if (Configuration.GetValue<bool>("config:IgnoreAuthentication", false))
             {
@@ -98,6 +100,13 @@ namespace TwitchAchievementTrackerBackend
                 IdentityModelEventSource.ShowPII = true;
             }
 
+            var basePath = Configuration.GetValue<string>("HostBasePath");
+
+            if (!string.IsNullOrEmpty(basePath))
+            {
+                app.UsePathBase(basePath);
+            }
+
             // Note: I am deploying this behind an HTTPS reverse proxy, so the HTTPs redirection is handled there.
             //app.UseHttpsRedirection();
 
@@ -112,7 +121,7 @@ namespace TwitchAchievementTrackerBackend
                     config.WithOrigins("https://*.ext-twitch.tv")
                         .SetIsOriginAllowedToAllowWildcardSubdomains();
                 }
-                config.WithHeaders("Authorization", "X-Config-Token", "Content-Type");
+                config.WithHeaders("Authorization", "X-Config-Token", "X-Config-Version", "Content-Type");
             });
 
             app.UseRouting();
