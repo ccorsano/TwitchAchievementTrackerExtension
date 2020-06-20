@@ -3,6 +3,13 @@
 <head>
     <title>Viewer Page</title>
     <style>
+        @media screen and (max-width: 960px) {
+            .overlayBox {
+                display: none;
+                visibility: hidden;
+            }
+        }
+
         .noselect {
             -webkit-touch-callout: none; /* iOS Safari */
             -webkit-user-select: none; /* Safari */
@@ -84,14 +91,6 @@
             vertical-align: text-bottom;
         }
 
-        .rightHandle {
-            width: 0.5em;
-            background-color: rgba(200, 200, 200, 1.0);
-            background-image: url('nujadown.png');
-            background-position: bottom;
-            background-size: 0.4em;
-        }
-
         .overlayBox h2 {
             font-size: 1.2em;
             margin-top: 0.2em;
@@ -153,15 +152,21 @@
             min-height: 2em;
             list-style: none;
             padding-bottom: 1em;
+            padding-left: 1.2em;
+            background-size: 1em;
+            background-repeat: no-repeat;
+            background-position-x: left;
+            background-position-y: top;
         }
 
         #list li.completed {
-            text-decoration: line-through;
             color: #252525;
+            background-image: url('checkbox_true.svg');
         }
 
         #list li.notCompleted {
             font-weight: bold;
+            background-image: url('checkbox_false.svg');
         }
 
         #list .achievementDescription {
@@ -193,10 +198,7 @@
                     <span class="percentage"></span><img src="nujacup.svg" alt="achievements" /><span class="completedCount">?</span>/<span class="totalCount">?</span> 
                 </div>
             </div>
-            <div id="list" style="display: none;">
-            </div>
-            <div class="rightHandle">
-
+            <div id="list">
             </div>
         </div>
     </div>
