@@ -3,6 +3,7 @@ var tuid = "";
 var ebs = "";
 var detailsVisible = false;
 var server = "twitchext.conceptoire.com/v2"
+var intervalTimer = false;
 
 var urlParams = new URLSearchParams(this.location.search);
 if (urlParams.get('state') == "testing")
@@ -45,52 +46,42 @@ twitch.onContext(function(context) {
     twitch.rig.log(context);
 });
 
-twitch.configuration.onChanged(function(){
-    if (! twitch.configuration.broadcaster)
-    {
-        throw 'Could not load broadcaster config';
-    }
-})
-
-twitch.onAuthorized(function(auth) {
-    // save our credentials
-    token = auth.token;
-    tuid = auth.userId;
-
+function refreshConfiguration() {
     var configToken = twitch.configuration.broadcaster.content;
     var configVersion = twitch.configuration.broadcaster.version;
-
-    // enable the button
-    $('#cycle').removeAttr('disabled');
 
     setAuth(token, configToken, configVersion);
     $.ajax(requests.titleInfo);
     $.ajax(requests.summary);
 
-    $('#showDetails').click(function() {
-        $("#showDetails").addClass(detailsVisible ? "collapsed" : "open");
-        $("#showDetails").removeClass(detailsVisible ? "open" : "collapsed");
-        if (detailsVisible)
-        {
-            $("#list").css('display', 'none')
-            detailsVisible = false;
-        }
-        else
-        {
-            $("#list").css('display', 'block')
-            $.ajax(requests.listAchievement)
-            detailsVisible = true;
-        }
-    });
-
     // Refresh the data every minute
-    setInterval(function() {
+    if (intervalTimer)
+    {
+        clearInterval(intervalTimer);
+    }
+    intervalTimer = setInterval(function() {
         $.ajax(requests.summary);
         if (detailsVisible)
         {
             $.ajax(requests.listAchievement);
         }
     }, 60000);
+}
+
+twitch.onAuthorized(function(auth) {
+    // save our credentials
+    token = auth.token;
+    tuid = auth.userId;
+
+    refreshConfiguration();
+    
+    twitch.configuration.onChanged(function(){
+        if (! twitch.configuration.broadcaster)
+        {
+            throw 'Could not load broadcaster config';
+        }
+        refreshConfiguration();
+    })
 });
 
 function updateTitle(titleInfo) {
@@ -142,17 +133,19 @@ function logSuccess(hex, status) {
 }
 
 $(function() {
-
-    // when we click the cycle button
-    $('#cycle').click(function() {
-        if(!token) { return twitch.rig.log('Not authorized'); }
-        twitch.rig.log('Requesting a color cycle');
-        $.ajax(requests.set);
-    });
-
-    // listen for incoming broadcast message from our EBS
-    twitch.listen('broadcast', function (target, contentType, color) {
-        twitch.rig.log('Received broadcast color');
-        updateBlock(color);
+    $('#showDetails').click(function() {
+        $("#showDetails").addClass(detailsVisible ? "collapsed" : "open");
+        $("#showDetails").removeClass(detailsVisible ? "open" : "collapsed");
+        if (detailsVisible)
+        {
+            $("#list").css('display', 'none')
+            detailsVisible = false;
+        }
+        else
+        {
+            $("#list").css('display', 'block')
+            $.ajax(requests.listAchievement)
+            detailsVisible = true;
+        }
     });
 });
