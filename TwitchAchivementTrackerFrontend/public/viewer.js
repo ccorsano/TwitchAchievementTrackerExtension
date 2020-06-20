@@ -30,12 +30,13 @@ function createAchievementsRequest(type, method, callback) {
     }
 }
 
-function setAuth(token, config) {
+function setAuth(token, config, version) {
     Object.keys(requests).forEach((req) => {
         twitch.rig.log('Setting auth headers');
         requests[req].headers = {
             'Authorization': 'Bearer ' + token,
-            'X-Config-Token': config
+            'X-Config-Token': config,
+            'X-Config-Version': version,
         }
     });
 }
@@ -57,11 +58,12 @@ twitch.onAuthorized(function(auth) {
     tuid = auth.userId;
 
     var configToken = twitch.configuration.broadcaster.content;
+    var configVersion = twitch.configuration.broadcaster.version;
 
     // enable the button
     $('#cycle').removeAttr('disabled');
 
-    setAuth(token, configToken);
+    setAuth(token, configToken, configVersion);
     $.ajax(requests.titleInfo);
     $.ajax(requests.summary);
 

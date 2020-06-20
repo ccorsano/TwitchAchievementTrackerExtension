@@ -30,7 +30,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
         {
             return new ConfigurationToken
             {
-                ConfigToken = Convert.ToBase64String(_service.EncryptConfigurationToken(configuration))
+                ConfigToken = Convert.ToBase64String(_service.EncodeConfigurationToken(configuration))
             };
         }
     }
