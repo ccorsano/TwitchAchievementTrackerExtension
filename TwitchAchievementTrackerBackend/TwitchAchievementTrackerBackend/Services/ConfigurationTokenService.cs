@@ -110,6 +110,58 @@ namespace TwitchAchievementTrackerBackend.Services
             return Encrypt(payload);
         }
 
+        // Legacy token decryption from published version v0.1.1
+        public ExtensionConfiguration DecryptConfigurationToken_v1(byte[] payload)
+        {
+            // Decrypt the token
+            byte[] decrypted = Decrypt(payload);
+
+            IPlatformConfiguration platformConfiguration;
+            ActiveConfig activeConfig;
+
+            // Initialize Flatbuffer
+            var fbConfig = TwitchAchievementTracker_v1.Configuration.GetRootAsConfiguration(new ByteBuffer(decrypted));
+            switch (fbConfig.ConfigType)
+            {
+                case TwitchAchievementTracker_v1.PlatformConfiguration.XApiConfiguration:
+
+                    var xConfig = fbConfig.Config<TwitchAchievementTracker_v1.XApiConfiguration>().GetValueOrDefault();
+
+                    activeConfig = ActiveConfig.XBoxLive;
+                    platformConfiguration = new Model.XApiConfiguration
+                    {
+                        XApiKey = xConfig.XApiKey,
+                        StreamerXuid = xConfig.StreamerXuid == 0 ? null : xConfig.StreamerXuid.ToString(),
+                        TitleId = xConfig.TitleId == 0 ? null : xConfig.TitleId.ToString(),
+                        Locale = xConfig.Locale,
+                    };
+                    break;
+                case TwitchAchievementTracker_v1.PlatformConfiguration.SteamConfiguration:
+
+                    var steamConfig = fbConfig.Config<TwitchAchievementTracker_v1.SteamConfiguration>().GetValueOrDefault();
+
+                    activeConfig = ActiveConfig.Steam;
+                    platformConfiguration = new Model.SteamConfiguration
+                    {
+                        WebApiKey = steamConfig.WebApiKey,
+                        SteamId = steamConfig.SteamId == 0 ? null : steamConfig.SteamId.ToString(),
+                        AppId = steamConfig.AppId == 0 ? null : steamConfig.AppId.ToString(),
+                        Locale = steamConfig.Locale,
+                    };
+                    break;
+                default:
+                    throw new NotSupportedException("Unknown type");
+            }
+
+            return new ExtensionConfiguration
+            {
+                Version = fbConfig.Version,
+                ActiveConfig = activeConfig,
+                XBoxLiveConfig = platformConfiguration as Model.XApiConfiguration,
+                SteamConfig = platformConfiguration as Model.SteamConfiguration
+            };
+        }
+
         public ExtensionConfiguration DecryptConfigurationToken(byte[] payload)
         {
             // Decrypt the token

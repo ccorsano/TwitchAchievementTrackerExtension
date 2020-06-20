@@ -28,6 +28,7 @@ twitch.onAuthorized((auth) => {
       headers: {
         'Authorization': 'Bearer ' + token,
         'X-Config-Token': twitch.configuration.broadcaster.content,
+        'X-Config-Version': twitch.configuration.broadcaster.version,
       }
     };
     $.ajax(request);

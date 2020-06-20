@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TwitchAchievementTrackerBackend.Helpers;
+using TwitchAchievementTrackerBackend.Model;
 using TwitchAchievementTrackerBackend.Services;
 
 namespace TwitchAchievementTrackerBackend.Middleware
@@ -33,20 +34,40 @@ namespace TwitchAchievementTrackerBackend.Middleware
 
         public Task InvokeAsync(HttpContext context)
         {
+            var version = "0.0.1";
+            if (context.Request.Headers.ContainsKey("X-Config-Version"))
+            {
+                version = context.Request.Headers["X-Config-Version"].First();
+            }
             if (context.Request.Headers.ContainsKey("X-Config-Token"))
             {   
                 var token = context.Request.Headers["X-Config-Token"].First();
                 var configService = context.RequestServices.GetRequiredService<ConfigurationTokenService>();
 
+                ExtensionConfiguration configuration = null;
                 try
                 {
-                    var configuration = configService.DecryptConfigurationToken(Convert.FromBase64String(token));
-                    context.SetExtensionConfiguration(configuration);
+                    switch (version)
+                    {
+                        // Legacy versions
+                        case "0.0.1":
+                            configuration = configService.DecryptConfigurationToken_v1(Convert.FromBase64String(token));
+                            break;
+
+                        // Current version
+                        case "0.0.2":
+                            configuration = configService.DecryptConfigurationToken(Convert.FromBase64String(token));
+                            break;
+
+                        default:
+                            throw new NotSupportedException($"Configuration version {version} is not supported on this EBS");
+                    }
                 }
                 catch (Exception ex)
                 {
                     throw new ConfigurationHeaderException("Error reading configuration token", ex);
                 }
+                context.SetExtensionConfiguration(configuration);
             }
 
             return _next.Invoke(context);
