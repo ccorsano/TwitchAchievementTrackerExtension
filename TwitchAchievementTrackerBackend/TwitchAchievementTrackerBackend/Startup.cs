@@ -114,7 +114,7 @@ namespace TwitchAchievementTrackerBackend
                     config.WithOrigins("https://*.ext-twitch.tv")
                         .SetIsOriginAllowedToAllowWildcardSubdomains();
                 }
-                config.WithHeaders("Authorization", "X-Config-Token", "Content-Type");
+                config.WithHeaders("Authorization", "X-Config-Token", "X-Config-Version", "Content-Type");
             });
 
             app.UseRouting();

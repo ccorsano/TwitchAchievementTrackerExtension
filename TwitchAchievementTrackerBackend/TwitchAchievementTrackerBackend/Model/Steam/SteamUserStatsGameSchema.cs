@@ -9,7 +9,7 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
     {
         public string GameName { get; set; }
 
-        public long GameVersion { get; set; }
+        public string GameVersion { get; set; }
 
         public SteamGameSchemaAvailableStats AvailableGameStats { get; set; }
     }

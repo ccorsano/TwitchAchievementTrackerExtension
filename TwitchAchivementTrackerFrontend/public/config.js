@@ -28,6 +28,7 @@ twitch.onAuthorized((auth) => {
       headers: {
         'Authorization': 'Bearer ' + token,
         'X-Config-Token': twitch.configuration.broadcaster.content,
+        'X-Config-Version': twitch.configuration.broadcaster.version,
       }
     };
     $.ajax(request);
@@ -63,17 +64,65 @@ function onSearchTitle(result)
   });
 }
 
+function onSearchSteamTitle(result)
+{
+  $('#searchSteamTitle').prop('disabled', false);
+  $('#steamGameQueryResult > ul').empty();
+  result.forEach(titleInfo => {
+    if (titleInfo.titleId)
+    {
+      listItem = document.createElement("li");
+      $(listItem).text(titleInfo.titleId + ': ' + titleInfo.productTitle);
+      $('#steamGameQueryResult > ul').append(listItem);
+    }
+  });
+}
+
 function onGetConfig(config)
 {
-  $('input[name=xapiKey]').val(config.xApiKey)
-  $('input[name=streamerXuid]').val(config.streamerXuid)
-  $('input[name=titleId]').val(config.titleId)
-  $('input[name=locale]').val(config.locale)
+  if (config.xBoxLiveConfig)
+  {
+    $('input[name=xapiKey]').val(config.xBoxLiveConfig.xApiKey);
+    $('input[name=streamerXuid]').val(config.xBoxLiveConfig.streamerXuid);
+    $('input[name=titleId]').val(config.xBoxLiveConfig.titleId);
+    $('input[name=locale]').val(config.xBoxLiveConfig.locale);
+  }
+  if (config.steamConfig)
+  {
+    $('input[name=steamWebApiKey]').val(config.steamConfig.webApiKey);
+    $('input[name=streamerSteamId]').val(config.steamConfig.steamId);
+    $('input[name=steamAppId]').val(config.steamConfig.appId);
+    $('input[name=steamLocale]').val(config.steamConfig.locale);
+  }
+  if (config.activeConfig == 'Steam')
+  {
+    $('#collapse-steam').attr('checked', true);
+  }
+}
+
+function xboxLiveConfig()
+{
+  return {
+    'xApiKey': $('input[name=xapiKey]').val(),
+    'streamerXuid': $('input[name=streamerXuid]').val(),
+    'titleId': $('input[name=titleId]').val(),
+    'locale': $('input[name=locale]').val(),
+  };
+}
+
+function steamConfig()
+{
+  return {
+    'webApiKey': $('input[name=steamWebApiKey]').val(),
+    'steamId': $('input[name=streamerSteamId]').val(),
+    'appId': $('input[name=steamAppId]').val(),
+    'locale': $('input[name=steamLocale]').val(),
+  };
 }
 
 function onPackConfig(config)
 {
-  twitch.configuration.set('broadcaster', '0.0.1', config.configToken);
+  twitch.configuration.set('broadcaster', '0.0.2', config.configToken);
 }
 
 function onResolveXuid(result)
@@ -133,17 +182,55 @@ window.onload = function()
     };
     $.ajax(request);
   });
-  $('#saveConfig').click(function()
+  
+  $('#steamSearchTitle').click(function()
   {
-    var config = {
-      'version': '0.0.1',
-      'xBoxLiveConfig': {
-        'xApiKey': $('input[name=xapiKey]').val(),
-        'streamerXuid': $('input[name=streamerXuid]').val(),
-        'titleId': $('input[name=titleId]').val(),
-        'locale': $('input[name=locale]').val(),
+    $('#steamGameQueryResult > ul').empty();
+    
+    $('#steamSearchTitle').prop('disabled', true);
+    var reenableButton = function(result, error, status)
+    {
+      $('#steamSearchTitle').prop('disabled', false);
+      logError(result, error, status);
+    };
+
+    var query = $('input[name=steamGameQuery]').val();
+    var request = {
+      type: 'GET',
+      url: location.protocol + '//' + server + '/api/title/steam/search/' + encodeURIComponent(query),
+      success: onSearchSteamTitle,
+      error: reenableButton,
+      contentType : 'application/json; charset=UTF-8',
+      headers: {
+        'Authorization': 'Bearer ' + token
       }
     };
+    $.ajax(request);
+  });
+
+
+  $('#saveActiveConfig').click(function()
+  {
+    var config = {
+      'version': '0.0.2',
+      'activeConfig': undefined,
+      'xBoxLiveConfig': xboxLiveConfig(),
+      'steamConfig': steamConfig()
+    };
+
+    var checkedId = $('div.collapse > input[type=radio]:checked').attr('id');
+    switch (checkedId) {
+      case 'collapse-xbl':
+        config.activeConfig = 'XBoxLive';
+        break;
+      case 'collapse-steam':
+        config.activeConfig = 'Steam';
+        break;
+    
+      default:
+        break;
+    }
+
     var request = {
       type: 'POST',
       url: location.protocol + '//' + server + '/api/configuration',

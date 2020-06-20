@@ -24,7 +24,7 @@ namespace TwitchAchievementTrackerBackend.Services
             _httpClient = httpClientFactory.CreateClient();
             if (string.IsNullOrEmpty(options.Value.WebApiKey))
             {
-                throw new ArgumentNullException("Could not find XApi key in configuration");
+                throw new ArgumentNullException("Could not find Steam WebApi key in configuration");
             }
             _options = options.Value;
             _httpClient.DefaultRequestHeaders.Add("x-webapi-key", _options.WebApiKey);
@@ -45,7 +45,6 @@ namespace TwitchAchievementTrackerBackend.Services
         {
             var cacheKey = "steam:applist";
             var message = new HttpRequestMessage(HttpMethod.Get, $"ISteamApps/GetAppList/v2/");
-            _httpClient.DefaultRequestHeaders.Add("x-webapi-key", _options.WebApiKey);
             var response = await _httpClient.SendAsync(message);
             using (var responseStream = await response.Content.ReadAsStreamAsync())
             {
@@ -57,6 +56,11 @@ namespace TwitchAchievementTrackerBackend.Services
                 _cache.Set(cacheKey, result.AppList.Apps, _options.ResultCacheTime);
                 return result.AppList.Apps;
             }
+        }
+
+        public async Task GetAppInfo(SteamConfiguration steamConfig)
+        {
+            var storeDetails = await GetStoreDetails(uint.Parse(steamConfig.AppId));
         }
 
         public async Task<SteamStoreDetails> GetStoreDetails(uint appId)
@@ -87,17 +91,58 @@ namespace TwitchAchievementTrackerBackend.Services
                 fullAppList = await LoadAppList();
             }
 
-            return (await Task.WhenAll(fullAppList
+            return fullAppList
                 .Where(a => a.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
-                .Select(async a => await GetStoreDetails(a.AppId))))
-                .Where(a => a?.Type == "game")
                 .Select(a => new TitleInfo
                 {
-                    TitleId = a.SteamAppid.ToString(),
+                    TitleId = a.AppId.ToString(),
                     ProductTitle = a.Name,
-                    ProductDescription = a.ShortDescription,
-                    LogoUri = a.HeaderImage.ToString(),
+                    ProductDescription = "",
+                    LogoUri = "",
                 });
+        }
+
+        public async Task<SteamPlayerAchievement[]> GetAchievementsAsync(SteamConfiguration steamConfig)
+        {
+            var cacheKey = $"steam:achievements:{steamConfig.AppId}";
+
+            if (!_cache.TryGetValue(cacheKey, out SteamPlayerAchievement[] result))
+            {
+                using (var responseStream = await _httpClient.GetStreamAsync($"ISteamUserStats/GetPlayerAchievements/v1/?steamid={steamConfig.SteamId}&appid={steamConfig.AppId}"))
+                {   
+                    var wrapper = await JsonSerializer.DeserializeAsync<SteamUserStatsAchievementsResult>(responseStream, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                    result = wrapper.Playerstats.Achievements;
+                }
+
+                _cache.Set(cacheKey, result, _options.ResultCacheTime);
+            }
+
+            return result;
+        }
+
+        public async Task<SteamUserStatsGameSchema> GetGameSchema(SteamConfiguration steamConfig)
+        {
+            var cacheKey = $"steam:gameschema:{steamConfig.AppId}:{steamConfig.Locale}";
+
+            if (!_cache.TryGetValue(cacheKey, out SteamUserStatsGameSchema result))
+            {
+                using (var responseStream = await _httpClient.GetStreamAsync($"ISteamUserStats/GetSchemaForGame/v2/?appid={steamConfig.AppId}&l={steamConfig.Locale}"))
+                {
+                    var wrapper = await JsonSerializer.DeserializeAsync<SteamUserStatsGameSchemaResult>(responseStream, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                    result = wrapper.Game;
+                }
+
+                _cache.Set(cacheKey, result, _options.AppListCacheTime);
+            }
+            return result;
         }
     }
 }
