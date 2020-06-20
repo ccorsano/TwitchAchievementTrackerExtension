@@ -42,6 +42,8 @@ namespace TwitchAchievementTrackerBackend.Services
             {
                 var message = new HttpRequestMessage(HttpMethod.Get, $"marketplace/search/{query}");
                 var response = await _httpClient.SendAsync(message);
+                response.EnsureSuccessStatusCode();
+
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
                     result = await JsonSerializer.DeserializeAsync<XApiMarketplaceSearchResult>(responseStream, new JsonSerializerOptions
@@ -64,6 +66,8 @@ namespace TwitchAchievementTrackerBackend.Services
             {
                 var message = new HttpRequestMessage(HttpMethod.Get, $"xuid/{gamerTag}");
                 var response = await _httpClient.SendAsync(message);
+                response.EnsureSuccessStatusCode();
+
                 result = await response.Content.ReadAsStringAsync();
                 _cache.Set(cacheKey, result);
             }
@@ -88,6 +92,8 @@ namespace TwitchAchievementTrackerBackend.Services
                 message.Headers.Add("X-AUTH", config.XApiKey);
                 message.Headers.Add("Accept-Language", $"{config.Locale};q=1.0");
                 var response = await _httpClient.SendAsync(message);
+
+                response.EnsureSuccessStatusCode();
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
                     result = await JsonSerializer.DeserializeAsync<XApiAchievement[]>(responseStream, new JsonSerializerOptions
@@ -118,6 +124,7 @@ namespace TwitchAchievementTrackerBackend.Services
                 message.Headers.Add("X-AUTH", config.XApiKey);
                 message.Headers.Add("Accept-Language", $"{config.Locale};q=1.0");
                 var response = await _httpClient.SendAsync(message);
+                response.EnsureSuccessStatusCode();
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
                     result = await JsonSerializer.DeserializeAsync<XApiMarketplaceTitleInfo>(responseStream, new JsonSerializerOptions
