@@ -3,28 +3,127 @@
 <head>
     <title>Viewer Page</title>
     <style>
+        .noselect {
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none; /* Safari */
+            -khtml-user-select: none; /* Konqueror HTML */
+            -moz-user-select: none; /* Old versions of Firefox */
+                -ms-user-select: none; /* Internet Explorer/Edge */
+                    user-select: none; /* Non-prefixed version, currently
+                                        supported by Chrome, Edge, Opera and Firefox */
+        }
+
         .overlayBox {
-            background-color: rgb(55,56,64);
             display: block;
-            width: 30em;
             height: fit-content;
             margin-top: 5rem;
-            color: white;
+            color: black;
+        }
+
+        .overlayBox.collapsed .summaryWidget:hover {
+            -webkit-box-shadow: 0em 0em 2em 0.5em rgba(255,255,255,1);
+            -moz-box-shadow: 0em 0em 2em 0.5em rgba(255,255,255,1);
+            box-shadow: 0em 0em 2em 0.5em rgba(255,255,255,1);
+        }
+
+        .overlayBox.open .summaryWidget
+        {
+            visibility: hidden;
+        }
+
+        .overlayBox.collapsed > .card-container
+        {
+            visibility: hidden;
+        }
+
+        #achievementsPanel
+        {
+            min-height: 3em;
+        }
+
+        .overlayBox.collapsed > #achievementsPanel
+        {
+            visibility: hidden;
+        }
+
+        .overlayBox.open > .card-container
+        {
+            visibility: visible;
+        }
+
+        .overlayBox.open > #achievementsPanel
+        {
+            visibility: visible;
+            background-color: rgba(255, 255, 255, 0.75);
+            max-width: 25em;
+            padding-left: 0.5em;
+            padding-top: 0.2;
+        }
+
+        #completionHeadline .percentage
+        {
+            font-size: 1.5em;
+        }
+
+        #completionHeadline .completedCount
+        {
+            font-size: 2em;
+        }
+
+        #completionHeadline .percentage
+        {
+            font-size: 2em;
+        }
+
+        #completionHeadline img
+        {
+            width: 2em;
+            height: 2em;
+            margin-left: 1.5em;
+            margin-right: 0.5em;
+            vertical-align: text-bottom;
+        }
+
+        .rightHandle {
+            width: 0.5em;
+            background-color: rgba(200, 200, 200, 1.0);
+            background-image: url('nujadown.png');
+            background-position: bottom;
+            background-size: 0.4em;
         }
 
         .overlayBox h2 {
-            font-size: 1em;
+            font-size: 1.2em;
+            margin-top: 0.2em;
+            margin-bottom: 0.2em;
         }
 
         .card-container {
-            padding-top: 0.5rem;
+            padding-top: 0.1em;
+            height: 4em;
         }
 
         .gameLogo {
-            height: 6em;
-            width: 6em;
+            height: 4em;
+            width: 4em;
             float: left;
             margin-right: 1em;
+
+            cursor: pointer;
+
+            background-image: url('nuja.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .summaryWidget {
+            width: 100%;
+            font-size: 1.3em;
+            text-align: center;
+            padding-top: 2.0em;
+            text-shadow: 0px 0px 0.5em black;
+            color: white;
         }
 
         #gameLogo {
@@ -43,47 +142,31 @@
             background-size: 1.5rem;
         }
 
-        #showDetails.collapsed {
-            background-color: rgba(255,255,255,0.3);
-            background-image: url('nujadown.png');
-        }
-
-        #showDetails.open {
-            background-color: rgba(255,255,255,0.2);
-            background-image: url('nujaup.png');
-        }
-
-        #showDetails:hover {
-            background-color: darkgrey;
-        }
-
         #list {
             max-height: 20rem;
+            margin-top: 0.2em;
             overflow-y: scroll;
         }
 
         #list li {
-            background-position: top left;
-            background-size: 2em;
-            background-repeat: no-repeat;
             min-width: 2em;
             min-height: 2em;
-            padding-left: 2em;
             list-style: none;
             padding-bottom: 1em;
         }
 
         #list li.completed {
-            background-image: url("check.png");
+            text-decoration: line-through;
+            color: #252525;
         }
 
         #list li.notCompleted {
-            background-image: url("cross.png");
+            font-weight: bold;
         }
 
         #list .achievementDescription {
-            font-size: 0.7em;
-            font-style: italic;
+            font-size: 0.9em;
+            font-weight: normal;
         }
     </style>
 </head>
@@ -95,22 +178,25 @@
       to external libraries. -->
     <script src="jquery-3.3.1.min.js" type="text/javascript"></script>
     <script src="viewer.js" type="text/javascript"></script>
-    <div class="overlayBox">
-        <div class="gameLogo">
-            <img id="gameLogo" src="nuja.png" alt="logo" />
-        </div>
-        <div class="card-container">
-            <h2 id="gameTitle">
-                Game
-            </h2>
-            <div id="completionHeadline">
-                Completion
+    <div class="overlayBox collapsed">
+        <div class="gameLogo noselect">
+            <div class="summaryWidget">
+
             </div>
         </div>
         <div id="achievementsPanel">
-            <div id="showDetails" class="collapsed">
+            <div class="card-container">
+                <h2 id="gameTitle">
+                    Game
+                </h2>
+                <div id="completionHeadline">
+                    <span class="percentage"></span><img src="nujacup.svg" alt="achievements" /><span class="completedCount">?</span>/<span class="totalCount">?</span> 
+                </div>
             </div>
             <div id="list" style="display: none;">
+            </div>
+            <div class="rightHandle">
+
             </div>
         </div>
     </div>

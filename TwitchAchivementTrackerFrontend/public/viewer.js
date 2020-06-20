@@ -94,14 +94,18 @@ twitch.onAuthorized(function(auth) {
 
 function updateTitle(titleInfo) {
     $('#gameTitle').text(titleInfo.productTitle);
-    $('#gameLogo').attr('src', titleInfo.logoUri);
+    $('.gameLogo').css('background-image', 'url(' + titleInfo.logoUri + ')');
 }
 
 function updateSummary(summary) {
     twitch.rig.log('Updating summary');
     twitch.rig.log('Summary : ' + summary.completed + '/' + summary.total + ', ' + summary.currentPoints + '/' + summary.totalPoints + ' gamerscore');
     var percentage = (summary.completed / summary.total) * 100.0;
-    $('#completionHeadline').text('Achievements: ' + summary.completed + '/' + summary.total + ' ' + percentage.toFixed(2) + '%');
+    $('#completionHeadline .completedCount').text(summary.completed);
+    $('#completionHeadline .totalCount').text(summary.total);
+    $('#completionHeadline .percentage').text(percentage.toFixed(2) + '%');
+    // $('#completionHeadline').text('Achievements: ' + summary.completed + '/' + summary.total + ' ' + percentage.toFixed(2) + '%');
+    $('.summaryWidget').text(percentage.toFixed(0) + '%');
 }
 
 function updateBlock(achievements) {
@@ -141,9 +145,9 @@ function logSuccess(hex, status) {
 }
 
 $(function() {
-    $('#showDetails').click(function() {
-        $("#showDetails").addClass(detailsVisible ? "collapsed" : "open");
-        $("#showDetails").removeClass(detailsVisible ? "open" : "collapsed");
+    $('.gameLogo').click(function() {
+        $(".overlayBox").addClass(detailsVisible ? "collapsed" : "open");
+        $(".overlayBox").removeClass(detailsVisible ? "open" : "collapsed");
         if (detailsVisible)
         {
             $("#list").css('display', 'none')
