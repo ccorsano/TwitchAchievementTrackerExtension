@@ -100,6 +100,13 @@ namespace TwitchAchievementTrackerBackend
                 IdentityModelEventSource.ShowPII = true;
             }
 
+            var basePath = Configuration.GetValue<string>("HostBasePath");
+
+            if (!string.IsNullOrEmpty(basePath))
+            {
+                app.UsePathBase(basePath);
+            }
+
             // Note: I am deploying this behind an HTTPS reverse proxy, so the HTTPs redirection is handled there.
             //app.UseHttpsRedirection();
 
