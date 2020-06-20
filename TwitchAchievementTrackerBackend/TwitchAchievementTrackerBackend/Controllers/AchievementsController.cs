@@ -75,8 +75,9 @@ namespace TwitchAchievementTrackerBackend.Controllers
         [HttpGet("/api/title/search/{query}")]
         public async Task<IEnumerable<TitleInfo>> SearchTitleInfo(string query)
         {
-            var searchResult = await _xApiService.SearchTitle(query);
-
+            var config = this.GetExtensionConfiguration();
+            if (config.ActiveConfig == ActiveConfig.XBoxLive)
+            {
                 var searchResult = await _xApiService.SearchTitle(query);
 
                 return searchResult.Products.Select(product =>
