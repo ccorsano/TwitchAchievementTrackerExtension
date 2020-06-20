@@ -6,8 +6,20 @@
         @media screen and (max-width: 960px) {
             .overlayBox {
                 display: none;
-                visibility: hidden;
             }
+        }
+
+        @media screen and (min-width: 960px) {
+            .overlayBox {
+                display: block;
+            }
+        }
+
+
+        .overlayBox {
+            height: fit-content;
+            margin-top: 5rem;
+            color: black;
         }
 
         .noselect {
@@ -18,13 +30,6 @@
                 -ms-user-select: none; /* Internet Explorer/Edge */
                     user-select: none; /* Non-prefixed version, currently
                                         supported by Chrome, Edge, Opera and Firefox */
-        }
-
-        .overlayBox {
-            display: block;
-            height: fit-content;
-            margin-top: 5rem;
-            color: black;
         }
 
         .overlayBox.collapsed .summaryWidget:hover {
