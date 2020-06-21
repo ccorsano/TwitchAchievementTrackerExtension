@@ -105,7 +105,7 @@
     "canInstall": true,
     "configUrl": "https://localhost:8080/config.html",
     "configurationLocation": "hosted",
-    "description": "Second iteration of the extension dedicated to Nuja's 100% Quest program !\ntwitch.tv/nuja\n\nThis overlay shows XBoxLive or Steam achievements for a given player and a given title.\nOnce configured, your viewers can keep track of how many achievements are left to unlock when streaming to complete a game 100%.\n\nVersion 0.0.2:\n- Adding Steam achievements to the mix, requires a Steam WebAPI Key.\n   You can enroll for your key on https://steamcommunity.com/dev\n- Adding Android mobile support\n\n\nPre-requisite:\n- XBoxLive configuration uses xapi.us to query XBoxLive, the configuration will require the streamer to input an API key from xapi.us.\n- Steam configuration requires a Steam WebAPI key that any Steam User can request through https://steamcommunity.com/dev\n\nAuthors:\nNuja's Community\ntwitch.tv/miekyld\ntwitch.tv/xenomorpheapeuree",
+    "description": "Third iteration of the extension dedicated to Nuja's 100% Quest program !\ntwitch.tv/nuja\n\nThis overlay shows XBoxLive or Steam achievements for a given player and a given game.\nOnce configured, your viewers can keep track of how many achievements are left to unlock when streaming to complete a game 100%.\n\nVersion 0.0.3:\nTDB\n\nPre-requisite:\n- XBoxLive configuration uses xapi.us to query XBoxLive, the configuration will require the streamer to input an API key from xapi.us.\n- Steam configuration requires a Steam WebAPI key that any Steam User can request through https://steamcommunity.com/dev\n\nAuthors:\nNuja's Community\ntwitch.tv/miekyld\ntwitch.tv/xenomorpheapeuree\ntwitch.tv/kbinturong",
     "eulaTosUrl": "https://twitchext.conceptoire.com/EULA",
     "hasChatSupport": false,
     "iconUrl": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/logo808776b9-3269-473e-bc44-6566dc3f995a",
@@ -123,10 +123,10 @@
     "requestIdentityLink": false,
     "requiredBroadcasterAbilities": [],
     "screenshotUrls": [
-      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.2/screenshot03a60d7f-a2f3-421d-a20d-bb6d411a3f56",
-      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.2/screenshot0b8c8d42-b49b-49dc-8464-a86f848d2d14",
-      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.2/screenshot3a8a0a7a-0bab-44bd-93d4-cd501c6a7069",
-      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.2/screenshote2f6f5b4-0037-49f8-9457-7e947406c984"
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.3/screenshot5264bd05-7fc8-4376-a45a-b5af7e8f4f03",
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.3/screenshot20335ef5-beb7-409d-8121-fa77d5d4b7e4",
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.3/screenshotb6f41b9b-c93f-4af7-8a84-62468b9d886a",
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.3/screenshot256b8a83-7e14-47e2-b201-df2ba5c73cf0"
     ],
     "sku": "",
     "state": "Testing",
@@ -134,7 +134,7 @@
     "summary": "Achievement Tracker for the 100% Quest program on Nuja's stream",
     "supportEmail": "twitchext@conceptoire.com",
     "vendorCode": "",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "viewerSummary": "Prototype pour suivre le 100% quest de Nuja !",
     "viewerUrl": "",
     "viewerUrls": {
