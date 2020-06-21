@@ -6,15 +6,15 @@
   "extensionViews": [
     {
       "id": "1",
-      "label": "Test",
-      "channelId": "158511925",
+      "label": "Video Overlay",
+      "channelId": "265737932",
       "configurationAnchor": "video_overlay",
       "displayChannelName": "miekyld",
       "type": "video_overlay",
       "features": {
-        "isBitsEnabled": true,
-        "isChatEnabled": true,
-        "isSubscriptionStatusAvailable": true
+        "isBitsEnabled": false,
+        "isChatEnabled": false,
+        "isSubscriptionStatusAvailable": false
       },
       "linked": false,
       "linkedUserId": "",
@@ -30,7 +30,7 @@
     {
       "id": "2",
       "label": "Configuration",
-      "channelId": "158511925",
+      "channelId": "265737932",
       "configurationAnchor": "video_overlay",
       "displayChannelName": "miekyld",
       "type": "config",
@@ -52,7 +52,7 @@
     },
     {
       "id": "3",
-      "label": "",
+      "label": "iPhone 8 portrait",
       "channelId": "265737932",
       "configurationAnchor": "video_overlay",
       "displayChannelName": "miekyld",
@@ -75,7 +75,7 @@
     },
     {
       "id": "4",
-      "label": "",
+      "label": "iPhone 8 landcape",
       "channelId": "265737932",
       "configurationAnchor": "video_overlay",
       "displayChannelName": "miekyld",
@@ -103,7 +103,7 @@
     "authorName": "Miekyll",
     "bitsEnabled": false,
     "canInstall": true,
-    "configUrl": "https://04ijuz20mxlw1wk5b6alh6l4mb48zu.ext-twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.2/1c919ca0a0b95cb225a673fa3244289d/config.html",
+    "configUrl": "https://localhost:8080/config.html",
     "configurationLocation": "hosted",
     "description": "Second iteration of the extension dedicated to Nuja's 100% Quest program !\ntwitch.tv/nuja\n\nThis overlay shows XBoxLive or Steam achievements for a given player and a given title.\nOnce configured, your viewers can keep track of how many achievements are left to unlock when streaming to complete a game 100%.\n\nVersion 0.0.2:\n- Adding Steam achievements to the mix, requires a Steam WebAPI Key.\n   You can enroll for your key on https://steamcommunity.com/dev\n- Adding Android mobile support\n\n\nPre-requisite:\n- XBoxLive configuration uses xapi.us to query XBoxLive, the configuration will require the streamer to input an API key from xapi.us.\n- Steam configuration requires a Steam WebAPI key that any Steam User can request through https://steamcommunity.com/dev\n\nAuthors:\nNuja's Community\ntwitch.tv/miekyld\ntwitch.tv/xenomorpheapeuree",
     "eulaTosUrl": "https://twitchext.conceptoire.com/EULA",
@@ -129,7 +129,7 @@
       "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.2/screenshote2f6f5b4-0037-49f8-9457-7e947406c984"
     ],
     "sku": "",
-    "state": "Assets Uploaded",
+    "state": "Testing",
     "subscriptionsSupportLevel": "none",
     "summary": "Achievement Tracker for the 100% Quest program on Nuja's stream",
     "supportEmail": "twitchext@conceptoire.com",
@@ -138,19 +138,19 @@
     "viewerSummary": "Prototype pour suivre le 100% quest de Nuja !",
     "viewerUrl": "",
     "viewerUrls": {
-      "mobile": "https://04ijuz20mxlw1wk5b6alh6l4mb48zu.ext-twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.2/1c919ca0a0b95cb225a673fa3244289d/mobile.html",
-      "videoOverlay": "https://04ijuz20mxlw1wk5b6alh6l4mb48zu.ext-twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.2/1c919ca0a0b95cb225a673fa3244289d/video_overlay.html"
+      "mobile": "https://localhost:8080/mobile.html",
+      "videoOverlay": "https://localhost:8080/video_overlay.html"
     },
     "views": {
       "mobile": {
-        "viewerUrl": "https://04ijuz20mxlw1wk5b6alh6l4mb48zu.ext-twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.2/1c919ca0a0b95cb225a673fa3244289d/mobile.html"
+        "viewerUrl": "https://localhost:8080/mobile.html"
       },
       "videoOverlay": {
-        "viewerUrl": "https://04ijuz20mxlw1wk5b6alh6l4mb48zu.ext-twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.2/1c919ca0a0b95cb225a673fa3244289d/video_overlay.html",
+        "viewerUrl": "https://localhost:8080/video_overlay.html",
         "canLinkExternalContent": false
       },
       "config": {
-        "viewerUrl": "https://04ijuz20mxlw1wk5b6alh6l4mb48zu.ext-twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.2/1c919ca0a0b95cb225a673fa3244289d/config.html",
+        "viewerUrl": "https://localhost:8080/config.html",
         "canLinkExternalContent": false
       }
     },
