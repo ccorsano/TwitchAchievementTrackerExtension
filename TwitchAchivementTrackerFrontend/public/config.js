@@ -120,6 +120,26 @@ function steamConfig()
   };
 }
 
+function xboxLiveConfig()
+{
+  return {
+    'xApiKey': $('input[name=xapiKey]').val(),
+    'streamerXuid': $('input[name=streamerXuid]').val(),
+    'titleId': $('input[name=titleId]').val(),
+    'locale': $('input[name=locale]').val(),
+  };
+}
+
+function steamConfig()
+{
+  return {
+    'webApiKey': $('input[name=steamWebApiKey]').val(),
+    'steamId': $('input[name=streamerSteamId]').val(),
+    'appId': $('input[name=steamAppId]').val(),
+    'locale': $('input[name=steamLocale]').val(),
+  };
+}
+
 function onPackConfig(config)
 {
   twitch.configuration.set('broadcaster', '0.0.2', config.configToken);
