@@ -21,6 +21,152 @@ namespace TwitchAchievementTrackerBackend.Services
         }
 
         /// <summary>
+        /// Serialize and encrypt configuration object
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
+        public byte[] EncodeConfigurationToken(ExtensionConfiguration configuration)
+        {
+            byte[] payload = SerializeConfigurationToken(configuration);
+
+            // Encrypt the token
+            return Encrypt(payload);
+        }
+
+        /// <summary>
+        /// Serialize configuration object to a flatbuffer binary representation
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
+        private static byte[] SerializeConfigurationToken(ExtensionConfiguration configuration)
+        {
+            // Generate the Flatbuffer token payload
+            var builder = new FlatBufferBuilder(512);
+
+            // Flatbuffer serialization: we serialize inside-out and set buffer offsets
+            Offset<TwitchAchievementTracker.Configuration> configurationOffset;
+            var version = builder.CreateString(configuration.Version);
+
+            var xConfig = configuration.XBoxLiveConfig as Model.XApiConfiguration;
+            var steamConfig = configuration.SteamConfig as Model.SteamConfiguration;
+
+            ActiveConfiguration activeConfig;
+            Offset<TwitchAchievementTracker.XApiConfiguration> xConfigOffset = new Offset<TwitchAchievementTracker.XApiConfiguration>();
+            Offset<TwitchAchievementTracker.SteamConfiguration> steamConfigOffset = new Offset<TwitchAchievementTracker.SteamConfiguration>();
+
+            if (xConfig != null)
+            {
+                var apiKeyString = builder.CreateString(xConfig.XApiKey);
+                var xuid64 = string.IsNullOrEmpty(xConfig.StreamerXuid) ? 0 : UInt64.Parse(xConfig.StreamerXuid);
+                var titleId32 = string.IsNullOrEmpty(xConfig.TitleId) ? 0 : UInt32.Parse(xConfig.TitleId);
+                var liveLocale = builder.CreateString(xConfig.Locale ?? "en-US");
+                xConfigOffset = TwitchAchievementTracker.XApiConfiguration.CreateXApiConfiguration(builder, apiKeyString, xuid64, titleId32, liveLocale);
+            }
+
+            if (steamConfig != null)
+            {
+                var webKeyString = builder.CreateString(steamConfig.WebApiKey);
+                var steamId = string.IsNullOrEmpty(steamConfig.SteamId) ? 0 : UInt64.Parse(steamConfig.SteamId);
+                var appId = string.IsNullOrEmpty(steamConfig.AppId) ? 0 : uint.Parse(steamConfig.AppId);
+                var steamLocale = builder.CreateString(steamConfig.Locale ?? "english");
+
+                steamConfigOffset = TwitchAchievementTracker.SteamConfiguration.CreateSteamConfiguration(builder, webKeyString, appId, steamId, steamLocale);
+            }
+
+            switch (configuration.ActiveConfig)
+            {
+                case ActiveConfig.XBoxLive:
+                    activeConfig = ActiveConfiguration.XApiConfiguration;
+                    break;
+                case ActiveConfig.Steam:
+                    activeConfig = ActiveConfiguration.SteamConfiguration;
+                    break;
+                default:
+                    throw new NotSupportedException("Unknown configuration platform");
+            }
+
+            configurationOffset = TwitchAchievementTracker.Configuration.CreateConfiguration(builder, version, activeConfig, xConfigOffset, steamConfigOffset);
+
+            builder.Finish(configurationOffset.Value);
+            var payload = builder.SizedByteArray();
+            return payload;
+        }
+
+        /// <summary>
+        /// Decrypt and deserialize configuration token
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public ExtensionConfiguration DecodeConfigurationToken(byte[] token)
+        {
+            // Decrypt the token
+            byte[] decrypted = Decrypt(token);
+
+            return DeserializeConfigurationToken(decrypted);
+        }
+
+        /// <summary>
+        /// Deserialize a Flatbuffer configuration payload to an ExtensionConfiguration object
+        /// </summary>
+        /// <param name="decrypted">Flatbuffer token</param>
+        /// <returns>Configuration object</returns>
+        private static ExtensionConfiguration DeserializeConfigurationToken(byte[] decrypted)
+        {
+            ActiveConfig activeConfig;
+            Model.XApiConfiguration xApiConfiguration = null;
+            Model.SteamConfiguration steamConfiguration = null;
+
+            // Initialize Flatbuffer
+            var fbConfig = TwitchAchievementTracker.Configuration.GetRootAsConfiguration(new ByteBuffer(decrypted));
+
+            if (fbConfig.XBoxLiveConfig.HasValue)
+            {
+                var xConfig = fbConfig.XBoxLiveConfig.Value;
+                xApiConfiguration = new Model.XApiConfiguration
+                {
+                    XApiKey = xConfig.XApiKey,
+                    StreamerXuid = xConfig.StreamerXuid == 0 ? null : xConfig.StreamerXuid.ToString(),
+                    TitleId = xConfig.TitleId == 0 ? null : xConfig.TitleId.ToString(),
+                    Locale = xConfig.Locale,
+                };
+            }
+
+            if (fbConfig.SteamConfig.HasValue)
+            {
+                var steamConfig = fbConfig.SteamConfig.Value;
+
+                steamConfiguration = new Model.SteamConfiguration
+                {
+                    WebApiKey = steamConfig.WebApiKey,
+                    SteamId = steamConfig.SteamId == 0 ? null : steamConfig.SteamId.ToString(),
+                    AppId = steamConfig.AppId == 0 ? null : steamConfig.AppId.ToString(),
+                    Locale = steamConfig.Locale,
+                };
+            }
+
+            switch (fbConfig.Active)
+            {
+                case ActiveConfiguration.XApiConfiguration:
+                    activeConfig = ActiveConfig.XBoxLive;
+                    break;
+                case ActiveConfiguration.SteamConfiguration:
+                    activeConfig = ActiveConfig.Steam;
+                    break;
+                default:
+                    throw new NotSupportedException("Unknown type");
+            }
+
+            return new ExtensionConfiguration
+            {
+                Version = fbConfig.Version,
+                ActiveConfig = activeConfig,
+                XBoxLiveConfig = xApiConfiguration,
+                SteamConfig = steamConfiguration,
+            };
+        }
+
+
+        /// <summary>
         /// Generates a 128bit random salt using the system provided crypto RNG
         /// </summary>
         /// <returns>16 bytes salt</returns>
@@ -55,101 +201,12 @@ namespace TwitchAchievementTrackerBackend.Services
             return aes;
         }
 
-        public byte[] EncryptConfigurationToken(ExtensionConfiguration configuration)
-        {
-            // Generate the Flatbuffer token payload
-            var builder = new FlatBufferBuilder(512);
-
-            Offset<TwitchAchievementTracker.Configuration> configurationOffset;
-            var version = builder.CreateString(configuration.Version);
-
-            var xConfig = configuration.XBoxLiveConfig as Model.XApiConfiguration;
-            var steamConfig = configuration.SteamConfig as Model.SteamConfiguration;
-
-            switch (configuration.ActiveConfig)
-            {
-                case ActiveConfig.XBoxLive:
-                    var apiKeyString = builder.CreateString(xConfig.XApiKey);
-                    var xuid64 = string.IsNullOrEmpty(xConfig.StreamerXuid) ? 0 : UInt64.Parse(xConfig.StreamerXuid);
-                    var titleId32 = string.IsNullOrEmpty(xConfig.TitleId) ? 0 : UInt32.Parse(xConfig.TitleId);
-                    var liveLocale = builder.CreateString(xConfig.Locale ?? "en-US");
-
-                    var xConfigOffset = TwitchAchievementTracker.XApiConfiguration.CreateXApiConfiguration(builder, apiKeyString, xuid64, titleId32, liveLocale);
-                    configurationOffset = TwitchAchievementTracker.Configuration.CreateConfiguration(builder, version, TwitchAchievementTracker.PlatformConfiguration.XApiConfiguration, xConfigOffset.Value);
-
-                    break;
-                case ActiveConfig.Steam:
-                    var webKeyString = builder.CreateString(steamConfig.WebApiKey);
-                    var steamId = UInt64.Parse(steamConfig.SteamId);
-                    var appId = steamConfig.AppId;
-                    var steamLocale = builder.CreateString(steamConfig.Locale ?? "english");
-
-                    var steamConfigOffset = TwitchAchievementTracker.SteamConfiguration.CreateSteamConfiguration(builder, webKeyString, uint.Parse(appId), steamId, steamLocale);
-                    configurationOffset = TwitchAchievementTracker.Configuration.CreateConfiguration(builder, version, TwitchAchievementTracker.PlatformConfiguration.SteamConfiguration, steamConfigOffset.Value);
-                    break;
-                default:
-                    throw new NotSupportedException("Unknown configuration platform");
-            }
-
-            builder.Finish(configurationOffset.Value);
-            var payload = builder.SizedByteArray();
-
-            // Encrypt the token
-            return Encrypt(payload);
-        }
-
-        public ExtensionConfiguration DecryptConfigurationToken(byte[] payload)
-        {
-            // Decrypt the token
-            byte[] decrypted = Decrypt(payload);
-
-            IPlatformConfiguration platformConfiguration;
-            ActiveConfig activeConfig;
-
-            // Initialize Flatbuffer
-            var fbConfig = TwitchAchievementTracker.Configuration.GetRootAsConfiguration(new ByteBuffer(decrypted));
-            switch(fbConfig.ConfigType)
-            {
-                case PlatformConfiguration.XApiConfiguration:
-
-                    var xConfig = fbConfig.Config<TwitchAchievementTracker.XApiConfiguration>().GetValueOrDefault();
-
-                    activeConfig = ActiveConfig.XBoxLive;
-                    platformConfiguration = new Model.XApiConfiguration
-                    {
-                        XApiKey = xConfig.XApiKey,
-                        StreamerXuid = xConfig.StreamerXuid == 0 ? null : xConfig.StreamerXuid.ToString(),
-                        TitleId = xConfig.TitleId == 0 ? null : xConfig.TitleId.ToString(),
-                        Locale = xConfig.Locale,
-                    };
-                    break;
-                case PlatformConfiguration.SteamConfiguration:
-
-                    var steamConfig = fbConfig.Config<TwitchAchievementTracker.SteamConfiguration>().GetValueOrDefault();
-
-                    activeConfig = ActiveConfig.Steam;
-                    platformConfiguration = new Model.SteamConfiguration
-                    {
-                        WebApiKey = steamConfig.WebApiKey,
-                        SteamId = steamConfig.SteamId == 0 ? null :steamConfig.SteamId.ToString(),
-                        AppId = steamConfig.AppId == 0 ? null : steamConfig.AppId.ToString(),
-                        Locale = steamConfig.Locale,
-                    };
-                    break;
-                default:
-                    throw new NotSupportedException("Unknown type");
-            }
-
-            return new ExtensionConfiguration
-            {
-                Version = fbConfig.Version,
-                ActiveConfig = activeConfig,
-                XBoxLiveConfig = platformConfiguration as Model.XApiConfiguration,
-                SteamConfig = platformConfiguration as Model.SteamConfiguration
-            };
-        }
-
-        byte[] Encrypt(byte[] payload)
+        /// <summary>
+        /// Encrypt a binary payload using AES CBC
+        /// </summary>
+        /// <param name="payload">Binary payload to encrypt</param>
+        /// <returns>Encrypted payload, 16bit salt as a prefix, then AES encrypted payload</returns>
+        public byte[] Encrypt(byte[] payload)
         {
             // Generate salt to derive secret Key and Initialization Vectory, will store the salt as a prefix of the payload
             var salt = GenerateSalt();
@@ -171,7 +228,12 @@ namespace TwitchAchievementTrackerBackend.Services
             }
         }
 
-        byte[] Decrypt(byte[] payload)
+        /// <summary>
+        /// Decrypt an AES CBC binary payload
+        /// </summary>
+        /// <param name="payload">Encrypted payload, 16bit salt as a prefix, then AES encrypted payload</param>
+        /// <returns>Decrypted buffer</returns>
+        public byte[] Decrypt(byte[] payload)
         {
             // Extract salt prefix to derive secret Key and IV
             byte[] salt = payload.Take(16).ToArray();
