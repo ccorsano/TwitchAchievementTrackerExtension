@@ -155,7 +155,7 @@ $(function() {
     }
     else
     {
-        $('.gameLogo').click(function() {
+        $('.gameLogo').click(function(event) {
             $(".overlayBox").addClass(detailsVisible ? "collapsed" : "open");
             $(".overlayBox").removeClass(detailsVisible ? "open" : "collapsed");
             if (detailsVisible)

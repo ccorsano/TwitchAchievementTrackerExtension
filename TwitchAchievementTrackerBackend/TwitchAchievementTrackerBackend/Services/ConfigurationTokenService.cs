@@ -66,11 +66,11 @@ namespace TwitchAchievementTrackerBackend.Services
             if (steamConfig != null)
             {
                 var webKeyString = builder.CreateString(steamConfig.WebApiKey);
-                var steamId = UInt64.Parse(steamConfig.SteamId);
-                var appId = steamConfig.AppId;
+                var steamId = string.IsNullOrEmpty(steamConfig.SteamId) ? 0 : UInt64.Parse(steamConfig.SteamId);
+                var appId = string.IsNullOrEmpty(steamConfig.AppId) ? 0 : uint.Parse(steamConfig.AppId);
                 var steamLocale = builder.CreateString(steamConfig.Locale ?? "english");
 
-                steamConfigOffset = TwitchAchievementTracker.SteamConfiguration.CreateSteamConfiguration(builder, webKeyString, uint.Parse(appId), steamId, steamLocale);
+                steamConfigOffset = TwitchAchievementTracker.SteamConfiguration.CreateSteamConfiguration(builder, webKeyString, appId, steamId, steamLocale);
             }
 
             switch (configuration.ActiveConfig)

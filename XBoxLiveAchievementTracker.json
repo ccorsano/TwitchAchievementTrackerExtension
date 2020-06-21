@@ -6,15 +6,15 @@
   "extensionViews": [
     {
       "id": "1",
-      "label": "Test",
-      "channelId": "158511925",
+      "label": "Video Overlay",
+      "channelId": "265737932",
       "configurationAnchor": "video_overlay",
       "displayChannelName": "miekyld",
       "type": "video_overlay",
       "features": {
-        "isBitsEnabled": true,
-        "isChatEnabled": true,
-        "isSubscriptionStatusAvailable": true
+        "isBitsEnabled": false,
+        "isChatEnabled": false,
+        "isSubscriptionStatusAvailable": false
       },
       "linked": false,
       "linkedUserId": "",
@@ -30,7 +30,7 @@
     {
       "id": "2",
       "label": "Configuration",
-      "channelId": "158511925",
+      "channelId": "265737932",
       "configurationAnchor": "video_overlay",
       "displayChannelName": "miekyld",
       "type": "config",
@@ -52,7 +52,7 @@
     },
     {
       "id": "3",
-      "label": "",
+      "label": "iPhone 8 portrait",
       "channelId": "265737932",
       "configurationAnchor": "video_overlay",
       "displayChannelName": "miekyld",
@@ -75,7 +75,7 @@
     },
     {
       "id": "4",
-      "label": "",
+      "label": "iPhone 8 landcape",
       "channelId": "265737932",
       "configurationAnchor": "video_overlay",
       "displayChannelName": "miekyld",
