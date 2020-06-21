@@ -142,7 +142,7 @@ function steamConfig()
 
 function onPackConfig(config)
 {
-  twitch.configuration.set('broadcaster', '0.0.3', config.configToken);
+  twitch.configuration.set('broadcaster', '0.0.2', config.configToken);
 }
 
 function onResolveXuid(result)
@@ -232,7 +232,7 @@ window.onload = function()
   $('#saveActiveConfig').click(function()
   {
     var config = {
-      'version': '0.0.3',
+      'version': '0.0.2',
       'activeConfig': undefined,
       'xBoxLiveConfig': xboxLiveConfig(),
       'steamConfig': steamConfig()
