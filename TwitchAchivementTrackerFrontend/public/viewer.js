@@ -65,6 +65,10 @@ function tryRefreshConfiguration() {
     {
         clearInterval(intervalTimer);
     }
+    else if (detailsVisible)
+    {
+        $.ajax(requests.listAchievement);
+    }
     intervalTimer = setInterval(function() {
         $.ajax(requests.summary);
         if (detailsVisible)
@@ -145,19 +149,26 @@ function logSuccess(hex, status) {
 }
 
 $(function() {
-    $('.gameLogo').click(function() {
-        $(".overlayBox").addClass(detailsVisible ? "collapsed" : "open");
-        $(".overlayBox").removeClass(detailsVisible ? "open" : "collapsed");
-        if (detailsVisible)
-        {
-            $("#list").css('display', 'none')
-            detailsVisible = false;
-        }
-        else
-        {
-            $("#list").css('display', 'block')
-            $.ajax(requests.listAchievement)
-            detailsVisible = true;
-        }
-    });
+    // Auto expand if box is visible by default
+    if($('.overlayBox.open').length > 0){
+        detailsVisible = true;
+    }
+    else
+    {
+        $('.gameLogo').click(function() {
+            $(".overlayBox").addClass(detailsVisible ? "collapsed" : "open");
+            $(".overlayBox").removeClass(detailsVisible ? "open" : "collapsed");
+            if (detailsVisible)
+            {
+                $("#list").css('display', 'none')
+                detailsVisible = false;
+            }
+            else
+            {
+                $("#list").css('display', 'block')
+                $.ajax(requests.listAchievement)
+                detailsVisible = true;
+            }
+        });
+    }
 });
