@@ -29,6 +29,7 @@ var broadcastCallback = function(target, contentType, messageStr){
     {
         configToken = message.configToken;
         configVersion = message.version;
+        $('#list').empty();
         tryRefreshConfiguration();
     }
 };
@@ -74,7 +75,7 @@ function tryRefreshConfiguration() {
     {
         clearInterval(intervalTimer);
     }
-    else if (detailsVisible)
+    if (detailsVisible)
     {
         $.ajax(requests.listAchievement);
     }
