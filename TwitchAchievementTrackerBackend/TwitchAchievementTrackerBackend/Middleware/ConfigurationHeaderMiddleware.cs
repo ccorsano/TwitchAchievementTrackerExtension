@@ -65,7 +65,7 @@ namespace TwitchAchievementTrackerBackend.Middleware
                         // Current version
                         case "0.0.2":
                         case "0.0.3":
-                            configuration = configService.DecodeConfigurationToken(Convert.FromBase64String(token));
+                            configuration = configService.DecodeConfigurationToken(Convert.FromBase64String(token));    
                             break;
 
                         default:
