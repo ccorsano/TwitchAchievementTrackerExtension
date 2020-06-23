@@ -12,6 +12,16 @@ namespace TwitchAchievementTrackerBackend.Helpers
     {
         private const string CONFIGURATION_KEY = "XCONFIGTOKEN";
 
+        public static bool HasExtensionConfiguration(this ControllerBase controller)
+        {
+            return controller.HttpContext.HasExtensionConfiguration();
+        }
+
+        public static bool HasExtensionConfiguration(this HttpContext context)
+        {
+            return context.Items.ContainsKey(CONFIGURATION_KEY);
+        }
+
         public static ExtensionConfiguration GetExtensionConfiguration(this ControllerBase controller)
         {
             return controller.HttpContext.GetExtensionConfiguration();
