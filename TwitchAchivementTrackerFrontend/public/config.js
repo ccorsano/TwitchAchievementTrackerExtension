@@ -143,6 +143,12 @@ function steamConfig()
 function onPackConfig(config)
 {
   twitch.configuration.set('broadcaster', '0.0.3', config.configToken);
+  
+  twitch.send("broadcast", "application/json", {
+    "type": "set-config",
+    "version": '0.0.3',
+    "configToken": config.configToken
+  });
 }
 
 function onResolveXuid(result)

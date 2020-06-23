@@ -4,6 +4,8 @@ var ebs = "";
 var detailsVisible = false;
 var server = "twitchext.conceptoire.com/v2"
 var intervalTimer = false;
+var configToken = "";
+var configVersion = "";
 
 var urlParams = new URLSearchParams(this.location.search);
 if (urlParams.get('state') == "testing")
@@ -19,6 +21,16 @@ var requests = {
     titleInfo: createAchievementsRequest('GET', 'title', updateTitle),
     summary: createAchievementsRequest('GET', 'summary', updateSummary),
     listAchievement: createAchievementsRequest('GET', 'list', updateBlock)
+};
+
+var broadcastCallback = function(target, contentType, messageStr){
+    var message = JSON.parse(messageStr);
+    if (message.configToken != configToken)
+    {
+        configToken = message.configToken;
+        configVersion = message.version;
+        tryRefreshConfiguration();
+    }
 };
 
 function createAchievementsRequest(type, method, callback) {
@@ -53,9 +65,6 @@ function tryRefreshConfiguration() {
         return false;
     }
 
-    var configToken = twitch.configuration.broadcaster.content;
-    var configVersion = twitch.configuration.broadcaster.version;
-
     setAuth(token, configToken, configVersion);
     $.ajax(requests.titleInfo);
     $.ajax(requests.summary);
@@ -77,6 +86,9 @@ function tryRefreshConfiguration() {
         }
     }, 60000);
 
+    twitch.unlisten('broadcast', broadcastCallback);
+    twitch.listen("broadcast", broadcastCallback);
+
     return true;
 }
 
@@ -92,6 +104,9 @@ twitch.onAuthorized(function(auth) {
     // save our credentials
     token = auth.token;
     tuid = auth.userId;
+
+    configToken = twitch.configuration.broadcaster.content;
+    configVersion = twitch.configuration.broadcaster.version;
 
     tryRefreshConfiguration();
 });
