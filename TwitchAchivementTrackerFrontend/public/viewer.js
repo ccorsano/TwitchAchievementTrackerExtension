@@ -1,8 +1,9 @@
-var token = "";
+var token = undefined;
 var tuid = "";
 var ebs = "";
 var detailsVisible = false;
-var server = "twitchext.conceptoire.com"
+var server = "twitchext.conceptoire.com/v2"
+var intervalTimer = false;
 
 var urlParams = new URLSearchParams(this.location.search);
 if (urlParams.get('state') == "testing")
@@ -30,12 +31,13 @@ function createAchievementsRequest(type, method, callback) {
     }
 }
 
-function setAuth(token, config) {
+function setAuth(token, config, version) {
     Object.keys(requests).forEach((req) => {
-        twitch.rig.log('Setting auth headers');
+        twitch.rig.log('Setting auth headers for request ' + req);
         requests[req].headers = {
             'Authorization': 'Bearer ' + token,
-            'X-Config-Token': config
+            'X-Config-Token': config,
+            'X-Config-Version': version,
         }
     });
 }
@@ -44,11 +46,46 @@ twitch.onContext(function(context) {
     twitch.rig.log(context);
 });
 
+function tryRefreshConfiguration() {
+    if (! token || ! twitch.configuration.broadcaster)
+    {
+        twitch.rig.log('Delaying config refresh, extension not ready yet');
+        return false;
+    }
+
+    var configToken = twitch.configuration.broadcaster.content;
+    var configVersion = twitch.configuration.broadcaster.version;
+
+    setAuth(token, configToken, configVersion);
+    $.ajax(requests.titleInfo);
+    $.ajax(requests.summary);
+
+    // Refresh the data every minute
+    if (intervalTimer)
+    {
+        clearInterval(intervalTimer);
+    }
+    else if (detailsVisible)
+    {
+        $.ajax(requests.listAchievement);
+    }
+    intervalTimer = setInterval(function() {
+        $.ajax(requests.summary);
+        if (detailsVisible)
+        {
+            $.ajax(requests.listAchievement);
+        }
+    }, 60000);
+
+    return true;
+}
+
 twitch.configuration.onChanged(function(){
     if (! twitch.configuration.broadcaster)
     {
         throw 'Could not load broadcaster config';
     }
+    tryRefreshConfiguration();
 })
 
 twitch.onAuthorized(function(auth) {
@@ -56,51 +93,23 @@ twitch.onAuthorized(function(auth) {
     token = auth.token;
     tuid = auth.userId;
 
-    var configToken = twitch.configuration.broadcaster.content;
-
-    // enable the button
-    $('#cycle').removeAttr('disabled');
-
-    setAuth(token, configToken);
-    $.ajax(requests.titleInfo);
-    $.ajax(requests.summary);
-
-    $('#showDetails').click(function() {
-        $("#showDetails").addClass(detailsVisible ? "collapsed" : "open");
-        $("#showDetails").removeClass(detailsVisible ? "open" : "collapsed");
-        if (detailsVisible)
-        {
-            $("#list").css('display', 'none')
-            detailsVisible = false;
-        }
-        else
-        {
-            $("#list").css('display', 'block')
-            $.ajax(requests.listAchievement)
-            detailsVisible = true;
-        }
-    });
-
-    // Refresh the data every minute
-    setInterval(function() {
-        $.ajax(requests.summary);
-        if (detailsVisible)
-        {
-            $.ajax(requests.listAchievement);
-        }
-    }, 60000);
+    tryRefreshConfiguration();
 });
 
 function updateTitle(titleInfo) {
     $('#gameTitle').text(titleInfo.productTitle);
-    $('#gameLogo').attr('src', titleInfo.logoUri);
+    $('.gameLogo').css('background-image', 'url(' + titleInfo.logoUri + ')');
 }
 
 function updateSummary(summary) {
     twitch.rig.log('Updating summary');
     twitch.rig.log('Summary : ' + summary.completed + '/' + summary.total + ', ' + summary.currentPoints + '/' + summary.totalPoints + ' gamerscore');
     var percentage = (summary.completed / summary.total) * 100.0;
-    $('#completionHeadline').text('Achievements: ' + summary.completed + '/' + summary.total + ' ' + percentage.toFixed(2) + '%');
+    $('#completionHeadline .completedCount').text(summary.completed);
+    $('#completionHeadline .totalCount').text(summary.total);
+    $('#completionHeadline .percentage').text(percentage.toFixed(2) + '%');
+    // $('#completionHeadline').text('Achievements: ' + summary.completed + '/' + summary.total + ' ' + percentage.toFixed(2) + '%');
+    $('.summaryWidget').text(percentage.toFixed(0) + '%');
 }
 
 function updateBlock(achievements) {
@@ -140,17 +149,26 @@ function logSuccess(hex, status) {
 }
 
 $(function() {
-
-    // when we click the cycle button
-    $('#cycle').click(function() {
-        if(!token) { return twitch.rig.log('Not authorized'); }
-        twitch.rig.log('Requesting a color cycle');
-        $.ajax(requests.set);
-    });
-
-    // listen for incoming broadcast message from our EBS
-    twitch.listen('broadcast', function (target, contentType, color) {
-        twitch.rig.log('Received broadcast color');
-        updateBlock(color);
-    });
+    // Auto expand if box is visible by default
+    if($('.overlayBox.open').length > 0){
+        detailsVisible = true;
+    }
+    else
+    {
+        $('.gameLogo').click(function(event) {
+            $(".overlayBox").addClass(detailsVisible ? "collapsed" : "open");
+            $(".overlayBox").removeClass(detailsVisible ? "open" : "collapsed");
+            if (detailsVisible)
+            {
+                $("#list").css('display', 'none')
+                detailsVisible = false;
+            }
+            else
+            {
+                $("#list").css('display', 'block')
+                $.ajax(requests.listAchievement)
+                detailsVisible = true;
+            }
+        });
+    }
 });

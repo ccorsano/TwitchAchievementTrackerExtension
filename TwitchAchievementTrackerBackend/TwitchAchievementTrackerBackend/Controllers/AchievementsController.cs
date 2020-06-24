@@ -75,11 +75,19 @@ namespace TwitchAchievementTrackerBackend.Controllers
         [HttpGet("/api/title/search/{query}")]
         public async Task<IEnumerable<TitleInfo>> SearchTitleInfo(string query)
         {
-            var config = this.GetExtensionConfiguration();
-            if (config.ActiveConfig == ActiveConfig.XBoxLive)
+            ExtensionConfiguration config = null;
+            if (this.HasExtensionConfiguration())
             {
+                config = this.GetExtensionConfiguration();
+            }
 
-                var searchResult = await _xApiService.SearchTitle(query);
+            if (config?.ActiveConfig == ActiveConfig.Steam)
+            {
+                return await _steamApiService.SearchTitle(query);
+            }
+            else
+            {
+                var searchResult = await _xApiService.SearchTitle(query, config?.XBoxLiveConfig);
 
                 return searchResult.Products.Select(product =>
                     new TitleInfo
@@ -91,16 +99,18 @@ namespace TwitchAchievementTrackerBackend.Controllers
                     }
                 );
             }
-            else
-            {
-                return await _steamApiService.SearchTitle(query);
-            }
         }
 
         [HttpGet("/api/xuid/{gamertag}")]
         public async Task<string> ResolveXuid(string gamerTag)
         {
-            return await _xApiService.ResolveXuid(gamerTag);
+            XApiConfiguration xApiConfiguration = null;
+            if (this.HasExtensionConfiguration())
+            {
+                xApiConfiguration = this.GetExtensionConfiguration().XBoxLiveConfig;
+            }
+
+            return await _xApiService.ResolveXuid(gamerTag, xApiConfiguration);
         }
 
 

@@ -35,13 +35,22 @@ namespace TwitchAchievementTrackerBackend.Services
             return $"{call}:{config.TitleId}:{config.StreamerXuid}:{config.Locale}";
         }
 
-        public async Task<XApiMarketplaceSearchResult> SearchTitle(string query)
+        public async Task<XApiMarketplaceSearchResult> SearchTitle(string query, XApiConfiguration config = null)
         {
             var cacheKey = $"titlesearch:{query}";
             if (!_cache.TryGetValue<XApiMarketplaceSearchResult>(cacheKey, out var result))
             {
                 var message = new HttpRequestMessage(HttpMethod.Get, $"marketplace/search/{query}");
+
+                if (config != null)
+                {
+                    message.Headers.Add("X-AUTH", config.XApiKey);
+                    message.Headers.Add("Accept-Language", $"{config.Locale};q=1.0");
+                }
+
                 var response = await _httpClient.SendAsync(message);
+                response.EnsureSuccessStatusCode();
+
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
                     result = await JsonSerializer.DeserializeAsync<XApiMarketplaceSearchResult>(responseStream, new JsonSerializerOptions
@@ -56,14 +65,23 @@ namespace TwitchAchievementTrackerBackend.Services
             return result;
         }
 
-        public async Task<string> ResolveXuid(string gamerTag)
+        public async Task<string> ResolveXuid(string gamerTag, XApiConfiguration config = null)
         {
             var cacheKey = $"xuid:{gamerTag}";
 
             if (!_cache.TryGetValue<string>(cacheKey, out var result))
             {
                 var message = new HttpRequestMessage(HttpMethod.Get, $"xuid/{gamerTag}");
+
+                if (config != null)
+                {
+                    message.Headers.Add("X-AUTH", config.XApiKey);
+                    message.Headers.Add("Accept-Language", $"{config.Locale};q=1.0");
+                }
+
                 var response = await _httpClient.SendAsync(message);
+                response.EnsureSuccessStatusCode();
+
                 result = await response.Content.ReadAsStringAsync();
                 _cache.Set(cacheKey, result);
             }
@@ -88,6 +106,8 @@ namespace TwitchAchievementTrackerBackend.Services
                 message.Headers.Add("X-AUTH", config.XApiKey);
                 message.Headers.Add("Accept-Language", $"{config.Locale};q=1.0");
                 var response = await _httpClient.SendAsync(message);
+
+                response.EnsureSuccessStatusCode();
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
                     result = await JsonSerializer.DeserializeAsync<XApiAchievement[]>(responseStream, new JsonSerializerOptions
@@ -118,6 +138,7 @@ namespace TwitchAchievementTrackerBackend.Services
                 message.Headers.Add("X-AUTH", config.XApiKey);
                 message.Headers.Add("Accept-Language", $"{config.Locale};q=1.0");
                 var response = await _httpClient.SendAsync(message);
+                response.EnsureSuccessStatusCode();
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
                     result = await JsonSerializer.DeserializeAsync<XApiMarketplaceTitleInfo>(responseStream, new JsonSerializerOptions

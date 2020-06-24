@@ -1,5 +1,5 @@
 let token, userId;
-var server = "twitchext.conceptoire.com"
+var server = "twitchext.conceptoire.com/v2"
 
 var urlParams = new URLSearchParams(this.location.search);
 if (urlParams.get('state') == "testing")
@@ -28,6 +28,7 @@ twitch.onAuthorized((auth) => {
       headers: {
         'Authorization': 'Bearer ' + token,
         'X-Config-Token': twitch.configuration.broadcaster.content,
+        'X-Config-Version': twitch.configuration.broadcaster.version,
       }
     };
     $.ajax(request);
@@ -119,9 +120,29 @@ function steamConfig()
   };
 }
 
+function xboxLiveConfig()
+{
+  return {
+    'xApiKey': $('input[name=xapiKey]').val(),
+    'streamerXuid': $('input[name=streamerXuid]').val(),
+    'titleId': $('input[name=titleId]').val(),
+    'locale': $('input[name=locale]').val(),
+  };
+}
+
+function steamConfig()
+{
+  return {
+    'webApiKey': $('input[name=steamWebApiKey]').val(),
+    'steamId': $('input[name=streamerSteamId]').val(),
+    'appId': $('input[name=steamAppId]').val(),
+    'locale': $('input[name=steamLocale]').val(),
+  };
+}
+
 function onPackConfig(config)
 {
-  twitch.configuration.set('broadcaster', '0.0.2', config.configToken);
+  twitch.configuration.set('broadcaster', '0.0.3', config.configToken);
 }
 
 function onResolveXuid(result)
@@ -181,27 +202,6 @@ window.onload = function()
     };
     $.ajax(request);
   });
-  $('#saveConfig').click(function()
-  {
-    var config = {
-      'version': '0.0.1',
-      'activeConfig': 'XBoxLive',
-      'xBoxLiveConfig': xboxLiveConfig(),
-      'steamConfig': steamConfig()
-    };
-    var request = {
-      type: 'POST',
-      url: location.protocol + '//' + server + '/api/configuration',
-      success: onPackConfig,
-      error: logError,
-      data: JSON.stringify(config),
-      contentType : 'application/json; charset=UTF-8',
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    };
-    $.ajax(request);
-  });
   
   $('#steamSearchTitle').click(function()
   {
@@ -228,14 +228,29 @@ window.onload = function()
     $.ajax(request);
   });
 
-  $('#saveSteamConfig').click(function()
+
+  $('#saveActiveConfig').click(function()
   {
     var config = {
-      'version': '0.0.2',
-      'activeConfig': 'Steam',
+      'version': '0.0.3',
+      'activeConfig': undefined,
       'xBoxLiveConfig': xboxLiveConfig(),
       'steamConfig': steamConfig()
     };
+
+    var checkedId = $('div.collapse > input[type=radio]:checked').attr('id');
+    switch (checkedId) {
+      case 'collapse-xbl':
+        config.activeConfig = 'XBoxLive';
+        break;
+      case 'collapse-steam':
+        config.activeConfig = 'Steam';
+        break;
+    
+      default:
+        break;
+    }
+
     var request = {
       type: 'POST',
       url: location.protocol + '//' + server + '/api/configuration',
@@ -254,4 +269,5 @@ window.onload = function()
   {
     var checkedId = $('div.collapse > input[checked=checked]').attr('id')
   });
+}
 }
