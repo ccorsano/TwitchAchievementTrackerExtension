@@ -1,10 +1,16 @@
 ﻿using Google.FlatBuffers;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
+using System.Security.Cryptography.Xml;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using TwitchAchievementTracker;
 using TwitchAchievementTrackerBackend.Configuration;
 using TwitchAchievementTrackerBackend.Model;
@@ -14,10 +20,17 @@ namespace TwitchAchievementTrackerBackend.Services
     public class ConfigurationTokenService
     {
         private readonly ConfigurationTokenOptions _options;
+        private readonly SteamApiService _steamApiService;
+        private readonly XApiService _xApiService;
+        private readonly Regex XAPI_REGEX = new Regex("^[0-9a-fA-F]{40}$", RegexOptions.Compiled);
+        private readonly ILogger _logger;
 
-        public ConfigurationTokenService(IOptions<ConfigurationTokenOptions> options)
+        public ConfigurationTokenService(IOptions<ConfigurationTokenOptions> options, ILogger<ConfigurationTokenService> logger, SteamApiService steamApiService, XApiService xApiService)
         {
             _options = options.Value;
+            _steamApiService = steamApiService;
+            _xApiService = xApiService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -31,6 +44,65 @@ namespace TwitchAchievementTrackerBackend.Services
 
             // Encrypt the token
             return Encrypt(payload);
+        }
+
+        public async Task<ValidationError[]> ValidateConfiguration(ExtensionConfiguration configuration)
+        {
+            var errors = new List<ValidationError>();
+
+            switch (configuration.ActiveConfig)
+            {
+                case ActiveConfig.XBoxLive:
+                    if (string.IsNullOrEmpty(configuration.XBoxLiveConfig.XApiKey) || !XAPI_REGEX.IsMatch(configuration.XBoxLiveConfig.XApiKey))
+                    {
+                        errors.Add(new ValidationError
+                        {
+                            Path = "XBoxLiveConfig.XApiKey",
+                            ErrorCode = "InvalidFormat",
+                            ErrorDescription = "XApi.us key missing or invalid. It must be 40 character long and hexadecimal.",
+                        });
+                    }
+                    else
+                    {
+                        try
+                        {
+                            await _xApiService.GetApiKeyXuid(configuration.XBoxLiveConfig.XApiKey);
+                        }
+                        catch (XApiException ex)
+                        {
+                            errors.Add(new ValidationError
+                            {
+                                Path = "XBoxLiveConfig.XApiKey",
+                                ErrorCode = ex.ErrorCode,
+                                ErrorDescription = ex.Message,
+                            });
+                        }
+                        catch (HttpRequestException ex)
+                        {
+                            _logger.LogError(ex, "Error validating XApiKey");
+
+                            errors.Add(new ValidationError
+                            {
+                                Path = "XBoxLiveConfig.XApiKey",
+                                ErrorCode = "XApiError",
+                                ErrorDescription = "Error calling into XApi",
+                            });
+                        }
+                    }
+                    break;
+                case ActiveConfig.Steam:
+                    break;
+                default:
+                    errors.Add(new ValidationError
+                    {
+                        Path = "ActiveConfig",
+                        ErrorCode = "InvalidConfigType",
+                        ErrorDescription = "Invalid active configuration type",
+                    });
+                    break;
+            }
+
+            return errors.ToArray();
         }
 
         /// <summary>

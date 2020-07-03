@@ -10,6 +10,22 @@ using TwitchAchievementTrackerBackend.Model.XApi;
 
 namespace TwitchAchievementTrackerBackend.Services
 {
+
+    [Serializable]
+    public class XApiException : Exception
+    {
+        public string ErrorCode { get; private set; }
+
+        public XApiException(string errorCode, string message) : base(message)
+        {
+            ErrorCode = errorCode;
+        }
+        public XApiException(string errorCode, string message, Exception inner) : base(message, inner)
+        {
+            ErrorCode = errorCode;
+        }
+    }
+
     public class XApiService
     {
         private readonly HttpClient _httpClient;
@@ -33,6 +49,32 @@ namespace TwitchAchievementTrackerBackend.Services
         public string GetCacheKey(string call, XApiConfiguration config)
         {
             return $"{call}:{config.TitleId}:{config.StreamerXuid}:{config.Locale}";
+        }
+
+        public async Task<XUIDInfo> GetApiKeyXuid(string xApiKey)
+        {
+            var message = new HttpRequestMessage(HttpMethod.Get, $"accountXuid");
+            message.Headers.Add("X-AUTH", xApiKey);
+            var response = await _httpClient.SendAsync(message);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorMessage = JsonSerializer.Deserialize<XApiError>(responseBody, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                var errorCode = "XApiUnauthorizedError";
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized && errorMessage.Error_Message.Contains("fresh login"))
+                {
+                    errorCode = "ExpiredXBLToken";
+                }
+                throw new XApiException(errorCode, errorMessage.Error_Message);
+            }
+
+            return JsonSerializer.Deserialize<XUIDInfo>(responseBody, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
         }
 
         public async Task<XApiMarketplaceSearchResult> SearchTitle(string query, XApiConfiguration config = null)

@@ -2,7 +2,44 @@
   "allowHttpBackend": false,
   "backendCommand": "dotnet run --launch-profile TwitchAchievementTrackerBackend",
   "backendFolderName": "TwitchAchievementTrackerBackend\\TwitchAchievementTrackerBackend",
-  "certificateExceptions": [],
+  "certificateExceptions": [
+    {
+      "isAllowed": true,
+      "isEphemeral": false,
+      "isOrigin": false,
+      "value": "https://localhost:8080/video_overlay.html?anchor=video_overlay&language=en&locale=en-US&mode=viewer&state=testing&platform=web&legacyComponentDesign=true"
+    },
+    {
+      "isAllowed": true,
+      "isEphemeral": false,
+      "isOrigin": true,
+      "value": "wss://localhost:8080"
+    },
+    {
+      "isAllowed": true,
+      "isEphemeral": false,
+      "isOrigin": false,
+      "value": "https://localhost:8080/mobile.html?anchor=mobile&language=en&locale=en-US&mode=viewer&state=testing&platform=mobile"
+    },
+    {
+      "isAllowed": true,
+      "isEphemeral": false,
+      "isOrigin": true,
+      "value": "https://localhost:8080"
+    },
+    {
+      "isAllowed": true,
+      "isEphemeral": false,
+      "isOrigin": true,
+      "value": "https://localhost:8090"
+    },
+    {
+      "isAllowed": true,
+      "isEphemeral": false,
+      "isOrigin": true,
+      "value": "wss://localhost:8090"
+    }
+  ],
   "extensionViews": [
     {
       "id": "1",
@@ -103,7 +140,7 @@
     "authorName": "Miekyll",
     "bitsEnabled": false,
     "canInstall": true,
-    "configUrl": "https://localhost:8080/config.html",
+    "configUrl": "https://localhost:8090/config.html",
     "configurationLocation": "hosted",
     "description": "Third iteration of the extension dedicated to Nuja's 100% Quest program !\ntwitch.tv/nuja\n\nThis overlay shows XBoxLive or Steam achievements for a given player and a given game.\nOnce configured, your viewers can keep track of how many achievements are left to unlock when streaming to complete a game 100%.\n\nVersion 0.0.3:\nTDB\n\nPre-requisite:\n- XBoxLive configuration uses xapi.us to query XBoxLive, the configuration will require the streamer to input an API key from xapi.us.\n- Steam configuration requires a Steam WebAPI key that any Steam User can request through https://steamcommunity.com/dev\n\nAuthors:\nNuja's Community\ntwitch.tv/miekyld\ntwitch.tv/xenomorpheapeuree\ntwitch.tv/kbinturong",
     "eulaTosUrl": "https://twitchext.conceptoire.com/EULA",
@@ -138,19 +175,19 @@
     "viewerSummary": "Prototype pour suivre le 100% quest de Nuja !",
     "viewerUrl": "",
     "viewerUrls": {
-      "mobile": "https://localhost:8080/mobile.html",
-      "videoOverlay": "https://localhost:8080/video_overlay.html"
+      "mobile": "https://localhost:8090/mobile.html",
+      "videoOverlay": "https://localhost:8090/video_overlay.html"
     },
     "views": {
       "mobile": {
-        "viewerUrl": "https://localhost:8080/mobile.html"
+        "viewerUrl": "https://localhost:8090/mobile.html"
       },
       "videoOverlay": {
-        "viewerUrl": "https://localhost:8080/video_overlay.html",
+        "viewerUrl": "https://localhost:8090/video_overlay.html",
         "canLinkExternalContent": false
       },
       "config": {
-        "viewerUrl": "https://localhost:8080/config.html",
+        "viewerUrl": "https://localhost:8090/config.html",
         "canLinkExternalContent": false
       }
     },

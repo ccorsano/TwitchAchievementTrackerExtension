@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 using TwitchAchievementTrackerBackend.Helpers;
 using TwitchAchievementTrackerBackend.Model;
 using TwitchAchievementTrackerBackend.Services;
@@ -32,6 +33,12 @@ namespace TwitchAchievementTrackerBackend.Controllers
             {
                 ConfigToken = Convert.ToBase64String(_service.EncodeConfigurationToken(configuration))
             };
+        }
+
+        [HttpPost("validate")]
+        public Task<ValidationError[]> ValidateConfiguration(ExtensionConfiguration configuration)
+        {
+            return _service.ValidateConfiguration(configuration);
         }
     }
 }
