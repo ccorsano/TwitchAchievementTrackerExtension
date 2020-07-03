@@ -1,32 +1,9 @@
-import { EBSBase } from "./EBSBase";
-
+import * as EBSConfig from "../common/ServerConfig"
 import * as EBS from './EBSBase'
+import { ExtensionConfiguration } from '../common/EBSTypes';
 
-export enum ActiveConfig {
-    XBoxLive = 'XBoxLive',
-    Steam = 'Steam',
-}
-
-export interface XApiConfiguration {
-    XApiKey: string;
-    StreamerXuid: string;
-    TitleId: string;
-    Locale: string;
-}
-
-export interface SteamConfiguration {
-    WebApiKey: string;
-    SteamId: string;
-    AppId: string;
-    Locale: string;
-}
-
-
-export interface ExtensionConfiguration {
-    Version: string;
-    ActiveConfig: ActiveConfig;
-    XBoxLiveConfig: XApiConfiguration;
-    SteamConfig: SteamConfiguration;
+export interface EncryptedConfigurationResponse {
+    configToken: string;
 }
 
 export interface ValidationError {
@@ -35,22 +12,12 @@ export interface ValidationError {
     errorDescription: string;
 }
 
-
-var server = "https://twitchext.conceptoire.com/v2"
-var intervalTimer = false;
-
-var urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get('state') == "testing")
-{
-    server = "http://localhost:8081"
-}
-
 export default class EBSConfigurationService extends EBS.EBSBase {
     constructor(){
-        super(server + "/api/configuration");
+        super(EBSConfig.EBSBaseUrl + "/api/configuration");
     }
 
-    setConfiguration = async(config: ExtensionConfiguration): Promise<void> => {
+    setConfiguration = async(config: ExtensionConfiguration): Promise<EncryptedConfigurationResponse> => {
         return this.serviceFetch("/", {
             method: 'POST',
             body: JSON.stringify(config)

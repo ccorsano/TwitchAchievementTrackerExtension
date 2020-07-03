@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as Base from '../../common/ConfigStepBase';
-import { ActiveConfig, ConfigurationService, ValidationError } from '../../services/EBSConfigurationService';
+import { ActiveConfig, ExtensionConfiguration } from '../../common/EBSTypes';
+import { ConfigurationService, ValidationError } from '../../services/EBSConfigurationService';
+import { AchievementsService } from '../../services/EBSAchievementsService';
 
 type ConfigXBL_01_XApiKeyState = {
     isSyntaxValid: boolean,
@@ -53,7 +55,7 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
             isValidating: true
         });
 
-        let errors = await ConfigurationService.validateConfiguration({
+        const configuration: ExtensionConfiguration = {
             ActiveConfig: ActiveConfig.XBoxLive,
             SteamConfig: null,
             Version: "0.0.2",
@@ -63,7 +65,9 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
                 StreamerXuid: null,
                 TitleId: null,
             }
-        });
+        }
+
+        let errors = await ConfigurationService.validateConfiguration(configuration);
 
         this.setState({
             errors: errors,
@@ -73,6 +77,9 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
         if (this.state.errors.length == 0)
         {
             this.props.onValid(this, this.props.nextState);
+            let newConfig = await ConfigurationService.setConfiguration(configuration);
+            ConfigurationService.configuration.content = newConfig.configToken;
+            AchievementsService.configuration.content = newConfig.configToken;
         }
 
     }

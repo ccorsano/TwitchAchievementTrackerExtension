@@ -1,4 +1,5 @@
 import { version } from "webpack";
+import { Twitch } from '../services/TwitchService';
 
 
 var urlParams = new URLSearchParams(window.location.search);
@@ -22,8 +23,8 @@ export class EBSBase {
         this._onConfiguration = this._onConfiguration.bind(this);
         this.baseUrl = baseUrl;
 
-        (<any>window).Twitch.ext.onAuthorized(this._onAuthorized);
-        (<any>window).Twitch.ext.configuration.onChanged(this._onConfiguration);
+        Twitch.onAuthorized.push(this._onAuthorized);
+        Twitch.onConfiguration.push(this._onConfiguration);
     }
 
     serviceFetch = async <T>(path: string, init: RequestInit = null): Promise<T> => {
