@@ -48,7 +48,7 @@ namespace TwitchAchievementTrackerBackend.Services
             var message = new HttpRequestMessage(HttpMethod.Get, $"ISteamApps/GetAppList/v2/");
             var response = await _httpClient.SendAsync(message);
             response.EnsureSuccessStatusCode();
-            
+
             using (var responseStream = await response.Content.ReadAsStreamAsync())
             {
                 var result = await JsonSerializer.DeserializeAsync<SteamAppListResult>(responseStream, new JsonSerializerOptions
@@ -70,7 +70,7 @@ namespace TwitchAchievementTrackerBackend.Services
         {
             var cacheKey = $"steam:store:{appId}";
 
-            if (! _cache.TryGetValue(cacheKey, out SteamStoreDetails result))
+            if (!_cache.TryGetValue(cacheKey, out SteamStoreDetails result))
             {
                 var response = await _storeClient.GetAsync($"api/appdetails/?appids={appId}");
                 response.EnsureSuccessStatusCode();
@@ -87,6 +87,59 @@ namespace TwitchAchievementTrackerBackend.Services
 
                 _cache.Set(cacheKey, result);
             }
+            return result;
+        }
+
+        public async Task<SteamPlayerSummary[]> GetPlayersSummaries(string[] steamIds, string webApiKey = null)
+        {
+            webApiKey = webApiKey ?? _options.WebApiKey;
+
+            Func<string, string> cacheKey = (string vanityId) => $"steam:profilesummary:{vanityId}";
+
+            var cachedValues = steamIds.ToDictionary(id => id, id => _cache.TryGetValue<SteamPlayerSummary>(cacheKey(id), out var cached) ? cached : null);
+            var remainingIds = steamIds.Where(id => cachedValues[id] == null);
+
+            var ids = string.Join(",", remainingIds);
+            var request = new HttpRequestMessage(HttpMethod.Get, $"ISteamUser/GetPlayerSummaries/v2/?steamids={ids}");
+            request.Headers.Add("x-webapi-key", webApiKey);
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            using (var responseStream = await response.Content.ReadAsStreamAsync())
+            {
+                var wrapper = await JsonSerializer.DeserializeAsync<SteamPlayerSummariesResult>(responseStream);
+
+                foreach (var playerSummary in wrapper.Response.Players)
+                {
+                    cachedValues[playerSummary.SteamId] = playerSummary;
+                    _cache.Set(cacheKey(playerSummary.SteamId), playerSummary);
+                }
+            }
+
+            return steamIds.Select(id => cachedValues[id]).ToArray();
+        }
+
+        public async Task<SteamVanityUrlResolution> ResolveVanityUrl(string vanityId, string webApiKey = null)
+        {
+            webApiKey = webApiKey ?? _options.WebApiKey;
+
+            var cacheKey = $"steam:profileurl:{vanityId}";
+
+            if (!_cache.TryGetValue(cacheKey, out SteamVanityUrlResolution result))
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, $"ISteamUser/ResolveVanityURL/v1/?vanityurl={vanityId}");
+                request.Headers.Add("x-webapi-key", webApiKey);
+                var response = await _httpClient.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                
+                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                {
+                    var wrapper = await JsonSerializer.DeserializeAsync<SteamResolveVanityUrlResult>(responseStream);
+                    _cache.Set(cacheKey, wrapper.Response);
+                    result = wrapper.Response;
+                }
+            }
+
             return result;
         }
 
@@ -155,6 +208,26 @@ namespace TwitchAchievementTrackerBackend.Services
                 }
 
                 _cache.Set(cacheKey, result, _options.AppListCacheTime);
+            }
+            return result;
+        }
+
+        public async Task<SteamPlayerOwnedGameInfo[]> GetOwnedGames(string steamId, string webApiKey = null)
+        {
+            var cacheKey = $"steam:ownedgames:{steamId}";
+
+            if (!_cache.TryGetValue(cacheKey, out SteamPlayerOwnedGameInfo[] result))
+            {
+                var response = await _httpClient.GetAsync($"IPlayerService/GetOwnedGames/v1/?steamid={steamId}&include_appinfo=true&include_played_free_games=true");
+                response.EnsureSuccessStatusCode();
+
+                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                {
+                    var wrapper = await JsonSerializer.DeserializeAsync<SteamPlayerOwnedGamesResult>(responseStream);
+                    result = wrapper.Response.Games;
+                }
+
+                _cache.Set(cacheKey, result, _options.ResultCacheTime);
             }
             return result;
         }

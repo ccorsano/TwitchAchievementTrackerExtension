@@ -1,23 +1,22 @@
-import './ConfigXBL_02_TitleId.scss';
-import * as React from 'react'
-import * as Base from '../../common/ConfigStepBase';
-import { AchievementsService, TitleInfo } from '../../services/EBSAchievementsService'
+import * as React from 'react';
+import * as Base from '../../common/ConfigStepBase'
+import { TitleInfo, AchievementsService } from '../../services/EBSAchievementsService';
 import { ConfigurationState } from '../../services/ConfigurationStateService';
 
-type ConfigXBL_02_TitleIdState = {
+type ConfigSteam_02_AppIdState = {
     titleSearch: string;
     searchResults: TitleInfo[];
     selectedTitle: TitleInfo;
 }
 
-export default class ConfigXBL_02_TitleId extends Base.ConfigStepBase<Base.ConfigStepBaseProps, ConfigXBL_02_TitleIdState> {
-    state: ConfigXBL_02_TitleIdState = {
-        titleSearch: "",
+export default class ConfigSteam_02_AppId extends Base.ConfigStepBase<Base.ConfigStepBaseProps, ConfigSteam_02_AppIdState> {
+    state: ConfigSteam_02_AppIdState = {
+        titleSearch: '',
         searchResults: [],
         selectedTitle: null,
     }
 
-    constructor(props: Base.ConfigStepBaseProps) {
+    constructor(props: Base.ConfigStepBaseProps){
         super(props);
 
         this.onContinue = this.onContinue.bind(this);
@@ -27,7 +26,7 @@ export default class ConfigXBL_02_TitleId extends Base.ConfigStepBase<Base.Confi
     }
 
     onContinue = async (e: React.SyntheticEvent<HTMLInputElement>) => {
-        ConfigurationState.currentConfiguration.xBoxLiveConfig.titleId = this.state.selectedTitle.titleId;
+        ConfigurationState.currentConfiguration.steamConfig.appId = this.state.selectedTitle.titleId;
         this.props.onValid(this, this.props.nextState);
     }
 
@@ -39,7 +38,7 @@ export default class ConfigXBL_02_TitleId extends Base.ConfigStepBase<Base.Confi
     }
 
     onSearch = async (e: React.SyntheticEvent<HTMLInputElement>) => {
-        let titleInfos = await AchievementsService.searchTitleInfo(this.state.titleSearch);
+        let titleInfos = await AchievementsService.searchSteamTitleInfo(this.state.titleSearch);
         this.setState({
             titleSearch: this.state.titleSearch,
             searchResults: titleInfos,

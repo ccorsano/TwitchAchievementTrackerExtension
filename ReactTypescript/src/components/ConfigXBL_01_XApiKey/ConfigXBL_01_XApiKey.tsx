@@ -54,14 +54,6 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
         });
     }
 
-    hasValue = () => {
-
-    }
-
-    isValid = () => {
-        return false;
-    }
-
     onContinue = async (e: React.SyntheticEvent<HTMLInputElement>) => {
         this.setState({
             isValidating: true
@@ -92,11 +84,7 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
             let newConfig = await ConfigurationService.setConfiguration(configuration);
             
             ConfigurationState.currentConfiguration.xBoxLiveConfig.xApiKey = this.state.enteredApiKey;
-
-            ConfigurationService.configuration.content = newConfig.configToken;
-            AchievementsService.configuration.content = newConfig.configToken;
         }
-
     }
 
     render(){

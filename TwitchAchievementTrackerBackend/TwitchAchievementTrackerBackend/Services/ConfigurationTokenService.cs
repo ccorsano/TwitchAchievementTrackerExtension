@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using TwitchAchievementTracker;
 using TwitchAchievementTrackerBackend.Configuration;
 using TwitchAchievementTrackerBackend.Model;
+using TwitchAchievementTrackerBackend.Model.Steam;
 
 namespace TwitchAchievementTrackerBackend.Services
 {
@@ -74,6 +75,42 @@ namespace TwitchAchievementTrackerBackend.Services
             return Encrypt(payload);
         }
 
+        public async Task<PlayerInfoCard> GetPlayerInfo(string steamId, string webApiKey = null)
+        {
+            var playerInfo = await _steamApiService.GetPlayersSummaries(new string[] { steamId }, webApiKey);
+
+            return new PlayerInfoCard
+            {
+                PlayerId = steamId,
+                PlayerName = playerInfo.First().PersonaName,
+                AvatarUrl = playerInfo.First().AvatarFull.AbsoluteUri,
+            };
+        }
+
+        public async Task<PlayerInfoCard> ResolveSteamProfileUrl(string profileUrl, string webApiKey = null)
+        {
+            var response = await _steamApiService.ResolveVanityUrl(profileUrl, webApiKey);
+
+            if (string.IsNullOrEmpty(response.SteamId))
+            {
+                return null;
+            }
+
+            var playerInfo = await _steamApiService.GetPlayersSummaries(new string[] { response.SteamId }, webApiKey);
+
+            return new PlayerInfoCard
+            {
+                PlayerId = response.SteamId,
+                PlayerName = playerInfo.First().PersonaName,
+                AvatarUrl = playerInfo.First().AvatarFull.AbsoluteUri,
+            };
+        }
+
+        public async Task<SteamPlayerOwnedGameInfo[]> GetSteamOwnedGames(string steamId, string webApiKey = null)
+        {
+            return await _steamApiService.GetOwnedGames(steamId, webApiKey);
+        }
+
         public async Task<ValidationError[]> ValidateConfiguration(ExtensionConfiguration configuration)
         {
             var errors = new List<ValidationError>();
@@ -119,6 +156,31 @@ namespace TwitchAchievementTrackerBackend.Services
                     }
                     break;
                 case ActiveConfig.Steam:
+                    if (string.IsNullOrEmpty(configuration.SteamConfig.SteamId))
+                    {
+                        errors.Add(new ValidationError
+                        {
+                            Path = "SteamConfig.SteamId",
+                            ErrorCode = "MissingValue",
+                            ErrorDescription = "SteamId is not set.",
+                        });
+                    }
+                    else
+                    {
+                        var playerSummaries = await _steamApiService.GetPlayersSummaries(new string[] { configuration.SteamConfig.SteamId }, configuration.SteamConfig.WebApiKey);
+                        var playerSummary = playerSummaries.First();
+
+                        if (playerSummary.CommunityVisibilityState != 3)
+                        {
+                            errors.Add(new ValidationError
+                            {
+                                Path = "SteamConfig.SteamId",
+                                ErrorCode = "PrivateProfile",
+                                ErrorDescription = "The provided Steam profile cannot be accessed, check that is it set to public.",
+                            });
+                        }
+                    }
+
                     break;
                 default:
                     errors.Add(new ValidationError

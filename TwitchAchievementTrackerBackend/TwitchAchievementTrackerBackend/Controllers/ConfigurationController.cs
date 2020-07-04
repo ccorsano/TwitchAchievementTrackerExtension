@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using TwitchAchievementTrackerBackend.Helpers;
 using TwitchAchievementTrackerBackend.Model;
+using TwitchAchievementTrackerBackend.Model.Steam;
 using TwitchAchievementTrackerBackend.Services;
 
 namespace TwitchAchievementTrackerBackend.Controllers
@@ -65,6 +66,24 @@ namespace TwitchAchievementTrackerBackend.Controllers
         public Task<ValidationError[]> ValidateConfiguration(ExtensionConfiguration configuration)
         {
             return _service.ValidateConfiguration(configuration);
+        }
+
+        [HttpGet("steam/resolveVanity")]
+        public Task<PlayerInfoCard> ResolveSteamProfileUrl(string vanityUrl, string webApiKey = null)
+        {
+            return _service.ResolveSteamProfileUrl(vanityUrl, webApiKey);
+        }
+
+        [HttpGet("steam/playerInfo")]
+        public Task<PlayerInfoCard> GetSteamPlayerInfo(string steamid, string webApiKey = null)
+        {
+            return _service.GetPlayerInfo(steamid, webApiKey);
+        }
+
+        [HttpGet("steam/ownedGame")]
+        public Task<SteamPlayerOwnedGameInfo[]> GetSteamOwnedGames(string steamId, string webApiKey = null)
+        {
+            return _service.GetSteamOwnedGames(steamId, webApiKey);
         }
     }
 }

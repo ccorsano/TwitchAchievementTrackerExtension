@@ -12,10 +12,10 @@ export interface XApiConfiguration {
 }
 
 export interface SteamConfiguration {
-    WebApiKey: string;
-    SteamId: string;
-    AppId: string;
-    Locale: string;
+    webApiKey: string;
+    steamId: string;
+    appId: string;
+    locale: string;
 }
 
 export interface ExtensionConfiguration {
@@ -28,4 +28,10 @@ export interface ExtensionConfiguration {
 export interface SupportedLanguage {
     langCode: string;
     displayName: string;
+}
+
+export interface PlayerInfoCard {
+    playerId: string;
+    playerName: string;
+    avatarUrl: string;
 }

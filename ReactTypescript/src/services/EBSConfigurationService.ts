@@ -1,6 +1,6 @@
 import * as EBSConfig from "../common/ServerConfig"
 import * as EBS from './EBSBase'
-import { ExtensionConfiguration, ActiveConfig, SupportedLanguage } from '../common/EBSTypes';
+import { ExtensionConfiguration, ActiveConfig, SupportedLanguage, PlayerInfoCard } from '../common/EBSTypes';
 import { ConfigurationState } from "./ConfigurationStateService";
 
 export interface EncryptedConfigurationResponse {
@@ -45,6 +45,14 @@ export default class EBSConfigurationService extends EBS.EBSBase {
             method: 'POST',
             body: JSON.stringify(config)
         });
+    }
+
+    resolveSteamVanityUrl = async (vanityUrl: string, webApiKey: string): Promise<PlayerInfoCard> => {
+        return this.serviceFetch("/steam/resolveVanity?vanityUrl=" + encodeURIComponent(vanityUrl) + "&webApiKey=" + encodeURIComponent(webApiKey) );
+    }
+
+    resolveSteamPlayerInfo = async (steamId: string, webApiKey: string): Promise<PlayerInfoCard> => {
+        return this.serviceFetch("/steam/playerInfo?steamid=" + encodeURIComponent(steamId) + "&webApiKey=" + encodeURIComponent(webApiKey) );
     }
 }
 
