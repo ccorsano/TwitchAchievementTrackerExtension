@@ -6,14 +6,14 @@ import { AchievementsService, TitleInfo } from '../../services/EBSAchievementsSe
 type ConfigXBL_02_TitleIdState = {
     titleSearch: string;
     searchResults: TitleInfo[];
-    selectedTitleId: string;
+    selectedTitle: TitleInfo;
 }
 
 export default class ConfigXBL_02_TitleId extends Base.ConfigStepBase<Base.ConfigStepBaseProps, ConfigXBL_02_TitleIdState> {
     state: ConfigXBL_02_TitleIdState = {
         titleSearch: "",
         searchResults: [],
-        selectedTitleId: null,
+        selectedTitle: null,
     }
 
     constructor(props: Base.ConfigStepBaseProps) {
@@ -22,6 +22,7 @@ export default class ConfigXBL_02_TitleId extends Base.ConfigStepBase<Base.Confi
     }
 
     onContinue = async (e: React.SyntheticEvent<HTMLInputElement>) => {
+        this.props.onValid(this, this.props.nextState);
     }
 
     onChangeTitleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,35 +37,53 @@ export default class ConfigXBL_02_TitleId extends Base.ConfigStepBase<Base.Confi
         this.setState({
             titleSearch: this.state.titleSearch,
             searchResults: titleInfos,
-            selectedTitleId: this.state.selectedTitleId,
+            selectedTitle: this.state.selectedTitle,
         });
     }
 
     onSelectTitle = (e: React.MouseEvent<HTMLLIElement>) => {
         let titleId = e.currentTarget.attributes.getNamedItem("itemId").value;
+        let titleInfo = this.state.searchResults.find(t => t.titleId == titleId);
+
         this.setState({
             titleSearch: this.state.titleSearch,
             searchResults: this.state.searchResults,
-            selectedTitleId: titleId,
+            selectedTitle: titleInfo,
         });
 
         // Validate and move on
     }
 
     render(){
-        const isContinueEnabled = false;
+        const isContinueEnabled = this.state.selectedTitle;
+        let selection;
+        if (this.state.selectedTitle)
+        {
+            selection = (
+                <div className="selectedTitle">
+                    <img src={this.state.selectedTitle.logoUri}></img>
+                    {this.state.selectedTitle.productTitle}
+                </div>
+            )
+        }
+        else
+        {
+            selection = (
+                <ul className="searchResult">
+                    {
+                        this.state.searchResults.map((titleInfo, i) => (
+                            <li itemID={titleInfo.titleId} key={titleInfo.titleId} onClick={this.onSelectTitle}><img src={titleInfo.logoUri}></img> {titleInfo.productTitle}</li>
+                        ))
+                    }
+                </ul>
+            )
+        }
 
         return [
             <label htmlFor="titleSearch">Game Title</label>,
             <input name="titleSearch" type="text" placeholder="Search a game title" onChange={this.onChangeTitleSearch} />,
             <input type="button" value="Search" onClick={this.onSearch} />,
-            <ul className="searchResult">
-                {
-                    this.state.searchResults.map((titleInfo, i) => (
-                        <li itemID={titleInfo.titleId} key={titleInfo.titleId} onClick={this.onSelectTitle}><img src={titleInfo.logoUri}></img> {titleInfo.productTitle}</li>
-                    ))
-                }
-            </ul>,
+            selection,
             <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onContinue} />
         ]
     }

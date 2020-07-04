@@ -18,6 +18,10 @@ export default class EBSAchievementsService extends EBS.EBSBase {
     searchTitleInfo = async(query: string): Promise<TitleInfo[]> => {
         return this.serviceFetch("/title/search/" + query);
     }
+
+    resolveGamertag = async (gamertag: string): Promise<string> => {
+        return this.serviceFetch("/xuid/" + gamertag);
+    }
 }
 
 export const AchievementsService = new EBSAchievementsService();
