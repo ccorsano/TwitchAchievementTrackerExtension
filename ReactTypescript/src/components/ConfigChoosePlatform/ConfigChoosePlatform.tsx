@@ -6,7 +6,7 @@ import ConfigSteamConfigRoot from '../ConfigSteamConfigRoot/ConfigSteamConfigRoo
 import { EBSBase } from '../../services/EBSBase';
 import EBSConfigurationService from '../../services/EBSConfigurationService';
 
-type onChangeCallback = (e: React.SyntheticEvent<HTMLInputElement>) => void;
+type onChangeCallback = (e: React.SyntheticEvent<HTMLElement>) => void;
 
 type ConfigChoosePlatformProps = {
     changeHandler: onChangeCallback,
@@ -39,13 +39,9 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
         return this.state.currentPlatform == v;
     }
 
-    onSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.currentTarget.value);
-
-        let value = Number.parseInt(e.currentTarget.value);
-
+    onSelect = (e: React.SyntheticEvent<HTMLDivElement>, selected: CurrentPlatformEnum) => {
         this.setState({
-            currentPlatform: value
+            currentPlatform: selected
         });
 
         this.props.changeHandler(e);
@@ -64,10 +60,14 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
                 element = (
                     <div className="ConfigChoosePlatform">
                         <h2>Select a platform</h2>
-                        <label htmlFor="xboxlive">XBox Live</label>
-                        <input type="radio" name="configSelect" value={CurrentPlatformEnum.XBoxLive} onChange={this.onSelect} checked={this.isSelected(CurrentPlatformEnum.XBoxLive)} />
-                        <label htmlFor="steam">Steam</label>
-                        <input type="radio" name="configSelect" value={CurrentPlatformEnum.Steam} onChange={this.onSelect} checked={this.isSelected(CurrentPlatformEnum.Steam)} />
+                        <div className="row">
+                            <div className="selectPlatform xboxlive button" onClick={(e) => this.onSelect(e, CurrentPlatformEnum.XBoxLive) }>
+                                XBox Live
+                            </div>
+                            <div className="selectPlatform steam button" onClick={(e) => this.onSelect(e, CurrentPlatformEnum.Steam) }>
+                                Steam
+                            </div>
+                        </div>
                     </div>
                 )
                 break;
@@ -75,7 +75,6 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
             case CurrentPlatformEnum.Steam: {
                 element = (
                     <div className="ConfigSteam">
-                        <h2>Steam !!!!</h2>
                         <ConfigSteamConfigRoot />
                         <input type="button" value="Back" onClick={this.onBack} />
                     </div>
@@ -85,7 +84,6 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
             case CurrentPlatformEnum.XBoxLive: {
                 element = (
                     <div className="ConfigXBoxLive">
-                        <h2>XBoxLive !!!!</h2>
                         <ConfigXBLConfigRoot />
                         <input type="button" value="Back" onClick={this.onBack} />
                     </div>

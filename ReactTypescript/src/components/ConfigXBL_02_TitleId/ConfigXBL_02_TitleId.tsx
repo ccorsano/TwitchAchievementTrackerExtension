@@ -2,6 +2,7 @@ import './ConfigXBL_02_TitleId.scss';
 import * as React from 'react'
 import * as Base from '../../common/ConfigStepBase';
 import { AchievementsService, TitleInfo } from '../../services/EBSAchievementsService'
+import { ConfigurationState } from '../../services/ConfigurationStateService';
 
 type ConfigXBL_02_TitleIdState = {
     titleSearch: string;
@@ -22,6 +23,7 @@ export default class ConfigXBL_02_TitleId extends Base.ConfigStepBase<Base.Confi
     }
 
     onContinue = async (e: React.SyntheticEvent<HTMLInputElement>) => {
+        ConfigurationState.currentConfiguration.xBoxLiveConfig.titleId = this.state.selectedTitle.titleId;
         this.props.onValid(this, this.props.nextState);
     }
 

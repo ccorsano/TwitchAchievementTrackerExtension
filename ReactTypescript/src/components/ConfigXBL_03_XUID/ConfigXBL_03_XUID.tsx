@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as Base from '../../common/ConfigStepBase';
-import { AchievementsService, TitleInfo } from '../../services/EBSAchievementsService'
+import { AchievementsService, TitleInfo } from '../../services/EBSAchievementsService';
+import { ConfigurationState } from '../../services/ConfigurationStateService';
 
 type ConfigXBL_03_XUIDState = {
     xuidSearch: string;
@@ -38,6 +39,7 @@ export default class ConfigXBL_03_XUID extends Base.ConfigStepBase<Base.ConfigSt
     }
 
     onContinue = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        ConfigurationState.currentConfiguration.xBoxLiveConfig.streamerXuid = this.state.xuid;
         this.props.onValid(this, this.props.nextState);
     }
 

@@ -33,6 +33,34 @@ namespace TwitchAchievementTrackerBackend.Services
             _logger = logger;
         }
 
+        public async Task<SupportedLanguage[]> GetSupportedLanguages(ExtensionConfiguration configuration)
+        {
+            switch (configuration.ActiveConfig)
+            {
+                case ActiveConfig.XBoxLive:
+                    var marketPlace = await _xApiService.GetMarketplaceAsync(configuration.XBoxLiveConfig);
+                    var supportedLanguages = marketPlace.Products
+                        .SelectMany(p => p.DisplaySkuAvailabilities?
+                            .SelectMany(dsa => dsa.Sku?.MarketProperties?
+                                .SelectMany(mp => mp.SupportedLanguages) ?? new string[] { } ) ?? new string[] { })
+                        .Distinct();
+                    return supportedLanguages.Select(l => new SupportedLanguage
+                    {
+                        LangCode = l,
+                        DisplayName = System.Globalization.CultureInfo.GetCultureInfo(l).DisplayName
+                    }).ToArray();
+                case ActiveConfig.Steam:
+                    var storeDetails = await _steamApiService.GetStoreDetails(UInt32.Parse(configuration.SteamConfig.AppId));
+                    return storeDetails.SupportedLanguages.Split(",").Select(l => l.Trim()).Select(l => new SupportedLanguage
+                    {
+                        LangCode = l,
+                        DisplayName = l,
+                    }).ToArray();
+                default:
+                    throw new NotSupportedException("Invalid active config");
+            }
+        }
+
         /// <summary>
         /// Serialize and encrypt configuration object
         /// </summary>

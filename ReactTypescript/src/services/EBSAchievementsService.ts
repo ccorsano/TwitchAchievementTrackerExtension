@@ -20,7 +20,7 @@ export default class EBSAchievementsService extends EBS.EBSBase {
     }
 
     resolveGamertag = async (gamertag: string): Promise<string> => {
-        return this.serviceFetch("/xuid/" + gamertag);
+        return this.serviceFetch("/xuid/" + gamertag).then(r => r.toString());
     }
 }
 

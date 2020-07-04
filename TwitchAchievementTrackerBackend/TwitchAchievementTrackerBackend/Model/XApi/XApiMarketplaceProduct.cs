@@ -21,5 +21,7 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
         public IdRecord[] AlternateIds { get; set; }
         public XApiMarketplaceLocalizedProperties[] LocalizedProperties { get; set; }
 
+        public XApiMarketplaceDisplaySkuAvailability[] DisplaySkuAvailabilities { get; set; }
+
     }
 }

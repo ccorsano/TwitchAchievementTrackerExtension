@@ -1,13 +1,14 @@
 export enum ActiveConfig {
+    None = "",
     XBoxLive = 'XBoxLive',
     Steam = 'Steam',
 }
 
 export interface XApiConfiguration {
-    XApiKey: string;
-    StreamerXuid: string;
-    TitleId: string;
-    Locale: string;
+    xApiKey: string;
+    streamerXuid: string;
+    titleId: string;
+    locale: string;
 }
 
 export interface SteamConfiguration {
@@ -17,10 +18,14 @@ export interface SteamConfiguration {
     Locale: string;
 }
 
-
 export interface ExtensionConfiguration {
-    Version: string;
-    ActiveConfig: ActiveConfig;
-    XBoxLiveConfig: XApiConfiguration;
-    SteamConfig: SteamConfiguration;
+    version: string;
+    activeConfig: ActiveConfig;
+    xBoxLiveConfig: XApiConfiguration;
+    steamConfig: SteamConfiguration;
+}
+
+export interface SupportedLanguage {
+    langCode: string;
+    displayName: string;
 }

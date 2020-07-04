@@ -1,6 +1,6 @@
 import { version } from "webpack";
 import { Twitch } from '../services/TwitchService';
-
+import * as ServerConfig from '../common/ServerConfig';
 
 var urlParams = new URLSearchParams(window.location.search);
 let isDebug: boolean = false;
@@ -33,8 +33,8 @@ export class EBSBase {
             headers: new Headers({
                 'Authorization': 'Bearer ' + this.context.token,
                 'Content-Type': 'application/json',
-                'X-Config-Token': this.configuration?.content,
-                'X-Config-Version': this.configuration?.version,
+                'X-Config-Token': this.configuration?.content ?? '',
+                'X-Config-Version': this.configuration?.version ?? ServerConfig.EBSVersion,
             }),
             body: init?.body,
         };
@@ -66,8 +66,8 @@ export class EBSBase {
         if (isDebug && !this.configuration)
         {
             this.configuration = <TwitchExtensionConfiguration>{
-                content: "TtWHMmvwfRS2ZMh3w9xhGfn8eUz1wXLa64/L5LIqIwUDUb5aIHdL+eFZwk2+x7WrcF927pckRCly4t7LeOzRfvscuMWdUEWZnuRwBBMp4FNdVs97TAzcvi0qNjnqvnwrSpXP8jnUa19AWULXI6+o1vltgmF85LCa0MuwMqLZu8jUn24m28bhzrVPW0SMZyJyzRlrQJhz61t09kt8BLLUYSAl4gSepp5eydtHMrRofYhFrznYxOaK3600sfR6Bjxb21f/Vbr+Ex2MMg3w6GcAYEX+MslOBOaOKtFspyS7pEo7Jkp6AqlR4WYUTpiKoto8BoVIvCc3Ouhuqi3cituGcw==",
-                version: "0.0.2"
+                content: "M4dKt7OfjxV2Qg6hNDfUILxVxcM4R2ibLq8MfDI42Yq2QtX8DUNsw/6A3tX+3zX1QKstugDUncqGEQf1+WE7NCK1Izw+AVIbdpUKUnJMPXvVh2i61drG+i+d+wksr015Yb3NCPdQ4ULKYxQuFyTuSSpPkC55L0AYUhKjbA7P8MTq/Erywgj/weVkgXey7At2RGKTMD8AR5FaLYlsyZa8Oxp2DUEN3pa2fc466IZt1HMnn8Rj3QR178SvwEa7r7K8Tl26P7dRzr6TO/9e1iDuX2PVsnhRbicsNKHprOLapLEOoMifzVBzOk1RYqRDvhE3Jw0+xZS7Km79Sq85Q9J8GA==",
+                version: "0.0.3"
             };
         }
 

@@ -1,8 +1,10 @@
 import * as React from 'react';
 import * as Base from '../../common/ConfigStepBase';
+import * as ServerConfig from '../../common/ServerConfig';
 import { ActiveConfig, ExtensionConfiguration } from '../../common/EBSTypes';
 import { ConfigurationService, ValidationError } from '../../services/EBSConfigurationService';
 import { AchievementsService } from '../../services/EBSAchievementsService';
+import { ConfigurationState } from '../../services/ConfigurationStateService'
 
 type ConfigXBL_01_XApiKeyState = {
     isSyntaxValid: boolean,
@@ -30,15 +32,25 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
         super(props);
 
         this.onChangeXApiValue = this.onChangeXApiValue.bind(this);
+        this.changeXApiValue = this.changeXApiValue.bind(this);
+    }
+
+    componentDidMount= () => {
+        let currentConfig = ConfigurationState.currentConfiguration;
+        this.changeXApiValue(currentConfig.xBoxLiveConfig.xApiKey);
     }
 
     onChangeXApiValue = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        let formatCheck = this.formatFullMatchRegexp.test(e.currentTarget.value);
-        let isSyntaxValid = this.formatRegexp.test(e.currentTarget.value);
+        this.changeXApiValue(e.currentTarget.value);
+    }
+
+    changeXApiValue = (value: string) => {
+        let formatCheck = this.formatFullMatchRegexp.test(value);
+        let isSyntaxValid = this.formatRegexp.test(value);
         this.setState({
             isSyntaxValid: formatCheck,
             isSyntaxError: !isSyntaxValid,
-            enteredApiKey: e.currentTarget.value,
+            enteredApiKey: value,
         });
     }
 
@@ -56,14 +68,14 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
         });
 
         const configuration: ExtensionConfiguration = {
-            ActiveConfig: ActiveConfig.XBoxLive,
-            SteamConfig: null,
-            Version: "0.0.2",
-            XBoxLiveConfig: {
-                XApiKey: this.state.enteredApiKey,
-                Locale: null,
-                StreamerXuid: null,
-                TitleId: null,
+            activeConfig: ActiveConfig.XBoxLive,
+            steamConfig: null,
+            version: ServerConfig.EBSVersion,
+            xBoxLiveConfig: {
+                xApiKey: this.state.enteredApiKey,
+                locale: null,
+                streamerXuid: null,
+                titleId: null,
             }
         }
 
@@ -78,6 +90,9 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
         {
             this.props.onValid(this, this.props.nextState);
             let newConfig = await ConfigurationService.setConfiguration(configuration);
+            
+            ConfigurationState.currentConfiguration.xBoxLiveConfig.xApiKey = this.state.enteredApiKey;
+
             ConfigurationService.configuration.content = newConfig.configToken;
             AchievementsService.configuration.content = newConfig.configToken;
         }
@@ -98,7 +113,7 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
         const isContinueEnabled = this.state.isSyntaxValid && !this.state.isValidating;
         return [
             <label htmlFor="xapikey">XApi Key</label>,
-            <input name="xapikey" type="text" pattern="[0-9a-f]{40}" placeholder="Enter your XApi.us key" onChange={this.onChangeXApiValue} className={this.state.isSyntaxValid ? '' : 'sf1-invalid'} />,
+            <input name="xapikey" type="text" pattern="[0-9a-f]{40}" value={this.state.enteredApiKey} placeholder="Enter your XApi.us key" onChange={this.onChangeXApiValue} className={this.state.isSyntaxValid ? '' : 'sf1-invalid'} />,
             helpMessage,
             <ul>
                 {this.state.errors.map((error, i) => (

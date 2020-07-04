@@ -114,7 +114,9 @@ namespace TwitchAchievementTrackerBackend.Services
 
             if (!_cache.TryGetValue(cacheKey, out SteamPlayerAchievement[] result))
             {
-                var response = await _httpClient.GetAsync($"ISteamUserStats/GetPlayerAchievements/v1/?steamid={steamConfig.SteamId}&appid={steamConfig.AppId}");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"ISteamUserStats/GetPlayerAchievements/v1/?steamid={steamConfig.SteamId}&appid={steamConfig.AppId}");
+                request.Headers.Add("x-webapi-key", steamConfig.WebApiKey);
+                var response = await _httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
 
                 using (var responseStream = await response.Content.ReadAsStreamAsync())

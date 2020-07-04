@@ -35,6 +35,32 @@ namespace TwitchAchievementTrackerBackend.Controllers
             };
         }
 
+        [HttpGet("languages")]
+        public Task<SupportedLanguage[]> SupportedLanguages(ActiveConfig activeConfig, string gameId)
+        {
+            ExtensionConfiguration configuration = new ExtensionConfiguration
+            {
+                ActiveConfig = activeConfig,
+            };
+            if (HttpContext.HasExtensionConfiguration())
+            {
+                configuration = HttpContext.GetExtensionConfiguration();
+            }
+            configuration.ActiveConfig = activeConfig;
+            switch (activeConfig)
+            {
+                case ActiveConfig.XBoxLive:
+                    configuration.XBoxLiveConfig.TitleId = gameId;
+                    break;
+                case ActiveConfig.Steam:
+                    configuration.SteamConfig.AppId = gameId;
+                    break;
+                default:
+                    break;
+            }
+            return _service.GetSupportedLanguages(configuration);
+        }
+
         [HttpPost("validate")]
         public Task<ValidationError[]> ValidateConfiguration(ExtensionConfiguration configuration)
         {
