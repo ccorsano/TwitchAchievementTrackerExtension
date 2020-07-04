@@ -20,6 +20,42 @@ namespace TwitchAchievementTrackerBackend.Services
         private readonly SteamApiOptions _options;
         private readonly IMemoryCache _cache;
 
+        public static SupportedLanguage[] STEAM_SUPPORTED_LANGUAGES = new SupportedLanguage[]
+        {
+            new SupportedLanguage { DisplayName = "Arabic", LangCode = "arabic" },
+            new SupportedLanguage { DisplayName = "Bulgarian", LangCode = "bulgarian" },
+            new SupportedLanguage { DisplayName = "Chinese (Simplified)", LangCode = "schinese" },
+            new SupportedLanguage { DisplayName = "Chinese (Traditional)", LangCode = "tchinese" },
+            new SupportedLanguage { DisplayName = "Czech", LangCode = "czech" },
+            new SupportedLanguage { DisplayName = "Danish", LangCode = "danish" },
+            new SupportedLanguage { DisplayName = "Dutch", LangCode = "dutch" },
+            new SupportedLanguage { DisplayName = "English", LangCode = "english" },
+            new SupportedLanguage { DisplayName = "Finnish", LangCode = "finnish" },
+            new SupportedLanguage { DisplayName = "French", LangCode = "french" },
+            new SupportedLanguage { DisplayName = "German", LangCode = "german" },
+            new SupportedLanguage { DisplayName = "Greek", LangCode = "greek" },
+            new SupportedLanguage { DisplayName = "Hungarian", LangCode = "hungarian" },
+            new SupportedLanguage { DisplayName = "Italian", LangCode = "italian" },
+            new SupportedLanguage { DisplayName = "Japanese", LangCode = "japanese" },
+            new SupportedLanguage { DisplayName = "Korean", LangCode = "koreana" },
+            new SupportedLanguage { DisplayName = "Norwegian", LangCode = "norwegian" },
+            new SupportedLanguage { DisplayName = "Polish", LangCode = "polish" },
+            new SupportedLanguage { DisplayName = "Portuguese", LangCode = "portuguese" },
+            new SupportedLanguage { DisplayName = "Portuguese-Brazil", LangCode = "brazilian" },
+            new SupportedLanguage { DisplayName = "Portuguese - Brazil", LangCode = "brazilian" },
+            new SupportedLanguage { DisplayName = "Romanian", LangCode = "romanian" },
+            new SupportedLanguage { DisplayName = "Russian", LangCode = "russian" },
+            new SupportedLanguage { DisplayName = "Spanish - Spain", LangCode = "spanish" },
+            new SupportedLanguage { DisplayName = "Spanish-Spain", LangCode = "spanish" },
+            new SupportedLanguage { DisplayName = "Spanish - Latin America", LangCode = "latam" },
+            new SupportedLanguage { DisplayName = "Spanish-Latin America", LangCode = "latam" },
+            new SupportedLanguage { DisplayName = "Swedish", LangCode = "swedish" },
+            new SupportedLanguage { DisplayName = "Thai", LangCode = "thai" },
+            new SupportedLanguage { DisplayName = "Turkish", LangCode = "turkish" },
+            new SupportedLanguage { DisplayName = "Ukrainian", LangCode = "ukrainian" },
+            new SupportedLanguage { DisplayName = "Vietnamese", LangCode = "vietnamese" }
+        };
+
         public SteamApiService(IHttpClientFactory httpClientFactory, IOptions<SteamApiOptions> options, IMemoryCache memoryCache)
         {
             _httpClient = httpClientFactory.CreateClient();
@@ -131,7 +167,7 @@ namespace TwitchAchievementTrackerBackend.Services
                 request.Headers.Add("x-webapi-key", webApiKey);
                 var response = await _httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
-                
+
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
                     var wrapper = await JsonSerializer.DeserializeAsync<SteamResolveVanityUrlResult>(responseStream);
@@ -173,7 +209,7 @@ namespace TwitchAchievementTrackerBackend.Services
                 response.EnsureSuccessStatusCode();
 
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
-                {   
+                {
                     var wrapper = await JsonSerializer.DeserializeAsync<SteamUserStatsAchievementsResult>(responseStream, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -225,6 +261,13 @@ namespace TwitchAchievementTrackerBackend.Services
                 {
                     var wrapper = await JsonSerializer.DeserializeAsync<SteamPlayerOwnedGamesResult>(responseStream);
                     result = wrapper.Response.Games;
+                }
+
+                Func<long, string, string> buildImageUri = (appId, imgId) => $"https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/{appId}/{imgId}.jpg";
+                foreach(var game in result)
+                {
+                    game.ImgIconUrl = buildImageUri(game.AppId, game.ImgIconUrl);
+                    game.ImgLogoUrl = buildImageUri(game.AppId, game.ImgLogoUrl);
                 }
 
                 _cache.Set(cacheKey, result, _options.ResultCacheTime);

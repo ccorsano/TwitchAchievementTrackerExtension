@@ -38,7 +38,10 @@ export default class ConfigSteam_01_WebAPIKey extends Base.ConfigStepBase<Base.C
 
     componentDidMount = () => {
         let currentConfig = ConfigurationState.currentConfiguration;
-        this.changeWebApiValue(currentConfig.steamConfig.webApiKey);
+        if (currentConfig.steamConfig?.webApiKey)
+        {
+            this.changeWebApiValue(currentConfig.steamConfig.webApiKey);
+        }
     }
 
     onChangeWebApiValue = (e: React.SyntheticEvent<HTMLInputElement>) => {

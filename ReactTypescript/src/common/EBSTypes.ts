@@ -35,3 +35,10 @@ export interface PlayerInfoCard {
     playerName: string;
     avatarUrl: string;
 }
+
+export interface TitleInfo {
+    titleId: string;
+    productTitle: string;
+    productDescription: string;
+    logoUri: string;
+}

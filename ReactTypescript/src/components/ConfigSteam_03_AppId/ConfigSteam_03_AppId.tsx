@@ -1,18 +1,25 @@
 import * as React from 'react';
 import * as Base from '../../common/ConfigStepBase'
-import { TitleInfo, AchievementsService } from '../../services/EBSAchievementsService';
+import { AchievementsService } from '../../services/EBSAchievementsService';
 import { ConfigurationState } from '../../services/ConfigurationStateService';
+import { ConfigurationService } from '../../services/EBSConfigurationService';
+import * as webpack from 'webpack';
+import { TitleInfo } from '../../common/EBSTypes';
 
 type ConfigSteam_02_AppIdState = {
     titleSearch: string;
-    searchResults: TitleInfo[];
+    isLoading: boolean;
+    ownedApps: TitleInfo[];
+    filteredApps: TitleInfo[];
     selectedTitle: TitleInfo;
 }
 
 export default class ConfigSteam_02_AppId extends Base.ConfigStepBase<Base.ConfigStepBaseProps, ConfigSteam_02_AppIdState> {
     state: ConfigSteam_02_AppIdState = {
         titleSearch: '',
-        searchResults: [],
+        isLoading: true,
+        ownedApps: [],
+        filteredApps: [],
         selectedTitle: null,
     }
 
@@ -21,8 +28,28 @@ export default class ConfigSteam_02_AppId extends Base.ConfigStepBase<Base.Confi
 
         this.onContinue = this.onContinue.bind(this);
         this.onChangeTitleSearch = this.onChangeTitleSearch.bind(this);
-        this.onSearch = this.onSearch.bind(this);
         this.onSelectTitle = this.onSelectTitle.bind(this);
+    }
+
+    componentDidMount = () => {
+        let steamId = ConfigurationState.currentConfiguration.steamConfig.steamId;
+        let currentTitle = ConfigurationState.currentConfiguration.steamConfig.appId;
+
+        ConfigurationService.getSteamOwnedGames(steamId, ConfigurationState.currentConfiguration.steamConfig.webApiKey)
+        .then(gameList => {
+            let gameInfo: TitleInfo = null;
+            if (currentTitle)
+            {
+                gameInfo = gameList.find(g => g.titleId == currentTitle);
+            }
+            
+            this.setState({
+                isLoading: false,
+                filteredApps: gameList,
+                ownedApps: gameList,
+                selectedTitle: gameInfo,
+            });
+        });
     }
 
     onContinue = async (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -31,32 +58,35 @@ export default class ConfigSteam_02_AppId extends Base.ConfigStepBase<Base.Confi
     }
 
     onChangeTitleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        let titleSearch = e.currentTarget.value.toLowerCase();
         this.setState({
-            titleSearch: e.currentTarget.value,
-            searchResults: this.state.searchResults,
-        });
-    }
-
-    onSearch = async (e: React.SyntheticEvent<HTMLInputElement>) => {
-        let titleInfos = await AchievementsService.searchSteamTitleInfo(this.state.titleSearch);
-        this.setState({
-            titleSearch: this.state.titleSearch,
-            searchResults: titleInfos,
-            selectedTitle: this.state.selectedTitle,
+            titleSearch: titleSearch,
+            filteredApps: this.state.ownedApps.filter(app => app.productTitle.toLowerCase().search(titleSearch) != -1),
+            ownedApps: this.state.ownedApps
         });
     }
 
     onSelectTitle = (e: React.MouseEvent<HTMLLIElement>) => {
         let titleId = e.currentTarget.attributes.getNamedItem("itemId").value;
-        let titleInfo = this.state.searchResults.find(t => t.titleId == titleId);
+        let titleInfo = this.state.ownedApps.find(t => t.titleId == titleId);
 
         this.setState({
-            titleSearch: this.state.titleSearch,
-            searchResults: this.state.searchResults,
+            titleSearch: "",
+            filteredApps: this.state.ownedApps,
+            ownedApps: this.state.ownedApps,
             selectedTitle: titleInfo,
         });
 
         // Validate and move on
+    }
+
+    onResetTitle = (e: React.MouseEvent<HTMLInputElement>) => {
+        this.setState({
+            titleSearch: "",
+            filteredApps: this.state.ownedApps,
+            ownedApps: this.state.ownedApps,
+            selectedTitle: null,
+        });
     }
 
     render(){
@@ -65,29 +95,29 @@ export default class ConfigSteam_02_AppId extends Base.ConfigStepBase<Base.Confi
         if (this.state.selectedTitle)
         {
             selection = (
-                <div className="selectedTitle">
-                    <img src={this.state.selectedTitle.logoUri}></img>
-                    {this.state.selectedTitle.productTitle}
+                <div className="card">
+                    <h2 className="section">{this.state.selectedTitle.productTitle}</h2>
+                    <img className="section" src={this.state.selectedTitle.logoUri}></img>
+                    <input type="button" className="section" name="TitleChange" value="Change" onClick={this.onResetTitle} />
                 </div>
             )
         }
         else
         {
-            selection = (
+            selection = [
+                <input name="titleSearch" type="text" placeholder="Filter your Steam games" onChange={this.onChangeTitleSearch} />,
                 <ul className="searchResult">
                     {
-                        this.state.searchResults.map((titleInfo, i) => (
+                        this.state.filteredApps.map((titleInfo, i) => (
                             <li itemID={titleInfo.titleId} key={titleInfo.titleId} onClick={this.onSelectTitle}><img src={titleInfo.logoUri}></img> {titleInfo.productTitle}</li>
                         ))
                     }
                 </ul>
-            )
+            ]
         }
 
         return [
             <label htmlFor="titleSearch">Game Title</label>,
-            <input name="titleSearch" type="text" placeholder="Search a game title" onChange={this.onChangeTitleSearch} />,
-            <input type="button" value="Search" onClick={this.onSearch} />,
             selection,
             <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onContinue} />
         ]

@@ -1,6 +1,6 @@
 import * as EBSConfig from "../common/ServerConfig"
 import * as EBS from './EBSBase'
-import { ExtensionConfiguration, ActiveConfig, SupportedLanguage, PlayerInfoCard } from '../common/EBSTypes';
+import { ExtensionConfiguration, ActiveConfig, SupportedLanguage, PlayerInfoCard, TitleInfo } from '../common/EBSTypes';
 import { ConfigurationState } from "./ConfigurationStateService";
 
 export interface EncryptedConfigurationResponse {
@@ -12,6 +12,12 @@ export interface ValidationError {
     errorCode: string;
     errorDescription: string;
 }
+
+export interface SteamLanguage {
+    englishName: string;
+    code: string;
+    codeName: string;
+}   
 
 export default class EBSConfigurationService extends EBS.EBSBase {
     constructor(){
@@ -53,6 +59,10 @@ export default class EBSConfigurationService extends EBS.EBSBase {
 
     resolveSteamPlayerInfo = async (steamId: string, webApiKey: string): Promise<PlayerInfoCard> => {
         return this.serviceFetch("/steam/playerInfo?steamid=" + encodeURIComponent(steamId) + "&webApiKey=" + encodeURIComponent(webApiKey) );
+    }
+
+    getSteamOwnedGames = async (steamId: string, webApiKey: string): Promise<TitleInfo[]> => {
+        return this.serviceFetch("/steam/" + encodeURIComponent(steamId) +  "/ownedGames?webApiKey=" + encodeURIComponent(webApiKey) );
     }
 }
 

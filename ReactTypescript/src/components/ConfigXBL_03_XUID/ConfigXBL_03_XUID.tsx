@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as Base from '../../common/ConfigStepBase';
-import { AchievementsService, TitleInfo } from '../../services/EBSAchievementsService';
+import { AchievementsService } from '../../services/EBSAchievementsService';
 import { ConfigurationState } from '../../services/ConfigurationStateService';
 
 type ConfigXBL_03_XUIDState = {

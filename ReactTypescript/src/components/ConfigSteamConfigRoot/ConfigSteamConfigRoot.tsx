@@ -4,7 +4,7 @@ import ConfigSteam_01_WebAPIKey from '../ConfigSteam_01_WebAPIKey/ConfigSteam_01
 import ConfigSteam_02_SteamID from '../ConfigSteam_02_SteamID/ConfigSteam_02_SteamID';
 import ConfigSteam_03_AppId from '../ConfigSteam_03_AppId/ConfigSteam_03_AppId';
 import ConfigSteam_04_Locale from '../ConfigSteam_04_Locale/ConfigSteam_04_Locale';
-import ConfigSteam_05_Confirm from '../ConfigSteam_05_Confirm/ConfigSteam_04_Confirm'
+import ConfigSteam_05_Confirm from '../ConfigSteam_05_Confirm/ConfigSteam_05_Confirm'
 import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { ActiveConfig } from '../../common/EBSTypes';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
@@ -36,7 +36,7 @@ export default class ConfigSteamConfigRoot extends React.Component<any, ConfigSt
         this.onValidateStep = this.onValidateStep.bind(this);
     }
 
-    componentWillMount = () => {
+    componentDidMount = () => {
         let currentConfig = ConfigurationState.currentConfiguration;
         currentConfig.activeConfig = ActiveConfig.Steam;
         if (! currentConfig.steamConfig)
@@ -96,6 +96,12 @@ export default class ConfigSteamConfigRoot extends React.Component<any, ConfigSt
             }
             default:
                 break;
+        }
+
+        if (this.state.isValid){
+            config = (
+                <div>Saved !</div>
+            )
         }
 
         return [

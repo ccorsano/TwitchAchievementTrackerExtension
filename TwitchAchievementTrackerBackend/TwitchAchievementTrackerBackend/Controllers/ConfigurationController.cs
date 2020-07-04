@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TwitchAchievementTrackerBackend.Helpers;
 using TwitchAchievementTrackerBackend.Model;
@@ -80,10 +81,17 @@ namespace TwitchAchievementTrackerBackend.Controllers
             return _service.GetPlayerInfo(steamid, webApiKey);
         }
 
-        [HttpGet("steam/ownedGame")]
-        public Task<SteamPlayerOwnedGameInfo[]> GetSteamOwnedGames(string steamId, string webApiKey = null)
+        [HttpGet("steam/{steamId}/ownedGames")]
+        public async Task<TitleInfo[]> GetSteamOwnedGames(string steamId, string webApiKey = null)
         {
-            return _service.GetSteamOwnedGames(steamId, webApiKey);
+            var ownedGames = await _service.GetSteamOwnedGames(steamId, webApiKey);
+            return ownedGames.Select(game => new TitleInfo
+            {
+                TitleId = game.AppId.ToString(),
+                LogoUri = game.ImgLogoUrl,
+                ProductTitle = game.Name,
+                ProductDescription = "",
+            }).ToArray();
         }
     }
 }

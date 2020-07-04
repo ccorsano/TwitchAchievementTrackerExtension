@@ -4,8 +4,10 @@ import { ConfigurationService, ValidationError } from '../../services/EBSConfigu
 import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { ExtensionConfiguration, ActiveConfig, PlayerInfoCard } from '../../common/EBSTypes';
 import * as ServerConfig from '../../common/ServerConfig'
+import EBSAchievementsService from '../../services/EBSAchievementsService';
 
 type ConfigSteam_03_SteamIDState = {
+    isLoading: boolean;
     isProfileUrlFormatValid: boolean;
     isProfileValid: boolean;
     steamProfileUrl: string;
@@ -19,6 +21,7 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<Base.Con
     steamIdRegexp: RegExp = /^[0-9]+$/;
 
     state: ConfigSteam_03_SteamIDState = {
+        isLoading: true,
         isProfileUrlFormatValid: false,
         isProfileValid: false,
         steamProfileUrl: null,
@@ -29,6 +32,28 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<Base.Con
 
     constructor(props: Base.ConfigStepBaseProps){
         super(props);
+    }
+
+    componentDidMount = () => {
+        let steamId = ConfigurationState.currentConfiguration.steamConfig.steamId;
+        if (steamId && this.steamIdRegexp.test(steamId)) {
+            ConfigurationService.resolveSteamPlayerInfo(steamId, ConfigurationState.currentConfiguration.steamConfig.webApiKey)
+                .then(playerInfo => {
+                    this.setState({
+                        isLoading: false,
+                        isProfileUrlFormatValid: false,
+                        isProfileValid: true,
+                        steamProfileId: steamId,
+                        steamProfile: playerInfo,
+                    });
+                });
+        }
+        else
+        {
+            this.setState({
+                isLoading: false,
+            });
+        }
     }
 
     onChangeProfileUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,6 +108,15 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<Base.Con
             });
         }
     }
+    
+    onResetProfile = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        this.setState({
+            isProfileUrlFormatValid: false,
+            isProfileValid: false,
+            steamProfileId: null,           
+            steamProfile: null,
+        });
+    }
 
     onContinue = (e: React.SyntheticEvent<HTMLInputElement>) => {
         ConfigurationState.currentConfiguration.steamConfig.steamId = this.state.steamProfileId;
@@ -94,28 +128,43 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<Base.Con
         let isContinueEnabled = this.state.isProfileValid;
 
         let playerInfoCard = null;
-        if (this.state.steamProfile)
+        if (! this.state.isLoading)
+        {
+            if (this.state.steamProfile)
+            {
+                playerInfoCard = [
+                    <div className="card">
+                        <h2 className="section">{this.state.steamProfile.playerName}</h2>
+                        <div className="section">Id: {this.state.steamProfile.playerId}</div>
+                        <img src={this.state.steamProfile.avatarUrl} className="section media" />
+                        <input type="button" value="Change" className="section" onClick={this.onResetProfile} />
+                    </div>
+                ]
+            }
+            else
+            {
+                playerInfoCard = [
+                    <label htmlFor="vanityUrl">Steam Profile URL</label>,
+                    <input name="vanityUrl" type="text" pattern="https:\/\/steamcommunity\.com\/id\/([^/]+)\/?$" placeholder="Enter your Steam profile URL" onChange={this.onChangeProfileUrl} />,
+                    <ul>
+                        {this.state.errors.map((error, i) => (
+                            <li key={error.path + '_' + i}>
+                                {error.path}: {error.errorDescription}
+                            </li>
+                        ))}
+                    </ul>,
+                    <input type="button" value="Search" disabled={!isCheckEnabled} onClick={this.onValidate} />
+                ]
+            }
+        }
+        else
         {
             playerInfoCard = (
-                <div className="card">
-                    <h2 className="section">{this.state.steamProfile.playerName}</h2>
-                    <div className="section">Id: {this.state.steamProfile.playerId}</div>
-                    <img src={this.state.steamProfile.avatarUrl} className="section media" />
-                </div>
+                <div>Loading ...</div>
             )
         }
 
-        return [
-            <label htmlFor="vanityUrl">Steam Profile URL</label>,
-            <input name="vanityUrl" type="text" pattern="https:\/\/steamcommunity\.com\/id\/([^/]+)\/?$" placeholder="Enter your Steam profile URL" onChange={this.onChangeProfileUrl} />,
-            <ul>
-                {this.state.errors.map((error, i) => (
-                    <li key={error.path + '_' + i}>
-                        {error.path}: {error.errorDescription}
-                    </li>
-                ))}
-            </ul>,
-            <input type="button" value="Search" disabled={!isCheckEnabled} onClick={this.onValidate} />,
+        return [,
             playerInfoCard,
             <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onContinue} />
         ]

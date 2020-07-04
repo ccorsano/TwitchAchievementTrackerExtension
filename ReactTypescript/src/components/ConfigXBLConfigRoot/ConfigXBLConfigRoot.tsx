@@ -37,7 +37,7 @@ export default class ConfigXBLConfigRoot extends React.Component<any, ConfigXBLC
     }
 
     // Using componentWillMoubt: componentDidMount will be executed on child elements first, and we need to setup the current config first
-    componentWillMount = () => {
+    componentDidMount = () => {
         let currentConfig = ConfigurationState.currentConfiguration;
         currentConfig.activeConfig = ActiveConfig.XBoxLive;
         if (! currentConfig.xBoxLiveConfig)

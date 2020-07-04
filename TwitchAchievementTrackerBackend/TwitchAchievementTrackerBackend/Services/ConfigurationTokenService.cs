@@ -51,12 +51,21 @@ namespace TwitchAchievementTrackerBackend.Services
                         DisplayName = System.Globalization.CultureInfo.GetCultureInfo(l).DisplayName
                     }).ToArray();
                 case ActiveConfig.Steam:
+                    var schema = await _steamApiService.GetGameSchema(configuration.SteamConfig);
                     var storeDetails = await _steamApiService.GetStoreDetails(UInt32.Parse(configuration.SteamConfig.AppId));
-                    return storeDetails.SupportedLanguages.Split(",").Select(l => l.Trim()).Select(l => new SupportedLanguage
+
+                    // Supported language are given in a readable, customizable format. Do our best guess here.
+                    var supportedLanguage = new List<SupportedLanguage>();
+                    var lowercaseGameLanguages = storeDetails.SupportedLanguages.ToLowerInvariant();
+                    foreach (var langEntry in SteamApiService.STEAM_SUPPORTED_LANGUAGES)
                     {
-                        LangCode = l,
-                        DisplayName = l,
-                    }).ToArray();
+                        if (lowercaseGameLanguages.Contains(langEntry.DisplayName.ToLowerInvariant()))
+                        {
+                            supportedLanguage.Add(langEntry);
+                        }
+                    }
+
+                    return supportedLanguage.ToArray();
                 default:
                     throw new NotSupportedException("Invalid active config");
             }
