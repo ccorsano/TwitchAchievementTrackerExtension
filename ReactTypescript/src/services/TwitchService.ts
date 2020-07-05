@@ -1,3 +1,5 @@
+require('../common/TwitchExtension')
+
 export default class TwitchService {
     onAuthorized: {(context: TwitchAuthCallbackContext):void}[] = [];
     onConfiguration: {(config: TwitchExtensionConfiguration):void}[] = [];
@@ -14,6 +16,14 @@ export default class TwitchService {
 
     setConfiguration = (configuration: string, version: string) => {
         (<any>window).Twitch.ext.configuration.set('broadcaster', version, configuration);
+    }
+
+    send = (target: string, contentType: string, message: any) => {
+        (<any>window).Twitch.ext.send(target, contentType, message);
+    }
+
+    listen = (channel: string, callback: {(target: string, contentType: string, message: string):void}) => {
+        (<any>window).Twitch.ext.listen(channel, callback);
     }
 
     _onAuthorized = (context: TwitchAuthCallbackContext) => {

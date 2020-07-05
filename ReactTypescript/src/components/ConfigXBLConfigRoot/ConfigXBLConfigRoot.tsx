@@ -63,6 +63,12 @@ export default class ConfigXBLConfigRoot extends React.Component<any, ConfigXBLC
             ConfigurationService.setConfiguration(ConfigurationState.currentConfiguration).then(result => {
                 Twitch.setConfiguration(result.configToken, ServerConfig.EBSVersion);
 
+                Twitch.send("broadcast", "application/json", {
+                    "type": "set-config",
+                    "version": ServerConfig.EBSVersion,
+                    "configToken": result.configToken
+                });
+
                 this.setState({
                     currentState: this.state.currentState,
                     isValid: true,
