@@ -4,6 +4,7 @@ import * as Base from '../../common/ConfigStepBase';
 import { AchievementsService } from '../../services/EBSAchievementsService'
 import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { TitleInfo } from '../../common/EBSTypes';
+import { ConfigurationService } from '../../services/EBSConfigurationService';
 
 type ConfigXBL_02_TitleIdState = {
     titleSearch: string;
@@ -25,6 +26,7 @@ export default class ConfigXBL_02_TitleId extends Base.ConfigStepBase<Base.Confi
         this.onChangeTitleSearch = this.onChangeTitleSearch.bind(this);
         this.onSearch = this.onSearch.bind(this);
         this.onSelectTitle = this.onSelectTitle.bind(this);
+        this.onResetTitle = this.onResetTitle.bind(this);
     }
 
     onContinue = async (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -40,7 +42,7 @@ export default class ConfigXBL_02_TitleId extends Base.ConfigStepBase<Base.Confi
     }
 
     onSearch = async (e: React.SyntheticEvent<HTMLInputElement>) => {
-        let titleInfos = await AchievementsService.searchTitleInfo(this.state.titleSearch);
+        let titleInfos = await AchievementsService.searchXApiTitleInfo(this.state.titleSearch, ConfigurationState.currentConfiguration.xBoxLiveConfig.xApiKey);
         this.setState({
             titleSearch: this.state.titleSearch,
             searchResults: titleInfos,
@@ -61,15 +63,24 @@ export default class ConfigXBL_02_TitleId extends Base.ConfigStepBase<Base.Confi
         // Validate and move on
     }
 
+    onResetTitle = (e: React.MouseEvent<HTMLInputElement>) => {
+        this.setState({
+            titleSearch: this.state.titleSearch,
+            searchResults: this.state.searchResults,
+            selectedTitle: null,
+        });
+    }
+
     render(){
         const isContinueEnabled = this.state.selectedTitle;
         let selection;
         if (this.state.selectedTitle)
         {
             selection = (
-                <div className="selectedTitle">
-                    <img src={this.state.selectedTitle.logoUri}></img>
-                    {this.state.selectedTitle.productTitle}
+                <div className="card">
+                    <h2 className="section">{this.state.selectedTitle.productTitle}</h2>
+                    <img className="section media" src={this.state.selectedTitle.logoUri}></img>
+                    <input className="section" type="button" name="xBoxTitleChange" value="Change" onClick={this.onResetTitle} />
                 </div>
             )
         }

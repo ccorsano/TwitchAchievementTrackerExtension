@@ -11,6 +11,9 @@ module.exports = (_env, argv) => {
     // edit webpack plugins here!
     let plugins = [
       new CleanWebpackPlugin.CleanWebpackPlugin(),
+      new MiniCssExtractPlugin({
+        filename: '[name].css',
+      })
     ];
 
     let entryPoints = {
@@ -58,9 +61,6 @@ module.exports = (_env, argv) => {
             template:'./template.html',
             filename:entryPoints[name].outputHtml,
             minify: false
-          }))
-          plugins.push(new MiniCssExtractPlugin({
-            filename: '[name].css',
           }))
         }
       }    
