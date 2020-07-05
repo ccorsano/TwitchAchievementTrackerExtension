@@ -19,10 +19,6 @@ export default class EBSAchievementsService extends EBS.EBSBase {
     searchXApiTitleInfo = async(query: string, xApiKey: string): Promise<TitleInfo[]> => {
         return this.serviceFetch("/title/xapi/search/" + encodeURIComponent(query) + "?xApiKey=" + encodeURIComponent(xApiKey));
     }
-
-    resolveGamertag = async (gamertag: string): Promise<string> => {
-        return this.serviceFetch("/xuid/" + encodeURIComponent(gamertag)).then(r => r.toString());
-    }
 }
 
 export const AchievementsService = new EBSAchievementsService();

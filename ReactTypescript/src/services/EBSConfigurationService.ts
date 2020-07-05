@@ -61,6 +61,10 @@ export default class EBSConfigurationService extends EBS.EBSBase {
         return this.serviceFetch("/steam/playerInfo/" + encodeURIComponent(steamId) + "?webApiKey=" + encodeURIComponent(webApiKey) );
     }
 
+    resolveXBoxLiveGamertag = async (gamertag: string, xapiKey: string): Promise<PlayerInfoCard> => {
+        return this.serviceFetch("/xapi/gamertag/" + encodeURIComponent(gamertag) + "?xApiKey=" + encodeURIComponent(xapiKey) );
+    }
+
     resolveXBoxLivePlayerInfo = async (xuid: string, xapiKey: string): Promise<PlayerInfoCard> => {
         return this.serviceFetch("/xapi/playerInfo/" + encodeURIComponent(xuid) + "?xApiKey=" + encodeURIComponent(xapiKey) );
     }
