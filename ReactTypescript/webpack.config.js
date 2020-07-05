@@ -80,6 +80,11 @@ module.exports = (_env, argv) => {
               exclude: /node_modules/,
             },
             {
+              test: /\.(png|jpe?g|svg)$/i,
+              use: 'file-loader',
+              exclude: /node_modules/,
+            },
+            {
               test: /\.css$/,
               use: [
                 {
