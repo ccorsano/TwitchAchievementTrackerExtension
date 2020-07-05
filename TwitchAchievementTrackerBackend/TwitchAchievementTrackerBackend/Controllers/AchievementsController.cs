@@ -38,7 +38,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
             {
                 var xConfig = config.XBoxLiveConfig;
 
-                var titleInfo = await _xApiService.GetMarketplaceAsync(xConfig);
+                var titleInfo = await _xApiService.GetMarketplaceAsync(xConfig.TitleId, xConfig.XApiKey, xConfig.Locale);
 
                 return new TitleInfo
                 {

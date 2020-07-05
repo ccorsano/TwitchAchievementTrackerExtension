@@ -61,11 +61,13 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
                     <div className="ConfigChoosePlatform">
                         <h2>Select a platform</h2>
                         <div className="row">
-                            <div className="selectPlatform xboxlive button" onClick={(e) => this.onSelect(e, CurrentPlatformEnum.XBoxLive) }>
-                                XBox Live
+                            <div className="selectPlatform card xboxlive">
+                                <h1 className="section">XBox Live</h1>
+                                <input type="button" value="Select" className="section" onClick={(e) => this.onSelect(e, CurrentPlatformEnum.XBoxLive) } />
                             </div>
-                            <div className="selectPlatform steam button" onClick={(e) => this.onSelect(e, CurrentPlatformEnum.Steam) }>
-                                Steam
+                            <div className="selectPlatform card steam">
+                                <h1 className="section">Steam</h1>
+                                <input type="button" value="Select" className="section" onClick={(e) => this.onSelect(e, CurrentPlatformEnum.Steam) } />
                             </div>
                         </div>
                     </div>

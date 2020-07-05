@@ -1,4 +1,5 @@
 ﻿using Google.FlatBuffers;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -15,6 +16,7 @@ using TwitchAchievementTracker;
 using TwitchAchievementTrackerBackend.Configuration;
 using TwitchAchievementTrackerBackend.Model;
 using TwitchAchievementTrackerBackend.Model.Steam;
+using TwitchAchievementTrackerBackend.Model.XApi;
 
 namespace TwitchAchievementTrackerBackend.Services
 {
@@ -39,7 +41,7 @@ namespace TwitchAchievementTrackerBackend.Services
             switch (configuration.ActiveConfig)
             {
                 case ActiveConfig.XBoxLive:
-                    var marketPlace = await _xApiService.GetMarketplaceAsync(configuration.XBoxLiveConfig);
+                    var marketPlace = await _xApiService.GetMarketplaceAsync(configuration.XBoxLiveConfig.TitleId, configuration.XBoxLiveConfig.XApiKey);
                     var supportedLanguages = marketPlace.Products
                         .SelectMany(p => p.DisplaySkuAvailabilities?
                             .SelectMany(dsa => dsa.Sku?.MarketProperties?
@@ -84,7 +86,7 @@ namespace TwitchAchievementTrackerBackend.Services
             return Encrypt(payload);
         }
 
-        public async Task<PlayerInfoCard> GetPlayerInfo(string steamId, string webApiKey = null)
+        public async Task<PlayerInfoCard> GetSteamPlayerInfo(string steamId, string webApiKey = null)
         {
             var playerInfo = await _steamApiService.GetPlayersSummaries(new string[] { steamId }, webApiKey);
 
@@ -94,6 +96,52 @@ namespace TwitchAchievementTrackerBackend.Services
                 PlayerName = playerInfo.First().PersonaName,
                 AvatarUrl = playerInfo.First().AvatarFull.AbsoluteUri,
             };
+        }
+
+        public async Task<PlayerInfoCard> GetXBoxLivePlayerInfo(string xuid, string xApiKey = null)
+        {
+            var playerInfo = await _xApiService.GetGamerCard(xuid, xApiKey);
+
+            return new PlayerInfoCard
+            {
+                PlayerId = xuid,
+                PlayerName = playerInfo.Gamertag,
+                AvatarUrl = playerInfo.GamerpicLargeSslImagePath,
+            };
+        }
+
+        public async Task<TitleInfo> GetXBoxLiveTitleInfo(string titleId, string xApiKey)
+        {
+            var titleInfo = await _xApiService.GetMarketplaceAsync(titleId, xApiKey);
+
+            return new TitleInfo
+            {
+                TitleId = titleId,
+                ProductTitle = titleInfo.Products.FirstOrDefault()?.LocalizedProperties?.FirstOrDefault()?.ProductTitle ?? "Unknown",
+                ProductDescription = titleInfo.Products.FirstOrDefault()?.LocalizedProperties?.FirstOrDefault()?.ProductDescription ?? "-",
+                LogoUri = titleInfo.Products.FirstOrDefault()?
+                    .LocalizedProperties?.FirstOrDefault()?
+                    .Images?
+                        .Where(i => i.ImagePurpose == "Logo" || i.ImagePurpose == "Tile" || i.ImagePurpose == "BoxArt" || i.ImagePurpose == "FeaturePromotionalSquareArt")?
+                        .FirstOrDefault()?.Uri,
+            };
+        }
+
+        public async Task<TitleInfo[]> GetXBoxLiveRecentTitles(string xuid, string xApiKey)
+        {
+            var titleHistory = await _xApiService.GetRecentTitlesAsync(xuid, xApiKey);
+
+            return titleHistory.Titles
+                // Exclude non XBoxLive titles
+                .Where(titleInfo => titleInfo.Pfn != null)
+                .Select(titleInfo => new TitleInfo
+            {
+                TitleId = titleInfo.TitleId,
+                ProductTitle = titleInfo.Name,
+                ProductDescription = "",
+                LogoUri = titleInfo.Images
+                    .FirstOrDefault(i => i.Type == XApiImageType.Tile || i.Type == XApiImageType.BoxArt || i.Type == XApiImageType.FeaturePromotionalSquareArt)?.Url?.AbsoluteUri
+            }).ToArray();
         }
 
         public async Task<PlayerInfoCard> ResolveSteamProfileUrl(string profileUrl, string webApiKey = null)

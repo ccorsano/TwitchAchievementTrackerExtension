@@ -69,29 +69,49 @@ namespace TwitchAchievementTrackerBackend.Controllers
             return _service.ValidateConfiguration(configuration);
         }
 
-        [HttpGet("steam/resolveVanity")]
+        [HttpGet("steam/resolveVanity/{vanityUrl}")]
         public Task<PlayerInfoCard> ResolveSteamProfileUrl(string vanityUrl, string webApiKey = null)
         {
             return _service.ResolveSteamProfileUrl(vanityUrl, webApiKey);
         }
 
-        [HttpGet("steam/playerInfo")]
+        [HttpGet("steam/playerInfo/{steamid}")]
         public Task<PlayerInfoCard> GetSteamPlayerInfo(string steamid, string webApiKey = null)
         {
-            return _service.GetPlayerInfo(steamid, webApiKey);
+            return _service.GetSteamPlayerInfo(steamid, webApiKey);
         }
 
         [HttpGet("steam/{steamId}/ownedGames")]
         public async Task<TitleInfo[]> GetSteamOwnedGames(string steamId, string webApiKey = null)
         {
             var ownedGames = await _service.GetSteamOwnedGames(steamId, webApiKey);
-            return ownedGames.Select(game => new TitleInfo
+            return ownedGames
+                .OrderByDescending(game => game.PlaytimeForever)
+                .Select(game => new TitleInfo
             {
                 TitleId = game.AppId.ToString(),
                 LogoUri = game.ImgLogoUrl,
                 ProductTitle = game.Name,
                 ProductDescription = "",
             }).ToArray();
+        }
+
+        [HttpGet("xapi/playerInfo/{xuid}")]
+        public Task<PlayerInfoCard> GetXBoxLivePlayerInfo(string xuid, string xApiKey = null)
+        {
+            return _service.GetXBoxLivePlayerInfo(xuid, xApiKey);
+        }
+
+        [HttpGet("xapi/titleInfo/{titleId}")]
+        public Task<TitleInfo> GetXBoxLiveTitleInfo(string titleId, string xApiKey = null)
+        {
+            return _service.GetXBoxLiveTitleInfo(titleId, xApiKey);
+        }
+
+        [HttpGet("xapi/recentTitles/{xuid}")]
+        public Task<TitleInfo[]> GetRecentTitles(string xuid, string xApiKey = null)
+        {
+            return _service.GetXBoxLiveRecentTitles(xuid, xApiKey);
         }
     }
 }

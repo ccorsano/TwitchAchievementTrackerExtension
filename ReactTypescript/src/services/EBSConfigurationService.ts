@@ -54,11 +54,23 @@ export default class EBSConfigurationService extends EBS.EBSBase {
     }
 
     resolveSteamVanityUrl = async (vanityUrl: string, webApiKey: string): Promise<PlayerInfoCard> => {
-        return this.serviceFetch("/steam/resolveVanity?vanityUrl=" + encodeURIComponent(vanityUrl) + "&webApiKey=" + encodeURIComponent(webApiKey) );
+        return this.serviceFetch("/steam/resolveVanity/" + encodeURIComponent(vanityUrl) + "?webApiKey=" + encodeURIComponent(webApiKey) );
     }
 
     resolveSteamPlayerInfo = async (steamId: string, webApiKey: string): Promise<PlayerInfoCard> => {
-        return this.serviceFetch("/steam/playerInfo?steamid=" + encodeURIComponent(steamId) + "&webApiKey=" + encodeURIComponent(webApiKey) );
+        return this.serviceFetch("/steam/playerInfo/" + encodeURIComponent(steamId) + "?webApiKey=" + encodeURIComponent(webApiKey) );
+    }
+
+    resolveXBoxLivePlayerInfo = async (xuid: string, xapiKey: string): Promise<PlayerInfoCard> => {
+        return this.serviceFetch("/xapi/playerInfo/" + encodeURIComponent(xuid) + "?xApiKey=" + encodeURIComponent(xapiKey) );
+    }
+
+    resolveXBoxLiveTitleInfo = async (titleId: string, xapiKey: string): Promise<TitleInfo> => {
+        return this.serviceFetch("/xapi/titleInfo/" + encodeURIComponent(titleId) + "?xApiKey=" + encodeURIComponent(xapiKey) );
+    }
+
+    getRecentXBoxLiveTitleInfo = async (xuid: string, xapiKey: string): Promise<TitleInfo[]> => {
+        return this.serviceFetch("/xapi/recentTitles/" + encodeURIComponent(xuid) + "?xApiKey=" + encodeURIComponent(xapiKey) );
     }
 
     getSteamOwnedGames = async (steamId: string, webApiKey: string): Promise<TitleInfo[]> => {

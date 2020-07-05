@@ -5,6 +5,7 @@ import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
 import * as webpack from 'webpack';
 import { TitleInfo } from '../../common/EBSTypes';
+import GameCard from '../GameCard/GameCard';
 
 type ConfigSteam_02_AppIdState = {
     titleSearch: string;
@@ -66,8 +67,7 @@ export default class ConfigSteam_02_AppId extends Base.ConfigStepBase<Base.Confi
         });
     }
 
-    onSelectTitle = (e: React.MouseEvent<HTMLLIElement>) => {
-        let titleId = e.currentTarget.attributes.getNamedItem("itemId").value;
+    onSelectTitle = (e: React.MouseEvent<HTMLElement>, titleId: string) => {
         let titleInfo = this.state.ownedApps.find(t => t.titleId == titleId);
 
         this.setState({
@@ -95,24 +95,22 @@ export default class ConfigSteam_02_AppId extends Base.ConfigStepBase<Base.Confi
         if (this.state.selectedTitle)
         {
             selection = (
-                <div className="card">
-                    <h2 className="section">{this.state.selectedTitle.productTitle}</h2>
-                    <img className="section" src={this.state.selectedTitle.logoUri}></img>
-                    <input type="button" className="section" name="TitleChange" value="Change" onClick={this.onResetTitle} />
-                </div>
+                <GameCard titleInfo={this.state.selectedTitle} buttonSection={<input type="button" className="section" name="TitleChange" value="Change" onClick={this.onResetTitle} />} />
             )
         }
         else
         {
             selection = [
-                <input name="titleSearch" type="text" placeholder="Filter your Steam games" onChange={this.onChangeTitleSearch} />,
-                <ul className="searchResult">
+                <input name="titleSearch" type="text" placeholder="Filter your Steam games" onChange={this.onChangeTitleSearch} />,,
+                <div className="searchResult container">
+                    <div className="row">
                     {
                         this.state.filteredApps.map((titleInfo, i) => (
-                            <li itemID={titleInfo.titleId} key={titleInfo.titleId} onClick={this.onSelectTitle}><img src={titleInfo.logoUri}></img> {titleInfo.productTitle}</li>
+                            <GameCard titleInfo={titleInfo} buttonSection={<input className="section" type="button" name="steamTitleChange" value="Select" onClick={(e) => this.onSelectTitle(e, titleInfo.titleId)} />} />
                         ))
                     }
-                </ul>
+                    </div>
+                </div>
             ]
         }
 

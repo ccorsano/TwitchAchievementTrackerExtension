@@ -5,6 +5,7 @@ import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { ExtensionConfiguration, ActiveConfig, PlayerInfoCard } from '../../common/EBSTypes';
 import * as ServerConfig from '../../common/ServerConfig'
 import EBSAchievementsService from '../../services/EBSAchievementsService';
+import GamerCardComponent from '../GamerCard/GamerCard';
 
 type ConfigSteam_03_SteamIDState = {
     isLoading: boolean;
@@ -132,13 +133,11 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<Base.Con
         {
             if (this.state.steamProfile)
             {
+                let changeButton = (
+                    <input type="button" value="Change" className="section" onClick={this.onResetProfile} />
+                )
                 playerInfoCard = [
-                    <div className="card">
-                        <h2 className="section">{this.state.steamProfile.playerName}</h2>
-                        <div className="section">Id: {this.state.steamProfile.playerId}</div>
-                        <img src={this.state.steamProfile.avatarUrl} className="section media" />
-                        <input type="button" value="Change" className="section" onClick={this.onResetProfile} />
-                    </div>
+                    <GamerCardComponent playerInfo={this.state.steamProfile} buttonSection={changeButton} />,
                 ]
             }
             else
@@ -164,7 +163,7 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<Base.Con
             )
         }
 
-        return [,
+        return [
             playerInfoCard,
             <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onContinue} />
         ]

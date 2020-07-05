@@ -4,7 +4,7 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
 {
     public class XApiMarketplaceSkuMarketProperty
     {
-        public DateTimeOffset FirstAvailableDate { get; set; }
+        public DateTimeOffset? FirstAvailableDate { get; set; }
 
         public string[] SupportedLanguages { get; set; }
 

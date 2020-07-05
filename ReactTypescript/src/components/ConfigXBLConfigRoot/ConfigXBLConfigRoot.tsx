@@ -3,8 +3,8 @@ import * as Base from '../../common/ConfigStepBase';
 import { ConfigurationService, ValidationError, EncryptedConfigurationResponse } from '../../services/EBSConfigurationService';
 import { ConfigurationState } from '../../services/ConfigurationStateService'
 import ConfigXBL_01_XApiKey from '../ConfigXBL_01_XApiKey/ConfigXBL_01_XApiKey';
-import ConfigXBL_02_TitleId from '../ConfigXBL_02_TitleId/ConfigXBL_02_TitleId';
-import ConfigXBL_03_XUID from '../ConfigXBL_03_XUID/ConfigXBL_03_XUID';
+import ConfigXBL_02_XUID from '../ConfigXBL_02_XUID/ConfigXBL_02_XUID';
+import ConfigXBL_03_TitleId from '../ConfigXBL_03_TitleId/ConfigXBL_03_TitleId';
 import ConfigXBL_04_Locale from '../ConfigXBL_04_Locale/ConfigXBL_04_Locale';
 import ConfigXBL_05_Confirm from '../ConfigXBL_05_Confirm/ConfigXBL_05_Confirm';
 import { ActiveConfig } from '../../common/EBSTypes';
@@ -13,8 +13,8 @@ import * as ServerConfig from '../../common/ServerConfig'
 
 enum ConfigXBLConfigStateEnum {
     XApiUsKey = 0,
-    TitleIdSearch = 1,
-    XUIDSearch = 2,
+    XUIDSearch = 1,
+    TitleIdSearch = 2,
     Locale = 3,
     Confirm = 4,
 }
@@ -76,13 +76,13 @@ export default class ConfigXBLConfigRoot extends React.Component<any, ConfigXBLC
 
         switch (this.state.currentState) {
             case ConfigXBLConfigStateEnum.XApiUsKey:
-                config = <ConfigXBL_01_XApiKey onValid={this.onValidateStep} nextState={ConfigXBLConfigStateEnum.TitleIdSearch} />
-                break;
-            case ConfigXBLConfigStateEnum.TitleIdSearch:
-                config = <ConfigXBL_02_TitleId onValid={this.onValidateStep} nextState={ConfigXBLConfigStateEnum.XUIDSearch} />
+                config = <ConfigXBL_01_XApiKey onValid={this.onValidateStep} nextState={ConfigXBLConfigStateEnum.XUIDSearch} />
                 break;
             case ConfigXBLConfigStateEnum.XUIDSearch:
-                config = <ConfigXBL_03_XUID onValid={this.onValidateStep} nextState={ConfigXBLConfigStateEnum.Locale} />
+                config = <ConfigXBL_02_XUID onValid={this.onValidateStep} nextState={ConfigXBLConfigStateEnum.TitleIdSearch} />
+                break;
+            case ConfigXBLConfigStateEnum.TitleIdSearch:
+                config = <ConfigXBL_03_TitleId onValid={this.onValidateStep} nextState={ConfigXBLConfigStateEnum.Locale} />
                 break;
             case ConfigXBLConfigStateEnum.Locale:
                 config = <ConfigXBL_04_Locale onValid={this.onValidateStep} nextState={ConfigXBLConfigStateEnum.Confirm} />

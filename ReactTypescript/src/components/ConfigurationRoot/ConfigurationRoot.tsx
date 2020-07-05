@@ -13,10 +13,6 @@ export default class ConfigurationRoot extends React.Component {
         console.log("Platform selected: " + e.currentTarget.value);
     }
 
-    XBoxWizard = (props:any) => {
-        
-    };
-
     render(){
         document.getElementById("root")
         return (
