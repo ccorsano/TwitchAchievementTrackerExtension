@@ -96,6 +96,12 @@ namespace TwitchAchievementTrackerBackend.Controllers
             }).ToArray();
         }
 
+        [HttpGet("xapi/gamertag/{gamertag}")]
+        public Task<PlayerInfoCard> ResolveXBoxLiveGamerTag(string gamertag, string xApiKey = null)
+        {
+            return _service.ResolveXBoxLiveGamertag(gamertag, xApiKey);
+        }
+
         [HttpGet("xapi/playerInfo/{xuid}")]
         public Task<PlayerInfoCard> GetXBoxLivePlayerInfo(string xuid, string xApiKey = null)
         {

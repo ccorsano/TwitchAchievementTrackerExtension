@@ -73,15 +73,13 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<Base.ConfigSt
             isLoading: true,
         });
 
-        let xuid = await AchievementsService.resolveGamertag(this.state.xuidSearch);
+        let gamerCard = await ConfigurationService.resolveXBoxLiveGamertag(this.state.xuidSearch, ConfigurationState.currentConfiguration.xBoxLiveConfig.xApiKey);
 
-        if (xuid){
-            this.setState({
-                xuidSearch: this.state.xuidSearch,
-                xuid: xuid,
-            });
-            this.changeXuid(xuid);
-        }
+        this.setState({
+            xuid: gamerCard.playerId,
+            gamerCard: gamerCard,
+            isLoading: false,
+        });
     }
 
     onResetProfile = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -104,7 +102,7 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<Base.ConfigSt
         if (this.state.isLoading)
         {
             content = [
-                <div>Loading ...</div>
+                <div className="spinner"></div>
             ]
         }
         else if (this.state.gamerCard)
@@ -119,7 +117,7 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<Base.ConfigSt
         {
             content = [
                 <label htmlFor="xuidSearch">Streamer Id</label>,
-                <input name="xuidSearch" type="text" placeholder="Search a Gamertag" onChange={this.onChangeGamertagSearch} />,
+                <input name="xuidSearch" type="text" placeholder="Search a Gamertag" value={this.state.xuidSearch} onChange={this.onChangeGamertagSearch} />,
                 <input type="button" value="Search" onClick={this.onSearch} />,
             ]
         }

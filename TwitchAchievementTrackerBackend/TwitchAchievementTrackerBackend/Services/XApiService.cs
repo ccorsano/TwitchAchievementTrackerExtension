@@ -107,19 +107,14 @@ namespace TwitchAchievementTrackerBackend.Services
             return result;
         }
 
-        public async Task<string> ResolveXuid(string gamerTag, XApiConfiguration config = null)
+        public async Task<string> ResolveXuid(string gamerTag, string xApiKey)
         {
             var cacheKey = $"xuid:{gamerTag}";
 
             if (!_cache.TryGetValue<string>(cacheKey, out var result))
             {
                 var message = new HttpRequestMessage(HttpMethod.Get, $"xuid/{gamerTag}");
-
-                if (config != null)
-                {
-                    message.Headers.Add("X-AUTH", config.XApiKey);
-                    message.Headers.Add("Accept-Language", $"{config.Locale};q=1.0");
-                }
+                message.Headers.Add("X-AUTH", xApiKey);
 
                 var response = await _httpClient.SendAsync(message);
                 response.EnsureSuccessStatusCode();

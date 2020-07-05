@@ -98,6 +98,19 @@ namespace TwitchAchievementTrackerBackend.Services
             };
         }
 
+        public async Task<PlayerInfoCard> ResolveXBoxLiveGamertag(string gamertag, string xApiKey = null)
+        {
+            var xuid = await _xApiService.ResolveXuid(gamertag, xApiKey);
+            var playerInfo = await _xApiService.GetGamerCard(xuid, xApiKey);
+
+            return new PlayerInfoCard
+            {
+                PlayerId = xuid,
+                PlayerName = playerInfo.Gamertag,
+                AvatarUrl = playerInfo.GamerpicLargeSslImagePath,
+            };
+        }
+
         public async Task<PlayerInfoCard> GetXBoxLivePlayerInfo(string xuid, string xApiKey = null)
         {
             var playerInfo = await _xApiService.GetGamerCard(xuid, xApiKey);

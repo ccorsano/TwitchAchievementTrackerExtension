@@ -128,18 +128,6 @@ namespace TwitchAchievementTrackerBackend.Controllers
             }
         }
 
-        [HttpGet("/api/xuid/{gamertag}")]
-        public async Task<string> ResolveXuid(string gamerTag)
-        {
-            XApiConfiguration xApiConfiguration = null;
-            if (this.HasExtensionConfiguration())
-            {
-                xApiConfiguration = this.GetExtensionConfiguration().XBoxLiveConfig;
-            }
-
-            return await _xApiService.ResolveXuid(gamerTag, xApiConfiguration);
-        }
-
 
         [HttpGet("summary")]
         public async Task<AchievementSummary> GetSummary()
