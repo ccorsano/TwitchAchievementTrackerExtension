@@ -96,7 +96,9 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
                             {this.state.titleInfo?.productTitle ?? "Game"}
                         </h2>
                         <div id="completionHeadline">
-        <span className="percentage">{percentage.toPrecision(2)}</span><img src={NujaCup} alt="achievements" /><span className="completedCount">{completedCount}</span>/<span className="totalCount">{totalCount}</span> 
+                            <span className="percentage">{percentage.toPrecision(2)}%</span>
+                            <img src={NujaCup} alt="achievements" />
+                            <span className="completedCount">{completedCount}</span>/<span className="totalCount">{totalCount}</span> 
                         </div>
                     </div>
                     <ul id="list">

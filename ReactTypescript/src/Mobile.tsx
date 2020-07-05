@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import VideoOverlay from './components/VideoOverlay/VideoOverlay';
+import Mobile from './components/Mobile/Mobile';
 
 ReactDOM.render(
-    <VideoOverlay />,
+    <Mobile />,
     document.getElementById("root") as HTMLElement
 );

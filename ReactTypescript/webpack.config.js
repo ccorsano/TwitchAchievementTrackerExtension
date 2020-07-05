@@ -17,36 +17,36 @@ module.exports = (_env, argv) => {
     ];
 
     let entryPoints = {
-    //   VideoComponent:{
-    //     path:"./src/VideoComponent.js",
-    //     outputHtml:"video_component.html",
-    //     build:true
-    //   },
       VideoOverlay:{
         path:"./src/VideoOverlay.tsx",
         outputHtml:"video_overlay.html",
         build:true
       },
-    //   Panel:{
-    //     path:"./src/Panel.js",
-    //     outputHtml:"panel.html",
-    //     build:true
-    //   },
       Config:{
         path:"./src/Config.tsx",
         outputHtml:"config.html",
         build:true
       },
-    //   LiveConfig:{
-    //     path:"./src/LiveConfig.js",
-    //     outputHtml:"live_config.html",
-    //     build:true
-    //   },
       Mobile:{
         path:"./src/Mobile.tsx",
         outputHtml:"mobile.html",
         build:true
       }
+      //   VideoComponent:{
+      //     path:"./src/VideoComponent.js",
+      //     outputHtml:"video_component.html",
+      //     build:true
+      //   },
+      //   Panel:{
+      //     path:"./src/Panel.js",
+      //     outputHtml:"panel.html",
+      //     build:true
+      //   },
+      //   LiveConfig:{
+      //     path:"./src/LiveConfig.js",
+      //     outputHtml:"live_config.html",
+      //     build:true
+      //   },
     };
 
     let entry = {};
@@ -69,7 +69,7 @@ module.exports = (_env, argv) => {
     let config = {
         entry: entry,
         optimization: {
-          minimize: false, // this setting is default to false to pass review more easily. you can opt to set this to true to compress the bundles, but also expect an email from the review team to get the full source otherwise. 
+          minimize: true, // this setting is default to false to pass review more easily. you can opt to set this to true to compress the bundles, but also expect an email from the review team to get the full source otherwise. 
         },
         devtool: 'source-map',
         module: {
