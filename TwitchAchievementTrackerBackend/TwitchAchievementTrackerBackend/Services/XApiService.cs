@@ -228,6 +228,20 @@ namespace TwitchAchievementTrackerBackend.Services
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
                     result = await JsonSerializer.DeserializeAsync<XApiTitleHistoryResult>(responseStream);
+
+                    foreach(var game in result.Titles)
+                    {
+                        foreach(var image in game.Images)
+                        {
+                            if (image.Url.Scheme != "https")
+                            {
+                                var httpsUrl = new UriBuilder(image.Url);
+                                httpsUrl.Scheme = "https";
+                                httpsUrl.Port = 443;
+                                image.Url = httpsUrl.Uri;
+                            }
+                        }
+                    }
                     // Cache for 1 min, overridable
                     _cache.Set(cacheKey, result, _options.ResultCacheTime);
                 }
