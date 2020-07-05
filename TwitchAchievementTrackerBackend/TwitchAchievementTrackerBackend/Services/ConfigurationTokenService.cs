@@ -1,5 +1,6 @@
 ﻿using Google.FlatBuffers;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -7,9 +8,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TwitchAchievementTracker;
@@ -26,14 +29,30 @@ namespace TwitchAchievementTrackerBackend.Services
         private readonly SteamApiService _steamApiService;
         private readonly XApiService _xApiService;
         private readonly Regex XAPI_REGEX = new Regex("^[0-9a-fA-F]{40}$", RegexOptions.Compiled);
+        private readonly IMemoryCache _cache;
         private readonly ILogger _logger;
 
-        public ConfigurationTokenService(IOptions<ConfigurationTokenOptions> options, ILogger<ConfigurationTokenService> logger, SteamApiService steamApiService, XApiService xApiService)
+        public ConfigurationTokenService(IOptions<ConfigurationTokenOptions> options, ILogger<ConfigurationTokenService> logger, SteamApiService steamApiService, XApiService xApiService, IMemoryCache memoryCache)
         {
             _options = options.Value;
             _steamApiService = steamApiService;
             _xApiService = xApiService;
+            _cache = memoryCache;
             _logger = logger;
+        }
+
+        private async Task<Dictionary<string, SupportedLanguage>> GetEmbededCulturesNames()
+        {
+            if(! _cache.TryGetValue<Dictionary<string, SupportedLanguage>>("culturesnames", out var cultures))
+            {
+                using (var culturesStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TwitchAchievementTrackerBackend.Cultures.json"))
+                {
+                    var definitions = await JsonSerializer.DeserializeAsync<SupportedLanguage[]>(culturesStream);
+                    cultures = definitions.ToDictionary(d => d.LangCode.ToLowerInvariant(), d => d);
+                    _cache.Set("culturesnames", cultures);
+                }
+            }
+            return cultures;
         }
 
         public async Task<SupportedLanguage[]> GetSupportedLanguages(ExtensionConfiguration configuration)
@@ -47,11 +66,12 @@ namespace TwitchAchievementTrackerBackend.Services
                             .SelectMany(dsa => dsa.Sku?.MarketProperties?
                                 .SelectMany(mp => mp.SupportedLanguages) ?? new string[] { } ) ?? new string[] { })
                         .Distinct();
-                    return supportedLanguages.Select(l => new SupportedLanguage
-                    {
-                        LangCode = l,
-                        DisplayName = System.Globalization.CultureInfo.GetCultureInfo(l).DisplayName
-                    }).ToArray();
+
+                    // Resolve cultures based on embeded definition
+                    var cultures = await GetEmbededCulturesNames();
+                    return supportedLanguages
+                        .Select(l => cultures.TryGetValue(l.ToLowerInvariant(), out var language) ? language : new SupportedLanguage { LangCode = l, DisplayName = l })
+                        .ToArray();
                 case ActiveConfig.Steam:
                     var schema = await _steamApiService.GetGameSchema(configuration.SteamConfig);
                     var storeDetails = await _steamApiService.GetStoreDetails(UInt32.Parse(configuration.SteamConfig.AppId));

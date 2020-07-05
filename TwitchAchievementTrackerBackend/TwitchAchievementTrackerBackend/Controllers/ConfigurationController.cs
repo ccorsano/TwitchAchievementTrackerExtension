@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using TwitchAchievementTrackerBackend.Helpers;
 using TwitchAchievementTrackerBackend.Model;
-using TwitchAchievementTrackerBackend.Model.Steam;
 using TwitchAchievementTrackerBackend.Services;
 
 namespace TwitchAchievementTrackerBackend.Controllers
