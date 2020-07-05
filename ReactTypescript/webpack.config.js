@@ -2,9 +2,16 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (_env, argv) => {
     const bundlePath = path.resolve(__dirname, "dist/")
+  
+    // edit webpack plugins here!
+    let plugins = [
+      new CleanWebpackPlugin.CleanWebpackPlugin(),
+    ];
 
     let entryPoints = {
     //   VideoComponent:{
@@ -12,11 +19,11 @@ module.exports = (_env, argv) => {
     //     outputHtml:"video_component.html",
     //     build:true
     //   },
-    //   VideoOverlay:{
-    //     path:"./src/VideoOverlay.js",
-    //     outputHtml:"video_overlay.html",
-    //     build:true
-    //   },
+      VideoOverlay:{
+        path:"./src/VideoOverlay.tsx",
+        outputHtml:"video_overlay.html",
+        build:true
+      },
     //   Panel:{
     //     path:"./src/Panel.js",
     //     outputHtml:"panel.html",
@@ -32,11 +39,11 @@ module.exports = (_env, argv) => {
     //     outputHtml:"live_config.html",
     //     build:true
     //   },
-    //   Mobile:{
-    //     path:"./src/Mobile.js",
-    //     outputHtml:"mobile.html",
-    //     build:true
-    //   }
+      Mobile:{
+        path:"./src/Mobile.tsx",
+        outputHtml:"mobile.html",
+        build:true
+      }
     };
 
     let entry = {};
@@ -49,16 +56,15 @@ module.exports = (_env, argv) => {
             inject:true,
             chunks:[name],
             template:'./template.html',
-            filename:entryPoints[name].outputHtml
+            filename:entryPoints[name].outputHtml,
+            minify: false
+          }))
+          plugins.push(new MiniCssExtractPlugin({
+            filename: '[name].css',
           }))
         }
       }    
     }
-  
-    // edit webpack plugins here!
-    let plugins = [
-      new CleanWebpackPlugin.CleanWebpackPlugin(),
-    ];
 
     let config = {
         entry: entry,
@@ -75,7 +81,15 @@ module.exports = (_env, argv) => {
             },
             {
               test: /\.css$/,
-              use: [ 'style-loader', 'css-loader' ]
+              use: [
+                {
+                  loader: MiniCssExtractPlugin.loader,
+                  options: {
+                    publicPath: '/dist',
+                  },
+                },
+                'css-loader'
+              ]
             },
             {
               test: /\.scss$/,
