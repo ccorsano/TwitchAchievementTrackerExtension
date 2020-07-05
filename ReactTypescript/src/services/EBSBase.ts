@@ -1,6 +1,7 @@
 import { version } from "webpack";
 import { Twitch } from '../services/TwitchService';
 import * as ServerConfig from '../common/ServerConfig';
+require('../common/TwitchExtension')
 
 var urlParams = new URLSearchParams(window.location.search);
 let isDebug: boolean = false;
@@ -18,6 +19,10 @@ export class EBSBase {
     onAuthorized: (context: TwitchAuthCallbackContext) => void;
     onConfiguration: (configuration: TwitchExtensionConfiguration) => void;
 
+    configuredPromise: Promise<[TwitchAuthCallbackContext, TwitchExtensionConfiguration]>;
+    contextPromise: Promise<TwitchAuthCallbackContext>;
+    configurationPromise: Promise<TwitchExtensionConfiguration>;
+
     constructor(baseUrl: string){
         this._onAuthorized = this._onAuthorized.bind(this);
         this._onConfiguration = this._onConfiguration.bind(this);
@@ -25,9 +30,33 @@ export class EBSBase {
 
         Twitch.onAuthorized.push(this._onAuthorized);
         Twitch.onConfiguration.push(this._onConfiguration);
+
+        this.contextPromise = new Promise<TwitchAuthCallbackContext>((resolve, reject) => {
+            Twitch.onAuthorized.push(context => {
+                this._onAuthorized(context);
+                resolve(context);
+            });
+        });
+
+        this.configurationPromise = new Promise<TwitchExtensionConfiguration>((resolve, reject) => {
+            Twitch.onConfiguration.push(config => {
+                this._onConfiguration();
+                resolve(this.configuration);
+            });
+        });
+
+        this.configuredPromise = Promise.all([this.contextPromise, this.configurationPromise]);
+        this.configuredPromise.then(() => {
+            if (this.onConfigured)
+            {
+                this.onConfigured(this.context, this.configuration);
+            }
+        });
     }
 
     serviceFetch = async <T>(path: string, init: RequestInit = null): Promise<T> => {
+        await this.configuredPromise;
+
         const opts: RequestInit = {
             method: init?.method ?? 'GET',
             headers: new Headers({

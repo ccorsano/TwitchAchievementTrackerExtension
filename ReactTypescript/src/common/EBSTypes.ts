@@ -42,3 +42,21 @@ export interface TitleInfo {
     productDescription: string;
     logoUri: string;
 }
+
+export interface Achievement {
+    id: string;
+    name: string;
+    completed: boolean;
+    unlockTime: Date;
+    description: string;
+}
+
+export interface AchievementSummary {
+    gameName: string;
+    total: number;
+    completed: number;
+    inPrograss: number;
+    notStarter: number;
+    currentPoints: number;
+    totalPoints: number;
+}

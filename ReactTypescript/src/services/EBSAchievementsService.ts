@@ -1,6 +1,6 @@
 import * as EBSConfig from "../common/ServerConfig"
 import * as EBS from './EBSBase'
-import { ExtensionConfiguration, TitleInfo } from '../common/EBSTypes';
+import { ExtensionConfiguration, TitleInfo, Achievement, AchievementSummary } from '../common/EBSTypes';
 import { Twitch } from '../services/TwitchService';
 
 export default class EBSAchievementsService extends EBS.EBSBase {
@@ -18,6 +18,18 @@ export default class EBSAchievementsService extends EBS.EBSBase {
 
     searchXApiTitleInfo = async(query: string, xApiKey: string): Promise<TitleInfo[]> => {
         return this.serviceFetch("/title/xapi/search/" + encodeURIComponent(query) + "?xApiKey=" + encodeURIComponent(xApiKey));
+    }
+
+    getTitleInfo = (): Promise<TitleInfo> => {
+        return this.serviceFetch("/title");
+    }
+
+    getSummary = (): Promise<AchievementSummary> => {
+        return this.serviceFetch("/achievements/summary");
+    }
+
+    getAchievements = (): Promise<Achievement[]> => {
+        return this.serviceFetch("/achievements/list");
     }
 }
 

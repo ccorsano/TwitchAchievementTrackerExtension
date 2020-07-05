@@ -78,7 +78,7 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
                 element = (
                     <div className="ConfigSteam">
                         <ConfigSteamConfigRoot />
-                        <input type="button" value="Reset" onClick={this.onBack} />
+                        <input type="button" value="Restart" onClick={this.onBack} />
                     </div>
                 );
                 break;
@@ -87,7 +87,7 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
                 element = (
                     <div className="ConfigXBoxLive">
                         <ConfigXBLConfigRoot />
-                        <input type="button" value="Reset" onClick={this.onBack} />
+                        <input type="button" value="Restart" onClick={this.onBack} />
                     </div>
                 );
                 break;
