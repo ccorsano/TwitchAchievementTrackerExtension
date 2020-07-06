@@ -50,33 +50,37 @@ namespace TwitchAchievementTrackerBackend.Middleware
             if (context.Request.Headers.ContainsKey("X-Config-Token"))
             {   
                 var token = context.Request.Headers["X-Config-Token"].First();
-                var configService = context.RequestServices.GetRequiredService<ConfigurationTokenService>();
 
-                ExtensionConfiguration configuration = null;
-                try
+                if (! string.IsNullOrEmpty(token))
                 {
-                    switch (version)
+                    var configService = context.RequestServices.GetRequiredService<ConfigurationTokenService>();
+
+                    ExtensionConfiguration configuration = null;
+                    try
                     {
-                        // Legacy versions
-                        case "0.0.1":
-                            configuration = configService.DecodeConfigurationToken_v1(Convert.FromBase64String(token));
-                            break;
+                        switch (version)
+                        {
+                            // Legacy versions
+                            case "0.0.1":
+                                configuration = configService.DecodeConfigurationToken_v1(Convert.FromBase64String(token));
+                                break;
 
-                        // Current version
-                        case "0.0.2":
-                        case "0.0.3":
-                            configuration = configService.DecodeConfigurationToken(Convert.FromBase64String(token));    
-                            break;
+                            // Current version
+                            case "0.0.2":
+                            case "0.0.3":
+                                configuration = configService.DecodeConfigurationToken(Convert.FromBase64String(token));
+                                break;
 
-                        default:
-                            throw new NotSupportedException($"Configuration version {version} is not supported on this EBS");
+                            default:
+                                throw new NotSupportedException($"Configuration version {version} is not supported on this EBS");
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        throw new ConfigurationHeaderException("Error reading configuration token", ex);
+                    }
+                    context.SetExtensionConfiguration(configuration);
                 }
-                catch (Exception ex)
-                {
-                    throw new ConfigurationHeaderException("Error reading configuration token", ex);
-                }
-                context.SetExtensionConfiguration(configuration);
             }
 
             return _next.Invoke(context);

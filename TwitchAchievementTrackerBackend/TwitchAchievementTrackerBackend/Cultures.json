@@ -1,0 +1,2982 @@
+[
+    {
+        "DisplayName": "Invariant Language (Invariant Country)",
+        "LangCode": ""
+    },
+    {
+        "DisplayName": "Afar (Djibouti)",
+        "LangCode": "aa-DJ"
+    },
+    {
+        "DisplayName": "Afar (Eritrea)",
+        "LangCode": "aa-ER"
+    },
+    {
+        "DisplayName": "Afar (Ethiopia)",
+        "LangCode": "aa-ET"
+    },
+    {
+        "DisplayName": "Afrikaans",
+        "LangCode": "af"
+    },
+    {
+        "DisplayName": "Afrikaans (Namibia)",
+        "LangCode": "af-NA"
+    },
+    {
+        "DisplayName": "Afrikaans (South Africa)",
+        "LangCode": "af-ZA"
+    },
+    {
+        "DisplayName": "Aghem (Cameroon)",
+        "LangCode": "agq-CM"
+    },
+    {
+        "DisplayName": "Akan (Ghana)",
+        "LangCode": "ak-GH"
+    },
+    {
+        "DisplayName": "Amharic",
+        "LangCode": "am"
+    },
+    {
+        "DisplayName": "Amharic (Ethiopia)",
+        "LangCode": "am-ET"
+    },
+    {
+        "DisplayName": "Arabic",
+        "LangCode": "ar"
+    },
+    {
+        "DisplayName": "Arabic (World)",
+        "LangCode": "ar-001"
+    },
+    {
+        "DisplayName": "Arabic (United Arab Emirates)",
+        "LangCode": "ar-AE"
+    },
+    {
+        "DisplayName": "Arabic (Bahrain)",
+        "LangCode": "ar-BH"
+    },
+    {
+        "DisplayName": "Arabic (Djibouti)",
+        "LangCode": "ar-DJ"
+    },
+    {
+        "DisplayName": "Arabic (Algeria)",
+        "LangCode": "ar-DZ"
+    },
+    {
+        "DisplayName": "Arabic (Egypt)",
+        "LangCode": "ar-EG"
+    },
+    {
+        "DisplayName": "Arabic (Eritrea)",
+        "LangCode": "ar-ER"
+    },
+    {
+        "DisplayName": "Arabic (Israel)",
+        "LangCode": "ar-IL"
+    },
+    {
+        "DisplayName": "Arabic (Iraq)",
+        "LangCode": "ar-IQ"
+    },
+    {
+        "DisplayName": "Arabic (Jordan)",
+        "LangCode": "ar-JO"
+    },
+    {
+        "DisplayName": "Arabic (Comoros)",
+        "LangCode": "ar-KM"
+    },
+    {
+        "DisplayName": "Arabic (Kuwait)",
+        "LangCode": "ar-KW"
+    },
+    {
+        "DisplayName": "Arabic (Lebanon)",
+        "LangCode": "ar-LB"
+    },
+    {
+        "DisplayName": "Arabic (Libya)",
+        "LangCode": "ar-LY"
+    },
+    {
+        "DisplayName": "Arabic (Morocco)",
+        "LangCode": "ar-MA"
+    },
+    {
+        "DisplayName": "Arabic (Mauritania)",
+        "LangCode": "ar-MR"
+    },
+    {
+        "DisplayName": "Arabic (Oman)",
+        "LangCode": "ar-OM"
+    },
+    {
+        "DisplayName": "Arabic (Palestinian Authority)",
+        "LangCode": "ar-PS"
+    },
+    {
+        "DisplayName": "Arabic (Qatar)",
+        "LangCode": "ar-QA"
+    },
+    {
+        "DisplayName": "Arabic (Saudi Arabia)",
+        "LangCode": "ar-SA"
+    },
+    {
+        "DisplayName": "Arabic (Sudan)",
+        "LangCode": "ar-SD"
+    },
+    {
+        "DisplayName": "Arabic (Somalia)",
+        "LangCode": "ar-SO"
+    },
+    {
+        "DisplayName": "Arabic (South Sudan)",
+        "LangCode": "ar-SS"
+    },
+    {
+        "DisplayName": "Arabic (Syria)",
+        "LangCode": "ar-SY"
+    },
+    {
+        "DisplayName": "Arabic (Chad)",
+        "LangCode": "ar-TD"
+    },
+    {
+        "DisplayName": "Arabic (Tunisia)",
+        "LangCode": "ar-TN"
+    },
+    {
+        "DisplayName": "Arabic (Yemen)",
+        "LangCode": "ar-YE"
+    },
+    {
+        "DisplayName": "Mapuche",
+        "LangCode": "arn"
+    },
+    {
+        "DisplayName": "Mapuche (Chile)",
+        "LangCode": "arn-CL"
+    },
+    {
+        "DisplayName": "Assamese",
+        "LangCode": "as"
+    },
+    {
+        "DisplayName": "Assamese (India)",
+        "LangCode": "as-IN"
+    },
+    {
+        "DisplayName": "Asu (Tanzania)",
+        "LangCode": "asa-TZ"
+    },
+    {
+        "DisplayName": "Asturian (Spain)",
+        "LangCode": "ast-ES"
+    },
+    {
+        "DisplayName": "Azerbaijani",
+        "LangCode": "az"
+    },
+    {
+        "DisplayName": "Azerbaijani (Cyrillic)",
+        "LangCode": "az-Cyrl"
+    },
+    {
+        "DisplayName": "Azerbaijani (Cyrillic, Azerbaijan)",
+        "LangCode": "az-Cyrl-AZ"
+    },
+    {
+        "DisplayName": "Azerbaijani (Latin)",
+        "LangCode": "az-Latn"
+    },
+    {
+        "DisplayName": "Azerbaijani (Latin, Azerbaijan)",
+        "LangCode": "az-Latn-AZ"
+    },
+    {
+        "DisplayName": "Bashkir",
+        "LangCode": "ba"
+    },
+    {
+        "DisplayName": "Bashkir (Russia)",
+        "LangCode": "ba-RU"
+    },
+    {
+        "DisplayName": "Basaa (Cameroon)",
+        "LangCode": "bas-CM"
+    },
+    {
+        "DisplayName": "Belarusian",
+        "LangCode": "be"
+    },
+    {
+        "DisplayName": "Belarusian (Belarus)",
+        "LangCode": "be-BY"
+    },
+    {
+        "DisplayName": "Bemba (Zambia)",
+        "LangCode": "bem-ZM"
+    },
+    {
+        "DisplayName": "Bena (Tanzania)",
+        "LangCode": "bez-TZ"
+    },
+    {
+        "DisplayName": "Bulgarian",
+        "LangCode": "bg"
+    },
+    {
+        "DisplayName": "Bulgarian (Bulgaria)",
+        "LangCode": "bg-BG"
+    },
+    {
+        "DisplayName": "Edo",
+        "LangCode": "bin"
+    },
+    {
+        "DisplayName": "Edo (Nigeria)",
+        "LangCode": "bin-NG"
+    },
+    {
+        "DisplayName": "Bamanankan (Latin, Mali)",
+        "LangCode": "bm-Latn-ML"
+    },
+    {
+        "DisplayName": "Bangla",
+        "LangCode": "bn"
+    },
+    {
+        "DisplayName": "Bangla (Bangladesh)",
+        "LangCode": "bn-BD"
+    },
+    {
+        "DisplayName": "Bengali (India)",
+        "LangCode": "bn-IN"
+    },
+    {
+        "DisplayName": "Tibetan",
+        "LangCode": "bo"
+    },
+    {
+        "DisplayName": "Tibetan (China)",
+        "LangCode": "bo-CN"
+    },
+    {
+        "DisplayName": "Tibetan (India)",
+        "LangCode": "bo-IN"
+    },
+    {
+        "DisplayName": "Breton",
+        "LangCode": "br"
+    },
+    {
+        "DisplayName": "Breton (France)",
+        "LangCode": "br-FR"
+    },
+    {
+        "DisplayName": "Bodo (India)",
+        "LangCode": "brx-IN"
+    },
+    {
+        "DisplayName": "Bosnian",
+        "LangCode": "bs"
+    },
+    {
+        "DisplayName": "Bosnian (Cyrillic)",
+        "LangCode": "bs-Cyrl"
+    },
+    {
+        "DisplayName": "Bosnian (Cyrillic, Bosnia and Herzegovina)",
+        "LangCode": "bs-Cyrl-BA"
+    },
+    {
+        "DisplayName": "Bosnian (Latin)",
+        "LangCode": "bs-Latn"
+    },
+    {
+        "DisplayName": "Bosnian (Latin, Bosnia & Herzegovina)",
+        "LangCode": "bs-Latn-BA"
+    },
+    {
+        "DisplayName": "Blin (Eritrea)",
+        "LangCode": "byn-ER"
+    },
+    {
+        "DisplayName": "Catalan",
+        "LangCode": "ca"
+    },
+    {
+        "DisplayName": "Catalan (Andorra)",
+        "LangCode": "ca-AD"
+    },
+    {
+        "DisplayName": "Catalan (Catalan)",
+        "LangCode": "ca-ES"
+    },
+    {
+        "DisplayName": "Valencian (Spain)",
+        "LangCode": "ca-ES-valencia"
+    },
+    {
+        "DisplayName": "Catalan (France)",
+        "LangCode": "ca-FR"
+    },
+    {
+        "DisplayName": "Catalan (Italy)",
+        "LangCode": "ca-IT"
+    },
+    {
+        "DisplayName": "Chakma (Chakma, Bangladesh)",
+        "LangCode": "ccp-Cakm-BD"
+    },
+    {
+        "DisplayName": "Chakma (Chakma, India)",
+        "LangCode": "ccp-Cakm-IN"
+    },
+    {
+        "DisplayName": "Chechen (Russia)",
+        "LangCode": "ce-RU"
+    },
+    {
+        "DisplayName": "Cebuano (Latin, Philippines)",
+        "LangCode": "ceb-Latn-PH"
+    },
+    {
+        "DisplayName": "Chiga (Uganda)",
+        "LangCode": "cgg-UG"
+    },
+    {
+        "DisplayName": "Cherokee",
+        "LangCode": "chr"
+    },
+    {
+        "DisplayName": "Cherokee",
+        "LangCode": "chr-Cher"
+    },
+    {
+        "DisplayName": "Cherokee (Cherokee, United States)",
+        "LangCode": "chr-Cher-US"
+    },
+    {
+        "DisplayName": "Corsican",
+        "LangCode": "co"
+    },
+    {
+        "DisplayName": "Corsican (France)",
+        "LangCode": "co-FR"
+    },
+    {
+        "DisplayName": "Czech",
+        "LangCode": "cs"
+    },
+    {
+        "DisplayName": "Czech (Czechia)",
+        "LangCode": "cs-CZ"
+    },
+    {
+        "DisplayName": "Church Slavic (Russia)",
+        "LangCode": "cu-RU"
+    },
+    {
+        "DisplayName": "Welsh",
+        "LangCode": "cy"
+    },
+    {
+        "DisplayName": "Welsh (United Kingdom)",
+        "LangCode": "cy-GB"
+    },
+    {
+        "DisplayName": "Danish",
+        "LangCode": "da"
+    },
+    {
+        "DisplayName": "Danish (Denmark)",
+        "LangCode": "da-DK"
+    },
+    {
+        "DisplayName": "Danish (Greenland)",
+        "LangCode": "da-GL"
+    },
+    {
+        "DisplayName": "Taita (Kenya)",
+        "LangCode": "dav-KE"
+    },
+    {
+        "DisplayName": "German",
+        "LangCode": "de"
+    },
+    {
+        "DisplayName": "German (Austria)",
+        "LangCode": "de-AT"
+    },
+    {
+        "DisplayName": "German (Belgium)",
+        "LangCode": "de-BE"
+    },
+    {
+        "DisplayName": "German (Switzerland)",
+        "LangCode": "de-CH"
+    },
+    {
+        "DisplayName": "German (Germany)",
+        "LangCode": "de-DE"
+    },
+    {
+        "DisplayName": "German (Italy)",
+        "LangCode": "de-IT"
+    },
+    {
+        "DisplayName": "German (Liechtenstein)",
+        "LangCode": "de-LI"
+    },
+    {
+        "DisplayName": "German (Luxembourg)",
+        "LangCode": "de-LU"
+    },
+    {
+        "DisplayName": "Zarma (Niger)",
+        "LangCode": "dje-NE"
+    },
+    {
+        "DisplayName": "Lower Sorbian",
+        "LangCode": "dsb"
+    },
+    {
+        "DisplayName": "Lower Sorbian (Germany)",
+        "LangCode": "dsb-DE"
+    },
+    {
+        "DisplayName": "Duala (Cameroon)",
+        "LangCode": "dua-CM"
+    },
+    {
+        "DisplayName": "Divehi",
+        "LangCode": "dv"
+    },
+    {
+        "DisplayName": "Divehi (Maldives)",
+        "LangCode": "dv-MV"
+    },
+    {
+        "DisplayName": "Jola-Fonyi (Senegal)",
+        "LangCode": "dyo-SN"
+    },
+    {
+        "DisplayName": "Dzongkha (Bhutan)",
+        "LangCode": "dz-BT"
+    },
+    {
+        "DisplayName": "Embu (Kenya)",
+        "LangCode": "ebu-KE"
+    },
+    {
+        "DisplayName": "Ewe (Ghana)",
+        "LangCode": "ee-GH"
+    },
+    {
+        "DisplayName": "Ewe (Togo)",
+        "LangCode": "ee-TG"
+    },
+    {
+        "DisplayName": "Greek",
+        "LangCode": "el"
+    },
+    {
+        "DisplayName": "Greek (Cyprus)",
+        "LangCode": "el-CY"
+    },
+    {
+        "DisplayName": "Greek (Greece)",
+        "LangCode": "el-GR"
+    },
+    {
+        "DisplayName": "English",
+        "LangCode": "en"
+    },
+    {
+        "DisplayName": "English (World)",
+        "LangCode": "en-001"
+    },
+    {
+        "DisplayName": "English (Caribbean)",
+        "LangCode": "en-029"
+    },
+    {
+        "DisplayName": "English (Europe)",
+        "LangCode": "en-150"
+    },
+    {
+        "DisplayName": "English (United Arab Emirates)",
+        "LangCode": "en-AE"
+    },
+    {
+        "DisplayName": "English (Antigua & Barbuda)",
+        "LangCode": "en-AG"
+    },
+    {
+        "DisplayName": "English (Anguilla)",
+        "LangCode": "en-AI"
+    },
+    {
+        "DisplayName": "English (American Samoa)",
+        "LangCode": "en-AS"
+    },
+    {
+        "DisplayName": "English (Austria)",
+        "LangCode": "en-AT"
+    },
+    {
+        "DisplayName": "English (Australia)",
+        "LangCode": "en-AU"
+    },
+    {
+        "DisplayName": "English (Barbados)",
+        "LangCode": "en-BB"
+    },
+    {
+        "DisplayName": "English (Belgium)",
+        "LangCode": "en-BE"
+    },
+    {
+        "DisplayName": "English (Burundi)",
+        "LangCode": "en-BI"
+    },
+    {
+        "DisplayName": "English (Bermuda)",
+        "LangCode": "en-BM"
+    },
+    {
+        "DisplayName": "English (Bahamas)",
+        "LangCode": "en-BS"
+    },
+    {
+        "DisplayName": "English (Botswana)",
+        "LangCode": "en-BW"
+    },
+    {
+        "DisplayName": "English (Belize)",
+        "LangCode": "en-BZ"
+    },
+    {
+        "DisplayName": "English (Canada)",
+        "LangCode": "en-CA"
+    },
+    {
+        "DisplayName": "English (Cocos (Keeling) Islands)",
+        "LangCode": "en-CC"
+    },
+    {
+        "DisplayName": "English (Switzerland)",
+        "LangCode": "en-CH"
+    },
+    {
+        "DisplayName": "English (Cook Islands)",
+        "LangCode": "en-CK"
+    },
+    {
+        "DisplayName": "English (Cameroon)",
+        "LangCode": "en-CM"
+    },
+    {
+        "DisplayName": "English (Christmas Island)",
+        "LangCode": "en-CX"
+    },
+    {
+        "DisplayName": "English (Cyprus)",
+        "LangCode": "en-CY"
+    },
+    {
+        "DisplayName": "English (Germany)",
+        "LangCode": "en-DE"
+    },
+    {
+        "DisplayName": "English (Denmark)",
+        "LangCode": "en-DK"
+    },
+    {
+        "DisplayName": "English (Dominica)",
+        "LangCode": "en-DM"
+    },
+    {
+        "DisplayName": "English (Eritrea)",
+        "LangCode": "en-ER"
+    },
+    {
+        "DisplayName": "English (Finland)",
+        "LangCode": "en-FI"
+    },
+    {
+        "DisplayName": "English (Fiji)",
+        "LangCode": "en-FJ"
+    },
+    {
+        "DisplayName": "English (Falkland Islands)",
+        "LangCode": "en-FK"
+    },
+    {
+        "DisplayName": "English (Micronesia)",
+        "LangCode": "en-FM"
+    },
+    {
+        "DisplayName": "English (United Kingdom)",
+        "LangCode": "en-GB"
+    },
+    {
+        "DisplayName": "English (Grenada)",
+        "LangCode": "en-GD"
+    },
+    {
+        "DisplayName": "English (Guernsey)",
+        "LangCode": "en-GG"
+    },
+    {
+        "DisplayName": "English (Ghana)",
+        "LangCode": "en-GH"
+    },
+    {
+        "DisplayName": "English (Gibraltar)",
+        "LangCode": "en-GI"
+    },
+    {
+        "DisplayName": "English (Gambia)",
+        "LangCode": "en-GM"
+    },
+    {
+        "DisplayName": "English (Guam)",
+        "LangCode": "en-GU"
+    },
+    {
+        "DisplayName": "English (Guyana)",
+        "LangCode": "en-GY"
+    },
+    {
+        "DisplayName": "English (Hong Kong SAR)",
+        "LangCode": "en-HK"
+    },
+    {
+        "DisplayName": "English (Indonesia)",
+        "LangCode": "en-ID"
+    },
+    {
+        "DisplayName": "English (Ireland)",
+        "LangCode": "en-IE"
+    },
+    {
+        "DisplayName": "English (Israel)",
+        "LangCode": "en-IL"
+    },
+    {
+        "DisplayName": "English (Isle of Man)",
+        "LangCode": "en-IM"
+    },
+    {
+        "DisplayName": "English (India)",
+        "LangCode": "en-IN"
+    },
+    {
+        "DisplayName": "English (British Indian Ocean Territory)",
+        "LangCode": "en-IO"
+    },
+    {
+        "DisplayName": "English (Jersey)",
+        "LangCode": "en-JE"
+    },
+    {
+        "DisplayName": "English (Jamaica)",
+        "LangCode": "en-JM"
+    },
+    {
+        "DisplayName": "English (Kenya)",
+        "LangCode": "en-KE"
+    },
+    {
+        "DisplayName": "English (Kiribati)",
+        "LangCode": "en-KI"
+    },
+    {
+        "DisplayName": "English (St. Kitts & Nevis)",
+        "LangCode": "en-KN"
+    },
+    {
+        "DisplayName": "English (Cayman Islands)",
+        "LangCode": "en-KY"
+    },
+    {
+        "DisplayName": "English (St. Lucia)",
+        "LangCode": "en-LC"
+    },
+    {
+        "DisplayName": "English (Liberia)",
+        "LangCode": "en-LR"
+    },
+    {
+        "DisplayName": "English (Lesotho)",
+        "LangCode": "en-LS"
+    },
+    {
+        "DisplayName": "English (Madagascar)",
+        "LangCode": "en-MG"
+    },
+    {
+        "DisplayName": "English (Marshall Islands)",
+        "LangCode": "en-MH"
+    },
+    {
+        "DisplayName": "English (Macao SAR)",
+        "LangCode": "en-MO"
+    },
+    {
+        "DisplayName": "English (Northern Mariana Islands)",
+        "LangCode": "en-MP"
+    },
+    {
+        "DisplayName": "English (Montserrat)",
+        "LangCode": "en-MS"
+    },
+    {
+        "DisplayName": "English (Malta)",
+        "LangCode": "en-MT"
+    },
+    {
+        "DisplayName": "English (Mauritius)",
+        "LangCode": "en-MU"
+    },
+    {
+        "DisplayName": "English (Malawi)",
+        "LangCode": "en-MW"
+    },
+    {
+        "DisplayName": "English (Malaysia)",
+        "LangCode": "en-MY"
+    },
+    {
+        "DisplayName": "English (Namibia)",
+        "LangCode": "en-NA"
+    },
+    {
+        "DisplayName": "English (Norfolk Island)",
+        "LangCode": "en-NF"
+    },
+    {
+        "DisplayName": "English (Nigeria)",
+        "LangCode": "en-NG"
+    },
+    {
+        "DisplayName": "English (Netherlands)",
+        "LangCode": "en-NL"
+    },
+    {
+        "DisplayName": "English (Nauru)",
+        "LangCode": "en-NR"
+    },
+    {
+        "DisplayName": "English (Niue)",
+        "LangCode": "en-NU"
+    },
+    {
+        "DisplayName": "English (New Zealand)",
+        "LangCode": "en-NZ"
+    },
+    {
+        "DisplayName": "English (Papua New Guinea)",
+        "LangCode": "en-PG"
+    },
+    {
+        "DisplayName": "English (Philippines)",
+        "LangCode": "en-PH"
+    },
+    {
+        "DisplayName": "English (Pakistan)",
+        "LangCode": "en-PK"
+    },
+    {
+        "DisplayName": "English (Pitcairn Islands)",
+        "LangCode": "en-PN"
+    },
+    {
+        "DisplayName": "English (Puerto Rico)",
+        "LangCode": "en-PR"
+    },
+    {
+        "DisplayName": "English (Palau)",
+        "LangCode": "en-PW"
+    },
+    {
+        "DisplayName": "English (Rwanda)",
+        "LangCode": "en-RW"
+    },
+    {
+        "DisplayName": "English (Solomon Islands)",
+        "LangCode": "en-SB"
+    },
+    {
+        "DisplayName": "English (Seychelles)",
+        "LangCode": "en-SC"
+    },
+    {
+        "DisplayName": "English (Sudan)",
+        "LangCode": "en-SD"
+    },
+    {
+        "DisplayName": "English (Sweden)",
+        "LangCode": "en-SE"
+    },
+    {
+        "DisplayName": "English (Singapore)",
+        "LangCode": "en-SG"
+    },
+    {
+        "DisplayName": "English (St Helena, Ascension, Tristan da Cunha)",
+        "LangCode": "en-SH"
+    },
+    {
+        "DisplayName": "English (Slovenia)",
+        "LangCode": "en-SI"
+    },
+    {
+        "DisplayName": "English (Sierra Leone)",
+        "LangCode": "en-SL"
+    },
+    {
+        "DisplayName": "English (South Sudan)",
+        "LangCode": "en-SS"
+    },
+    {
+        "DisplayName": "English (Sint Maarten)",
+        "LangCode": "en-SX"
+    },
+    {
+        "DisplayName": "English (Eswatini)",
+        "LangCode": "en-SZ"
+    },
+    {
+        "DisplayName": "English (Turks & Caicos Islands)",
+        "LangCode": "en-TC"
+    },
+    {
+        "DisplayName": "English (Tokelau)",
+        "LangCode": "en-TK"
+    },
+    {
+        "DisplayName": "English (Tonga)",
+        "LangCode": "en-TO"
+    },
+    {
+        "DisplayName": "English (Trinidad & Tobago)",
+        "LangCode": "en-TT"
+    },
+    {
+        "DisplayName": "English (Tuvalu)",
+        "LangCode": "en-TV"
+    },
+    {
+        "DisplayName": "English (Tanzania)",
+        "LangCode": "en-TZ"
+    },
+    {
+        "DisplayName": "English (Uganda)",
+        "LangCode": "en-UG"
+    },
+    {
+        "DisplayName": "English (U.S. Outlying Islands)",
+        "LangCode": "en-UM"
+    },
+    {
+        "DisplayName": "English (United States)",
+        "LangCode": "en-US"
+    },
+    {
+        "DisplayName": "English (St. Vincent & Grenadines)",
+        "LangCode": "en-VC"
+    },
+    {
+        "DisplayName": "English (British Virgin Islands)",
+        "LangCode": "en-VG"
+    },
+    {
+        "DisplayName": "English (U.S. Virgin Islands)",
+        "LangCode": "en-VI"
+    },
+    {
+        "DisplayName": "English (Vanuatu)",
+        "LangCode": "en-VU"
+    },
+    {
+        "DisplayName": "English (Samoa)",
+        "LangCode": "en-WS"
+    },
+    {
+        "DisplayName": "English (South Africa)",
+        "LangCode": "en-ZA"
+    },
+    {
+        "DisplayName": "English (Zambia)",
+        "LangCode": "en-ZM"
+    },
+    {
+        "DisplayName": "English (Zimbabwe)",
+        "LangCode": "en-ZW"
+    },
+    {
+        "DisplayName": "Esperanto (World)",
+        "LangCode": "eo-001"
+    },
+    {
+        "DisplayName": "Spanish",
+        "LangCode": "es"
+    },
+    {
+        "DisplayName": "Spanish (Latin America)",
+        "LangCode": "es-419"
+    },
+    {
+        "DisplayName": "Spanish (Argentina)",
+        "LangCode": "es-AR"
+    },
+    {
+        "DisplayName": "Spanish (Bolivia)",
+        "LangCode": "es-BO"
+    },
+    {
+        "DisplayName": "Spanish (Brazil)",
+        "LangCode": "es-BR"
+    },
+    {
+        "DisplayName": "Spanish (Belize)",
+        "LangCode": "es-BZ"
+    },
+    {
+        "DisplayName": "Spanish (Chile)",
+        "LangCode": "es-CL"
+    },
+    {
+        "DisplayName": "Spanish (Colombia)",
+        "LangCode": "es-CO"
+    },
+    {
+        "DisplayName": "Spanish (Costa Rica)",
+        "LangCode": "es-CR"
+    },
+    {
+        "DisplayName": "Spanish (Cuba)",
+        "LangCode": "es-CU"
+    },
+    {
+        "DisplayName": "Spanish (Dominican Republic)",
+        "LangCode": "es-DO"
+    },
+    {
+        "DisplayName": "Spanish (Ecuador)",
+        "LangCode": "es-EC"
+    },
+    {
+        "DisplayName": "Spanish (Spain, International Sort)",
+        "LangCode": "es-ES"
+    },
+    {
+        "DisplayName": "Spanish (Equatorial Guinea)",
+        "LangCode": "es-GQ"
+    },
+    {
+        "DisplayName": "Spanish (Guatemala)",
+        "LangCode": "es-GT"
+    },
+    {
+        "DisplayName": "Spanish (Honduras)",
+        "LangCode": "es-HN"
+    },
+    {
+        "DisplayName": "Spanish (Mexico)",
+        "LangCode": "es-MX"
+    },
+    {
+        "DisplayName": "Spanish (Nicaragua)",
+        "LangCode": "es-NI"
+    },
+    {
+        "DisplayName": "Spanish (Panama)",
+        "LangCode": "es-PA"
+    },
+    {
+        "DisplayName": "Spanish (Peru)",
+        "LangCode": "es-PE"
+    },
+    {
+        "DisplayName": "Spanish (Philippines)",
+        "LangCode": "es-PH"
+    },
+    {
+        "DisplayName": "Spanish (Puerto Rico)",
+        "LangCode": "es-PR"
+    },
+    {
+        "DisplayName": "Spanish (Paraguay)",
+        "LangCode": "es-PY"
+    },
+    {
+        "DisplayName": "Spanish (El Salvador)",
+        "LangCode": "es-SV"
+    },
+    {
+        "DisplayName": "Spanish (United States)",
+        "LangCode": "es-US"
+    },
+    {
+        "DisplayName": "Spanish (Uruguay)",
+        "LangCode": "es-UY"
+    },
+    {
+        "DisplayName": "Spanish (Venezuela)",
+        "LangCode": "es-VE"
+    },
+    {
+        "DisplayName": "Estonian",
+        "LangCode": "et"
+    },
+    {
+        "DisplayName": "Estonian (Estonia)",
+        "LangCode": "et-EE"
+    },
+    {
+        "DisplayName": "Basque",
+        "LangCode": "eu"
+    },
+    {
+        "DisplayName": "Basque (Basque)",
+        "LangCode": "eu-ES"
+    },
+    {
+        "DisplayName": "Ewondo (Cameroon)",
+        "LangCode": "ewo-CM"
+    },
+    {
+        "DisplayName": "Persian",
+        "LangCode": "fa"
+    },
+    {
+        "DisplayName": "Persian (Iran)",
+        "LangCode": "fa-IR"
+    },
+    {
+        "DisplayName": "Fulah (Latin)",
+        "LangCode": "ff"
+    },
+    {
+        "DisplayName": "Fulah (Latin)",
+        "LangCode": "ff-Latn"
+    },
+    {
+        "DisplayName": "Fulah (Latin, Burkina Faso)",
+        "LangCode": "ff-Latn-BF"
+    },
+    {
+        "DisplayName": "Fulah (Latin, Cameroon)",
+        "LangCode": "ff-Latn-CM"
+    },
+    {
+        "DisplayName": "Fulah (Latin, Ghana)",
+        "LangCode": "ff-Latn-GH"
+    },
+    {
+        "DisplayName": "Fulah (Latin, Gambia)",
+        "LangCode": "ff-Latn-GM"
+    },
+    {
+        "DisplayName": "Fulah (Latin, Guinea)",
+        "LangCode": "ff-Latn-GN"
+    },
+    {
+        "DisplayName": "Fulah (Latin, Guinea-Bissau)",
+        "LangCode": "ff-Latn-GW"
+    },
+    {
+        "DisplayName": "Fulah (Latin, Liberia)",
+        "LangCode": "ff-Latn-LR"
+    },
+    {
+        "DisplayName": "Fulah (Latin, Mauritania)",
+        "LangCode": "ff-Latn-MR"
+    },
+    {
+        "DisplayName": "Fulah (Latin, Niger)",
+        "LangCode": "ff-Latn-NE"
+    },
+    {
+        "DisplayName": "Fulah (Latin, Nigeria)",
+        "LangCode": "ff-Latn-NG"
+    },
+    {
+        "DisplayName": "Fulah (Latin, Sierra Leone)",
+        "LangCode": "ff-Latn-SL"
+    },
+    {
+        "DisplayName": "Fulah (Latin, Senegal)",
+        "LangCode": "ff-Latn-SN"
+    },
+    {
+        "DisplayName": "Finnish",
+        "LangCode": "fi"
+    },
+    {
+        "DisplayName": "Finnish (Finland)",
+        "LangCode": "fi-FI"
+    },
+    {
+        "DisplayName": "Filipino",
+        "LangCode": "fil"
+    },
+    {
+        "DisplayName": "Filipino (Philippines)",
+        "LangCode": "fil-PH"
+    },
+    {
+        "DisplayName": "Faroese",
+        "LangCode": "fo"
+    },
+    {
+        "DisplayName": "Faroese (Denmark)",
+        "LangCode": "fo-DK"
+    },
+    {
+        "DisplayName": "Faroese (Faroe Islands)",
+        "LangCode": "fo-FO"
+    },
+    {
+        "DisplayName": "French",
+        "LangCode": "fr"
+    },
+    {
+        "DisplayName": "French (Caribbean)",
+        "LangCode": "fr-029"
+    },
+    {
+        "DisplayName": "French (Belgium)",
+        "LangCode": "fr-BE"
+    },
+    {
+        "DisplayName": "French (Burkina Faso)",
+        "LangCode": "fr-BF"
+    },
+    {
+        "DisplayName": "French (Burundi)",
+        "LangCode": "fr-BI"
+    },
+    {
+        "DisplayName": "French (Benin)",
+        "LangCode": "fr-BJ"
+    },
+    {
+        "DisplayName": "French (St. Barthélemy)",
+        "LangCode": "fr-BL"
+    },
+    {
+        "DisplayName": "French (Canada)",
+        "LangCode": "fr-CA"
+    },
+    {
+        "DisplayName": "French Congo (DRC)",
+        "LangCode": "fr-CD"
+    },
+    {
+        "DisplayName": "French (Central African Republic)",
+        "LangCode": "fr-CF"
+    },
+    {
+        "DisplayName": "French (Congo)",
+        "LangCode": "fr-CG"
+    },
+    {
+        "DisplayName": "French (Switzerland)",
+        "LangCode": "fr-CH"
+    },
+    {
+        "DisplayName": "French (Côte d’Ivoire)",
+        "LangCode": "fr-CI"
+    },
+    {
+        "DisplayName": "French (Cameroon)",
+        "LangCode": "fr-CM"
+    },
+    {
+        "DisplayName": "French (Djibouti)",
+        "LangCode": "fr-DJ"
+    },
+    {
+        "DisplayName": "French (Algeria)",
+        "LangCode": "fr-DZ"
+    },
+    {
+        "DisplayName": "French (France)",
+        "LangCode": "fr-FR"
+    },
+    {
+        "DisplayName": "French (Gabon)",
+        "LangCode": "fr-GA"
+    },
+    {
+        "DisplayName": "French (French Guiana)",
+        "LangCode": "fr-GF"
+    },
+    {
+        "DisplayName": "French (Guinea)",
+        "LangCode": "fr-GN"
+    },
+    {
+        "DisplayName": "French (Guadeloupe)",
+        "LangCode": "fr-GP"
+    },
+    {
+        "DisplayName": "French (Equatorial Guinea)",
+        "LangCode": "fr-GQ"
+    },
+    {
+        "DisplayName": "French (Haiti)",
+        "LangCode": "fr-HT"
+    },
+    {
+        "DisplayName": "French (Comoros)",
+        "LangCode": "fr-KM"
+    },
+    {
+        "DisplayName": "French (Luxembourg)",
+        "LangCode": "fr-LU"
+    },
+    {
+        "DisplayName": "French (Morocco)",
+        "LangCode": "fr-MA"
+    },
+    {
+        "DisplayName": "French (Monaco)",
+        "LangCode": "fr-MC"
+    },
+    {
+        "DisplayName": "French (St. Martin)",
+        "LangCode": "fr-MF"
+    },
+    {
+        "DisplayName": "French (Madagascar)",
+        "LangCode": "fr-MG"
+    },
+    {
+        "DisplayName": "French (Mali)",
+        "LangCode": "fr-ML"
+    },
+    {
+        "DisplayName": "French (Martinique)",
+        "LangCode": "fr-MQ"
+    },
+    {
+        "DisplayName": "French (Mauritania)",
+        "LangCode": "fr-MR"
+    },
+    {
+        "DisplayName": "French (Mauritius)",
+        "LangCode": "fr-MU"
+    },
+    {
+        "DisplayName": "French (New Caledonia)",
+        "LangCode": "fr-NC"
+    },
+    {
+        "DisplayName": "French (Niger)",
+        "LangCode": "fr-NE"
+    },
+    {
+        "DisplayName": "French (French Polynesia)",
+        "LangCode": "fr-PF"
+    },
+    {
+        "DisplayName": "French (St. Pierre & Miquelon)",
+        "LangCode": "fr-PM"
+    },
+    {
+        "DisplayName": "French (Réunion)",
+        "LangCode": "fr-RE"
+    },
+    {
+        "DisplayName": "French (Rwanda)",
+        "LangCode": "fr-RW"
+    },
+    {
+        "DisplayName": "French (Seychelles)",
+        "LangCode": "fr-SC"
+    },
+    {
+        "DisplayName": "French (Senegal)",
+        "LangCode": "fr-SN"
+    },
+    {
+        "DisplayName": "French (Syria)",
+        "LangCode": "fr-SY"
+    },
+    {
+        "DisplayName": "French (Chad)",
+        "LangCode": "fr-TD"
+    },
+    {
+        "DisplayName": "French (Togo)",
+        "LangCode": "fr-TG"
+    },
+    {
+        "DisplayName": "French (Tunisia)",
+        "LangCode": "fr-TN"
+    },
+    {
+        "DisplayName": "French (Vanuatu)",
+        "LangCode": "fr-VU"
+    },
+    {
+        "DisplayName": "French (Wallis & Futuna)",
+        "LangCode": "fr-WF"
+    },
+    {
+        "DisplayName": "French (Mayotte)",
+        "LangCode": "fr-YT"
+    },
+    {
+        "DisplayName": "Friulian (Italy)",
+        "LangCode": "fur-IT"
+    },
+    {
+        "DisplayName": "Western Frisian",
+        "LangCode": "fy"
+    },
+    {
+        "DisplayName": "Western Frisian (Netherlands)",
+        "LangCode": "fy-NL"
+    },
+    {
+        "DisplayName": "Irish",
+        "LangCode": "ga"
+    },
+    {
+        "DisplayName": "Irish (Ireland)",
+        "LangCode": "ga-IE"
+    },
+    {
+        "DisplayName": "Scottish Gaelic",
+        "LangCode": "gd"
+    },
+    {
+        "DisplayName": "Scottish Gaelic (United Kingdom)",
+        "LangCode": "gd-GB"
+    },
+    {
+        "DisplayName": "Galician",
+        "LangCode": "gl"
+    },
+    {
+        "DisplayName": "Galician (Galician)",
+        "LangCode": "gl-ES"
+    },
+    {
+        "DisplayName": "Guarani",
+        "LangCode": "gn"
+    },
+    {
+        "DisplayName": "Guarani (Paraguay)",
+        "LangCode": "gn-PY"
+    },
+    {
+        "DisplayName": "Swiss German",
+        "LangCode": "gsw"
+    },
+    {
+        "DisplayName": "Swiss German (Switzerland)",
+        "LangCode": "gsw-CH"
+    },
+    {
+        "DisplayName": "Alsatian (France)",
+        "LangCode": "gsw-FR"
+    },
+    {
+        "DisplayName": "Swiss German (Liechtenstein)",
+        "LangCode": "gsw-LI"
+    },
+    {
+        "DisplayName": "Gujarati",
+        "LangCode": "gu"
+    },
+    {
+        "DisplayName": "Gujarati (India)",
+        "LangCode": "gu-IN"
+    },
+    {
+        "DisplayName": "Gusii (Kenya)",
+        "LangCode": "guz-KE"
+    },
+    {
+        "DisplayName": "Manx (Isle of Man)",
+        "LangCode": "gv-IM"
+    },
+    {
+        "DisplayName": "Hausa",
+        "LangCode": "ha"
+    },
+    {
+        "DisplayName": "Hausa (Latin)",
+        "LangCode": "ha-Latn"
+    },
+    {
+        "DisplayName": "Hausa (Latin, Ghana)",
+        "LangCode": "ha-Latn-GH"
+    },
+    {
+        "DisplayName": "Hausa (Latin, Niger)",
+        "LangCode": "ha-Latn-NE"
+    },
+    {
+        "DisplayName": "Hausa (Latin, Nigeria)",
+        "LangCode": "ha-Latn-NG"
+    },
+    {
+        "DisplayName": "Hawaiian",
+        "LangCode": "haw"
+    },
+    {
+        "DisplayName": "Hawaiian (United States)",
+        "LangCode": "haw-US"
+    },
+    {
+        "DisplayName": "Hebrew",
+        "LangCode": "he"
+    },
+    {
+        "DisplayName": "Hebrew (Israel)",
+        "LangCode": "he-IL"
+    },
+    {
+        "DisplayName": "Hindi",
+        "LangCode": "hi"
+    },
+    {
+        "DisplayName": "Hindi (India)",
+        "LangCode": "hi-IN"
+    },
+    {
+        "DisplayName": "Croatian",
+        "LangCode": "hr"
+    },
+    {
+        "DisplayName": "Croatian (Bosnia & Herzegovina)",
+        "LangCode": "hr-BA"
+    },
+    {
+        "DisplayName": "Croatian (Croatia)",
+        "LangCode": "hr-HR"
+    },
+    {
+        "DisplayName": "Upper Sorbian",
+        "LangCode": "hsb"
+    },
+    {
+        "DisplayName": "Upper Sorbian (Germany)",
+        "LangCode": "hsb-DE"
+    },
+    {
+        "DisplayName": "Hungarian",
+        "LangCode": "hu"
+    },
+    {
+        "DisplayName": "Hungarian (Hungary)",
+        "LangCode": "hu-HU"
+    },
+    {
+        "DisplayName": "Armenian",
+        "LangCode": "hy"
+    },
+    {
+        "DisplayName": "Armenian (Armenia)",
+        "LangCode": "hy-AM"
+    },
+    {
+        "DisplayName": "Interlingua (World)",
+        "LangCode": "ia-001"
+    },
+    {
+        "DisplayName": "Ibibio",
+        "LangCode": "ibb"
+    },
+    {
+        "DisplayName": "Ibibio (Nigeria)",
+        "LangCode": "ibb-NG"
+    },
+    {
+        "DisplayName": "Indonesian",
+        "LangCode": "id"
+    },
+    {
+        "DisplayName": "Indonesian (Indonesia)",
+        "LangCode": "id-ID"
+    },
+    {
+        "DisplayName": "Igbo",
+        "LangCode": "ig"
+    },
+    {
+        "DisplayName": "Igbo (Nigeria)",
+        "LangCode": "ig-NG"
+    },
+    {
+        "DisplayName": "Yi",
+        "LangCode": "ii"
+    },
+    {
+        "DisplayName": "Yi (China)",
+        "LangCode": "ii-CN"
+    },
+    {
+        "DisplayName": "Icelandic",
+        "LangCode": "is"
+    },
+    {
+        "DisplayName": "Icelandic (Iceland)",
+        "LangCode": "is-IS"
+    },
+    {
+        "DisplayName": "Italian",
+        "LangCode": "it"
+    },
+    {
+        "DisplayName": "Italian (Switzerland)",
+        "LangCode": "it-CH"
+    },
+    {
+        "DisplayName": "Italian (Italy)",
+        "LangCode": "it-IT"
+    },
+    {
+        "DisplayName": "Italian (San Marino)",
+        "LangCode": "it-SM"
+    },
+    {
+        "DisplayName": "Italian (Vatican City)",
+        "LangCode": "it-VA"
+    },
+    {
+        "DisplayName": "Inuktitut",
+        "LangCode": "iu"
+    },
+    {
+        "DisplayName": "Inuktitut (Syllabics)",
+        "LangCode": "iu-Cans"
+    },
+    {
+        "DisplayName": "Inuktitut (Syllabics, Canada)",
+        "LangCode": "iu-Cans-CA"
+    },
+    {
+        "DisplayName": "Inuktitut (Latin)",
+        "LangCode": "iu-Latn"
+    },
+    {
+        "DisplayName": "Inuktitut (Latin, Canada)",
+        "LangCode": "iu-Latn-CA"
+    },
+    {
+        "DisplayName": "Japanese",
+        "LangCode": "ja"
+    },
+    {
+        "DisplayName": "Japanese (Japan)",
+        "LangCode": "ja-JP"
+    },
+    {
+        "DisplayName": "Ngomba (Cameroon)",
+        "LangCode": "jgo-CM"
+    },
+    {
+        "DisplayName": "Machame (Tanzania)",
+        "LangCode": "jmc-TZ"
+    },
+    {
+        "DisplayName": "Javanese (Javanese, Indonesia)",
+        "LangCode": "jv-Java-ID"
+    },
+    {
+        "DisplayName": "Javanese (Indonesia)",
+        "LangCode": "jv-Latn-ID"
+    },
+    {
+        "DisplayName": "Georgian",
+        "LangCode": "ka"
+    },
+    {
+        "DisplayName": "Georgian (Georgia)",
+        "LangCode": "ka-GE"
+    },
+    {
+        "DisplayName": "Kabyle (Algeria)",
+        "LangCode": "kab-DZ"
+    },
+    {
+        "DisplayName": "Kamba (Kenya)",
+        "LangCode": "kam-KE"
+    },
+    {
+        "DisplayName": "Makonde (Tanzania)",
+        "LangCode": "kde-TZ"
+    },
+    {
+        "DisplayName": "Kabuverdianu (Cabo Verde)",
+        "LangCode": "kea-CV"
+    },
+    {
+        "DisplayName": "Koyra Chiini (Mali)",
+        "LangCode": "khq-ML"
+    },
+    {
+        "DisplayName": "Kikuyu (Kenya)",
+        "LangCode": "ki-KE"
+    },
+    {
+        "DisplayName": "Kazakh",
+        "LangCode": "kk"
+    },
+    {
+        "DisplayName": "Kazakh (Kazakhstan)",
+        "LangCode": "kk-KZ"
+    },
+    {
+        "DisplayName": "Kako (Cameroon)",
+        "LangCode": "kkj-CM"
+    },
+    {
+        "DisplayName": "Kalaallisut",
+        "LangCode": "kl"
+    },
+    {
+        "DisplayName": "Kalaallisut (Greenland)",
+        "LangCode": "kl-GL"
+    },
+    {
+        "DisplayName": "Kalenjin (Kenya)",
+        "LangCode": "kln-KE"
+    },
+    {
+        "DisplayName": "Khmer",
+        "LangCode": "km"
+    },
+    {
+        "DisplayName": "Khmer (Cambodia)",
+        "LangCode": "km-KH"
+    },
+    {
+        "DisplayName": "Kannada",
+        "LangCode": "kn"
+    },
+    {
+        "DisplayName": "Kannada (India)",
+        "LangCode": "kn-IN"
+    },
+    {
+        "DisplayName": "Korean",
+        "LangCode": "ko"
+    },
+    {
+        "DisplayName": "Korean (North Korea)",
+        "LangCode": "ko-KP"
+    },
+    {
+        "DisplayName": "Korean (Korea)",
+        "LangCode": "ko-KR"
+    },
+    {
+        "DisplayName": "Konkani",
+        "LangCode": "kok"
+    },
+    {
+        "DisplayName": "Konkani (India)",
+        "LangCode": "kok-IN"
+    },
+    {
+        "DisplayName": "Kanuri",
+        "LangCode": "kr"
+    },
+    {
+        "DisplayName": "Kanuri (Nigeria)",
+        "LangCode": "kr-Latn-NG"
+    },
+    {
+        "DisplayName": "Kashmiri",
+        "LangCode": "ks"
+    },
+    {
+        "DisplayName": "Kashmiri (Perso-Arabic)",
+        "LangCode": "ks-Arab"
+    },
+    {
+        "DisplayName": "Kashmiri (Perso-Arabic)",
+        "LangCode": "ks-Arab-IN"
+    },
+    {
+        "DisplayName": "Kashmiri (Devanagari)",
+        "LangCode": "ks-Deva-IN"
+    },
+    {
+        "DisplayName": "Shambala (Tanzania)",
+        "LangCode": "ksb-TZ"
+    },
+    {
+        "DisplayName": "Bafia (Cameroon)",
+        "LangCode": "ksf-CM"
+    },
+    {
+        "DisplayName": "Colognian (Germany)",
+        "LangCode": "ksh-DE"
+    },
+    {
+        "DisplayName": "Central Kurdish",
+        "LangCode": "ku"
+    },
+    {
+        "DisplayName": "Central Kurdish",
+        "LangCode": "ku-Arab"
+    },
+    {
+        "DisplayName": "Central Kurdish (Iraq)",
+        "LangCode": "ku-Arab-IQ"
+    },
+    {
+        "DisplayName": "Kurdish (Perso-Arabic, Iran)",
+        "LangCode": "ku-Arab-IR"
+    },
+    {
+        "DisplayName": "Cornish (United Kingdom)",
+        "LangCode": "kw-GB"
+    },
+    {
+        "DisplayName": "Kyrgyz",
+        "LangCode": "ky"
+    },
+    {
+        "DisplayName": "Kyrgyz (Kyrgyzstan)",
+        "LangCode": "ky-KG"
+    },
+    {
+        "DisplayName": "Latin",
+        "LangCode": "la"
+    },
+    {
+        "DisplayName": "Latin (World)",
+        "LangCode": "la-001"
+    },
+    {
+        "DisplayName": "Langi (Tanzania)",
+        "LangCode": "lag-TZ"
+    },
+    {
+        "DisplayName": "Luxembourgish",
+        "LangCode": "lb"
+    },
+    {
+        "DisplayName": "Luxembourgish (Luxembourg)",
+        "LangCode": "lb-LU"
+    },
+    {
+        "DisplayName": "Ganda (Uganda)",
+        "LangCode": "lg-UG"
+    },
+    {
+        "DisplayName": "Lakota (United States)",
+        "LangCode": "lkt-US"
+    },
+    {
+        "DisplayName": "Lingala (Angola)",
+        "LangCode": "ln-AO"
+    },
+    {
+        "DisplayName": "Lingala (Congo DRC)",
+        "LangCode": "ln-CD"
+    },
+    {
+        "DisplayName": "Lingala (Central African Republic)",
+        "LangCode": "ln-CF"
+    },
+    {
+        "DisplayName": "Lingala (Congo)",
+        "LangCode": "ln-CG"
+    },
+    {
+        "DisplayName": "Lao",
+        "LangCode": "lo"
+    },
+    {
+        "DisplayName": "Lao (Laos)",
+        "LangCode": "lo-LA"
+    },
+    {
+        "DisplayName": "Northern Luri (Iraq)",
+        "LangCode": "lrc-IQ"
+    },
+    {
+        "DisplayName": "Northern Luri (Iran)",
+        "LangCode": "lrc-IR"
+    },
+    {
+        "DisplayName": "Lithuanian",
+        "LangCode": "lt"
+    },
+    {
+        "DisplayName": "Lithuanian (Lithuania)",
+        "LangCode": "lt-LT"
+    },
+    {
+        "DisplayName": "Luba-Katanga (Congo DRC)",
+        "LangCode": "lu-CD"
+    },
+    {
+        "DisplayName": "Luo (Kenya)",
+        "LangCode": "luo-KE"
+    },
+    {
+        "DisplayName": "Luyia (Kenya)",
+        "LangCode": "luy-KE"
+    },
+    {
+        "DisplayName": "Latvian",
+        "LangCode": "lv"
+    },
+    {
+        "DisplayName": "Latvian (Latvia)",
+        "LangCode": "lv-LV"
+    },
+    {
+        "DisplayName": "Masai (Kenya)",
+        "LangCode": "mas-KE"
+    },
+    {
+        "DisplayName": "Masai (Tanzania)",
+        "LangCode": "mas-TZ"
+    },
+    {
+        "DisplayName": "Meru (Kenya)",
+        "LangCode": "mer-KE"
+    },
+    {
+        "DisplayName": "Morisyen (Mauritius)",
+        "LangCode": "mfe-MU"
+    },
+    {
+        "DisplayName": "Malagasy (Madagascar)",
+        "LangCode": "mg-MG"
+    },
+    {
+        "DisplayName": "Makhuwa-Meetto (Mozambique)",
+        "LangCode": "mgh-MZ"
+    },
+    {
+        "DisplayName": "Metaʼ (Cameroon)",
+        "LangCode": "mgo-CM"
+    },
+    {
+        "DisplayName": "Maori",
+        "LangCode": "mi"
+    },
+    {
+        "DisplayName": "Maori (New Zealand)",
+        "LangCode": "mi-NZ"
+    },
+    {
+        "DisplayName": "Macedonian",
+        "LangCode": "mk"
+    },
+    {
+        "DisplayName": "Macedonian (North Macedonia)",
+        "LangCode": "mk-MK"
+    },
+    {
+        "DisplayName": "Malayalam",
+        "LangCode": "ml"
+    },
+    {
+        "DisplayName": "Malayalam (India)",
+        "LangCode": "ml-IN"
+    },
+    {
+        "DisplayName": "Mongolian",
+        "LangCode": "mn"
+    },
+    {
+        "DisplayName": "Mongolian",
+        "LangCode": "mn-Cyrl"
+    },
+    {
+        "DisplayName": "Mongolian (Mongolia)",
+        "LangCode": "mn-MN"
+    },
+    {
+        "DisplayName": "Mongolian (Traditional Mongolian)",
+        "LangCode": "mn-Mong"
+    },
+    {
+        "DisplayName": "Mongolian (Traditional Mongolian, China)",
+        "LangCode": "mn-Mong-CN"
+    },
+    {
+        "DisplayName": "Mongolian (Traditional Mongolian, Mongolia)",
+        "LangCode": "mn-Mong-MN"
+    },
+    {
+        "DisplayName": "Manipuri",
+        "LangCode": "mni"
+    },
+    {
+        "DisplayName": "Manipuri (India)",
+        "LangCode": "mni-IN"
+    },
+    {
+        "DisplayName": "Mohawk",
+        "LangCode": "moh"
+    },
+    {
+        "DisplayName": "Mohawk (Mohawk)",
+        "LangCode": "moh-CA"
+    },
+    {
+        "DisplayName": "Marathi",
+        "LangCode": "mr"
+    },
+    {
+        "DisplayName": "Marathi (India)",
+        "LangCode": "mr-IN"
+    },
+    {
+        "DisplayName": "Malay",
+        "LangCode": "ms"
+    },
+    {
+        "DisplayName": "Malay (Brunei)",
+        "LangCode": "ms-BN"
+    },
+    {
+        "DisplayName": "Malay (Malaysia)",
+        "LangCode": "ms-MY"
+    },
+    {
+        "DisplayName": "Malay (Singapore)",
+        "LangCode": "ms-SG"
+    },
+    {
+        "DisplayName": "Maltese",
+        "LangCode": "mt"
+    },
+    {
+        "DisplayName": "Maltese (Malta)",
+        "LangCode": "mt-MT"
+    },
+    {
+        "DisplayName": "Mundang (Cameroon)",
+        "LangCode": "mua-CM"
+    },
+    {
+        "DisplayName": "Burmese",
+        "LangCode": "my"
+    },
+    {
+        "DisplayName": "Burmese (Myanmar)",
+        "LangCode": "my-MM"
+    },
+    {
+        "DisplayName": "Mazanderani (Iran)",
+        "LangCode": "mzn-IR"
+    },
+    {
+        "DisplayName": "Nama (Namibia)",
+        "LangCode": "naq-NA"
+    },
+    {
+        "DisplayName": "Norwegian Bokmål",
+        "LangCode": "nb"
+    },
+    {
+        "DisplayName": "Norwegian Bokmål (Norway)",
+        "LangCode": "nb-NO"
+    },
+    {
+        "DisplayName": "Norwegian Bokmål (Svalbard & Jan Mayen)",
+        "LangCode": "nb-SJ"
+    },
+    {
+        "DisplayName": "North Ndebele (Zimbabwe)",
+        "LangCode": "nd-ZW"
+    },
+    {
+        "DisplayName": "Low German (Germany)",
+        "LangCode": "nds-DE"
+    },
+    {
+        "DisplayName": "Low German (Netherlands)",
+        "LangCode": "nds-NL"
+    },
+    {
+        "DisplayName": "Nepali",
+        "LangCode": "ne"
+    },
+    {
+        "DisplayName": "Nepali (India)",
+        "LangCode": "ne-IN"
+    },
+    {
+        "DisplayName": "Nepali (Nepal)",
+        "LangCode": "ne-NP"
+    },
+    {
+        "DisplayName": "Dutch",
+        "LangCode": "nl"
+    },
+    {
+        "DisplayName": "Dutch (Aruba)",
+        "LangCode": "nl-AW"
+    },
+    {
+        "DisplayName": "Dutch (Belgium)",
+        "LangCode": "nl-BE"
+    },
+    {
+        "DisplayName": "Dutch (Bonaire, Sint Eustatius and Saba)",
+        "LangCode": "nl-BQ"
+    },
+    {
+        "DisplayName": "Dutch (Curaçao)",
+        "LangCode": "nl-CW"
+    },
+    {
+        "DisplayName": "Dutch (Netherlands)",
+        "LangCode": "nl-NL"
+    },
+    {
+        "DisplayName": "Dutch (Suriname)",
+        "LangCode": "nl-SR"
+    },
+    {
+        "DisplayName": "Dutch (Sint Maarten)",
+        "LangCode": "nl-SX"
+    },
+    {
+        "DisplayName": "Kwasio (Cameroon)",
+        "LangCode": "nmg-CM"
+    },
+    {
+        "DisplayName": "Norwegian Nynorsk",
+        "LangCode": "nn"
+    },
+    {
+        "DisplayName": "Norwegian Nynorsk (Norway)",
+        "LangCode": "nn-NO"
+    },
+    {
+        "DisplayName": "Ngiemboon (Cameroon)",
+        "LangCode": "nnh-CM"
+    },
+    {
+        "DisplayName": "Norwegian",
+        "LangCode": "no"
+    },
+    {
+        "DisplayName": "N'ko (Guinea)",
+        "LangCode": "nqo-GN"
+    },
+    {
+        "DisplayName": "South Ndebele (South Africa)",
+        "LangCode": "nr-ZA"
+    },
+    {
+        "DisplayName": "Sesotho sa Leboa",
+        "LangCode": "nso"
+    },
+    {
+        "DisplayName": "Sesotho sa Leboa (South Africa)",
+        "LangCode": "nso-ZA"
+    },
+    {
+        "DisplayName": "Nuer (South Sudan)",
+        "LangCode": "nus-SS"
+    },
+    {
+        "DisplayName": "Nyankole (Uganda)",
+        "LangCode": "nyn-UG"
+    },
+    {
+        "DisplayName": "Occitan",
+        "LangCode": "oc"
+    },
+    {
+        "DisplayName": "Occitan (France)",
+        "LangCode": "oc-FR"
+    },
+    {
+        "DisplayName": "Oromo",
+        "LangCode": "om"
+    },
+    {
+        "DisplayName": "Oromo (Ethiopia)",
+        "LangCode": "om-ET"
+    },
+    {
+        "DisplayName": "Oromo (Kenya)",
+        "LangCode": "om-KE"
+    },
+    {
+        "DisplayName": "Odia",
+        "LangCode": "or"
+    },
+    {
+        "DisplayName": "Odia (India)",
+        "LangCode": "or-IN"
+    },
+    {
+        "DisplayName": "Ossetic (Georgia)",
+        "LangCode": "os-GE"
+    },
+    {
+        "DisplayName": "Ossetic (Russia)",
+        "LangCode": "os-RU"
+    },
+    {
+        "DisplayName": "Punjabi",
+        "LangCode": "pa"
+    },
+    {
+        "DisplayName": "Punjabi",
+        "LangCode": "pa-Arab"
+    },
+    {
+        "DisplayName": "Punjabi (Pakistan)",
+        "LangCode": "pa-Arab-PK"
+    },
+    {
+        "DisplayName": "Punjabi (India)",
+        "LangCode": "pa-IN"
+    },
+    {
+        "DisplayName": "Papiamento",
+        "LangCode": "pap"
+    },
+    {
+        "DisplayName": "Papiamento (Caribbean)",
+        "LangCode": "pap-029"
+    },
+    {
+        "DisplayName": "Polish",
+        "LangCode": "pl"
+    },
+    {
+        "DisplayName": "Polish (Poland)",
+        "LangCode": "pl-PL"
+    },
+    {
+        "DisplayName": "Prussian (World)",
+        "LangCode": "prg-001"
+    },
+    {
+        "DisplayName": "Dari",
+        "LangCode": "prs"
+    },
+    {
+        "DisplayName": "Dari (Afghanistan)",
+        "LangCode": "prs-AF"
+    },
+    {
+        "DisplayName": "Pashto",
+        "LangCode": "ps"
+    },
+    {
+        "DisplayName": "Pashto (Afghanistan)",
+        "LangCode": "ps-AF"
+    },
+    {
+        "DisplayName": "Pashto (Pakistan)",
+        "LangCode": "ps-PK"
+    },
+    {
+        "DisplayName": "Portuguese",
+        "LangCode": "pt"
+    },
+    {
+        "DisplayName": "Portuguese (Angola)",
+        "LangCode": "pt-AO"
+    },
+    {
+        "DisplayName": "Portuguese (Brazil)",
+        "LangCode": "pt-BR"
+    },
+    {
+        "DisplayName": "Portuguese (Switzerland)",
+        "LangCode": "pt-CH"
+    },
+    {
+        "DisplayName": "Portuguese (Cabo Verde)",
+        "LangCode": "pt-CV"
+    },
+    {
+        "DisplayName": "Portuguese (Equatorial Guinea)",
+        "LangCode": "pt-GQ"
+    },
+    {
+        "DisplayName": "Portuguese (Guinea-Bissau)",
+        "LangCode": "pt-GW"
+    },
+    {
+        "DisplayName": "Portuguese (Luxembourg)",
+        "LangCode": "pt-LU"
+    },
+    {
+        "DisplayName": "Portuguese (Macao SAR)",
+        "LangCode": "pt-MO"
+    },
+    {
+        "DisplayName": "Portuguese (Mozambique)",
+        "LangCode": "pt-MZ"
+    },
+    {
+        "DisplayName": "Portuguese (Portugal)",
+        "LangCode": "pt-PT"
+    },
+    {
+        "DisplayName": "Portuguese (São Tomé & Príncipe)",
+        "LangCode": "pt-ST"
+    },
+    {
+        "DisplayName": "Portuguese (Timor-Leste)",
+        "LangCode": "pt-TL"
+    },
+    {
+        "DisplayName": "K'iche'",
+        "LangCode": "quc"
+    },
+    {
+        "DisplayName": "K'iche'",
+        "LangCode": "quc-Latn"
+    },
+    {
+        "DisplayName": "K'iche' (Guatemala)",
+        "LangCode": "quc-Latn-GT"
+    },
+    {
+        "DisplayName": "Quechua",
+        "LangCode": "quz"
+    },
+    {
+        "DisplayName": "Quechua (Bolivia)",
+        "LangCode": "quz-BO"
+    },
+    {
+        "DisplayName": "Quechua (Ecuador)",
+        "LangCode": "quz-EC"
+    },
+    {
+        "DisplayName": "Quechua (Peru)",
+        "LangCode": "quz-PE"
+    },
+    {
+        "DisplayName": "Romansh",
+        "LangCode": "rm"
+    },
+    {
+        "DisplayName": "Romansh (Switzerland)",
+        "LangCode": "rm-CH"
+    },
+    {
+        "DisplayName": "Rundi (Burundi)",
+        "LangCode": "rn-BI"
+    },
+    {
+        "DisplayName": "Romanian",
+        "LangCode": "ro"
+    },
+    {
+        "DisplayName": "Romanian (Moldova)",
+        "LangCode": "ro-MD"
+    },
+    {
+        "DisplayName": "Romanian (Romania)",
+        "LangCode": "ro-RO"
+    },
+    {
+        "DisplayName": "Rombo (Tanzania)",
+        "LangCode": "rof-TZ"
+    },
+    {
+        "DisplayName": "Russian",
+        "LangCode": "ru"
+    },
+    {
+        "DisplayName": "Russian (Belarus)",
+        "LangCode": "ru-BY"
+    },
+    {
+        "DisplayName": "Russian (Kyrgyzstan)",
+        "LangCode": "ru-KG"
+    },
+    {
+        "DisplayName": "Russian (Kazakhstan)",
+        "LangCode": "ru-KZ"
+    },
+    {
+        "DisplayName": "Russian (Moldova)",
+        "LangCode": "ru-MD"
+    },
+    {
+        "DisplayName": "Russian (Russia)",
+        "LangCode": "ru-RU"
+    },
+    {
+        "DisplayName": "Russian (Ukraine)",
+        "LangCode": "ru-UA"
+    },
+    {
+        "DisplayName": "Kinyarwanda",
+        "LangCode": "rw"
+    },
+    {
+        "DisplayName": "Kinyarwanda (Rwanda)",
+        "LangCode": "rw-RW"
+    },
+    {
+        "DisplayName": "Rwa (Tanzania)",
+        "LangCode": "rwk-TZ"
+    },
+    {
+        "DisplayName": "Sanskrit",
+        "LangCode": "sa"
+    },
+    {
+        "DisplayName": "Sanskrit (India)",
+        "LangCode": "sa-IN"
+    },
+    {
+        "DisplayName": "Sakha",
+        "LangCode": "sah"
+    },
+    {
+        "DisplayName": "Sakha (Russia)",
+        "LangCode": "sah-RU"
+    },
+    {
+        "DisplayName": "Samburu (Kenya)",
+        "LangCode": "saq-KE"
+    },
+    {
+        "DisplayName": "Sangu (Tanzania)",
+        "LangCode": "sbp-TZ"
+    },
+    {
+        "DisplayName": "Sindhi",
+        "LangCode": "sd"
+    },
+    {
+        "DisplayName": "Sindhi",
+        "LangCode": "sd-Arab"
+    },
+    {
+        "DisplayName": "Sindhi (Pakistan)",
+        "LangCode": "sd-Arab-PK"
+    },
+    {
+        "DisplayName": "Sindhi (Devanagari, India)",
+        "LangCode": "sd-Deva-IN"
+    },
+    {
+        "DisplayName": "Northern Sami",
+        "LangCode": "se"
+    },
+    {
+        "DisplayName": "Sami, Northern (Finland)",
+        "LangCode": "se-FI"
+    },
+    {
+        "DisplayName": "Sami, Northern (Norway)",
+        "LangCode": "se-NO"
+    },
+    {
+        "DisplayName": "Sami, Northern (Sweden)",
+        "LangCode": "se-SE"
+    },
+    {
+        "DisplayName": "Sena (Mozambique)",
+        "LangCode": "seh-MZ"
+    },
+    {
+        "DisplayName": "Koyraboro Senni (Mali)",
+        "LangCode": "ses-ML"
+    },
+    {
+        "DisplayName": "Sango (Central African Republic)",
+        "LangCode": "sg-CF"
+    },
+    {
+        "DisplayName": "Tachelhit (Latin, Morocco)",
+        "LangCode": "shi-Latn-MA"
+    },
+    {
+        "DisplayName": "Tachelhit (Tifinagh, Morocco)",
+        "LangCode": "shi-Tfng-MA"
+    },
+    {
+        "DisplayName": "Sinhala",
+        "LangCode": "si"
+    },
+    {
+        "DisplayName": "Sinhala (Sri Lanka)",
+        "LangCode": "si-LK"
+    },
+    {
+        "DisplayName": "Slovak",
+        "LangCode": "sk"
+    },
+    {
+        "DisplayName": "Slovak (Slovakia)",
+        "LangCode": "sk-SK"
+    },
+    {
+        "DisplayName": "Slovenian",
+        "LangCode": "sl"
+    },
+    {
+        "DisplayName": "Slovenian (Slovenia)",
+        "LangCode": "sl-SI"
+    },
+    {
+        "DisplayName": "Sami (Southern)",
+        "LangCode": "sma"
+    },
+    {
+        "DisplayName": "Sami, Southern (Norway)",
+        "LangCode": "sma-NO"
+    },
+    {
+        "DisplayName": "Sami, Southern (Sweden)",
+        "LangCode": "sma-SE"
+    },
+    {
+        "DisplayName": "Sami (Lule)",
+        "LangCode": "smj"
+    },
+    {
+        "DisplayName": "Sami, Lule (Norway)",
+        "LangCode": "smj-NO"
+    },
+    {
+        "DisplayName": "Sami, Lule (Sweden)",
+        "LangCode": "smj-SE"
+    },
+    {
+        "DisplayName": "Sami (Inari)",
+        "LangCode": "smn"
+    },
+    {
+        "DisplayName": "Sami, Inari (Finland)",
+        "LangCode": "smn-FI"
+    },
+    {
+        "DisplayName": "Sami (Skolt)",
+        "LangCode": "sms"
+    },
+    {
+        "DisplayName": "Sami, Skolt (Finland)",
+        "LangCode": "sms-FI"
+    },
+    {
+        "DisplayName": "Shona (Latin, Zimbabwe)",
+        "LangCode": "sn-Latn-ZW"
+    },
+    {
+        "DisplayName": "Somali",
+        "LangCode": "so"
+    },
+    {
+        "DisplayName": "Somali (Djibouti)",
+        "LangCode": "so-DJ"
+    },
+    {
+        "DisplayName": "Somali (Ethiopia)",
+        "LangCode": "so-ET"
+    },
+    {
+        "DisplayName": "Somali (Kenya)",
+        "LangCode": "so-KE"
+    },
+    {
+        "DisplayName": "Somali (Somalia)",
+        "LangCode": "so-SO"
+    },
+    {
+        "DisplayName": "Albanian",
+        "LangCode": "sq"
+    },
+    {
+        "DisplayName": "Albanian (Albania)",
+        "LangCode": "sq-AL"
+    },
+    {
+        "DisplayName": "Albanian (North Macedonia)",
+        "LangCode": "sq-MK"
+    },
+    {
+        "DisplayName": "Albanian (Kosovo)",
+        "LangCode": "sq-XK"
+    },
+    {
+        "DisplayName": "Serbian",
+        "LangCode": "sr"
+    },
+    {
+        "DisplayName": "Serbian (Cyrillic)",
+        "LangCode": "sr-Cyrl"
+    },
+    {
+        "DisplayName": "Serbian (Cyrillic, Bosnia and Herzegovina)",
+        "LangCode": "sr-Cyrl-BA"
+    },
+    {
+        "DisplayName": "Serbian (Cyrillic, Montenegro)",
+        "LangCode": "sr-Cyrl-ME"
+    },
+    {
+        "DisplayName": "Serbian (Cyrillic, Serbia)",
+        "LangCode": "sr-Cyrl-RS"
+    },
+    {
+        "DisplayName": "Serbian (Cyrillic, Kosovo)",
+        "LangCode": "sr-Cyrl-XK"
+    },
+    {
+        "DisplayName": "Serbian (Latin)",
+        "LangCode": "sr-Latn"
+    },
+    {
+        "DisplayName": "Serbian (Latin, Bosnia & Herzegovina)",
+        "LangCode": "sr-Latn-BA"
+    },
+    {
+        "DisplayName": "Serbian (Latin, Montenegro)",
+        "LangCode": "sr-Latn-ME"
+    },
+    {
+        "DisplayName": "Serbian (Latin, Serbia)",
+        "LangCode": "sr-Latn-RS"
+    },
+    {
+        "DisplayName": "Serbian (Latin, Kosovo)",
+        "LangCode": "sr-Latn-XK"
+    },
+    {
+        "DisplayName": "siSwati (Eswatini)",
+        "LangCode": "ss-SZ"
+    },
+    {
+        "DisplayName": "siSwati (South Africa)",
+        "LangCode": "ss-ZA"
+    },
+    {
+        "DisplayName": "Saho (Eritrea)",
+        "LangCode": "ssy-ER"
+    },
+    {
+        "DisplayName": "Sesotho",
+        "LangCode": "st"
+    },
+    {
+        "DisplayName": "Sesotho (Lesotho)",
+        "LangCode": "st-LS"
+    },
+    {
+        "DisplayName": "Sesotho (South Africa)",
+        "LangCode": "st-ZA"
+    },
+    {
+        "DisplayName": "Swedish",
+        "LangCode": "sv"
+    },
+    {
+        "DisplayName": "Swedish (Åland Islands)",
+        "LangCode": "sv-AX"
+    },
+    {
+        "DisplayName": "Swedish (Finland)",
+        "LangCode": "sv-FI"
+    },
+    {
+        "DisplayName": "Swedish (Sweden)",
+        "LangCode": "sv-SE"
+    },
+    {
+        "DisplayName": "Kiswahili",
+        "LangCode": "sw"
+    },
+    {
+        "DisplayName": "Kiswahili (Congo DRC)",
+        "LangCode": "sw-CD"
+    },
+    {
+        "DisplayName": "Kiswahili (Kenya)",
+        "LangCode": "sw-KE"
+    },
+    {
+        "DisplayName": "Kiswahili (Tanzania)",
+        "LangCode": "sw-TZ"
+    },
+    {
+        "DisplayName": "Kiswahili (Uganda)",
+        "LangCode": "sw-UG"
+    },
+    {
+        "DisplayName": "Syriac",
+        "LangCode": "syr"
+    },
+    {
+        "DisplayName": "Syriac (Syria)",
+        "LangCode": "syr-SY"
+    },
+    {
+        "DisplayName": "Tamil",
+        "LangCode": "ta"
+    },
+    {
+        "DisplayName": "Tamil (India)",
+        "LangCode": "ta-IN"
+    },
+    {
+        "DisplayName": "Tamil (Sri Lanka)",
+        "LangCode": "ta-LK"
+    },
+    {
+        "DisplayName": "Tamil (Malaysia)",
+        "LangCode": "ta-MY"
+    },
+    {
+        "DisplayName": "Tamil (Singapore)",
+        "LangCode": "ta-SG"
+    },
+    {
+        "DisplayName": "Telugu",
+        "LangCode": "te"
+    },
+    {
+        "DisplayName": "Telugu (India)",
+        "LangCode": "te-IN"
+    },
+    {
+        "DisplayName": "Teso (Kenya)",
+        "LangCode": "teo-KE"
+    },
+    {
+        "DisplayName": "Teso (Uganda)",
+        "LangCode": "teo-UG"
+    },
+    {
+        "DisplayName": "Tajik",
+        "LangCode": "tg"
+    },
+    {
+        "DisplayName": "Tajik (Cyrillic)",
+        "LangCode": "tg-Cyrl"
+    },
+    {
+        "DisplayName": "Tajik (Cyrillic, Tajikistan)",
+        "LangCode": "tg-Cyrl-TJ"
+    },
+    {
+        "DisplayName": "Thai",
+        "LangCode": "th"
+    },
+    {
+        "DisplayName": "Thai (Thailand)",
+        "LangCode": "th-TH"
+    },
+    {
+        "DisplayName": "Tigrinya",
+        "LangCode": "ti"
+    },
+    {
+        "DisplayName": "Tigrinya (Eritrea)",
+        "LangCode": "ti-ER"
+    },
+    {
+        "DisplayName": "Tigrinya (Ethiopia)",
+        "LangCode": "ti-ET"
+    },
+    {
+        "DisplayName": "Tigre (Eritrea)",
+        "LangCode": "tig-ER"
+    },
+    {
+        "DisplayName": "Turkmen",
+        "LangCode": "tk"
+    },
+    {
+        "DisplayName": "Turkmen (Turkmenistan)",
+        "LangCode": "tk-TM"
+    },
+    {
+        "DisplayName": "Setswana",
+        "LangCode": "tn"
+    },
+    {
+        "DisplayName": "Setswana (Botswana)",
+        "LangCode": "tn-BW"
+    },
+    {
+        "DisplayName": "Setswana (South Africa)",
+        "LangCode": "tn-ZA"
+    },
+    {
+        "DisplayName": "Tongan (Tonga)",
+        "LangCode": "to-TO"
+    },
+    {
+        "DisplayName": "Turkish",
+        "LangCode": "tr"
+    },
+    {
+        "DisplayName": "Turkish (Cyprus)",
+        "LangCode": "tr-CY"
+    },
+    {
+        "DisplayName": "Turkish (Turkey)",
+        "LangCode": "tr-TR"
+    },
+    {
+        "DisplayName": "Xitsonga",
+        "LangCode": "ts"
+    },
+    {
+        "DisplayName": "Xitsonga (South Africa)",
+        "LangCode": "ts-ZA"
+    },
+    {
+        "DisplayName": "Tatar",
+        "LangCode": "tt"
+    },
+    {
+        "DisplayName": "Tatar (Russia)",
+        "LangCode": "tt-RU"
+    },
+    {
+        "DisplayName": "Tasawaq (Niger)",
+        "LangCode": "twq-NE"
+    },
+    {
+        "DisplayName": "Central Atlas Tamazight",
+        "LangCode": "tzm"
+    },
+    {
+        "DisplayName": "Central Atlas Tamazight (Arabic, Morocco)",
+        "LangCode": "tzm-Arab-MA"
+    },
+    {
+        "DisplayName": "Central Atlas Tamazight (Latin)",
+        "LangCode": "tzm-Latn"
+    },
+    {
+        "DisplayName": "Central Atlas Tamazight (Latin, Algeria)",
+        "LangCode": "tzm-Latn-DZ"
+    },
+    {
+        "DisplayName": "Central Atlas Tamazight (Latin, Morocco)",
+        "LangCode": "tzm-Latn-MA"
+    },
+    {
+        "DisplayName": "Central Atlas Tamazight (Tifinagh)",
+        "LangCode": "tzm-Tfng"
+    },
+    {
+        "DisplayName": "Central Atlas Tamazight (Tifinagh, Morocco)",
+        "LangCode": "tzm-Tfng-MA"
+    },
+    {
+        "DisplayName": "Uyghur",
+        "LangCode": "ug"
+    },
+    {
+        "DisplayName": "Uyghur (China)",
+        "LangCode": "ug-CN"
+    },
+    {
+        "DisplayName": "Ukrainian",
+        "LangCode": "uk"
+    },
+    {
+        "DisplayName": "Ukrainian (Ukraine)",
+        "LangCode": "uk-UA"
+    },
+    {
+        "DisplayName": "Urdu",
+        "LangCode": "ur"
+    },
+    {
+        "DisplayName": "Urdu (India)",
+        "LangCode": "ur-IN"
+    },
+    {
+        "DisplayName": "Urdu (Pakistan)",
+        "LangCode": "ur-PK"
+    },
+    {
+        "DisplayName": "Uzbek",
+        "LangCode": "uz"
+    },
+    {
+        "DisplayName": "Uzbek (Perso-Arabic, Afghanistan)",
+        "LangCode": "uz-Arab-AF"
+    },
+    {
+        "DisplayName": "Uzbek (Cyrillic)",
+        "LangCode": "uz-Cyrl"
+    },
+    {
+        "DisplayName": "Uzbek (Cyrillic, Uzbekistan)",
+        "LangCode": "uz-Cyrl-UZ"
+    },
+    {
+        "DisplayName": "Uzbek (Latin)",
+        "LangCode": "uz-Latn"
+    },
+    {
+        "DisplayName": "Uzbek (Latin, Uzbekistan)",
+        "LangCode": "uz-Latn-UZ"
+    },
+    {
+        "DisplayName": "Vai (Latin, Liberia)",
+        "LangCode": "vai-Latn-LR"
+    },
+    {
+        "DisplayName": "Vai (Vai, Liberia)",
+        "LangCode": "vai-Vaii-LR"
+    },
+    {
+        "DisplayName": "Venda",
+        "LangCode": "ve"
+    },
+    {
+        "DisplayName": "Venda (South Africa)",
+        "LangCode": "ve-ZA"
+    },
+    {
+        "DisplayName": "Vietnamese",
+        "LangCode": "vi"
+    },
+    {
+        "DisplayName": "Vietnamese (Vietnam)",
+        "LangCode": "vi-VN"
+    },
+    {
+        "DisplayName": "Volapük (World)",
+        "LangCode": "vo-001"
+    },
+    {
+        "DisplayName": "Vunjo (Tanzania)",
+        "LangCode": "vun-TZ"
+    },
+    {
+        "DisplayName": "Walser (Switzerland)",
+        "LangCode": "wae-CH"
+    },
+    {
+        "DisplayName": "Wolaytta (Ethiopia)",
+        "LangCode": "wal-ET"
+    },
+    {
+        "DisplayName": "Wolof",
+        "LangCode": "wo"
+    },
+    {
+        "DisplayName": "Wolof (Senegal)",
+        "LangCode": "wo-SN"
+    },
+    {
+        "DisplayName": "isiXhosa",
+        "LangCode": "xh"
+    },
+    {
+        "DisplayName": "isiXhosa (South Africa)",
+        "LangCode": "xh-ZA"
+    },
+    {
+        "DisplayName": "Soga (Uganda)",
+        "LangCode": "xog-UG"
+    },
+    {
+        "DisplayName": "Yangben (Cameroon)",
+        "LangCode": "yav-CM"
+    },
+    {
+        "DisplayName": "Yiddish",
+        "LangCode": "yi"
+    },
+    {
+        "DisplayName": "Yiddish (World)",
+        "LangCode": "yi-001"
+    },
+    {
+        "DisplayName": "Yoruba",
+        "LangCode": "yo"
+    },
+    {
+        "DisplayName": "Yoruba (Benin)",
+        "LangCode": "yo-BJ"
+    },
+    {
+        "DisplayName": "Yoruba (Nigeria)",
+        "LangCode": "yo-NG"
+    },
+    {
+        "DisplayName": "Standard Moroccan Tamazight (Tifinagh, Morocco)",
+        "LangCode": "zgh-Tfng-MA"
+    },
+    {
+        "DisplayName": "Chinese",
+        "LangCode": "zh"
+    },
+    {
+        "DisplayName": "Chinese (Simplified, China)",
+        "LangCode": "zh-CN"
+    },
+    {
+        "DisplayName": "Chinese (Simplified)",
+        "LangCode": "zh-Hans"
+    },
+    {
+        "DisplayName": "Chinese (Simplified Han, Hong Kong SAR)",
+        "LangCode": "zh-Hans-HK"
+    },
+    {
+        "DisplayName": "Chinese (Simplified Han, Macao SAR)",
+        "LangCode": "zh-Hans-MO"
+    },
+    {
+        "DisplayName": "Chinese (Traditional)",
+        "LangCode": "zh-Hant"
+    },
+    {
+        "DisplayName": "Chinese (Traditional, Hong Kong SAR)",
+        "LangCode": "zh-HK"
+    },
+    {
+        "DisplayName": "Chinese (Traditional, Macao SAR)",
+        "LangCode": "zh-MO"
+    },
+    {
+        "DisplayName": "Chinese (Simplified, Singapore)",
+        "LangCode": "zh-SG"
+    },
+    {
+        "DisplayName": "Chinese (Traditional, Taiwan)",
+        "LangCode": "zh-TW"
+    },
+    {
+        "DisplayName": "isiZulu",
+        "LangCode": "zu"
+    },
+    {
+        "DisplayName": "isiZulu (South Africa)",
+        "LangCode": "zu-ZA"
+    }
+]

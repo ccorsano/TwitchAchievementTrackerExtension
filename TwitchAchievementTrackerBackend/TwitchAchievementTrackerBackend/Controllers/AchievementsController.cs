@@ -38,7 +38,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
             {
                 var xConfig = config.XBoxLiveConfig;
 
-                var titleInfo = await _xApiService.GetMarketplaceAsync(xConfig);
+                var titleInfo = await _xApiService.GetMarketplaceAsync(xConfig.TitleId, xConfig.XApiKey, xConfig.Locale);
 
                 return new TitleInfo
                 {
@@ -72,6 +72,33 @@ namespace TwitchAchievementTrackerBackend.Controllers
             return await _steamApiService.SearchTitle(query);
         }
 
+        [HttpGet("/api/title/xapi/search/{query}")]
+        public async Task<IEnumerable<TitleInfo>> SearchXApiTitleInfo(string query, string xApiKey = null)
+        {
+            XApiConfiguration xConfig = null;
+            if (this.HasExtensionConfiguration())
+            {
+                var config = this.GetExtensionConfiguration();
+                xConfig = config.XBoxLiveConfig ?? new XApiConfiguration();
+            }
+            if (! string.IsNullOrEmpty(xApiKey))
+            {
+                xConfig.XApiKey = xApiKey;
+            }
+
+            var searchResult = await _xApiService.SearchTitle(query, xConfig);
+
+            return searchResult.Products.Select(product =>
+                new TitleInfo
+                {
+                    TitleId = product.AlternateIds?.FirstOrDefault(id => id.IdType == "XboxTitleId")?.Value ?? "",
+                    ProductTitle = product.LocalizedProperties?.FirstOrDefault()?.ProductTitle ?? "Unknown",
+                    ProductDescription = product.LocalizedProperties?.FirstOrDefault()?.ProductDescription ?? "-",
+                    LogoUri = product.LocalizedProperties?.FirstOrDefault()?.Images?.FirstOrDefault(i => i.ImagePurpose == "Logo" || i.ImagePurpose == "BoxArt" || i.ImagePurpose == "FeaturePromotionalSquareArt")?.Uri,
+                }
+            );
+        }
+
         [HttpGet("/api/title/search/{query}")]
         public async Task<IEnumerable<TitleInfo>> SearchTitleInfo(string query)
         {
@@ -99,18 +126,6 @@ namespace TwitchAchievementTrackerBackend.Controllers
                     }
                 );
             }
-        }
-
-        [HttpGet("/api/xuid/{gamertag}")]
-        public async Task<string> ResolveXuid(string gamerTag)
-        {
-            XApiConfiguration xApiConfiguration = null;
-            if (this.HasExtensionConfiguration())
-            {
-                xApiConfiguration = this.GetExtensionConfiguration().XBoxLiveConfig;
-            }
-
-            return await _xApiService.ResolveXuid(gamerTag, xApiConfiguration);
         }
 
 
