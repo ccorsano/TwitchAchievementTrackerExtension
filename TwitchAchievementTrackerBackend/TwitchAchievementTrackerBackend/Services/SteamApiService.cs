@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,42 @@ namespace TwitchAchievementTrackerBackend.Services
         private readonly HttpClient _storeClient;
         private readonly SteamApiOptions _options;
         private readonly IMemoryCache _cache;
+
+        public static SupportedLanguage[] STEAM_SUPPORTED_LANGUAGES = new SupportedLanguage[]
+        {
+            new SupportedLanguage { DisplayName = "Arabic", LangCode = "arabic" },
+            new SupportedLanguage { DisplayName = "Bulgarian", LangCode = "bulgarian" },
+            new SupportedLanguage { DisplayName = "Chinese (Simplified)", LangCode = "schinese" },
+            new SupportedLanguage { DisplayName = "Chinese (Traditional)", LangCode = "tchinese" },
+            new SupportedLanguage { DisplayName = "Czech", LangCode = "czech" },
+            new SupportedLanguage { DisplayName = "Danish", LangCode = "danish" },
+            new SupportedLanguage { DisplayName = "Dutch", LangCode = "dutch" },
+            new SupportedLanguage { DisplayName = "English", LangCode = "english" },
+            new SupportedLanguage { DisplayName = "Finnish", LangCode = "finnish" },
+            new SupportedLanguage { DisplayName = "French", LangCode = "french" },
+            new SupportedLanguage { DisplayName = "German", LangCode = "german" },
+            new SupportedLanguage { DisplayName = "Greek", LangCode = "greek" },
+            new SupportedLanguage { DisplayName = "Hungarian", LangCode = "hungarian" },
+            new SupportedLanguage { DisplayName = "Italian", LangCode = "italian" },
+            new SupportedLanguage { DisplayName = "Japanese", LangCode = "japanese" },
+            new SupportedLanguage { DisplayName = "Korean", LangCode = "koreana" },
+            new SupportedLanguage { DisplayName = "Norwegian", LangCode = "norwegian" },
+            new SupportedLanguage { DisplayName = "Polish", LangCode = "polish" },
+            new SupportedLanguage { DisplayName = "Portuguese", LangCode = "portuguese" },
+            new SupportedLanguage { DisplayName = "Portuguese-Brazil", LangCode = "brazilian" },
+            new SupportedLanguage { DisplayName = "Portuguese - Brazil", LangCode = "brazilian" },
+            new SupportedLanguage { DisplayName = "Romanian", LangCode = "romanian" },
+            new SupportedLanguage { DisplayName = "Russian", LangCode = "russian" },
+            new SupportedLanguage { DisplayName = "Spanish - Spain", LangCode = "spanish" },
+            new SupportedLanguage { DisplayName = "Spanish-Spain", LangCode = "spanish" },
+            new SupportedLanguage { DisplayName = "Spanish - Latin America", LangCode = "latam" },
+            new SupportedLanguage { DisplayName = "Spanish-Latin America", LangCode = "latam" },
+            new SupportedLanguage { DisplayName = "Swedish", LangCode = "swedish" },
+            new SupportedLanguage { DisplayName = "Thai", LangCode = "thai" },
+            new SupportedLanguage { DisplayName = "Turkish", LangCode = "turkish" },
+            new SupportedLanguage { DisplayName = "Ukrainian", LangCode = "ukrainian" },
+            new SupportedLanguage { DisplayName = "Vietnamese", LangCode = "vietnamese" }
+        };
 
         public SteamApiService(IHttpClientFactory httpClientFactory, IOptions<SteamApiOptions> options, IMemoryCache memoryCache)
         {
@@ -46,6 +83,8 @@ namespace TwitchAchievementTrackerBackend.Services
             var cacheKey = "steam:applist";
             var message = new HttpRequestMessage(HttpMethod.Get, $"ISteamApps/GetAppList/v2/");
             var response = await _httpClient.SendAsync(message);
+            response.EnsureSuccessStatusCode();
+
             using (var responseStream = await response.Content.ReadAsStreamAsync())
             {
                 var result = await JsonSerializer.DeserializeAsync<SteamAppListResult>(responseStream, new JsonSerializerOptions
@@ -67,9 +106,12 @@ namespace TwitchAchievementTrackerBackend.Services
         {
             var cacheKey = $"steam:store:{appId}";
 
-            if (! _cache.TryGetValue(cacheKey, out SteamStoreDetails result))
+            if (!_cache.TryGetValue(cacheKey, out SteamStoreDetails result))
             {
-                using (var responseStream = await _storeClient.GetStreamAsync($"api/appdetails/?appids={appId}"))
+                var response = await _storeClient.GetAsync($"api/appdetails/?appids={appId}");
+                response.EnsureSuccessStatusCode();
+
+                using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
                     var wrapper = await JsonSerializer.DeserializeAsync<SteamStoreResult>(responseStream, new JsonSerializerOptions
                     {
@@ -81,6 +123,59 @@ namespace TwitchAchievementTrackerBackend.Services
 
                 _cache.Set(cacheKey, result);
             }
+            return result;
+        }
+
+        public async Task<SteamPlayerSummary[]> GetPlayersSummaries(string[] steamIds, string webApiKey = null)
+        {
+            webApiKey = webApiKey ?? _options.WebApiKey;
+
+            Func<string, string> cacheKey = (string vanityId) => $"steam:profilesummary:{vanityId}";
+
+            var cachedValues = steamIds.ToDictionary(id => id, id => _cache.TryGetValue<SteamPlayerSummary>(cacheKey(id), out var cached) ? cached : null);
+            var remainingIds = steamIds.Where(id => cachedValues[id] == null);
+
+            var ids = string.Join(",", remainingIds);
+            var request = new HttpRequestMessage(HttpMethod.Get, $"ISteamUser/GetPlayerSummaries/v2/?steamids={ids}");
+            request.Headers.Add("x-webapi-key", webApiKey);
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            using (var responseStream = await response.Content.ReadAsStreamAsync())
+            {
+                var wrapper = await JsonSerializer.DeserializeAsync<SteamPlayerSummariesResult>(responseStream);
+
+                foreach (var playerSummary in wrapper.Response.Players)
+                {
+                    cachedValues[playerSummary.SteamId] = playerSummary;
+                    _cache.Set(cacheKey(playerSummary.SteamId), playerSummary);
+                }
+            }
+
+            return steamIds.Select(id => cachedValues[id]).ToArray();
+        }
+
+        public async Task<SteamVanityUrlResolution> ResolveVanityUrl(string vanityId, string webApiKey = null)
+        {
+            webApiKey = webApiKey ?? _options.WebApiKey;
+
+            var cacheKey = $"steam:profileurl:{vanityId}";
+
+            if (!_cache.TryGetValue(cacheKey, out SteamVanityUrlResolution result))
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, $"ISteamUser/ResolveVanityURL/v1/?vanityurl={vanityId}");
+                request.Headers.Add("x-webapi-key", webApiKey);
+                var response = await _httpClient.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                {
+                    var wrapper = await JsonSerializer.DeserializeAsync<SteamResolveVanityUrlResult>(responseStream);
+                    _cache.Set(cacheKey, wrapper.Response);
+                    result = wrapper.Response;
+                }
+            }
+
             return result;
         }
 
@@ -108,8 +203,13 @@ namespace TwitchAchievementTrackerBackend.Services
 
             if (!_cache.TryGetValue(cacheKey, out SteamPlayerAchievement[] result))
             {
-                using (var responseStream = await _httpClient.GetStreamAsync($"ISteamUserStats/GetPlayerAchievements/v1/?steamid={steamConfig.SteamId}&appid={steamConfig.AppId}"))
-                {   
+                var request = new HttpRequestMessage(HttpMethod.Get, $"ISteamUserStats/GetPlayerAchievements/v1/?steamid={steamConfig.SteamId}&appid={steamConfig.AppId}");
+                request.Headers.Add("x-webapi-key", steamConfig.WebApiKey);
+                var response = await _httpClient.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                {
                     var wrapper = await JsonSerializer.DeserializeAsync<SteamUserStatsAchievementsResult>(responseStream, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -130,7 +230,10 @@ namespace TwitchAchievementTrackerBackend.Services
 
             if (!_cache.TryGetValue(cacheKey, out SteamUserStatsGameSchema result))
             {
-                using (var responseStream = await _httpClient.GetStreamAsync($"ISteamUserStats/GetSchemaForGame/v2/?appid={steamConfig.AppId}&l={steamConfig.Locale}"))
+                var response = await _httpClient.GetAsync($"ISteamUserStats/GetSchemaForGame/v2/?appid={steamConfig.AppId}&l={steamConfig.Locale}");
+                response.EnsureSuccessStatusCode();
+
+                using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
                     var wrapper = await JsonSerializer.DeserializeAsync<SteamUserStatsGameSchemaResult>(responseStream, new JsonSerializerOptions
                     {
@@ -141,6 +244,33 @@ namespace TwitchAchievementTrackerBackend.Services
                 }
 
                 _cache.Set(cacheKey, result, _options.AppListCacheTime);
+            }
+            return result;
+        }
+
+        public async Task<SteamPlayerOwnedGameInfo[]> GetOwnedGames(string steamId, string webApiKey = null)
+        {
+            var cacheKey = $"steam:ownedgames:{steamId}";
+
+            if (!_cache.TryGetValue(cacheKey, out SteamPlayerOwnedGameInfo[] result))
+            {
+                var response = await _httpClient.GetAsync($"IPlayerService/GetOwnedGames/v1/?steamid={steamId}&include_appinfo=true&include_played_free_games=true");
+                response.EnsureSuccessStatusCode();
+
+                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                {
+                    var wrapper = await JsonSerializer.DeserializeAsync<SteamPlayerOwnedGamesResult>(responseStream);
+                    result = wrapper.Response.Games;
+                }
+
+                Func<long, string, string> buildImageUri = (appId, imgId) => $"https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/{appId}/{imgId}.jpg";
+                foreach(var game in result)
+                {
+                    game.ImgIconUrl = buildImageUri(game.AppId, game.ImgIconUrl);
+                    game.ImgLogoUrl = buildImageUri(game.AppId, game.ImgLogoUrl);
+                }
+
+                _cache.Set(cacheKey, result, _options.ResultCacheTime);
             }
             return result;
         }

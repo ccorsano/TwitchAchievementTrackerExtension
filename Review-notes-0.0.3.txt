@@ -1,0 +1,38 @@
+Review channel: https://www.twitch.tv/miekyld
+
+Changelog, v0.0.3
+- Rewrite frontend in React + TypeScript
+  Please note that full-code sourcemap are included, code is easiest browsed using Developers Tools through WebPack source mapping.
+  Given full source maps are available, I enabled minification to keep the size low for the end users, I can provide the full frontend project upon request.
+- Assisted configuration
+  Configuration is now a proper React app, enabling for a much better UX.
+  It should now be much harder to save an invalid configuration, and the configuration checks if the xapi.us token needs a refresh.
+
+Changelog, v0.0.2
+- Redesign: made the base real-estate taken by the extension much smaller, now displays a compact square widget until clicked.
+  The extension is also now hidden if the video viewport is reduced, so that in no case the expanded view takes more than 50% of the view.
+- Mobile: added mobile views.
+  Note: I have not reactivated my Apple Developer Program, and as such only wish to enable mobile support for non-iOS platform for this version.
+- Steam achievements support: Configuration now can switch between XBoxLive or Steam, the section marked "[Active]" in the configuration is the one displayed in the extension.
+   To configure Steam, the streamer needs to register a free Steam WebAPI key on his account (or have a Steamworks developer account to get a proper dev WebAPI key).
+   The configured Steam profile needs to be configured as public for the EBS to retrieve the achievements.
+   A search field is provided on the configuration page to find Steam AppId.
+   The streamer is expected to extract their 64bit SteamId from their profile URL.
+    In the context of this review, here are some information you can use for testing:
+    - Steam WebAPI private key: <APIKEY_HERE>
+    - Streamer SteamID: 76561198024910443
+    - Game AppId: 232790
+    - Locale: english
+- Updated screnshots and extension information to reflect the changes
+- Bug fixes and improvements, both on the frontend and on the EBS
+
+Initial release from v0.0.1
+- XBoxLive api integration
+  XBoxLive achievements requires the registration of an https://xapi.us, and to have authenticated with an XBoxLive account on the xapi.us portal.
+  Example configuration for review:
+  - xapi.us private key: <APIKEY_HERE>
+  - Streamer XUID: 2535467661815558
+  - TitleId: 1659804324
+  - Locale: en-US
+- Collapsable view: the extension by default only displays a limited summary of the completion progress.
+  Clicking the extension widget expands the view to see more details, including the full achievements list.

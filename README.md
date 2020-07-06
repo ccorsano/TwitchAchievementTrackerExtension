@@ -1,11 +1,68 @@
-# TwitchAchievementTrackerExtension : Frontend
+# Twitch Achievement Tracker Extension : Frontend
 
-TODO: document Twitch extension frontend, just static html / js files...
+Frontend for the Twitch Achievement Tracker Extension.
 
-# TwitchAchievementTrackerExtension : Backend
-Backend for the Twitch XBox Achievement Tracker Extension.
+## How to run
+This is a React + TypeScript + WebPack application.
+WebPack is used to ease development and bundle the production output.
 
-Grab achievements from xapi.us for a given streamer and game, and display stats on the stream.
+### Pre-requisites
+- NodeJS / NPM
+- A code editor that works well with WebPack and TypeScript editing
+  - Visual Studio Code
+- Twitch Developer Rig to run the extension
+
+### Using Twitch Developer Rig
+
+There is a Twitch Extension manifest included, configured for Rig local file hosting.
+The Run Frontend option is configured to launch the correct npm command to run the frontend in the Rig.
+
+### Installing dependencies
+
+Before running the application, you need to restore its dependencies.
+
+- ```npm install``` will resolve and install the frontend dev and prod dependencies.
+
+### Running in development mode
+
+- ```npm run start``` will start the frontend in watch mode, automatically rebuilding and applying changes.
+
+### Building for production
+
+- ```npm run build``` will compile and pack the frontend for production, outputting all files in the dist/ folder.
+
+### Packaging for Twitch upload
+
+For convenience, a windows bat file (pack_assets.bat) is included to produce the zip file to upload as Twitch Extension Assets.
+The bat file both runs the npm build and zip the generated files.
+
+## Project structure
+
+```
+.
++-- assets                 -> Static assets (images), to be referenced in application code
++-- public                 -> HTML sample pages and mini.css bundle
++-- src
+|   +-- common/            -> Shared types and helpers
+|   +-- components/        -> React components
+|   +-- services/          -> Service classes
+|   +-- Config.tsx         -> Root file for the broadcaster Configuration view
+|   +-- Mobile.tsx         -> Root file for the Mobile viewer Twitch view
+|   +-- VideoOverlay.tsx   -> Root file for the Video Overlay viewer Twitch view
++-- custom.d.ts            -> Custom TypeScript modules to embed image assets
++-- pack_assets.bat        -> Bat file to easily launch the PS script below
++-- pack_assets.ps1        -> PowerShell script to package assets
++-- package.json           -> NPM Dependencies and project configuration
++-- template.html          -> HTML Template to generate the views from
++-- tsconfig.json          -> TypeScript configuration
++-- webpack.config.js      -> WebPack configuration
+```
+
+
+# Twitch Achievement Tracker Extension : Backend
+Backend for the Twitch Achievement Tracker Extension.
+
+Grab achievements from xapi.us or Steam for a given streamer and game, and display stats on the stream.
 
 ## How to run
 This is a dotnetcore3.1 asp.net application, with a Dockerfile to ease deployments.
@@ -50,11 +107,17 @@ cd TwitchAchievementTrackerBackend/TwitchAchievementTrackerBackend
 dotnet user-secrets set "twitch:ExtensionSecrets:0" "<your_twitch_extension_secret>"
 dotnet user-secrets set "config:EncryptionSecret" "<a_random_string_used_as_encryption_password>"
 dotnet user-secrets set "xapi:XApiKey" "<a_default_xapius_api_key>"
+dotnet user-secrets set "steam:WebApiKey" "<a_default_steam_api_key>"
 ```
 
 #### xapi.us configuration
 - xapi.XApiKey : Private xapi.us Key, only used for configuration calls where the streamer's key is not yet available.
   ENV var name: xapi__XApiKey
+
+#### Steam configuration
+- steam.WebApiKey : Private Steam WebApiKey, only used for configuration calls where the streamer's key is not yet available.
+  ENV var name: steam__WebApiKey
+
 
 #### Twitch configuration
 - twitch.ExtensionSecrets : List of enabled Twitch extension secret keys, used to validate Extension calls
