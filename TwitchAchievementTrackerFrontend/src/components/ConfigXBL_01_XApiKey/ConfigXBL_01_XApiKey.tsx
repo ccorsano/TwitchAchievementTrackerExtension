@@ -4,7 +4,6 @@ import * as ServerConfig from '../../common/ServerConfig';
 import { ActiveConfig, ExtensionConfiguration } from '../../common/EBSTypes';
 import { ConfigurationService, ValidationError } from '../../services/EBSConfigurationService';
 import { AchievementsService } from '../../services/EBSAchievementsService';
-import { ConfigurationState } from '../../services/ConfigurationStateService'
 import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
 import ConfigXBL_02_XUID from '../ConfigXBL_02_XUID/ConfigXBL_02_XUID';
 
@@ -40,7 +39,7 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
     }
 
     componentDidMount= () => {
-        let currentConfig = ConfigurationState.currentConfiguration;
+        let currentConfig = this.props.savedConfiguration;
         if (currentConfig?.xBoxLiveConfig?.xApiKey)
         {
             this.changeXApiValue(currentConfig.xBoxLiveConfig.xApiKey);
@@ -89,12 +88,10 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
         if (this.state.errors.length == 0)
         {
             let newConfig = await ConfigurationService.setConfiguration(configuration);
-            
-            ConfigurationState.currentConfiguration.xBoxLiveConfig.xApiKey = this.state.enteredApiKey;
         }
     }
 
-    unvalidate = () => {
+    unvalidate = (e: any) => {
         this.setState({
             isConfirmed: false,
         })
@@ -107,10 +104,9 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
         {
             return (
                 <ConfigXBL_02_XUID
+                    savedConfiguration={this.props.savedConfiguration}
                     onValidate={this.props.onValidate}
                     onBack={this.unvalidate}
-                    nextState={null}
-                    previousState={ConfigXBL_02_XUID}
                     xApiKey={this.state.enteredApiKey} />
             );
         }

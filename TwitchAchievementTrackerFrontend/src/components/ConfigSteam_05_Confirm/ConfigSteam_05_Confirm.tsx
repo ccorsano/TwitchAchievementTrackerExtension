@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as Base from '../../common/ConfigStepBase'
-import { ConfigurationState } from '../../services/ConfigurationStateService';
+import * as Base from '../../common/ConfigStepBase';
 import { ExtensionConfiguration, ActiveConfig } from '../../common/EBSTypes';
 import EBSAchievementsService from '../../services/EBSAchievementsService';
 import { EBSVersion } from '../../common/ServerConfig';
@@ -21,7 +20,7 @@ export default class ConfigSteam_05_Confirm extends Base.ConfigStepBase<ConfigSt
         let configuration: ExtensionConfiguration = {
             activeConfig: ActiveConfig.Steam,
             version: EBSVersion,
-            xBoxLiveConfig: null,
+            xBoxLiveConfig: this.props.savedConfiguration?.xBoxLiveConfig, // Make sure we keep the non-active config saved
             steamConfig: {
                 webApiKey: this.props.webApiKey,
                 steamId: this.props.steamProfileId,
@@ -33,7 +32,6 @@ export default class ConfigSteam_05_Confirm extends Base.ConfigStepBase<ConfigSt
     }
 
     render(){
-        let configuration = ConfigurationState.currentConfiguration;
         return [
             <ul>
                 <li>ActiveConfig: Steam</li>

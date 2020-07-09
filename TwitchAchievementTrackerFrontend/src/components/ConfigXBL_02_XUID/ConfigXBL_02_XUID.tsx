@@ -1,7 +1,6 @@
 import * as React from 'react'
 import * as Base from '../../common/ConfigStepBase';
 import { AchievementsService } from '../../services/EBSAchievementsService';
-import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { PlayerInfoCard } from '../../common/EBSTypes';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
 import GamerCardComponent from '../GamerCard/GamerCard';
@@ -39,7 +38,7 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<ConfigXBL_02_
     }
 
     componentDidMount = () => {
-        let currentConfig = ConfigurationState.currentConfiguration;
+        let currentConfig = this.props.savedConfiguration;
         if (currentConfig?.xBoxLiveConfig?.streamerXuid){
             this.changeXuid(currentConfig.xBoxLiveConfig.streamerXuid);
         }
@@ -104,7 +103,7 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<ConfigXBL_02_
         });
     }
 
-    unvalidate = () => {
+    unvalidate = (e: any) => {
         this.setState({
             isConfirmed: false,
         })
@@ -116,10 +115,9 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<ConfigXBL_02_
         if (this.state.isConfirmed){
             return (
                 <ConfigXBL_03_TitleId
+                    savedConfiguration={this.props.savedConfiguration}
                     onValidate={this.props.onValidate}
                     onBack={this.unvalidate}
-                    nextState={null}
-                    previousState={ConfigXBL_02_XUID}
                     xApiKey={this.props.xApiKey}
                     streamerXuid={this.state.xuid} />
             )

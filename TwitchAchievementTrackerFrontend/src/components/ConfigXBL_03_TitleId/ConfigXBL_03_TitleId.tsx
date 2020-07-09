@@ -1,8 +1,7 @@
 import './ConfigXBL_03_TitleId.scss';
 import * as React from 'react'
 import * as Base from '../../common/ConfigStepBase';
-import { AchievementsService } from '../../services/EBSAchievementsService'
-import { ConfigurationState } from '../../services/ConfigurationStateService';
+import { AchievementsService } from '../../services/EBSAchievementsService';
 import { TitleInfo } from '../../common/EBSTypes';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
 import GameCard from '../GameCard/GameCard';
@@ -44,7 +43,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
     }
 
     componentDidMount = () => {
-        let currentConfig = ConfigurationState.currentConfiguration;
+        let currentConfig = this.props.savedConfiguration;
         if (currentConfig?.xBoxLiveConfig?.titleId){
             ConfigurationService.resolveXBoxLiveTitleInfo(currentConfig.xBoxLiveConfig.titleId, currentConfig.xBoxLiveConfig.xApiKey)
             .then(titleInfo => {
@@ -136,7 +135,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
         this.fetchRecentTitles(this.props.streamerXuid, this.props.xApiKey);
     }
 
-    unvalidate = () => {
+    unvalidate = (e: any) => {
         this.setState({
             isConfirmed: false,
         });
@@ -149,10 +148,9 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
         if (this.state.isConfirmed){
             return (
                 <ConfigXBL_04_Locale
+                    savedConfiguration={this.props.savedConfiguration}
                     onValidate={this.props.onValidate}
                     onBack={this.unvalidate}
-                    nextState={ConfigXBL_01_XApiKey}
-                    previousState={ConfigXBL_02_XUID}
                     xApiKey={this.props.xApiKey}
                     streamerXuid={this.props.streamerXuid}
                     titleId={this.state.selectedTitle.titleId} />

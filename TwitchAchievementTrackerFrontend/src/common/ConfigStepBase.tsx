@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { ExtensionConfiguration } from './EBSTypes';
+import { ExtensionConfiguration, SteamConfiguration, XApiConfiguration } from './EBSTypes';
 
 export enum ConfigSteamConfigStateEnum {
     WebApiKey = 0,
@@ -20,9 +20,8 @@ export enum ConfigXBLConfigStateEnum {
 
 export type ConfigStepBaseProps = {
     onValidate: (e: React.Component, configuration: ExtensionConfiguration) => void,
-    onBack: (previousState: any) => void,
-    nextState: any,
-    previousState: any,
+    onBack: (e: any) => void,
+    savedConfiguration: ExtensionConfiguration,
 }
 
 export type  ConfigStepBaseState = {
@@ -35,5 +34,5 @@ export class ConfigStepBase<PropsType extends ConfigStepBaseProps, StateType> ex
         this.onBack = this.onBack.bind(this);
     }
 
-    onBack = (e: React.MouseEvent<HTMLElement>) => this.props.onBack(this.props.previousState);
+    onBack = (e: React.MouseEvent<HTMLElement>) => this.props.onBack(e);
 }
