@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as Base from '../../common/ConfigStepBase';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
-import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { ActiveConfig, SupportedLanguage } from '../../common/EBSTypes';
 import ConfigXBL_05_Confirm from '../ConfigXBL_05_Confirm/ConfigXBL_05_Confirm';
 import ConfigXBL_03_TitleId from '../ConfigXBL_03_TitleId/ConfigXBL_03_TitleId';
@@ -34,7 +33,7 @@ export default class ConfigXBL_04_Locale extends Base.ConfigStepBase<ConfigXBL_0
     }
 
     componentDidMount = () => {
-        let currentLocale = ConfigurationState.currentConfiguration?.xBoxLiveConfig?.locale;
+        let currentLocale = this.props.savedConfiguration?.xBoxLiveConfig?.locale;
         
         ConfigurationService.getXBoxLiveSupportedLanguages(this.props.titleId, this.props.xApiKey)
             .then(languages => {
@@ -65,7 +64,7 @@ export default class ConfigXBL_04_Locale extends Base.ConfigStepBase<ConfigXBL_0
         });
     }
 
-    unvalidate = () => {
+    unvalidate = (e: any) => {
         this.setState({
             isConfirmed: false,
         });
@@ -79,10 +78,9 @@ export default class ConfigXBL_04_Locale extends Base.ConfigStepBase<ConfigXBL_0
         {
             return (
                 <ConfigXBL_05_Confirm
+                    savedConfiguration={this.props.savedConfiguration}
                     onValidate={this.props.onValidate}
                     onBack={this.unvalidate}
-                    nextState={ConfigXBL_03_TitleId}
-                    previousState={ConfigXBL_05_Confirm}
                     xApiKey={this.props.xApiKey}
                     streamerXuid={this.props.streamerXuid}
                     titleId={this.props.titleId}

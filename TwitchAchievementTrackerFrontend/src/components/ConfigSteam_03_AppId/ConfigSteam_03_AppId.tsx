@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Base from '../../common/ConfigStepBase'
-import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
 import { TitleInfo } from '../../common/EBSTypes';
 import GameCard from '../GameCard/GameCard';
@@ -109,10 +108,9 @@ export default class ConfigSteam_03_AppId extends Base.ConfigStepBase<ConfigStea
         {
             return (
                 <ConfigSteam_04_Locale
+                    savedConfiguration={this.props.savedConfiguration}
                     onValidate={this.props.onValidate}
                     onBack={this.unvalidate}
-                    nextState={ConfigSteamConfigStateEnum.Confirm}
-                    previousState={ConfigSteamConfigStateEnum.SteamGameSearch}
                     webApiKey={this.props.webApiKey}
                     steamProfileId={this.props.steamProfileId}
                     steamAppId={this.state.selectedTitle.titleId} />

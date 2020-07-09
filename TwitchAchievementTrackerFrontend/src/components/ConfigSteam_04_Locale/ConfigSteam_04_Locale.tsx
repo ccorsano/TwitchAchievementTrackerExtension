@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as Base from '../../common/ConfigStepBase'
 import { SupportedLanguage, ActiveConfig } from '../../common/EBSTypes';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
-import { ConfigurationState } from '../../services/ConfigurationStateService';
 import ConfigSteam_05_Confirm from '../ConfigSteam_05_Confirm/ConfigSteam_05_Confirm';
 import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
 
@@ -33,7 +32,7 @@ export default class ConfigSteam_04_Locale extends Base.ConfigStepBase<ConfigSte
     }
 
     componentDidMount = () => {
-        let currentLanguage: string = null;
+        let currentLanguage: string = this.props.savedConfiguration?.steamConfig?.locale;
 
         ConfigurationService.getSteamSupportedLanguages(this.props.steamAppId)
             .then(languages => {
@@ -78,10 +77,9 @@ export default class ConfigSteam_04_Locale extends Base.ConfigStepBase<ConfigSte
         {
             return (
                 <ConfigSteam_05_Confirm
+                    savedConfiguration={this.props.savedConfiguration}
                     onValidate={this.props.onValidate}
                     onBack={this.unvalidate}
-                    nextState={null}
-                    previousState={ConfigSteamConfigStateEnum.Locale}
                     webApiKey={this.props.webApiKey}
                     steamProfileId={this.props.steamProfileId}
                     steamAppId={this.props.steamAppId}

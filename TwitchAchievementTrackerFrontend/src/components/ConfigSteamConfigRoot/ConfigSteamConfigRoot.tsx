@@ -6,7 +6,6 @@ import ConfigSteam_02_SteamID from '../ConfigSteam_02_SteamID/ConfigSteam_02_Ste
 import ConfigSteam_03_AppId from '../ConfigSteam_03_AppId/ConfigSteam_03_AppId';
 import ConfigSteam_04_Locale from '../ConfigSteam_04_Locale/ConfigSteam_04_Locale';
 import ConfigSteam_05_Confirm from '../ConfigSteam_05_Confirm/ConfigSteam_05_Confirm'
-import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { ActiveConfig, ExtensionConfiguration, SteamConfiguration } from '../../common/EBSTypes';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
 import { Twitch } from '../../services/TwitchService';
@@ -14,7 +13,7 @@ import * as ServerConfig from '../../common/ServerConfig';
 import { TwitchExtensionConfiguration } from '../../common/TwitchExtension';
 
 type ConfigSteamConfigProps = {
-    savedConfiguration: SteamConfiguration,
+    savedConfiguration: ExtensionConfiguration,
     onSaved: (savedConfig: TwitchExtensionConfiguration, configObject: ExtensionConfiguration) => void;
 }
 
@@ -35,7 +34,7 @@ export default class ConfigSteamConfigRoot extends React.Component<ConfigSteamCo
     }
 
     componentDidMount = () => {
-        let currentConfig: ExtensionConfiguration = ConfigurationState.currentConfiguration ?? {activeConfig: ActiveConfig.Steam, xBoxLiveConfig: null, steamConfig: null, version: ServerConfig.EBSVersion};
+        let currentConfig: ExtensionConfiguration = this.props.savedConfiguration ?? {activeConfig: ActiveConfig.Steam, xBoxLiveConfig: null, steamConfig: null, version: ServerConfig.EBSVersion};
         currentConfig.activeConfig = ActiveConfig.Steam;
         if (! currentConfig.steamConfig)
         {
@@ -48,22 +47,24 @@ export default class ConfigSteamConfigRoot extends React.Component<ConfigSteamCo
         }
     }
 
-    onValidateStep = (e: React.Component, config: ExtensionConfiguration) => {
-        ConfigurationService.setConfiguration(config).then(result => {
-            Twitch.setConfiguration(result.configToken, ServerConfig.EBSVersion);
+    onValidateStep = async (e: React.Component, config: ExtensionConfiguration) => {
+        // Make sure we keep the non-active config saved
+        config.xBoxLiveConfig = this.props.savedConfiguration.xBoxLiveConfig;
 
-            Twitch.send("broadcast", "application/json", {
-                "type": "set-config",
-                "version": ServerConfig.EBSVersion,
-                "configToken": result.configToken
-            });
+        let result = await ConfigurationService.setConfiguration(config);
+        Twitch.setConfiguration(result.configToken, ServerConfig.EBSVersion);
 
-            this.setState({
-                isValid: true,
-            });
-
-            this.props.onSaved({content: result.configToken, version: ServerConfig.EBSVersion}, ConfigurationState.currentConfiguration);
+        Twitch.send("broadcast", "application/json", {
+            "type": "set-config",
+            "version": ServerConfig.EBSVersion,
+            "configToken": result.configToken
         });
+
+        this.setState({
+            isValid: true,
+        });
+
+        this.props.onSaved({content: result.configToken, version: ServerConfig.EBSVersion}, config);
     }
 
     onCancelStep = (previousState: any) => {
@@ -81,7 +82,7 @@ export default class ConfigSteamConfigRoot extends React.Component<ConfigSteamCo
         }
         else
         {
-            config = (<ConfigSteam_01_WebAPIKey onValidate={this.onValidateStep} onBack={this.onCancelStep} nextState={ConfigSteamConfigStateEnum.SteamProfileSetup} previousState={null} />)
+            config = (<ConfigSteam_01_WebAPIKey savedConfiguration={this.props.savedConfiguration} onValidate={this.onValidateStep} onBack={this.onCancelStep} />)
         }
 
         return [

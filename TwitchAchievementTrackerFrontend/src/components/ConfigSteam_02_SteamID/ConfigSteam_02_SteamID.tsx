@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as Base from '../../common/ConfigStepBase'
 import { ConfigurationService, ValidationError } from '../../services/EBSConfigurationService';
-import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { ExtensionConfiguration, ActiveConfig, PlayerInfoCard } from '../../common/EBSTypes';
 import * as ServerConfig from '../../common/ServerConfig'
 import EBSAchievementsService from '../../services/EBSAchievementsService';
@@ -50,7 +49,7 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<ConfigSt
     }
 
     componentDidMount = () => {
-        let steamId = ConfigurationState.currentConfiguration?.steamConfig?.steamId;
+        let steamId = this.props.savedConfiguration?.steamConfig?.steamId;
         if (steamId && this.steamIdRegexp.test(steamId)) {
             ConfigurationService.resolveSteamPlayerInfo(steamId, this.props.webApiKey)
                 .then(playerInfo => {
@@ -164,10 +163,9 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<ConfigSt
         if (this.state.isConfirmed){
             return (
                 <ConfigSteam_03_AppId
+                    savedConfiguration={this.props.savedConfiguration}
                     onValidate={this.props.onValidate}
                     onBack={this.unvalidate}
-                    nextState={ConfigSteamConfigStateEnum.SteamGameSearch}
-                    previousState={ConfigSteamConfigStateEnum.WebApiKey}
                     webApiKey={this.props.webApiKey}
                     steamProfileId={this.state.steamProfileId} />
             )

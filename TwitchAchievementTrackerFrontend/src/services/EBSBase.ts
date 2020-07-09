@@ -47,16 +47,33 @@ export class EBSBase {
         });
 
         this.configuredPromise = Promise.all([this.contextPromise, this.configurationPromise]);
-        this.configuredPromise.then(() => {
+        this.configuredPromise.then(([authContext, configContext]) => {
+            console.log("blah");
+            console.log(this.context);
+            console.log(this.configuration);
+            console.log(authContext);
+            console.log(authContext);
+            console.log(configContext);
+            
             if (this.onConfigured)
             {
-                this.onConfigured(this.context, this.configuration);
+                this.onConfigured(authContext, configContext);
             }
+        });
+        
+        Twitch.listen("broadcast", (target, contentType, messageStr) => {
+            let message = JSON.parse(messageStr);
+            this.configuration = message;
+            this.configurationPromise = new Promise<TwitchExtensionConfiguration>((resolve, reject) => {
+                resolve(message);
+            });
+            this.configuredPromise = Promise.all([this.contextPromise, this.configurationPromise]);
+            this._onConfiguration();
         });
     }
 
     serviceFetch = async <T>(path: string, init: RequestInit = null, configTokenOverride: string = null, versionOverride: string = null): Promise<T> => {
-        await this.configuredPromise;
+        let [context, config] = await this.configuredPromise;
 
         const opts: RequestInit = {
             method: init?.method ?? 'GET',

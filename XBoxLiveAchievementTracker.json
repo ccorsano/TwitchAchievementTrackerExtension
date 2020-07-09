@@ -62,7 +62,8 @@
       "frameSize": {
         "width": 1280,
         "height": 720
-      }
+      },
+      "viewerType": "Logged-In Viewer"
     },
     {
       "id": "2",
@@ -85,7 +86,8 @@
       "frameSize": {
         "width": 1280,
         "height": 720
-      }
+      },
+      "viewerType": "Broadcaster"
     },
     {
       "id": "3",
@@ -108,7 +110,8 @@
       "frameSize": {
         "width": 375,
         "height": 667
-      }
+      },
+      "viewerType": "Logged-In Viewer"
     },
     {
       "id": "4",
@@ -131,7 +134,8 @@
       "frameSize": {
         "width": 375,
         "height": 667
-      }
+      },
+      "viewerType": "Logged-In Viewer"
     }
   ],
   "manifest": {
@@ -142,7 +146,7 @@
     "canInstall": true,
     "configUrl": "https://localhost:8090/config.html",
     "configurationLocation": "hosted",
-    "description": "Third iteration of the extension dedicated to Nuja's 100% Quest program !\ntwitch.tv/nuja\n\nThis overlay shows XBoxLive or Steam achievements for a given player and a given game.\nOnce configured, your viewers can keep track of how many achievements are left to unlock when streaming to complete a game 100%.\n\nVersion 0.0.3:\nTDB\n\nPre-requisite:\n- XBoxLive configuration uses xapi.us to query XBoxLive, the configuration will require the streamer to input an API key from xapi.us.\n- Steam configuration requires a Steam WebAPI key that any Steam User can request through https://steamcommunity.com/dev\n\nAuthors:\nNuja's Community\ntwitch.tv/miekyld\ntwitch.tv/xenomorpheapeuree\ntwitch.tv/kbinturong",
+    "description": "Third iteration of the extension dedicated to Nuja's 100% Quest program !\ntwitch.tv/nuja\n\nThis overlay shows XBoxLive or Steam achievements for a given player and a given game.\nGo through the assisted configuration flow, then your viewers can keep track of how many achievements are left to unlock when streaming to complete a game 100%.\n\nVersion 0.0.3:\n- Configuration rewrite, from MVP to guided flow.\n- Configuration auto-reload for viewers on Save.\n- Rewrite frontend in React / TypeScript, to ease configuration app development.\n\n\nPre-requisite:\n- XBoxLive configuration uses xapi.us to query XBoxLive, the configuration will require the streamer to input an API key from xapi.us.\n- Steam configuration requires a Steam WebAPI key that any Steam User can request through https://steamcommunity.com/dev\n\nAuthors:\nNuja's Community\ntwitch.tv/miekyld\ntwitch.tv/xenomorpheapeuree\ntwitch.tv/kbinturong",
     "eulaTosUrl": "https://twitchext.conceptoire.com/EULA",
     "hasChatSupport": false,
     "iconUrl": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/logo808776b9-3269-473e-bc44-6566dc3f995a",
@@ -172,7 +176,7 @@
     "supportEmail": "twitchext@conceptoire.com",
     "vendorCode": "",
     "version": "0.0.3",
-    "viewerSummary": "Prototype pour suivre le 100% quest de Nuja !",
+    "viewerSummary": "Achievements tracker, see what achievements are left to unlock",
     "viewerUrl": "",
     "viewerUrls": {
       "mobile": "https://localhost:8090/mobile.html",
@@ -199,5 +203,5 @@
   "frontendCommand": "npm run start",
   "frontendFolderName": "TwitchAchievementTrackerFrontend",
   "name": "XBoxLiveAchievementTracker",
-  "version": 1
+  "version": 2
 }

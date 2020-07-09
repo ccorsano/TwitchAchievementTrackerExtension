@@ -1,7 +1,6 @@
 import * as EBSConfig from "../common/ServerConfig"
 import * as EBS from './EBSBase'
 import { ExtensionConfiguration, ActiveConfig, SupportedLanguage, PlayerInfoCard, TitleInfo } from '../common/EBSTypes';
-import { ConfigurationState } from "./ConfigurationStateService";
 import { TwitchAuthCallbackContext, TwitchExtensionConfiguration } from "../common/TwitchExtension";
 import { Twitch } from "./TwitchService";
 
@@ -27,8 +26,14 @@ export default class EBSConfigurationService extends EBS.EBSBase {
         this.onConfigured = (auth: TwitchAuthCallbackContext, config: TwitchExtensionConfiguration) => {
             this.getConfiguration()
                 .then(config=> {
-                    console.log("Existing configuration loaded");
-                    ConfigurationState.currentConfiguration = config;
+                    if (config)
+                    {
+                        console.log("Existing configuration loaded");
+                    }
+                    else
+                    {
+                        console.log("No existing configuration");
+                    }
                 });
         };
     }

@@ -2,8 +2,7 @@ import * as React from 'react'
 import '../../common/ConfigStepBase'
 import * as Base from '../../common/ConfigStepBase';
 import { ValidationError, ConfigurationService } from '../../services/EBSConfigurationService';
-import { ConfigurationState } from '../../services/ConfigurationStateService';
-import { ActiveConfig, ExtensionConfiguration } from '../../common/EBSTypes';
+import { ActiveConfig, ExtensionConfiguration, SteamConfiguration } from '../../common/EBSTypes';
 import * as ServerConfig from '../../common/ServerConfig';
 import { AchievementsService } from '../../services/EBSAchievementsService';
 import ConfigSteam_02_SteamID from '../ConfigSteam_02_SteamID/ConfigSteam_02_SteamID'
@@ -36,13 +35,15 @@ export default class ConfigSteam_01_WebAPIKey extends Base.ConfigStepBase<Base.C
 
         this.onChangeWebApiValue = this.onChangeWebApiValue.bind(this);
         this.changeWebApiValue = this.changeWebApiValue.bind(this);
+
+        console.log("Config: " + this.props.savedConfiguration)
     }
 
     componentDidMount = () => {
-        let currentConfig = ConfigurationState.currentConfiguration;
-        if (currentConfig?.steamConfig?.webApiKey)
+        let currentConfig: SteamConfiguration = this.props.savedConfiguration?.steamConfig;
+        if (currentConfig?.webApiKey)
         {
-            this.changeWebApiValue(currentConfig.steamConfig.webApiKey);
+            this.changeWebApiValue(currentConfig.webApiKey);
         }
     }
 
@@ -89,8 +90,6 @@ export default class ConfigSteam_01_WebAPIKey extends Base.ConfigStepBase<Base.C
         if (this.state.errors.length == 0)
         {
             let newConfig = await ConfigurationService.setConfiguration(configuration);
-            
-            // ConfigurationState.currentConfiguration.steamConfig.webApiKey = this.state.enteredApiKey;
         }
     }
 
@@ -106,10 +105,9 @@ export default class ConfigSteam_01_WebAPIKey extends Base.ConfigStepBase<Base.C
         if (this.state.isKeyValid)
         {
             return <ConfigSteam_02_SteamID
+                    savedConfiguration={this.props.savedConfiguration}
                     onValidate={this.props.onValidate}
                     onBack={this.unvalidate}
-                    nextState={ConfigSteamConfigStateEnum.SteamGameSearch}
-                    previousState={ConfigSteamConfigStateEnum.WebApiKey}
                     webApiKey={this.state.enteredApiKey} />
         }
         

@@ -26,6 +26,7 @@ enum CurrentPlatformEnum {
 
 type ConfigChoosePlatformState = {
     isLoading: boolean,
+    isConfirmed: boolean,
     savedConfiguration: ExtensionConfiguration,
     currentPlatform : CurrentPlatformEnum;
     hasSaved: boolean;
@@ -34,6 +35,7 @@ type ConfigChoosePlatformState = {
 export default class ConfigChoosePlatform extends React.Component<ConfigChoosePlatformProps, ConfigChoosePlatformState> {
     state: ConfigChoosePlatformState = {
         isLoading: true,
+        isConfirmed: false,
         savedConfiguration: null,
         currentPlatform: CurrentPlatformEnum.None,
         hasSaved: false,
@@ -49,12 +51,28 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
     }
 
     componentDidMount = async () => {
-        let configurationToken = await ConfigurationService.configurationPromise;
-        let configuration = await ConfigurationService.fetchConfiguration(configurationToken);
-        this.setState({
-            isLoading: false,
-            savedConfiguration: configuration,
-        });
+        let [authToken, configurationToken] = await ConfigurationService.configuredPromise;
+        if (configurationToken)
+        {
+            let configuration = await ConfigurationService.fetchConfiguration(configurationToken);
+            console.log("SteamConfig");
+            console.log(configuration.steamConfig);
+            console.log("XApiConfig");
+            console.log(configuration.xBoxLiveConfig);
+            this.setState({
+                isLoading: false,
+                isConfirmed: true,
+                savedConfiguration: configuration,
+            });
+        }
+        else
+        {
+            this.setState({
+                isLoading: false,
+                isConfirmed: false,
+                savedConfiguration: null,
+            });
+        }
     }
     
     isSelected = (v : CurrentPlatformEnum) => {
@@ -77,13 +95,14 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
 
     onRestart = (e: React.MouseEvent<HTMLInputElement>) => {
         this.setState({
-            savedConfiguration: null,
+            isConfirmed: false,
             currentPlatform: CurrentPlatformEnum.None
         });
     }
 
     onSaved = (savedConfiguration: TwitchExtensionConfiguration, configurationObject: ExtensionConfiguration) => {
         this.setState({
+            isConfirmed: true,
             savedConfiguration: configurationObject,
             currentPlatform: CurrentPlatformEnum.None,
             hasSaved: true,
@@ -101,7 +120,7 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
                 </div>
             )
         }
-        else if (this.state.savedConfiguration)
+        else if (this.state.isConfirmed)
         {
             element = (
                 <React.Fragment>
@@ -136,7 +155,7 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
                 case CurrentPlatformEnum.Steam: {
                     element = (
                         <div className="ConfigSteam">
-                            <ConfigSteamConfigRoot onSaved={this.onSaved} savedConfiguration={this.state.savedConfiguration.steamConfig} />
+                            <ConfigSteamConfigRoot onSaved={this.onSaved} savedConfiguration={this.state.savedConfiguration} />
                         </div>
                     );
                     break;
@@ -144,7 +163,7 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
                 case CurrentPlatformEnum.XBoxLive: {
                     element = (
                         <div className="ConfigXBoxLive">
-                            <ConfigXBLConfigRoot onSaved={this.onSaved} />
+                            <ConfigXBLConfigRoot onSaved={this.onSaved} savedConfiguration={this.state.savedConfiguration} />
                         </div>
                     );
                     break;

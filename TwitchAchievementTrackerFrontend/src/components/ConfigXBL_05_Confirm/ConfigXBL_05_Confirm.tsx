@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Base from '../../common/ConfigStepBase';
-import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { ActiveConfig, ExtensionConfiguration } from '../../common/EBSTypes';
 import { EBSVersion } from '../../common/ServerConfig';
 
@@ -21,7 +20,7 @@ export default class ConfigXBL_05_Confirm extends Base.ConfigStepBase<ConfigXBL_
         let configuration: ExtensionConfiguration = {
             activeConfig: ActiveConfig.XBoxLive,
             version: EBSVersion,
-            steamConfig: null,
+            steamConfig: this.props.savedConfiguration?.steamConfig, // Make sure we keep the non-active config saved
             xBoxLiveConfig: {
                 xApiKey: this.props.xApiKey,
                 streamerXuid: this.props.streamerXuid,
