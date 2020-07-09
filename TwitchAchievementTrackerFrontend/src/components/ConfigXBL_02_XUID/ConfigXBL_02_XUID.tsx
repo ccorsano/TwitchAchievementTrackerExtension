@@ -5,23 +5,31 @@ import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { PlayerInfoCard } from '../../common/EBSTypes';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
 import GamerCardComponent from '../GamerCard/GamerCard';
+import { flatMap } from 'lodash';
+import ConfigXBL_03_TitleId from '../ConfigXBL_03_TitleId/ConfigXBL_03_TitleId';
+
+interface ConfigXBL_02_XUIDProps extends Base.ConfigStepBaseProps {
+    xApiKey: string,
+}
 
 type ConfigXBL_02_XUIDState = {
     xuidSearch: string;
     xuid: string;
     gamerCard: PlayerInfoCard;
     isLoading: boolean,
+    isConfirmed: boolean,
 }
 
-export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<Base.ConfigStepBaseProps, ConfigXBL_02_XUIDState> {
+export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<ConfigXBL_02_XUIDProps, ConfigXBL_02_XUIDState> {
     state: ConfigXBL_02_XUIDState = {
         xuidSearch: "",
         xuid: null,
         gamerCard: null,
         isLoading: true,
+        isConfirmed: false,
     }
 
-    constructor(props: Base.ConfigStepBaseProps) {
+    constructor(props: ConfigXBL_02_XUIDProps) {
         super(props);
 
         this.onChangeGamertagSearch = this.onChangeGamertagSearch.bind(this);
@@ -32,7 +40,7 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<Base.ConfigSt
 
     componentDidMount = () => {
         let currentConfig = ConfigurationState.currentConfiguration;
-        if (currentConfig.xBoxLiveConfig?.streamerXuid){
+        if (currentConfig?.xBoxLiveConfig?.streamerXuid){
             this.changeXuid(currentConfig.xBoxLiveConfig.streamerXuid);
         }
         else
@@ -49,7 +57,7 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<Base.ConfigSt
             isLoading: true,
         });
 
-        ConfigurationService.resolveXBoxLivePlayerInfo(xuid, ConfigurationState.currentConfiguration.xBoxLiveConfig.xApiKey)
+        ConfigurationService.resolveXBoxLivePlayerInfo(xuid, this.props.xApiKey)
         .then(playerInfo => {
             this.setState({
                 xuid: xuid,
@@ -73,7 +81,7 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<Base.ConfigSt
             isLoading: true,
         });
 
-        let gamerCard = await ConfigurationService.resolveXBoxLiveGamertag(this.state.xuidSearch, ConfigurationState.currentConfiguration.xBoxLiveConfig.xApiKey);
+        let gamerCard = await ConfigurationService.resolveXBoxLiveGamertag(this.state.xuidSearch, this.props.xApiKey);
 
         this.setState({
             xuid: gamerCard.playerId,
@@ -91,12 +99,31 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<Base.ConfigSt
     }
 
     onContinue = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        ConfigurationState.currentConfiguration.xBoxLiveConfig.streamerXuid = this.state.xuid;
-        this.props.onValid(this, this.props.nextState);
+        this.setState({
+            isConfirmed: true,
+        });
+    }
+
+    unvalidate = () => {
+        this.setState({
+            isConfirmed: false,
+        })
     }
 
     render(){
         const isContinueEnabled = this.state.xuid;
+
+        if (this.state.isConfirmed){
+            return (
+                <ConfigXBL_03_TitleId
+                    onValidate={this.props.onValidate}
+                    onBack={this.unvalidate}
+                    nextState={null}
+                    previousState={ConfigXBL_02_XUID}
+                    xApiKey={this.props.xApiKey}
+                    streamerXuid={this.state.xuid} />
+            )
+        }
 
         let content: React.ReactNodeArray = null;
         if (this.state.isLoading)
@@ -110,6 +137,7 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<Base.ConfigSt
             let changeButton = (<input type="button" value="Change" className="section" onClick={this.onResetProfile} />)
             content = [
                 <GamerCardComponent playerInfo={this.state.gamerCard} buttonSection={changeButton} />,
+                <input type="button" value="Back" onClick={this.onBack} />,
                 <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onContinue} />
             ]
         }
@@ -119,11 +147,12 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<Base.ConfigSt
                 <label htmlFor="xuidSearch">Streamer Id</label>,
                 <input name="xuidSearch" type="text" placeholder="Search a Gamertag" value={this.state.xuidSearch} onChange={this.onChangeGamertagSearch} />,
                 <input type="button" value="Search" onClick={this.onSearch} />,
+                <input type="button" value="Back" onClick={this.onBack} />,
             ]
         }
 
         return [
-           content
+           content,
         ]
     }
 }

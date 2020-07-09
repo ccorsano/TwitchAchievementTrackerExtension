@@ -224,13 +224,13 @@ namespace TwitchAchievementTrackerBackend.Services
             return result;
         }
 
-        public async Task<SteamUserStatsGameSchema> GetGameSchema(SteamConfiguration steamConfig)
+        public async Task<SteamUserStatsGameSchema> GetGameSchema(string appId, string locale = "english")
         {
-            var cacheKey = $"steam:gameschema:{steamConfig.AppId}:{steamConfig.Locale}";
+            var cacheKey = $"steam:gameschema:{appId}:{locale}";
 
             if (!_cache.TryGetValue(cacheKey, out SteamUserStatsGameSchema result))
             {
-                var response = await _httpClient.GetAsync($"ISteamUserStats/GetSchemaForGame/v2/?appid={steamConfig.AppId}&l={steamConfig.Locale}");
+                var response = await _httpClient.GetAsync($"ISteamUserStats/GetSchemaForGame/v2/?appid={appId}&l={locale}");
                 response.EnsureSuccessStatusCode();
 
                 using (var responseStream = await response.Content.ReadAsStreamAsync())

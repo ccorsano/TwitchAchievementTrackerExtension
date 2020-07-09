@@ -6,6 +6,8 @@ import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { ActiveConfig, ExtensionConfiguration } from '../../common/EBSTypes';
 import * as ServerConfig from '../../common/ServerConfig';
 import { AchievementsService } from '../../services/EBSAchievementsService';
+import ConfigSteam_02_SteamID from '../ConfigSteam_02_SteamID/ConfigSteam_02_SteamID'
+import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
 
 type ConfigSteam_01_WebApiKeyState = {
     isSyntaxValid: boolean,
@@ -38,7 +40,7 @@ export default class ConfigSteam_01_WebAPIKey extends Base.ConfigStepBase<Base.C
 
     componentDidMount = () => {
         let currentConfig = ConfigurationState.currentConfiguration;
-        if (currentConfig.steamConfig?.webApiKey)
+        if (currentConfig?.steamConfig?.webApiKey)
         {
             this.changeWebApiValue(currentConfig.steamConfig.webApiKey);
         }
@@ -81,19 +83,36 @@ export default class ConfigSteam_01_WebAPIKey extends Base.ConfigStepBase<Base.C
         this.setState({
             errors: errors,
             isValidating: false,
+            isKeyValid: errors.length == 0,
         });
 
         if (this.state.errors.length == 0)
         {
-            this.props.onValid(this, this.props.nextState);
             let newConfig = await ConfigurationService.setConfiguration(configuration);
             
-            ConfigurationState.currentConfiguration.steamConfig.webApiKey = this.state.enteredApiKey;
+            // ConfigurationState.currentConfiguration.steamConfig.webApiKey = this.state.enteredApiKey;
         }
+    }
+
+    unvalidate = (e: React.SyntheticEvent<HTMLElement>) => {
+        this.setState({
+            isKeyValid: false,
+        });
     }
 
     render(){
         let isContinueEnabled = this.state.isSyntaxValid && !this.state.isValidating;
+
+        if (this.state.isKeyValid)
+        {
+            return <ConfigSteam_02_SteamID
+                    onValidate={this.props.onValidate}
+                    onBack={this.unvalidate}
+                    nextState={ConfigSteamConfigStateEnum.SteamGameSearch}
+                    previousState={ConfigSteamConfigStateEnum.WebApiKey}
+                    webApiKey={this.state.enteredApiKey} />
+        }
+        
         return [
             <label htmlFor="webApiKey">Steam WebApi Key</label>,
             <input name="webApiKey" type="text" pattern="[0-9a-fA-F]{32}" value={this.state.enteredApiKey} placeholder="Enter your Steam WebAPI key" onChange={this.onChangeWebApiValue} className={this.state.isSyntaxValid ? '' : 'sf1-invalid'} />,

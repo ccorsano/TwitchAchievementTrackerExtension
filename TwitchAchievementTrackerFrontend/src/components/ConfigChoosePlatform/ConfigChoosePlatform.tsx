@@ -4,7 +4,13 @@ import { NoEmitOnErrorsPlugin } from 'webpack';
 import ConfigXBLConfigRoot from '../ConfigXBLConfigRoot/ConfigXBLConfigRoot';
 import ConfigSteamConfigRoot from '../ConfigSteamConfigRoot/ConfigSteamConfigRoot';
 import { EBSBase } from '../../services/EBSBase';
-import EBSConfigurationService from '../../services/EBSConfigurationService';
+import EBSConfigurationService, { ConfigurationService } from '../../services/EBSConfigurationService';
+import { ExtensionConfiguration } from '../../common/EBSTypes';
+import XBoxLiveLogo from '../../../assets/XBox_Live_logo.svg';
+import SteamLogo from '../../../assets/Steam_icon_logo.svg';
+import ConfigSummary from '../ConfigSummary/ConfigSummary';
+import { Twitch } from '../../services/TwitchService';
+import { TwitchExtensionConfiguration } from '../../common/TwitchExtension';
 
 type onChangeCallback = (e: React.SyntheticEvent<HTMLElement>) => void;
 
@@ -15,16 +21,22 @@ type ConfigChoosePlatformProps = {
 enum CurrentPlatformEnum {
     None = 0,
     XBoxLive,
-    Steam
+    Steam,
 }
 
 type ConfigChoosePlatformState = {
+    isLoading: boolean,
+    savedConfiguration: ExtensionConfiguration,
     currentPlatform : CurrentPlatformEnum;
+    hasSaved: boolean;
 };
 
 export default class ConfigChoosePlatform extends React.Component<ConfigChoosePlatformProps, ConfigChoosePlatformState> {
     state: ConfigChoosePlatformState = {
-        currentPlatform: CurrentPlatformEnum.None
+        isLoading: true,
+        savedConfiguration: null,
+        currentPlatform: CurrentPlatformEnum.None,
+        hasSaved: false,
     };
 
     constructor(props : ConfigChoosePlatformProps){
@@ -33,6 +45,16 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
         this.onSelect = this.onSelect.bind(this);
         this.onBack = this.onBack.bind(this);
         this.isSelected = this.isSelected.bind(this);
+        this.onSaved = this.onSaved.bind(this);
+    }
+
+    componentDidMount = async () => {
+        let configurationToken = await ConfigurationService.configurationPromise;
+        let configuration = await ConfigurationService.fetchConfiguration(configurationToken);
+        this.setState({
+            isLoading: false,
+            savedConfiguration: configuration,
+        });
     }
     
     isSelected = (v : CurrentPlatformEnum) => {
@@ -53,46 +75,83 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
         });
     }
 
+    onRestart = (e: React.MouseEvent<HTMLInputElement>) => {
+        this.setState({
+            savedConfiguration: null,
+            currentPlatform: CurrentPlatformEnum.None
+        });
+    }
+
+    onSaved = (savedConfiguration: TwitchExtensionConfiguration, configurationObject: ExtensionConfiguration) => {
+        this.setState({
+            savedConfiguration: configurationObject,
+            currentPlatform: CurrentPlatformEnum.None,
+            hasSaved: true,
+        })
+    }
+
     render(){
-        let element = <div></div>;
-        switch(this.state.currentPlatform){
-            case CurrentPlatformEnum.None: {
-                element = (
-                    <div className="ConfigChoosePlatform">
-                        <h2>Select a platform</h2>
-                        <div className="row">
-                            <div className="selectPlatform card xboxlive">
-                                <h1 className="section">XBox Live</h1>
-                                <input type="button" value="Select" className="section" onClick={(e) => this.onSelect(e, CurrentPlatformEnum.XBoxLive) } />
-                            </div>
-                            <div className="selectPlatform card steam">
-                                <h1 className="section">Steam</h1>
-                                <input type="button" value="Select" className="section" onClick={(e) => this.onSelect(e, CurrentPlatformEnum.Steam) } />
+        let element = (<div></div>);
+
+        if (this.state.isLoading)
+        {
+            element = (
+                <div className="card">
+                    <div className="spinner"></div>
+                </div>
+            )
+        }
+        else if (this.state.savedConfiguration)
+        {
+            element = (
+                <React.Fragment>
+                    {this.state.hasSaved ? (<mark className="tag tertiary">Saved and pushed to viewers !</mark>) : null }
+                    <ConfigSummary extensionConfig={this.state.savedConfiguration} onConfigure={this.onRestart} />
+                </React.Fragment>
+            )
+        }
+        else
+        {
+            switch(this.state.currentPlatform){
+                case CurrentPlatformEnum.None: {
+                    element = (
+                        <div className="ConfigChoosePlatform">
+                            <h2>Select a platform</h2>
+                            <div className="row">
+                                <div className="selectPlatform card xboxlive">
+                                    <h1 className="section">XBox Live</h1>
+                                    <img src={XBoxLiveLogo} className="section media" style={{objectFit: 'contain'}} />
+                                    <input type="button" value="Select" className="section" onClick={(e) => this.onSelect(e, CurrentPlatformEnum.XBoxLive) } />
+                                </div>
+                                <div className="selectPlatform card steam">
+                                    <h1 className="section">Steam</h1>
+                                    <img src={SteamLogo} className="section media" style={{objectFit: 'contain'}} />
+                                    <input type="button" value="Select" className="section" onClick={(e) => this.onSelect(e, CurrentPlatformEnum.Steam) } />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )
-                break;
-            }
-            case CurrentPlatformEnum.Steam: {
-                element = (
-                    <div className="ConfigSteam">
-                        <ConfigSteamConfigRoot />
-                        <input type="button" value="Restart" onClick={this.onBack} />
-                    </div>
-                );
-                break;
-            }
-            case CurrentPlatformEnum.XBoxLive: {
-                element = (
-                    <div className="ConfigXBoxLive">
-                        <ConfigXBLConfigRoot />
-                        <input type="button" value="Restart" onClick={this.onBack} />
-                    </div>
-                );
-                break;
+                    )
+                    break;
+                }
+                case CurrentPlatformEnum.Steam: {
+                    element = (
+                        <div className="ConfigSteam">
+                            <ConfigSteamConfigRoot onSaved={this.onSaved} savedConfiguration={this.state.savedConfiguration.steamConfig} />
+                        </div>
+                    );
+                    break;
+                }
+                case CurrentPlatformEnum.XBoxLive: {
+                    element = (
+                        <div className="ConfigXBoxLive">
+                            <ConfigXBLConfigRoot onSaved={this.onSaved} />
+                        </div>
+                    );
+                    break;
+                }
             }
         }
+
         return element;
     }
 }

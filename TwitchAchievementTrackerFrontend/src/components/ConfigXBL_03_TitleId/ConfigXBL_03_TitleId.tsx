@@ -6,23 +6,34 @@ import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { TitleInfo } from '../../common/EBSTypes';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
 import GameCard from '../GameCard/GameCard';
+import ConfigXBL_05_Confirm from '../ConfigXBL_05_Confirm/ConfigXBL_05_Confirm';
+import ConfigXBL_04_Locale from '../ConfigXBL_04_Locale/ConfigXBL_04_Locale';
+import ConfigXBL_02_XUID from '../ConfigXBL_02_XUID/ConfigXBL_02_XUID';
+import ConfigXBL_01_XApiKey from '../ConfigXBL_01_XApiKey/ConfigXBL_01_XApiKey';
+
+interface ConfigXBL_03_TitleIdProps extends Base.ConfigStepBaseProps {
+    xApiKey: string,
+    streamerXuid: string,
+}
 
 type ConfigXBL_03_TitleIdState = {
     titleSearch: string;
     searchResults: TitleInfo[];
     selectedTitle: TitleInfo;
     isLoading: boolean;
+    isConfirmed: boolean;
 }
 
-export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<Base.ConfigStepBaseProps, ConfigXBL_03_TitleIdState> {
+export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_03_TitleIdProps, ConfigXBL_03_TitleIdState> {
     state: ConfigXBL_03_TitleIdState = {
         titleSearch: "",
         searchResults: [],
         selectedTitle: null,
         isLoading: true,
+        isConfirmed: false,
     }
 
-    constructor(props: Base.ConfigStepBaseProps) {
+    constructor(props: ConfigXBL_03_TitleIdProps) {
         super(props);
 
         this.onContinue = this.onContinue.bind(this);
@@ -34,7 +45,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<Base.Confi
 
     componentDidMount = () => {
         let currentConfig = ConfigurationState.currentConfiguration;
-        if (currentConfig.xBoxLiveConfig?.titleId){
+        if (currentConfig?.xBoxLiveConfig?.titleId){
             ConfigurationService.resolveXBoxLiveTitleInfo(currentConfig.xBoxLiveConfig.titleId, currentConfig.xBoxLiveConfig.xApiKey)
             .then(titleInfo => {
                 this.setState({
@@ -51,7 +62,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<Base.Confi
         }
         else
         {
-            this.fetchRecentTitles(currentConfig.xBoxLiveConfig.streamerXuid, currentConfig.xBoxLiveConfig.xApiKey);
+            this.fetchRecentTitles(this.props.streamerXuid, this.props.xApiKey);
         }
     }
 
@@ -77,8 +88,9 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<Base.Confi
     }
 
     onContinue = async (e: React.SyntheticEvent<HTMLInputElement>) => {
-        ConfigurationState.currentConfiguration.xBoxLiveConfig.titleId = this.state.selectedTitle.titleId;
-        this.props.onValid(this, this.props.nextState);
+        this.setState({
+            isConfirmed: true,
+        });
     }
 
     onChangeTitleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,7 +106,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<Base.Confi
             selectedTitle: null,
             isLoading: true,
         });
-        let titleInfos = await AchievementsService.searchXApiTitleInfo(this.state.titleSearch, ConfigurationState.currentConfiguration.xBoxLiveConfig.xApiKey);
+        let titleInfos = await AchievementsService.searchXApiTitleInfo(this.state.titleSearch, this.props.xApiKey);
         this.setState({
             titleSearch: this.state.titleSearch,
             searchResults: titleInfos,
@@ -121,13 +133,32 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<Base.Confi
             searchResults: this.state.searchResults,
             selectedTitle: null,
         });
-        let currentConfig = ConfigurationState.currentConfiguration;
-        this.fetchRecentTitles(currentConfig.xBoxLiveConfig.streamerXuid, currentConfig.xBoxLiveConfig.xApiKey);
+        this.fetchRecentTitles(this.props.streamerXuid, this.props.xApiKey);
+    }
+
+    unvalidate = () => {
+        this.setState({
+            isConfirmed: false,
+        });
     }
 
     render(){
         const isContinueEnabled = this.state.selectedTitle;
         let content;
+
+        if (this.state.isConfirmed){
+            return (
+                <ConfigXBL_04_Locale
+                    onValidate={this.props.onValidate}
+                    onBack={this.unvalidate}
+                    nextState={ConfigXBL_01_XApiKey}
+                    previousState={ConfigXBL_02_XUID}
+                    xApiKey={this.props.xApiKey}
+                    streamerXuid={this.props.streamerXuid}
+                    titleId={this.state.selectedTitle.titleId} />
+            )
+        }
+
         if (this.state.isLoading)
         {
             content = (<div className="spinner"></div>);
@@ -159,6 +190,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<Base.Confi
 
         return [
             content,
+            <input type="button" value="Back" onClick={this.onBack} />,
             <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onContinue} />
         ]
     }

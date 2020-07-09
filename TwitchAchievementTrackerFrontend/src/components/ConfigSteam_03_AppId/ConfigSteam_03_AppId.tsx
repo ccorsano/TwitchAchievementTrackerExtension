@@ -1,30 +1,38 @@
 import * as React from 'react';
 import * as Base from '../../common/ConfigStepBase'
-import { AchievementsService } from '../../services/EBSAchievementsService';
 import { ConfigurationState } from '../../services/ConfigurationStateService';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
-import * as webpack from 'webpack';
 import { TitleInfo } from '../../common/EBSTypes';
 import GameCard from '../GameCard/GameCard';
+import ConfigSteam_04_Locale from '../ConfigSteam_04_Locale/ConfigSteam_04_Locale';
+import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
 
-type ConfigSteam_02_AppIdState = {
+
+interface ConfigSteam_03_AppIdProps extends Base.ConfigStepBaseProps {
+    webApiKey: string,
+    steamProfileId: string,
+}
+
+type ConfigSteam_03_AppIdState = {
     titleSearch: string;
     isLoading: boolean;
+    isConfirmed: boolean;
     ownedApps: TitleInfo[];
     filteredApps: TitleInfo[];
     selectedTitle: TitleInfo;
 }
 
-export default class ConfigSteam_02_AppId extends Base.ConfigStepBase<Base.ConfigStepBaseProps, ConfigSteam_02_AppIdState> {
-    state: ConfigSteam_02_AppIdState = {
+export default class ConfigSteam_03_AppId extends Base.ConfigStepBase<ConfigSteam_03_AppIdProps, ConfigSteam_03_AppIdState> {
+    state: ConfigSteam_03_AppIdState = {
         titleSearch: '',
         isLoading: true,
+        isConfirmed: false,
         ownedApps: [],
         filteredApps: [],
         selectedTitle: null,
     }
 
-    constructor(props: Base.ConfigStepBaseProps){
+    constructor(props: ConfigSteam_03_AppIdProps){
         super(props);
 
         this.onContinue = this.onContinue.bind(this);
@@ -33,15 +41,12 @@ export default class ConfigSteam_02_AppId extends Base.ConfigStepBase<Base.Confi
     }
 
     componentDidMount = () => {
-        let steamId = ConfigurationState.currentConfiguration.steamConfig.steamId;
-        let currentTitle = ConfigurationState.currentConfiguration.steamConfig.appId;
-
-        ConfigurationService.getSteamOwnedGames(steamId, ConfigurationState.currentConfiguration.steamConfig.webApiKey)
+        ConfigurationService.getSteamOwnedGames(this.props.steamProfileId, this.props.webApiKey)
         .then(gameList => {
             let gameInfo: TitleInfo = null;
-            if (currentTitle)
+            if (this.state.selectedTitle)
             {
-                gameInfo = gameList.find(g => g.titleId == currentTitle);
+                gameInfo = gameList.find(g => g.titleId == this.state.selectedTitle.titleId);
             }
             
             this.setState({
@@ -53,9 +58,10 @@ export default class ConfigSteam_02_AppId extends Base.ConfigStepBase<Base.Confi
         });
     }
 
-    onContinue = async (e: React.SyntheticEvent<HTMLInputElement>) => {
-        ConfigurationState.currentConfiguration.steamConfig.appId = this.state.selectedTitle.titleId;
-        this.props.onValid(this, this.props.nextState);
+    onContinue = async () => {
+        this.setState({
+            isConfirmed: true,
+        });
     }
 
     onChangeTitleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +86,7 @@ export default class ConfigSteam_02_AppId extends Base.ConfigStepBase<Base.Confi
         // Validate and move on
     }
 
-    onResetTitle = (e: React.MouseEvent<HTMLInputElement>) => {
+    onResetTitle = () => {
         this.setState({
             titleSearch: "",
             filteredApps: this.state.ownedApps,
@@ -89,10 +95,40 @@ export default class ConfigSteam_02_AppId extends Base.ConfigStepBase<Base.Confi
         });
     }
 
+    unvalidate = () => {
+        this.setState({
+            isConfirmed: false,
+        });
+    }
+
     render(){
         const isContinueEnabled = this.state.selectedTitle;
         let selection;
-        if (this.state.selectedTitle)
+
+        if (this.state.isConfirmed)
+        {
+            return (
+                <ConfigSteam_04_Locale
+                    onValidate={this.props.onValidate}
+                    onBack={this.unvalidate}
+                    nextState={ConfigSteamConfigStateEnum.Confirm}
+                    previousState={ConfigSteamConfigStateEnum.SteamGameSearch}
+                    webApiKey={this.props.webApiKey}
+                    steamProfileId={this.props.steamProfileId}
+                    steamAppId={this.state.selectedTitle.titleId} />
+
+            );
+        }
+
+        if (this.state.isLoading)
+        {
+            selection = (
+                <div className="card">
+                    <div className="spinner"></div>
+                </div>
+            )
+        }
+        else if (this.state.selectedTitle)
         {
             selection = (
                 <GameCard titleInfo={this.state.selectedTitle} buttonSection={<input type="button" className="section" name="TitleChange" value="Change" onClick={this.onResetTitle} />} />
@@ -101,11 +137,12 @@ export default class ConfigSteam_02_AppId extends Base.ConfigStepBase<Base.Confi
         else
         {
             selection = [
+                <label htmlFor="titleSearch">Owned Game list</label>,
                 <input name="titleSearch" type="text" placeholder="Filter your Steam games" onChange={this.onChangeTitleSearch} />,,
                 <div className="searchResult container">
                     <div className="row">
                     {
-                        this.state.filteredApps.map((titleInfo, i) => (
+                        this.state.filteredApps.map((titleInfo) => (
                             <GameCard titleInfo={titleInfo} buttonSection={<input className="section" type="button" name="steamTitleChange" value="Select" onClick={(e) => this.onSelectTitle(e, titleInfo.titleId)} />} />
                         ))
                     }
@@ -115,8 +152,8 @@ export default class ConfigSteam_02_AppId extends Base.ConfigStepBase<Base.Confi
         }
 
         return [
-            <label htmlFor="titleSearch">Game Title</label>,
             selection,
+            <input type="button" value="Back" onClick={this.onBack} />,
             <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onContinue} />
         ]
     }

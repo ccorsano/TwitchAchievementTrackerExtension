@@ -2,6 +2,8 @@ import * as EBSConfig from "../common/ServerConfig"
 import * as EBS from './EBSBase'
 import { ExtensionConfiguration, ActiveConfig, SupportedLanguage, PlayerInfoCard, TitleInfo } from '../common/EBSTypes';
 import { ConfigurationState } from "./ConfigurationStateService";
+import { TwitchAuthCallbackContext, TwitchExtensionConfiguration } from "../common/TwitchExtension";
+import { Twitch } from "./TwitchService";
 
 export interface EncryptedConfigurationResponse {
     configToken: string;
@@ -38,12 +40,16 @@ export default class EBSConfigurationService extends EBS.EBSBase {
         });
     }
 
-    getConfiguration = async (): Promise<ExtensionConfiguration> => {
-        return this.serviceFetch("/");
+    fetchConfiguration = async (configuration: TwitchExtensionConfiguration): Promise<ExtensionConfiguration> => {
+        return this.serviceFetch("/", null, configuration.content, configuration.version);
     }
 
-    getSupportedLanguages = async (config: ActiveConfig, gameId: string): Promise<SupportedLanguage[]> => {
-        return this.serviceFetch("/languages?activeConfig=" + config + "&gameId=" + gameId);
+    getConfiguration = async (): Promise<ExtensionConfiguration> => {
+        if (! this.configuration?.content)
+        {
+            return Promise.resolve(null);
+        }
+        return this.serviceFetch("/");
     }
 
     validateConfiguration = async (config: ExtensionConfiguration): Promise<ValidationError[]> => {
@@ -59,6 +65,14 @@ export default class EBSConfigurationService extends EBS.EBSBase {
 
     resolveSteamPlayerInfo = async (steamId: string, webApiKey: string): Promise<PlayerInfoCard> => {
         return this.serviceFetch("/steam/playerInfo/" + encodeURIComponent(steamId) + "?webApiKey=" + encodeURIComponent(webApiKey) );
+    }
+
+    getSteamOwnedGames = async (steamId: string, webApiKey: string): Promise<TitleInfo[]> => {
+        return this.serviceFetch("/steam/" + encodeURIComponent(steamId) +  "/ownedGames?webApiKey=" + encodeURIComponent(webApiKey) );
+    }
+
+    getSteamSupportedLanguages = async (gameId: string): Promise<SupportedLanguage[]> => {
+        return this.serviceFetch("/steam/languages/" + encodeURIComponent(gameId));
     }
 
     resolveXBoxLiveGamertag = async (gamertag: string, xapiKey: string): Promise<PlayerInfoCard> => {
@@ -77,8 +91,8 @@ export default class EBSConfigurationService extends EBS.EBSBase {
         return this.serviceFetch("/xapi/recentTitles/" + encodeURIComponent(xuid) + "?xApiKey=" + encodeURIComponent(xapiKey) );
     }
 
-    getSteamOwnedGames = async (steamId: string, webApiKey: string): Promise<TitleInfo[]> => {
-        return this.serviceFetch("/steam/" + encodeURIComponent(steamId) +  "/ownedGames?webApiKey=" + encodeURIComponent(webApiKey) );
+    getXBoxLiveSupportedLanguages = async (titleId: string, xapiKey: string): Promise<SupportedLanguage[]> => {
+        return this.serviceFetch("/xapi/languages/" + encodeURIComponent(titleId) + "?xApiKey=" + encodeURIComponent(xapiKey));
     }
 }
 

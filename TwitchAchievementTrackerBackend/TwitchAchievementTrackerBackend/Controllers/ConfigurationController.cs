@@ -36,32 +36,6 @@ namespace TwitchAchievementTrackerBackend.Controllers
             };
         }
 
-        [HttpGet("languages")]
-        public Task<SupportedLanguage[]> SupportedLanguages(ActiveConfig activeConfig, string gameId)
-        {
-            ExtensionConfiguration configuration = new ExtensionConfiguration
-            {
-                ActiveConfig = activeConfig,
-            };
-            if (HttpContext.HasExtensionConfiguration())
-            {
-                configuration = HttpContext.GetExtensionConfiguration();
-            }
-            configuration.ActiveConfig = activeConfig;
-            switch (activeConfig)
-            {
-                case ActiveConfig.XBoxLive:
-                    configuration.XBoxLiveConfig.TitleId = gameId;
-                    break;
-                case ActiveConfig.Steam:
-                    configuration.SteamConfig.AppId = gameId;
-                    break;
-                default:
-                    break;
-            }
-            return _service.GetSupportedLanguages(configuration);
-        }
-
         [HttpPost("validate")]
         public Task<ValidationError[]> ValidateConfiguration(ExtensionConfiguration configuration)
         {
@@ -95,6 +69,12 @@ namespace TwitchAchievementTrackerBackend.Controllers
             }).ToArray();
         }
 
+        [HttpGet("steam/languages/{gameid}")]
+        public Task<SupportedLanguage[]> GetSteamGameSupportedLanguages(string gameId, string webApiKey = null)
+        {
+            return _service.GetSteamSupportedLanguages(gameId);
+        }
+
         [HttpGet("xapi/gamertag/{gamertag}")]
         public Task<PlayerInfoCard> ResolveXBoxLiveGamerTag(string gamertag, string xApiKey = null)
         {
@@ -117,6 +97,12 @@ namespace TwitchAchievementTrackerBackend.Controllers
         public Task<TitleInfo[]> GetRecentTitles(string xuid, string xApiKey = null)
         {
             return _service.GetXBoxLiveRecentTitles(xuid, xApiKey);
+        }
+
+        [HttpGet("xapi/languages/{titleId}")]
+        public Task<SupportedLanguage[]> GetXBoxLiveGameSupportedLanguages(string titleId, string xApiKey = null)
+        {
+            return _service.GetXBoxLiveSupportedLanguages(titleId, xApiKey);
         }
     }
 }
