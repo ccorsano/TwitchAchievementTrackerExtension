@@ -195,7 +195,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
             }
             else if (config.ActiveConfig == ActiveConfig.Steam)
             {
-                var gameSchemaTask = _steamApiService.GetGameSchema(config.SteamConfig);
+                var gameSchemaTask = _steamApiService.GetGameSchema(config.SteamConfig.AppId, config.SteamConfig.Locale);
                 var userAchievements = await _steamApiService.GetAchievementsAsync(config.SteamConfig);
                 return (await gameSchemaTask).AvailableGameStats.Achievements.Select(aDev =>
                 {

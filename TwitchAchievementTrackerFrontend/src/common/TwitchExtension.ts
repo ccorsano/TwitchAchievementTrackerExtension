@@ -1,9 +1,9 @@
-interface TwitchHostingInfo {
+export interface TwitchHostingInfo {
     hostedChannelId: number;
     hostingChannelId: number;
 }
 
-interface TwitchContext {
+export interface TwitchContext {
     arePlayerControlsVisible: boolean;
     bitrate: number;
     bufferSize: number;
@@ -23,12 +23,12 @@ interface TwitchContext {
     volume: number;
 }
 
-interface TwitchPubSubPerm {
+export interface TwitchPubSubPerm {
     listen: string[];
     send: string[];
 }
 
-interface TwitchJWT {
+export interface TwitchJWT {
     channel_id: string;
     exp: Date;
     is_unlinked: boolean;
@@ -38,24 +38,24 @@ interface TwitchJWT {
     user_id: string;
 }
 
-interface TwitchAuthCallbackContext {
+export interface TwitchAuthCallbackContext {
     channelId: string;
     clientId: string;
     token: TwitchJWT;
     userId: string;
 }
 
-interface TwitchExtensionConfiguration {
+export interface TwitchExtensionConfiguration {
     content: string;
     version: string;
 }
 
-interface TwitchExtensionPosition {
+export interface TwitchExtensionPosition {
     x: number;
     y: number;
 }
 
-interface TwitchExtensionHelper {
+export interface TwitchExtensionHelper {
     onAuthorized: (authCallback: (context: TwitchAuthCallbackContext) => void) => void;
     onContext: (contextCallback: (context: TwitchContext, changedProperties: string[]) => void) => void;
     onError: (errorCallback: (error: any) => void) => void;

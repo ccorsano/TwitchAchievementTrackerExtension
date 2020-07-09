@@ -65,42 +65,39 @@ namespace TwitchAchievementTrackerBackend.Services
             return cultures;
         }
 
-        public async Task<SupportedLanguage[]> GetSupportedLanguages(ExtensionConfiguration configuration)
+        public async Task<SupportedLanguage[]> GetXBoxLiveSupportedLanguages(string titleId, string xApiKey)
         {
-            switch (configuration.ActiveConfig)
+            var marketPlace = await _xApiService.GetMarketplaceAsync(titleId, xApiKey);
+            var supportedLanguages = marketPlace.Products
+                .SelectMany(p => p.DisplaySkuAvailabilities?
+                    .SelectMany(dsa => dsa.Sku?.MarketProperties?
+                        .SelectMany(mp => mp.SupportedLanguages) ?? new string[] { }) ?? new string[] { })
+                .Distinct();
+
+            // Resolve cultures based on embeded definition
+            var cultures = await GetEmbededCulturesNames();
+            return supportedLanguages
+                .Select(l => cultures.TryGetValue(l.ToLowerInvariant(), out var language) ? language : new SupportedLanguage { LangCode = l, DisplayName = l })
+                .ToArray();
+        }
+
+        public async Task<SupportedLanguage[]> GetSteamSupportedLanguages(string gameId)
+        {
+            var schema = await _steamApiService.GetGameSchema(gameId);
+            var storeDetails = await _steamApiService.GetStoreDetails(UInt32.Parse(gameId));
+
+            // Supported language are given in a readable, customizable format. Do our best guess here.
+            var supportedLanguage = new List<SupportedLanguage>();
+            var lowercaseGameLanguages = storeDetails.SupportedLanguages.ToLowerInvariant();
+            foreach (var langEntry in SteamApiService.STEAM_SUPPORTED_LANGUAGES)
             {
-                case ActiveConfig.XBoxLive:
-                    var marketPlace = await _xApiService.GetMarketplaceAsync(configuration.XBoxLiveConfig.TitleId, configuration.XBoxLiveConfig.XApiKey);
-                    var supportedLanguages = marketPlace.Products
-                        .SelectMany(p => p.DisplaySkuAvailabilities?
-                            .SelectMany(dsa => dsa.Sku?.MarketProperties?
-                                .SelectMany(mp => mp.SupportedLanguages) ?? new string[] { } ) ?? new string[] { })
-                        .Distinct();
-
-                    // Resolve cultures based on embeded definition
-                    var cultures = await GetEmbededCulturesNames();
-                    return supportedLanguages
-                        .Select(l => cultures.TryGetValue(l.ToLowerInvariant(), out var language) ? language : new SupportedLanguage { LangCode = l, DisplayName = l })
-                        .ToArray();
-                case ActiveConfig.Steam:
-                    var schema = await _steamApiService.GetGameSchema(configuration.SteamConfig);
-                    var storeDetails = await _steamApiService.GetStoreDetails(UInt32.Parse(configuration.SteamConfig.AppId));
-
-                    // Supported language are given in a readable, customizable format. Do our best guess here.
-                    var supportedLanguage = new List<SupportedLanguage>();
-                    var lowercaseGameLanguages = storeDetails.SupportedLanguages.ToLowerInvariant();
-                    foreach (var langEntry in SteamApiService.STEAM_SUPPORTED_LANGUAGES)
-                    {
-                        if (lowercaseGameLanguages.Contains(langEntry.DisplayName.ToLowerInvariant()))
-                        {
-                            supportedLanguage.Add(langEntry);
-                        }
-                    }
-
-                    return supportedLanguage.ToArray();
-                default:
-                    throw new NotSupportedException("Invalid active config");
+                if (lowercaseGameLanguages.Contains(langEntry.DisplayName.ToLowerInvariant()))
+                {
+                    supportedLanguage.Add(langEntry);
+                }
             }
+
+            return supportedLanguage.ToArray();
         }
 
         /// <summary>

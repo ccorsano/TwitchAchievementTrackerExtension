@@ -5,6 +5,8 @@ import { ActiveConfig, ExtensionConfiguration } from '../../common/EBSTypes';
 import { ConfigurationService, ValidationError } from '../../services/EBSConfigurationService';
 import { AchievementsService } from '../../services/EBSAchievementsService';
 import { ConfigurationState } from '../../services/ConfigurationStateService'
+import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
+import ConfigXBL_02_XUID from '../ConfigXBL_02_XUID/ConfigXBL_02_XUID';
 
 type ConfigXBL_01_XApiKeyState = {
     isSyntaxValid: boolean,
@@ -13,6 +15,7 @@ type ConfigXBL_01_XApiKeyState = {
     isValidating: boolean,
     enteredApiKey: string,
     errors: ValidationError[],
+    isConfirmed: boolean,
 }
 
 export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.ConfigStepBaseProps, ConfigXBL_01_XApiKeyState> {
@@ -22,7 +25,8 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
         isKeyActive: false,
         isValidating: false,
         enteredApiKey: '',
-        errors: []
+        errors: [],
+        isConfirmed: false,
     }
 
     formatRegexp = /^[0-9a-f]+$/i;
@@ -37,7 +41,10 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
 
     componentDidMount= () => {
         let currentConfig = ConfigurationState.currentConfiguration;
-        this.changeXApiValue(currentConfig.xBoxLiveConfig.xApiKey);
+        if (currentConfig?.xBoxLiveConfig?.xApiKey)
+        {
+            this.changeXApiValue(currentConfig.xBoxLiveConfig.xApiKey);
+        }
     }
 
     onChangeXApiValue = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -76,19 +83,38 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
         this.setState({
             errors: errors,
             isValidating: false,
+            isConfirmed: errors.length == 0,
         });
 
         if (this.state.errors.length == 0)
         {
-            this.props.onValid(this, this.props.nextState);
             let newConfig = await ConfigurationService.setConfiguration(configuration);
             
             ConfigurationState.currentConfiguration.xBoxLiveConfig.xApiKey = this.state.enteredApiKey;
         }
     }
 
+    unvalidate = () => {
+        this.setState({
+            isConfirmed: false,
+        })
+    }
+
     render(){
         let helpMessage;
+
+        if (this.state.isConfirmed)
+        {
+            return (
+                <ConfigXBL_02_XUID
+                    onValidate={this.props.onValidate}
+                    onBack={this.unvalidate}
+                    nextState={null}
+                    previousState={ConfigXBL_02_XUID}
+                    xApiKey={this.state.enteredApiKey} />
+            );
+        }
+
         if (this.state.errors.some(e => e.errorCode == "ExpiredXBLToken"))
         {
             helpMessage = (
