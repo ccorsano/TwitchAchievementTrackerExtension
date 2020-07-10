@@ -33,13 +33,26 @@ export default class ConfigXBL_05_Confirm extends Base.ConfigStepBase<ConfigXBL_
 
     render(){
         return [
-            <ul>
-                <li>ActiveConfig: {ActiveConfig.XBoxLive}</li>
-                <li>XApiKey: {this.props.xApiKey}</li>
-                <li>TitleId: {this.props.titleId}</li>
-                <li>StreamerXuid: {this.props.streamerXuid}</li>
-                <li>Locale: {this.props.locale}</li>
-            </ul>,
+            <div className="card">
+                <div className="section">
+                    ActiveConfig: XBoxLive
+                </div>
+                <div className="section">
+                    XApiKey: {this.props.xApiKey}
+                </div>
+                <div className="section">
+                    StreamerXuid: {this.props.streamerXuid}
+                </div>
+                <div className="section">
+                    TitleId: {this.props.titleId}
+                </div>
+                <div className="section">
+                    WebApiKey: {this.props.locale}
+                </div>
+                <div className="section">
+                    Locale: {this.props.locale}
+                </div>
+            </div>,
             <input type="button" value="Back" onClick={this.onBack} />,
             <input type="button" value="Save" onClick={this.onSave} />
         ]
