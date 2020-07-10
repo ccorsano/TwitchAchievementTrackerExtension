@@ -33,13 +33,23 @@ export default class ConfigSteam_05_Confirm extends Base.ConfigStepBase<ConfigSt
 
     render(){
         return [
-            <ul>
-                <li>ActiveConfig: Steam</li>
-                <li>WebApiKey: {this.props.webApiKey}</li>
-                <li>AppId: {this.props.steamAppId}</li>
-                <li>StreamerSteamId: {this.props.steamProfileId}</li>
-                <li>Locale: {this.props.locale}</li>
-            </ul>,
+            <div className="card">
+                <div className="section">
+                    ActiveConfig: Steam
+                </div>
+                <div className="section">
+                    WebApiKey: {this.props.webApiKey}
+                </div>
+                <div className="section">
+                    StreamerSteamId: {this.props.steamProfileId}
+                </div>
+                <div className="section">
+                    AppId: {this.props.steamAppId}
+                </div>
+                <div className="section">
+                    WebApiKey: {this.props.locale}
+                </div>
+            </div>,
             <input type="button" value="Back" onClick={this.onBack} />,
             <input type="button" value="Save" onClick={this.onSave} />
         ]
