@@ -188,6 +188,9 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<ConfigSt
                 playerInfoCard = [
                     <label htmlFor="vanityUrl">Steam Profile URL</label>,
                     <input name="vanityUrl" type="text" pattern="https:\/\/steamcommunity\.com\/id\/([^\/]+)(\/.*)?$" placeholder="Enter your Steam profile URL" onChange={this.onChangeProfileUrl} />,
+                    <div>
+                        <span className="icon-info"></span> You can copy your Profile URL by right-clicking on your profile page on the Steam application, and selecting 'Copy Page URL'.
+                    </div>,
                     <ul>
                         {this.state.errors.map((error, i) => (
                             <li key={error.path + '_' + i}>

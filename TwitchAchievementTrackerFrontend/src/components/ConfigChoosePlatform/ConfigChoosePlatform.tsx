@@ -5,7 +5,7 @@ import ConfigXBLConfigRoot from '../ConfigXBLConfigRoot/ConfigXBLConfigRoot';
 import ConfigSteamConfigRoot from '../ConfigSteamConfigRoot/ConfigSteamConfigRoot';
 import { EBSBase } from '../../services/EBSBase';
 import EBSConfigurationService, { ConfigurationService } from '../../services/EBSConfigurationService';
-import { ExtensionConfiguration } from '../../common/EBSTypes';
+import { ExtensionConfiguration, ActiveConfig } from '../../common/EBSTypes';
 import XBoxLiveLogo from '../../../assets/XBox_Live_logo.svg';
 import SteamLogo from '../../../assets/Steam_icon_logo.svg';
 import ConfigSummary from '../ConfigSummary/ConfigSummary';
@@ -55,14 +55,14 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
         if (configurationToken)
         {
             let configuration = await ConfigurationService.fetchConfiguration(configurationToken);
-            console.log("SteamConfig");
-            console.log(configuration.steamConfig);
-            console.log("XApiConfig");
-            console.log(configuration.xBoxLiveConfig);
+            
+            var validation = await ConfigurationService.validateConfiguration(configuration);
+
             this.setState({
                 isLoading: false,
-                isConfirmed: true,
+                isConfirmed: validation.length == 0,
                 savedConfiguration: configuration,
+                currentPlatform: configuration.activeConfig == ActiveConfig.XBoxLive ? CurrentPlatformEnum.XBoxLive : CurrentPlatformEnum.Steam,
             });
         }
         else
