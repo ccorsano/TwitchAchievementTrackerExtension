@@ -72,7 +72,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
         [HttpGet("steam/languages/{gameid}")]
         public Task<SupportedLanguage[]> GetSteamGameSupportedLanguages(string gameId, string webApiKey = null)
         {
-            return _service.GetSteamSupportedLanguages(gameId);
+            return _service.GetSteamSupportedLanguages(gameId, webApiKey);
         }
 
         [HttpGet("xapi/gamertag/{gamertag}")]

@@ -76,8 +76,8 @@ export default class EBSConfigurationService extends EBS.EBSBase {
         return this.serviceFetch("/steam/" + encodeURIComponent(steamId) +  "/ownedGames?webApiKey=" + encodeURIComponent(webApiKey) );
     }
 
-    getSteamSupportedLanguages = async (gameId: string): Promise<SupportedLanguage[]> => {
-        return this.serviceFetch("/steam/languages/" + encodeURIComponent(gameId));
+    getSteamSupportedLanguages = async (gameId: string, webApiKey: string): Promise<SupportedLanguage[]> => {
+        return this.serviceFetch("/steam/languages/" + encodeURIComponent(gameId) + "?webApiKey=" + encodeURIComponent(webApiKey) );
     }
 
     resolveXBoxLiveGamertag = async (gamertag: string, xapiKey: string): Promise<PlayerInfoCard> => {

@@ -81,7 +81,7 @@ namespace TwitchAchievementTrackerBackend.Services
                 .ToArray();
         }
 
-        public async Task<SupportedLanguage[]> GetSteamSupportedLanguages(string gameId)
+        public async Task<SupportedLanguage[]> GetSteamSupportedLanguages(string gameId, string webApiKey)
         {
             var schema = await _steamApiService.GetGameSchema(gameId);
             var storeDetails = await _steamApiService.GetStoreDetails(UInt32.Parse(gameId));

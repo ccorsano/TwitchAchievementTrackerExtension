@@ -76,8 +76,20 @@ export default class ConfigSteam_01_WebAPIKey extends Base.ConfigStepBase<Base.C
             }
         }
 
-        let errors = await ConfigurationService.validateConfiguration(configuration);
-        errors = errors.filter(e => e.path == "SteamConfig.WebApiKey");
+        let errors: ValidationError[] = [];
+        try
+        {
+            errors = await ConfigurationService.validateConfiguration(configuration);
+            errors = errors.filter(e => e.path == "SteamConfig.WebApiKey");
+        }
+        catch(e)
+        {
+            errors.push({
+                errorCode: "EBSError",
+                errorDescription: "Error validating WebApiKey",
+                path: "",
+            });
+        }
 
         this.setState({
             errors: errors,
