@@ -31,7 +31,7 @@ module.exports = (_env, argv) => {
         path:"./src/Mobile.tsx",
         outputHtml:"mobile.html",
         build:true
-      }
+      },
       //   VideoComponent:{
       //     path:"./src/VideoComponent.js",
       //     outputHtml:"video_component.html",
@@ -42,11 +42,11 @@ module.exports = (_env, argv) => {
       //     outputHtml:"panel.html",
       //     build:true
       //   },
-      //   LiveConfig:{
-      //     path:"./src/LiveConfig.js",
-      //     outputHtml:"live_config.html",
-      //     build:true
-      //   },
+      LiveConfig:{
+        path:"./src/LiveConfig.tsx",
+        outputHtml:"live_config.html",
+        build:true
+      },
     };
 
     let entry = {};

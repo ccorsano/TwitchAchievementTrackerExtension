@@ -136,6 +136,28 @@
         "height": 667
       },
       "viewerType": "Logged-In Viewer"
+    },
+    {
+      "channelId": "158511925",
+      "configurationAnchor": "video_overlay",
+      "displayChannelName": "miekyld",
+      "features": {
+        "isBitsEnabled": false,
+        "isChatEnabled": false,
+        "isSubscriptionStatusAvailable": false
+      },
+      "frameSize": {
+        "width": 1280,
+        "height": 720
+      },
+      "id": "5",
+      "isPopout": false,
+      "label": "Live Config",
+      "linked": true,
+      "linkedUserId": "265737932",
+      "orientation": "Portrait",
+      "type": "dashboard",
+      "viewerType": "Broadcaster"
     }
   ],
   "manifest": {
@@ -146,7 +168,7 @@
     "canInstall": true,
     "configUrl": "https://localhost:8090/config.html",
     "configurationLocation": "hosted",
-    "description": "Third iteration of the extension dedicated to Nuja's 100% Quest program !\ntwitch.tv/nuja\n\nThis overlay shows XBoxLive or Steam achievements for a given player and a given game.\nGo through the assisted configuration flow, then your viewers can keep track of how many achievements are left to unlock when streaming to complete a game 100%.\n\nVersion 0.0.3:\n- Configuration rewrite, from MVP to guided flow.\n- Configuration auto-reload for viewers on Save.\n- Rewrite frontend in React / TypeScript, to ease configuration app development.\n\n\nPre-requisite:\n- XBoxLive configuration uses xapi.us to query XBoxLive, the configuration will require the streamer to input an API key from xapi.us.\n- Steam configuration requires a Steam WebAPI key that any Steam User can request through https://steamcommunity.com/dev\n\nAuthors:\nNuja's Community\ntwitch.tv/miekyld\ntwitch.tv/xenomorpheapeuree\ntwitch.tv/kbinturong",
+    "description": "Third iteration of the extension dedicated to Nuja's 100% Quest program !\ntwitch.tv/nuja\n\nThis overlay shows XBoxLive or Steam achievements for a given player and a given game.\nGo through the assisted configuration flow, then your viewers can keep track of how many achievements are left to unlock when streaming to complete a game 100%.\n\nVersion 0.0.3:\n- Configuration rewrite, from Minimal Viable to guided flow.\n- Configuration auto-reload for viewers on Save.\n- Rewrite frontend in React / TypeScript, to ease configuration app development.\n\n\nPre-requisite:\n- XBoxLive configuration uses xapi.us to query XBoxLive, the configuration will require the streamer to input an API key from xapi.us.\n- Steam configuration requires a Steam WebAPI key that any Steam User can request through https://steamcommunity.com/dev\n\nAuthors:\nNuja's Community\ntwitch.tv/miekyld\ntwitch.tv/xenomorpheapeuree\ntwitch.tv/kbinturong",
     "eulaTosUrl": "https://twitchext.conceptoire.com/EULA",
     "hasChatSupport": false,
     "iconUrl": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/logo808776b9-3269-473e-bc44-6566dc3f995a",
@@ -157,25 +179,27 @@
     },
     "id": "04ijuz20mxlw1wk5b6alh6l4mb48zu",
     "installationCount": -42,
-    "liveConfigUrl": "",
+    "liveConfigUrl": "https://localhost:8090/live_config.html",
     "name": "Nuja 100% Quest Achievements Tracker",
     "panelHeight": 0,
     "privacyPolicyUrl": "https://twitchext.conceptoire.com/PrivacyPolicy",
     "requestIdentityLink": false,
     "requiredBroadcasterAbilities": [],
     "screenshotUrls": [
-      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.3/screenshot5264bd05-7fc8-4376-a45a-b5af7e8f4f03",
-      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.3/screenshot20335ef5-beb7-409d-8121-fa77d5d4b7e4",
-      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.3/screenshotb6f41b9b-c93f-4af7-8a84-62468b9d886a",
-      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.3/screenshot256b8a83-7e14-47e2-b201-df2ba5c73cf0"
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.3/screenshotc76dbf37-ad89-4041-aeb5-9224b4303fd5",
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.3/screenshot9d6c6294-c4d4-448e-a744-5a66c14c6a3e",
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.3/screenshotf2e52f52-3929-4f53-a819-798d711687bc",
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.3/screenshot44d7e9bc-fede-4b12-b8bd-d59b46c4369c",
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.3/screenshot4e87fe19-7828-493a-aac6-8e4be4c5da43",
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.3/screenshotb7b91f9d-4be5-4322-8d1f-775c3cca94c9"
     ],
     "sku": "",
     "state": "Testing",
     "subscriptionsSupportLevel": "none",
-    "summary": "Achievement Tracker for the 100% Quest program on Nuja's stream",
+    "summary": "Steam and XBoxLive Achievements Tracker for the 100% Quest program on Nuja's stream",
     "supportEmail": "twitchext@conceptoire.com",
     "vendorCode": "",
-    "version": "0.0.3",
+    "version": "2020.04",
     "viewerSummary": "Achievements tracker, see what achievements are left to unlock",
     "viewerUrl": "",
     "viewerUrls": {
@@ -192,10 +216,18 @@
       },
       "config": {
         "viewerUrl": "https://localhost:8090/config.html",
-        "canLinkExternalContent": false
+        "canLinkExternalContent": true
+      },
+      "liveConfig": {
+        "viewerUrl": "https://localhost:8090/live_config.html",
+        "canLinkExternalContent": true
       }
     },
-    "whitelistedConfigUrls": [],
+    "whitelistedConfigUrls": [
+      "https://xapi.us/",
+      "https://xapi.us/profile",
+      "https://steamcommunity.com/dev/apikey"
+    ],
     "whitelistedPanelUrls": [
       ""
     ]
