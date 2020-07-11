@@ -77,7 +77,20 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
             }
         }
 
-        let errors = await ConfigurationService.validateConfiguration(configuration);
+        let errors: ValidationError[] = [];
+        try
+        {
+            errors = await ConfigurationService.validateConfiguration(configuration);
+            errors = errors.filter(e => e.path == "XBoxLiveConfig.XApiKey");
+        }
+        catch(e)
+        {
+            errors.push({
+                errorCode: "EBSError",
+                errorDescription: "Error validating WebApiKey",
+                path: "",
+            });
+        }
 
         this.setState({
             errors: errors,

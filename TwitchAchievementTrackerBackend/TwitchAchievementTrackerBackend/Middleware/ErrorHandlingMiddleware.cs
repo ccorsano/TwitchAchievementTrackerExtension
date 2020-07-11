@@ -38,6 +38,7 @@ namespace TwitchAchievementTrackerBackend.Middleware
 
             if (ex is ArgumentException) code = HttpStatusCode.NotFound;
             else if (ex is ConfigurationHeaderMiddleware.ConfigurationHeaderException) code = HttpStatusCode.BadRequest;
+            else if (ex is InvalidOperationException) code = HttpStatusCode.BadRequest;
             else code = HttpStatusCode.InternalServerError;
 
             var result = JsonConvert.SerializeObject(new { error = ex.Message });

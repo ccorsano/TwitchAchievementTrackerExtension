@@ -34,7 +34,7 @@ export default class ConfigSteam_04_Locale extends Base.ConfigStepBase<ConfigSte
     componentDidMount = () => {
         let currentLanguage: string = this.props.savedConfiguration?.steamConfig?.locale;
 
-        ConfigurationService.getSteamSupportedLanguages(this.props.steamAppId)
+        ConfigurationService.getSteamSupportedLanguages(this.props.steamAppId, this.props.webApiKey)
             .then(languages => {
                 this.setState({
                     isLoading: false,

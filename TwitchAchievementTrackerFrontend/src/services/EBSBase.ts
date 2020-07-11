@@ -103,14 +103,6 @@ export class EBSBase {
     _onConfiguration = () => {
         this.configuration = (<TwitchExtensionConfiguration> ((<any>window).Twitch.ext.configuration.broadcaster));
 
-        if (isDebug && !this.configuration)
-        {
-            // this.configuration = <TwitchExtensionConfiguration>{
-            //     content: "M4dKt7OfjxV2Qg6hNDfUILxVxcM4R2ibLq8MfDI42Yq2QtX8DUNsw/6A3tX+3zX1QKstugDUncqGEQf1+WE7NCK1Izw+AVIbdpUKUnJMPXvVh2i61drG+i+d+wksr015Yb3NCPdQ4ULKYxQuFyTuSSpPkC55L0AYUhKjbA7P8MTq/Erywgj/weVkgXey7At2RGKTMD8AR5FaLYlsyZa8Oxp2DUEN3pa2fc466IZt1HMnn8Rj3QR178SvwEa7r7K8Tl26P7dRzr6TO/9e1iDuX2PVsnhRbicsNKHprOLapLEOoMifzVBzOk1RYqRDvhE3Jw0+xZS7Km79Sq85Q9J8GA==",
-            //     version: "0.0.3"
-            // };
-        }
-
         if (this.onConfiguration)
         {
             this.onConfiguration(this.configuration);
