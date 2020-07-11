@@ -7,6 +7,7 @@ import * as ServerConfig from '../../common/ServerConfig';
 import { AchievementsService } from '../../services/EBSAchievementsService';
 import ConfigSteam_02_SteamID from '../ConfigSteam_02_SteamID/ConfigSteam_02_SteamID'
 import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
+import ValidationErrorList from '../ValidationErrorList/ValidationErrorList';
 
 type ConfigSteam_01_WebApiKeyState = {
     isSyntaxValid: boolean,
@@ -127,13 +128,7 @@ export default class ConfigSteam_01_WebAPIKey extends Base.ConfigStepBase<Base.C
             <div>
                 <span className="icon-info"></span> You can apply for a WebAPI Key on <a href="https://steamcommunity.com/dev/apikey" target="_blank">https://steamcommunity.com/dev/apikey</a>.
             </div>,
-            <ul>
-                {this.state.errors.map((error, i) => (
-                    <li key={error.path + '_' + i}>
-                        {error.path}: {error.errorDescription}
-                    </li>
-                ))}
-            </ul>,
+            <ValidationErrorList errors={this.state.errors} />,
             <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onContinue} />
         ]
     }
