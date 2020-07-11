@@ -14,11 +14,13 @@ namespace TwitchAchievementTrackerBackend.Controllers
     [Authorize]
     public class ConfigurationController : ControllerBase
     {
-        private ConfigurationTokenService _service;
+        private ConfigurationService _service;
+        private ConfigurationTokenService _tokenService;
 
-        public ConfigurationController(ConfigurationTokenService service)
+        public ConfigurationController(ConfigurationTokenService tokenService, ConfigurationService service)
         {
             _service = service;
+            _tokenService = tokenService;
         }
 
         [HttpGet("")]
@@ -32,7 +34,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
         {
             return new ConfigurationToken
             {
-                ConfigToken = Convert.ToBase64String(_service.EncodeConfigurationToken(configuration))
+                ConfigToken = Convert.ToBase64String(_tokenService.EncodeConfigurationToken(configuration))
             };
         }
 
