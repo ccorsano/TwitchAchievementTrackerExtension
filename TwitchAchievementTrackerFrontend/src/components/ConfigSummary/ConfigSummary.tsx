@@ -66,7 +66,7 @@ export default class ConfigSummary extends React.Component<ConfigSummaryProps, C
                         .then(titles => this.setState({
                             gameInfo: titles.find(t => t.titleId == configuration.steamConfig.appId)
                         }));
-                    ConfigurationService.getSteamSupportedLanguages(configuration.steamConfig.appId)
+                    ConfigurationService.getSteamSupportedLanguages(configuration.steamConfig.appId, configuration.steamConfig.webApiKey)
                         .then(languages => this.setState({
                             locale: languages.find(l => l.langCode == configuration.steamConfig.locale)
                         }));
@@ -80,13 +80,14 @@ export default class ConfigSummary extends React.Component<ConfigSummaryProps, C
         if (this.state.gameInfo && this.state.playerInfo && this.state.locale)
         {
             let platformLogo = this.props.extensionConfig.activeConfig == ActiveConfig.XBoxLive ? XBoxLiveLogo : SteamLogo;
+            let platformPlayerNaming = this.props.extensionConfig.activeConfig == ActiveConfig.XBoxLive ? "GamerTag" : "Profile";
     
             return (
                 <div className="card large">
                     <img className="section" src={platformLogo} style={{objectFit: 'contain', maxHeight: '5em'}}  />
                     <h1 className="section">{this.state.gameInfo.productTitle}</h1>
-                    <h3 className="section">{this.state.playerInfo.playerName}</h3>
-                    <h4 className="section">{this.state.locale.displayName}</h4>
+                    <h3 className="section">{this.state.playerInfo.playerName} <small>{platformPlayerNaming}</small></h3>
+                    <h4 className="section">{this.state.locale.displayName}  <small>Language</small></h4>
                     <input type="button" value="Configure" className="section" onClick={this.props.onConfigure}></input>
                 </div>
             )
