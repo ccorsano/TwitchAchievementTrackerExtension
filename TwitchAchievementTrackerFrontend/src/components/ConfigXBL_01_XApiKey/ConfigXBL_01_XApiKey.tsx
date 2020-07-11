@@ -133,10 +133,20 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
                 </div>
             )
         }
+        else
+        {
+            helpMessage =(
+                <div>
+                    <span className="icon-info"></span> You can register and get your xapi.us API Key on <a href="https://xapi.us/" target="_blank">https://xapi.us/</a>.<br/>
+                    A free account should be enough in most use case, and once configured the extension will limit its request frequency.<br/>
+                    Note: This extension is not affiliated with xapi.us in any way or form.
+                </div>
+            )
+        }
         const isContinueEnabled = this.state.isSyntaxValid && !this.state.isValidating;
         return [
             <label htmlFor="xapikey">XApi Key</label>,
-            <input name="xapikey" type="text" pattern="[0-9a-f]{40}" value={this.state.enteredApiKey} placeholder="Enter your XApi.us key" onChange={this.onChangeXApiValue} className={this.state.isSyntaxValid ? '' : 'sf1-invalid'} />,
+            <input name="xapikey" type="text" pattern="[0-9a-f]{40}" size={45} value={this.state.enteredApiKey} placeholder="Enter your XApi.us key" onChange={this.onChangeXApiValue} className={this.state.isSyntaxValid ? '' : 'sf1-invalid'} />,
             helpMessage,
             <ul>
                 {this.state.errors.map((error, i) => (
