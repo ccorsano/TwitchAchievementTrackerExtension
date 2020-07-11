@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TwitchAchievementTrackerBackend.Configuration;
@@ -57,6 +58,25 @@ namespace TwitchAchievementTrackerBackend.Services
             new SupportedLanguage { DisplayName = "Ukrainian", LangCode = "ukrainian" },
             new SupportedLanguage { DisplayName = "Vietnamese", LangCode = "vietnamese" }
         };
+
+        public class GameDetailsProtectedException : Exception
+        {
+            public GameDetailsProtectedException()
+            {
+            }
+
+            public GameDetailsProtectedException(string message) : base(message)
+            {
+            }
+
+            public GameDetailsProtectedException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+
+            protected GameDetailsProtectedException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
+        }
 
         public SteamApiService(IHttpClientFactory httpClientFactory, IOptions<SteamApiOptions> options, IMemoryCache memoryCache, ILogger<SteamApiService> logger)
         {
@@ -203,13 +223,19 @@ namespace TwitchAchievementTrackerBackend.Services
 
         public async Task<SteamPlayerAchievement[]> GetAchievementsAsync(SteamConfiguration steamConfig)
         {
-            var cacheKey = $"steam:achievements:{steamConfig.AppId}";
+            var cacheKey = $"steam:achievements:{steamConfig.AppId}:{steamConfig.SteamId}";
 
             if (!_cache.TryGetValue(cacheKey, out SteamPlayerAchievement[] result))
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, $"ISteamUserStats/GetPlayerAchievements/v1/?steamid={steamConfig.SteamId}&appid={steamConfig.AppId}");
                 request.Headers.Add("x-webapi-key", steamConfig.WebApiKey);
                 var response = await _httpClient.SendAsync(request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    throw new GameDetailsProtectedException("Could not get Game Details");
+                }
+
                 response.EnsureSuccessStatusCode();
 
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
