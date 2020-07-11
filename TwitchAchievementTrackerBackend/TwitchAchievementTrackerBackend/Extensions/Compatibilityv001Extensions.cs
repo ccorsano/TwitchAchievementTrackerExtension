@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TwitchAchievementTrackerBackend.Model;
 using TwitchAchievementTrackerBackend.Services;
 using TwitchAchievementTracker_v1;
+using FlatSharp;
 
 namespace TwitchAchievementTrackerBackend.Extensions
 {
@@ -24,6 +25,8 @@ namespace TwitchAchievementTrackerBackend.Extensions
             // Generate the Flatbuffer token payload
             var builder = new FlatBufferBuilder(512);
 
+            var configuration = new TwitchAchievementTracker.Flatbuffer.Configuration();
+
             Offset<TwitchAchievementTracker_v1.Configuration> configurationOffset;
             var version = builder.CreateString(configuration.Version);
 
@@ -33,10 +36,12 @@ namespace TwitchAchievementTrackerBackend.Extensions
             switch (configuration.ActiveConfig)
             {
                 case ActiveConfig.XBoxLive:
-                    var apiKeyString = builder.CreateString(xConfig.XApiKey);
-                    var xuid64 = string.IsNullOrEmpty(xConfig.StreamerXuid) ? 0 : UInt64.Parse(xConfig.StreamerXuid);
-                    var titleId32 = string.IsNullOrEmpty(xConfig.TitleId) ? 0 : UInt32.Parse(xConfig.TitleId);
-                    var liveLocale = builder.CreateString(xConfig.Locale ?? "en-US");
+
+                    var flatBufferXBoxConfig = new TwitchAchievementTracker.Flatbuffer.XApiConfiguration();
+                    flatBufferXBoxConfig.xApiKey = xConfig.XApiKey;
+                    flatBufferXBoxConfig.streamerXuid = string.IsNullOrEmpty(xConfig.StreamerXuid) ? 0 : UInt64.Parse(xConfig.StreamerXuid);
+                    flatBufferXBoxConfig.titleId = string.IsNullOrEmpty(xConfig.TitleId) ? 0 : UInt32.Parse(xConfig.TitleId);
+                    flatBufferXBoxConfig.locale = xConfig.Locale ?? "en-US";
 
                     var xConfigOffset = TwitchAchievementTracker_v1.XApiConfiguration.CreateXApiConfiguration(builder, apiKeyString, xuid64, titleId32, liveLocale);
                     configurationOffset = TwitchAchievementTracker_v1.Configuration.CreateConfiguration(builder, version, TwitchAchievementTracker_v1.PlatformConfiguration.XApiConfiguration, xConfigOffset.Value);

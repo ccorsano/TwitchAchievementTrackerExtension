@@ -3,7 +3,7 @@
 //  compact format to store and transmit stream config
 //****************************************************
 
-namespace TwitchAchievementTracker_v1;
+namespace TwitchAchievementTracker.Flatbuffer.v1;
 
 // Type holding configuration for a Stream
 table XApiConfiguration
