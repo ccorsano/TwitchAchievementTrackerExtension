@@ -15,7 +15,6 @@ namespace TwitchAchievementTrackerBackend.Model
 
     public class ExtensionConfiguration
     {
-
         public string Version { get; set; }
 
         public ActiveConfig ActiveConfig { get; set; }

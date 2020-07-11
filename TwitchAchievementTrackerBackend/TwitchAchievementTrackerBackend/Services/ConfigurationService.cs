@@ -265,6 +265,30 @@ namespace TwitchAchievementTrackerBackend.Services
                                 ErrorDescription = "The provided Steam profile cannot be accessed, check that is it set to public.",
                             });
                         }
+                        else if (! string.IsNullOrEmpty(configuration.SteamConfig.AppId))
+                        {
+                            try
+                            {
+                                await _steamApiService.GetAchievementsAsync(configuration.SteamConfig);
+                            } catch (SteamApiService.GameDetailsProtectedException)
+                            {
+                                errors.Add(new ValidationError
+                                {
+                                    Path = "SteamConfig.SteamId",
+                                    ErrorCode = "PrivateProfile",
+                                    ErrorDescription = "The provided Steam profile does not allow access to achievements, please edit your profile and set the \"Game details\" privacy setting to public.",
+                                });
+                            }
+                            catch (Exception ex)
+                            {
+                                errors.Add(new ValidationError
+                                {
+                                    Path = "SteamConfig",
+                                    ErrorCode = "AchievementsError",
+                                    ErrorDescription = $"Unknown error retrieving achievements: {ex.Message}",
+                                });
+                            }
+                        }
                     }
 
                     break;
