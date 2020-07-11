@@ -9,6 +9,7 @@ import { Twitch } from '../../services/TwitchService';
 
 type VideoOverlayState = {
     isCollapsed: boolean,
+    isConfigurationValid: boolean,
     titleInfo: TitleInfo,
     achievementsSummary: AchievementSummary,
     achievementsDetails: Achievement[],
@@ -17,6 +18,7 @@ type VideoOverlayState = {
 export default class VideoOverlay extends React.Component<any, VideoOverlayState> {
     state: VideoOverlayState = {
         isCollapsed: true,
+        isConfigurationValid: false,
         titleInfo: null,
         achievementsSummary: null,
         achievementsDetails: []
@@ -47,6 +49,8 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
     }
 
     togglePanel = (e: React.SyntheticEvent<HTMLElement>) => {
+        if (! this.state.isConfigurationValid) return;
+
         this.setState({
             isCollapsed: !this.state.isCollapsed
         })
@@ -58,14 +62,22 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
 
     refreshAll = async () => {
         let titleInfoPromise = AchievementsService.getTitleInfo();
-        let summaryPromise = AchievementsService.getSummary();
-        let achievementsPromise = AchievementsService.getAchievements();
+        let summaryPromise = AchievementsService.getSummary().then(summary => this .setState({achievementsSummary: summary}));;
+        let achievementsPromise = AchievementsService.getAchievements().then(achievements => this .setState({achievementsDetails: achievements}));
 
-        this.setState({
-            titleInfo: await titleInfoPromise,
-            achievementsSummary: await summaryPromise,
-            achievementsDetails: await achievementsPromise,
-        });
+        try {
+            let titleInfo = await titleInfoPromise;
+            this.setState({
+                isConfigurationValid: true,
+                titleInfo: titleInfo,
+            });
+        }
+        catch(error)
+        {
+            this.setState({
+                isConfigurationValid: false,
+            });
+        }
     }
 
     refreshSummary = async () => {
