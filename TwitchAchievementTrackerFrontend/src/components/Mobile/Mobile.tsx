@@ -5,8 +5,10 @@ import { AchievementsService } from '../../services/EBSAchievementsService';
 import { Twitch } from '../../services/TwitchService';
 import NujaCup from '../../../assets/nujacup.svg';
 import NujaLogo from '../../../assets/nuja.png';
+import AchievementsList from '../AchievementsList/AchievementsList';
 
 type VideoOverlayState = {
+    isConfigurationValid: boolean,
     titleInfo: TitleInfo,
     achievementsSummary: AchievementSummary,
     achievementsDetails: Achievement[],
@@ -14,6 +16,7 @@ type VideoOverlayState = {
 
 export default class Mobile extends React.Component<any, VideoOverlayState> {
     state: VideoOverlayState = {
+        isConfigurationValid: false,
         titleInfo: null,
         achievementsSummary: null,
         achievementsDetails: []
@@ -44,14 +47,22 @@ export default class Mobile extends React.Component<any, VideoOverlayState> {
 
     refreshAll = async () => {
         let titleInfoPromise = AchievementsService.getTitleInfo();
-        let summaryPromise = AchievementsService.getSummary();
-        let achievementsPromise = AchievementsService.getAchievements();
+        let summaryPromise = AchievementsService.getSummary().then(summary => this .setState({achievementsSummary: summary}));;
+        let achievementsPromise = AchievementsService.getAchievements().then(achievements => this .setState({achievementsDetails: achievements}));
 
-        this.setState({
-            titleInfo: await titleInfoPromise,
-            achievementsSummary: await summaryPromise,
-            achievementsDetails: await achievementsPromise,
-        });
+        try {
+            let titleInfo = await titleInfoPromise;
+            this.setState({
+                isConfigurationValid: true,
+                titleInfo: titleInfo,
+            });
+        }
+        catch(error)
+        {
+            this.setState({
+                isConfigurationValid: false,
+            });
+        }
     }
 
     refreshSummary = async () => {
@@ -86,20 +97,7 @@ export default class Mobile extends React.Component<any, VideoOverlayState> {
                         </h2>
                     </div>
                 </div>
-                <ul id="list">
-                    {this.state.achievementsDetails.map((achievement, i)=> 
-                        (
-                            <li key={"achievement_" + i + "_" + achievement.id} className={achievement.completed ? "completed" : "notCompleted"}>
-                                <div className="achievementTitle">
-                                    {achievement.name}
-                                </div>
-                                <div className="achievementDescription">
-                                    {achievement.description}
-                                </div>
-                            </li>
-                        ))
-                    }
-                </ul>
+                <AchievementsList achievements={this.state.achievementsDetails} />
             </div>
         )
     }

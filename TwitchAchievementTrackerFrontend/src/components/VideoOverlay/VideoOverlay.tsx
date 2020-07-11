@@ -6,6 +6,7 @@ import { AchievementsService } from '../../services/EBSAchievementsService';
 import NujaCup from '../../../assets/nujacup.svg';
 import NujaLogo from '../../../assets/nuja.png';
 import { Twitch } from '../../services/TwitchService';
+import AchievementsList from '../AchievementsList/AchievementsList';
 
 type VideoOverlayState = {
     isCollapsed: boolean,
@@ -113,20 +114,7 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
                             <span className="completedCount">{completedCount}</span>/<span className="totalCount">{totalCount}</span> 
                         </div>
                     </div>
-                    <ul id="list">
-                        {this.state.achievementsDetails.map((achievement, i)=> 
-                            (
-                                <li key={"achievement_" + i + "_" + achievement.id} className={achievement.completed ? "completed" : "notCompleted"}>
-                                    <div className="achievementTitle">
-                                        {achievement.name}
-                                    </div>
-                                    <div className="achievementDescription">
-                                        {achievement.description}
-                                    </div>
-                                </li>
-                            ))
-                        }
-                    </ul>
+                    <AchievementsList achievements={this.state.achievementsDetails} />
                 </div>
             </div>
         )
