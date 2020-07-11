@@ -48,9 +48,6 @@ export default class ConfigSteamConfigRoot extends React.Component<ConfigSteamCo
     }
 
     onValidateStep = async (e: React.Component, config: ExtensionConfiguration) => {
-        // Make sure we keep the non-active config saved
-        config.xBoxLiveConfig = this.props.savedConfiguration.xBoxLiveConfig;
-
         let result = await ConfigurationService.setConfiguration(config);
         Twitch.setConfiguration(result.configToken, ServerConfig.EBSVersion);
 

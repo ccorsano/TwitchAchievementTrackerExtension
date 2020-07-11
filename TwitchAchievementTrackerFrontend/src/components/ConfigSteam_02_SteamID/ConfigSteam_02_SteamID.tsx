@@ -7,6 +7,7 @@ import EBSAchievementsService from '../../services/EBSAchievementsService';
 import GamerCardComponent from '../GamerCard/GamerCard';
 import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
 import ConfigSteam_03_AppId from '../ConfigSteam_03_AppId/ConfigSteam_03_AppId'
+import ValidationErrorList from '../ValidationErrorList/ValidationErrorList';
 
 interface ConfigSteam_03_SteamIDProps extends Base.ConfigStepBaseProps {
     webApiKey: string;
@@ -17,6 +18,7 @@ type ConfigSteam_03_SteamIDState = {
     isProfileUrlFormatValid: boolean;
     isProfileValid: boolean;
     isConfirmed: boolean;
+    unvalidatedUrl: string;
     steamProfileUrl: string;
     steamProfileId: string;
     steamProfile: PlayerInfoCard;
@@ -24,7 +26,7 @@ type ConfigSteam_03_SteamIDState = {
 }
 
 export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<ConfigSteam_03_SteamIDProps, ConfigSteam_03_SteamIDState> {
-    formatRegexp: RegExp = /^https:\/\/steamcommunity\.com\/id\/([^\/]+)(\/.*)?$/i;
+    formatRegexp: RegExp = /^https:\/\/steamcommunity\.com\/(profiles|id)\/([^\/]+)(\/.*)?$/i;
     steamIdRegexp: RegExp = /^[0-9]+$/;
 
     state: ConfigSteam_03_SteamIDState = {
@@ -32,6 +34,7 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<ConfigSt
         isProfileUrlFormatValid: false,
         isProfileValid: false,
         isConfirmed: false,
+        unvalidatedUrl: null,
         steamProfileUrl: null,
         steamProfileId: null,
         steamProfile: null,
@@ -44,7 +47,6 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<ConfigSt
         this.onChangeProfileUrl = this.onChangeProfileUrl.bind(this);
         this.onValidate = this.onValidate.bind(this);
         this.onResetProfile = this.onResetProfile.bind(this);
-        this.onContinue = this.onContinue.bind(this);
         this.unvalidate = this.unvalidate.bind(this);
     }
 
@@ -75,18 +77,26 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<ConfigSt
         this.setState({
             isProfileUrlFormatValid: formatCheck,
             isProfileValid: false,
+            unvalidatedUrl: e.currentTarget.value,
             steamProfileUrl: formatCheck ? e.currentTarget.value : null,
         });
     }
 
     onValidate = async (e: React.SyntheticEvent<HTMLInputElement>) => {
+        if (this.state.isProfileValid)
+        {
+            this.setState({
+                isConfirmed: true,
+            });
+        }
+
         this.setState({
             isLoading: true,
         })
 
         try {
             let split = this.formatRegexp.exec(this.state.steamProfileUrl);
-            let profileId = split[1];
+            let profileId = split[2];
             let resolvedProfile: PlayerInfoCard = null;
     
             if (! this.steamIdRegexp.test(profileId))
@@ -137,16 +147,10 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<ConfigSt
     
     onResetProfile = (e: React.SyntheticEvent<HTMLInputElement>) => {
         this.setState({
-            isProfileUrlFormatValid: false,
+            isProfileUrlFormatValid: true,
             isProfileValid: false,
             steamProfileId: null,           
             steamProfile: null,
-        });
-    }
-
-    onContinue = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        this.setState({
-            isConfirmed: true
         });
     }
 
@@ -158,7 +162,7 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<ConfigSt
 
     render(){
         let isCheckEnabled = this.state.isProfileUrlFormatValid;
-        let isContinueEnabled = this.state.isProfileValid;
+        let isContinueEnabled = isCheckEnabled || this.state.isProfileValid;
 
         if (this.state.isConfirmed){
             return (
@@ -187,18 +191,15 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<ConfigSt
             {
                 playerInfoCard = [
                     <label htmlFor="vanityUrl">Steam Profile URL</label>,
-                    <input name="vanityUrl" type="text" pattern="https:\/\/steamcommunity\.com\/id\/([^\/]+)(\/.*)?$" placeholder="Enter your Steam profile URL" onChange={this.onChangeProfileUrl} />,
+                    <input name="vanityUrl" type="text"
+                        pattern="https:\/\/steamcommunity\.com\/(profiles|id)\/([^\/]+)(\/.*)?$"
+                        placeholder="Enter your Steam profile URL"
+                        value={this.state.unvalidatedUrl}
+                        onChange={this.onChangeProfileUrl} />,
                     <div>
                         <span className="icon-info"></span> You can copy your Profile URL by right-clicking on your profile page on the Steam application, and selecting 'Copy Page URL'.
                     </div>,
-                    <ul>
-                        {this.state.errors.map((error, i) => (
-                            <li key={error.path + '_' + i}>
-                                {error.path}: {error.errorDescription}
-                            </li>
-                        ))}
-                    </ul>,
-                    <input type="button" value="Search" disabled={!isCheckEnabled} onClick={this.onValidate} />
+                    <ValidationErrorList errors={this.state.errors} />
                 ]
             }
         }
@@ -214,7 +215,7 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<ConfigSt
         return [
             playerInfoCard,
             <input type="button" value="Back" onClick={this.onBack} />,
-            <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onContinue} />
+            <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onValidate} />
         ]
     }
 }
