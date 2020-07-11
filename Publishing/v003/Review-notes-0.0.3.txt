@@ -1,0 +1,23 @@
+Review channel: https://www.twitch.tv/miekyld
+
+Review team guidance:
+- For XBoxLive configuration:
+  - XApi.us review key: 
+  - GamerTag: use any, or search for ""
+  - Game selection: select any
+  - Language selection: select any
+- For Steam configuration:
+  - Steam WebAPI review Key: 
+  - Steam Profile Url: copy any, or use https://steamcommunity.com/id//
+  - Game selection: select any
+  - Language selection: select any
+
+Changelog, v0.0.3
+- Rewrite of frontend in React + TypeScript
+  Please note that full-code sourcemap are included, code is easiest browsed using Developers Tools through WebPack source mapping.
+  Given full source maps are available, I enabled minification to keep the size low for the end users, I can provide the full frontend project upon request.
+- Assisted configuration
+  Configuration is now a proper React app, enabling for a much better UX.
+  It should now be much harder to save an invalid configuration, and the configuration will checks and give directions if the xapi.us token needs a refresh.
+- Reconfiguration support
+  You can reconfigure if needed, the extension pushes to pub-sub in case the streamer went live with the wrong config
