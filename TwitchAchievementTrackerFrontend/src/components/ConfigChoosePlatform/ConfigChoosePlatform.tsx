@@ -1,15 +1,12 @@
 import * as React from 'react';
 import './ConfigChoosePlatform.scss';
-import { NoEmitOnErrorsPlugin } from 'webpack';
 import ConfigXBLConfigRoot from '../ConfigXBLConfigRoot/ConfigXBLConfigRoot';
 import ConfigSteamConfigRoot from '../ConfigSteamConfigRoot/ConfigSteamConfigRoot';
-import { EBSBase } from '../../services/EBSBase';
-import EBSConfigurationService, { ConfigurationService } from '../../services/EBSConfigurationService';
+import { ConfigurationService } from '../../services/EBSConfigurationService';
 import { ExtensionConfiguration, ActiveConfig } from '../../common/EBSTypes';
 import XBoxLiveLogo from '../../../assets/XBox_Live_logo.svg';
 import SteamLogo from '../../../assets/Steam_icon_logo.svg';
 import ConfigSummary from '../ConfigSummary/ConfigSummary';
-import { Twitch } from '../../services/TwitchService';
 import { TwitchExtensionConfiguration } from '../../common/TwitchExtension';
 
 type onChangeCallback = (e: React.SyntheticEvent<HTMLElement>) => void;
@@ -51,7 +48,7 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
     }
 
     componentDidMount = async () => {
-        let [authToken, configurationToken] = await ConfigurationService.configuredPromise;
+        let [, configurationToken] = await ConfigurationService.configuredPromise;
         if (configurationToken)
         {
             let configuration = await ConfigurationService.fetchConfiguration(configurationToken);
@@ -87,13 +84,13 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
         this.props.changeHandler(e);
     }
 
-    onBack = (e: React.MouseEvent<HTMLInputElement>) => {
+    onBack = () => {
         this.setState({
             currentPlatform: CurrentPlatformEnum.None
         });
     }
 
-    onRestart = (e: React.MouseEvent<HTMLInputElement>) => {
+    onRestart = () => {
         this.setState({
             isConfirmed: false,
             currentPlatform: CurrentPlatformEnum.None
