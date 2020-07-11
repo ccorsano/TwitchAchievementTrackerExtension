@@ -48,13 +48,6 @@ export class EBSBase {
 
         this.configuredPromise = Promise.all([this.contextPromise, this.configurationPromise]);
         this.configuredPromise.then(([authContext, configContext]) => {
-            console.log("blah");
-            console.log(this.context);
-            console.log(this.configuration);
-            console.log(authContext);
-            console.log(authContext);
-            console.log(configContext);
-            
             if (this.onConfigured)
             {
                 this.onConfigured(authContext, configContext);

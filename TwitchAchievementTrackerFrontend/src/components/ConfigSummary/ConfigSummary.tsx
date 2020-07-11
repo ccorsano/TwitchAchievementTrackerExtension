@@ -41,9 +41,6 @@ export default class ConfigSummary extends React.Component<ConfigSummaryProps, C
 
     updateFromProps = async (props: ConfigSummaryProps) => {
         let configuration = props.extensionConfig;
-        console.log(configuration.activeConfig);
-        console.log(configuration.steamConfig);
-        console.log(configuration.xBoxLiveConfig);
 
         switch (configuration.activeConfig) {
             case ActiveConfig.XBoxLive:

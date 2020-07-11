@@ -10,7 +10,6 @@ export default class ConfigurationRoot extends React.Component {
     }
 
     onPlatformChosen = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        console.log("Platform selected: " + e.currentTarget.value);
     }
 
     render(){

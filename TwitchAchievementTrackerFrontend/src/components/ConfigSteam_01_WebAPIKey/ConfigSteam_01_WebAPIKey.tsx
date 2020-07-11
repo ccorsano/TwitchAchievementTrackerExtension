@@ -35,8 +35,6 @@ export default class ConfigSteam_01_WebAPIKey extends Base.ConfigStepBase<Base.C
 
         this.onChangeWebApiValue = this.onChangeWebApiValue.bind(this);
         this.changeWebApiValue = this.changeWebApiValue.bind(this);
-
-        console.log("Config: " + this.props.savedConfiguration)
     }
 
     componentDidMount = () => {
@@ -114,6 +112,9 @@ export default class ConfigSteam_01_WebAPIKey extends Base.ConfigStepBase<Base.C
         return [
             <label htmlFor="webApiKey">Steam WebApi Key</label>,
             <input name="webApiKey" type="text" pattern="[0-9a-fA-F]{32}" value={this.state.enteredApiKey} placeholder="Enter your Steam WebAPI key" onChange={this.onChangeWebApiValue} className={this.state.isSyntaxValid ? '' : 'sf1-invalid'} />,
+            <div>
+                <span className="icon-info"></span> You can apply for a WebAPI Key on <a href="https://steamcommunity.com/dev/apikey" target="_blank">https://steamcommunity.com/dev/apikey</a>.
+            </div>,
             <ul>
                 {this.state.errors.map((error, i) => (
                     <li key={error.path + '_' + i}>
