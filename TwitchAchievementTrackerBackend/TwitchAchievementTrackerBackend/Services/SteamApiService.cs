@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace TwitchAchievementTrackerBackend.Services
         private readonly HttpClient _storeClient;
         private readonly SteamApiOptions _options;
         private readonly IMemoryCache _cache;
+        private readonly ILogger _logger;
 
         public static SupportedLanguage[] STEAM_SUPPORTED_LANGUAGES = new SupportedLanguage[]
         {
@@ -56,7 +58,7 @@ namespace TwitchAchievementTrackerBackend.Services
             new SupportedLanguage { DisplayName = "Vietnamese", LangCode = "vietnamese" }
         };
 
-        public SteamApiService(IHttpClientFactory httpClientFactory, IOptions<SteamApiOptions> options, IMemoryCache memoryCache)
+        public SteamApiService(IHttpClientFactory httpClientFactory, IOptions<SteamApiOptions> options, IMemoryCache memoryCache, ILogger<SteamApiService> logger)
         {
             _httpClient = httpClientFactory.CreateClient();
             if (string.IsNullOrEmpty(options.Value.WebApiKey))
@@ -70,6 +72,8 @@ namespace TwitchAchievementTrackerBackend.Services
             _storeClient.BaseAddress = new Uri("https://store.steampowered.com/");
 
             _cache = memoryCache;
+            _logger = logger;
+
             var unawaited = LoadAppList();
         }
 
@@ -130,7 +134,7 @@ namespace TwitchAchievementTrackerBackend.Services
         {
             webApiKey = webApiKey ?? _options.WebApiKey;
 
-            Func<string, string> cacheKey = (string vanityId) => $"steam:profilesummary:{vanityId}";
+            Func<string, string> cacheKey = (string steamId) => $"steam:profilesummary:{steamId}";
 
             var cachedValues = steamIds.ToDictionary(id => id, id => _cache.TryGetValue<SteamPlayerSummary>(cacheKey(id), out var cached) ? cached : null);
             var remainingIds = steamIds.Where(id => cachedValues[id] == null);
@@ -246,6 +250,20 @@ namespace TwitchAchievementTrackerBackend.Services
                 _cache.Set(cacheKey, result, _options.AppListCacheTime);
             }
             return result;
+        }
+
+        public async Task<bool> TestApiKey(string webApiKey)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"ISteamUser/GetPlayerSummaries/v2/?steamids={_options.TestSteamId}");
+            request.Headers.Add("x-webapi-key", webApiKey);
+            var response = await _httpClient.SendAsync(request);
+
+            if (! response.IsSuccessStatusCode)
+            {
+                _logger.LogError($"Failed Steam WebAPI test call: {response.StatusCode}; {response.ReasonPhrase}");
+            }
+
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<SteamPlayerOwnedGameInfo[]> GetOwnedGames(string steamId, string webApiKey = null)

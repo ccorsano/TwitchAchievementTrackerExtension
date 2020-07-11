@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Data;
@@ -22,7 +23,9 @@ namespace TwitchAchievementTrackerBackendTests
             {
                 EncryptionSecret = secret
             });
-            var tokenService = new ConfigurationTokenService(options);
+            var loggerFactory = new LoggerFactory();
+            
+            var tokenService = new ConfigurationTokenService(options, loggerFactory.CreateLogger<ConfigurationTokenService>());
 
             var decryptedPayload = tokenService.Decrypt(Convert.FromBase64String(encrypted));
             var configurationIn = tokenService.DeserializeConfigurationToken_v1(decryptedPayload);

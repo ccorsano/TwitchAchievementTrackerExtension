@@ -66,6 +66,7 @@ namespace TwitchAchievementTrackerBackend
             services.AddSingleton<XApiService>();
             services.AddSingleton<SteamApiService>();
             services.AddSingleton<ConfigurationTokenService>();
+            services.AddSingleton<ConfigurationService>();
             services.AddMemoryCache();
 
             services.AddApplicationInsightsTelemetry();
