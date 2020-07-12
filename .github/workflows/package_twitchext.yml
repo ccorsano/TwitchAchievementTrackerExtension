@@ -29,8 +29,7 @@ jobs:
       run: |
         npm install
         npm run build
-        zip -r assets-${{github.run_id}}.zip dist/*
     - name: Upload Twitch Extension package
       uses: actions/upload-artifact@v2
       with:
-        path: ./TwitchAchievementTrackerFrontend/assets-${{github.run_id}}.zip
+        path: ./TwitchAchievementTrackerFrontend/dist/
