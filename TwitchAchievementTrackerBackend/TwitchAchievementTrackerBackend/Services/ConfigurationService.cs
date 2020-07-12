@@ -101,6 +101,28 @@ namespace TwitchAchievementTrackerBackend.Services
             };
         }
 
+        public async Task<bool> ForceRefresh(ExtensionConfiguration extensionConfiguration)
+        {
+            switch (extensionConfiguration.ActiveConfig)
+            {
+                case ActiveConfig.XBoxLive:
+                    return await _xApiService.PurgeCache(extensionConfiguration.XBoxLiveConfig);
+                case ActiveConfig.Steam:
+                    return await _steamApiService.PurgeCache(extensionConfiguration.SteamConfig);
+                default:
+                    throw new NotSupportedException("Unknown config type");
+            }
+        }
+
+        internal RateLimits GetXApiRateLimits(ExtensionConfiguration extensionConfiguration)
+        {
+            if (extensionConfiguration.ActiveConfig != ActiveConfig.XBoxLive)
+            {
+                throw new ArgumentException("Only valid on XBoxLive configs");
+            }
+            return _xApiService.GetRateLimit(extensionConfiguration.XBoxLiveConfig.XApiKey);
+        }
+
         public async Task<PlayerInfoCard> ResolveXBoxLiveGamertag(string gamertag, string xApiKey = null)
         {
             var xuid = await _xApiService.ResolveXuid(gamertag, xApiKey);

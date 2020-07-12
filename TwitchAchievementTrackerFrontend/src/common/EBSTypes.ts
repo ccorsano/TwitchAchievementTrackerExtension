@@ -60,3 +60,9 @@ export interface AchievementSummary {
     currentPoints: number;
     totalPoints: number;
 }
+
+export interface RateLimits {
+    hourlyLimit: number,
+    remaining: number,
+    resetTime: Date,
+}

@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -31,8 +34,9 @@ namespace TwitchAchievementTrackerBackend.Services
         private readonly HttpClient _httpClient;
         private readonly XApiOptions _options;
         private readonly IMemoryCache _cache;
+        private readonly ILogger _logger;
 
-        public XApiService(IHttpClientFactory httpClientFactory, IOptions<XApiOptions> options, IMemoryCache memoryCache)
+        public XApiService(IHttpClientFactory httpClientFactory, IOptions<XApiOptions> options, IMemoryCache memoryCache, ILogger<XApiService> logger)
         {
             _httpClient = httpClientFactory.CreateClient();
             if (string.IsNullOrEmpty(options.Value.XApiKey))
@@ -44,11 +48,52 @@ namespace TwitchAchievementTrackerBackend.Services
             _httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
             _httpClient.BaseAddress = new Uri("https://xapi.us/v2/");
             _cache = memoryCache;
+            _logger = logger;
         }
 
         public string GetCacheKey(string call, XApiConfiguration config)
         {
             return $"{call}:{config.TitleId}:{config.StreamerXuid}:{config.Locale}";
+        }
+
+        private void SaveRateLimit(string xApiKey, HttpResponseMessage response)
+        {
+            var rateLimit = int.Parse(response.Headers.GetValues("X-RateLimit-Limit").FirstOrDefault() ?? "60");
+            var rateLimitRemaining = int.Parse(response.Headers.GetValues("X-RateLimit-Remaining").FirstOrDefault() ?? "60");
+            var rateLimitResetTime = int.Parse(response.Headers.GetValues("X-RateLimit-Reset").FirstOrDefault() ?? "3600");
+            var rateLimitObj = new RateLimits
+            {
+                HourlyLimit = rateLimit,
+                Remaining = rateLimitRemaining,
+                ResetTime = DateTimeOffset.UtcNow.AddSeconds(rateLimitResetTime),
+            };
+
+            _cache.Set($"ratelimit:{xApiKey}", rateLimitObj, rateLimitObj.ResetTime);
+        }
+
+        public RateLimits GetRateLimit(string xApiKey)
+        {
+            if (_cache.TryGetValue<RateLimits>($"ratelimit:{xApiKey}", out var rateLimit))
+            {
+                return rateLimit;
+            }
+            return new RateLimits
+            {
+                HourlyLimit = 60,
+                Remaining = 60,
+                ResetTime = DateTimeOffset.UtcNow
+            };
+        }
+
+        private void CheckRateLimit(string xApiKey)
+        {
+            if (_cache.TryGetValue<RateLimits>($"ratelimit:{xApiKey}", out var rateLimit))
+            {
+                if (rateLimit.Remaining < rateLimit.HourlyLimit * 0.1)
+                {
+                    _logger.LogWarning($"Nearing xApi rate limit with {rateLimit.Remaining}/{rateLimit.HourlyLimit}, reset in {rateLimit.ResetTime - DateTimeOffset.UtcNow}");
+                }
+            }
         }
 
         public async Task<XUIDInfo> GetApiKeyXuid(string xApiKey)
@@ -57,6 +102,9 @@ namespace TwitchAchievementTrackerBackend.Services
             message.Headers.Add("X-AUTH", xApiKey);
             var response = await _httpClient.SendAsync(message);
             var responseBody = await response.Content.ReadAsStringAsync();
+
+            SaveRateLimit(xApiKey, response);
+
             if (!response.IsSuccessStatusCode)
             {
                 var errorMessage = JsonSerializer.Deserialize<XApiError>(responseBody, new JsonSerializerOptions
@@ -91,6 +139,9 @@ namespace TwitchAchievementTrackerBackend.Services
                 }
 
                 var response = await _httpClient.SendAsync(message);
+
+                SaveRateLimit(config.XApiKey, response);
+
                 response.EnsureSuccessStatusCode();
 
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
@@ -117,6 +168,9 @@ namespace TwitchAchievementTrackerBackend.Services
                 message.Headers.Add("X-AUTH", xApiKey);
 
                 var response = await _httpClient.SendAsync(message);
+
+                SaveRateLimit(xApiKey, response);
+
                 response.EnsureSuccessStatusCode();
 
                 result = await response.Content.ReadAsStringAsync();
@@ -124,6 +178,20 @@ namespace TwitchAchievementTrackerBackend.Services
             }
 
             return result;
+        }
+
+        public async Task<bool> PurgeCache(XApiConfiguration config)
+        {
+            var cacheKey = GetCacheKey($"achievements", config);
+            var wasCached = _cache.TryGetValue<XApiAchievement[]>(cacheKey, out var cachedAchievements);
+            if (wasCached)
+            {
+                _cache.Remove(cacheKey);
+            }
+
+            var reloaded = await GetAchievementsAsync(config);
+
+            return reloaded.Count(a => a?.ProgressState == ProgressState.Achieved) != cachedAchievements.Count(a => a?.ProgressState == ProgressState.Achieved);
         }
 
         public async Task<XApiGamerCard> GetGamerCard(string xuid, string xApiKey)
@@ -134,6 +202,8 @@ namespace TwitchAchievementTrackerBackend.Services
                 var message = new HttpRequestMessage(HttpMethod.Get, $"{xuid}/gamercard");
                 message.Headers.Add("X-AUTH", xApiKey);
                 var response = await _httpClient.SendAsync(message);
+
+                SaveRateLimit(xApiKey, response);
 
                 response.EnsureSuccessStatusCode();
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
@@ -165,6 +235,8 @@ namespace TwitchAchievementTrackerBackend.Services
                 message.Headers.Add("Accept-Language", $"{config.Locale};q=1.0");
                 var response = await _httpClient.SendAsync(message);
 
+                SaveRateLimit(config.XApiKey, response);
+
                 response.EnsureSuccessStatusCode();
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
@@ -192,6 +264,9 @@ namespace TwitchAchievementTrackerBackend.Services
                     message.Headers.Add("Accept-Language", $"{locale};q=1.0");
                 }
                 var response = await _httpClient.SendAsync(message);
+
+                SaveRateLimit(xApiKey, response);
+
                 response.EnsureSuccessStatusCode();
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
@@ -219,6 +294,9 @@ namespace TwitchAchievementTrackerBackend.Services
                     message.Headers.Add("Accept-Language", $"{locale};q=1.0");
                 }
                 var response = await _httpClient.SendAsync(message);
+
+                SaveRateLimit(xApiKey, response);
+
                 response.EnsureSuccessStatusCode();
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {

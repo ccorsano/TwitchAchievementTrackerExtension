@@ -1,6 +1,6 @@
 import * as EBSConfig from "../common/ServerConfig"
 import * as EBS from './EBSBase'
-import { ExtensionConfiguration, ActiveConfig, SupportedLanguage, PlayerInfoCard, TitleInfo } from '../common/EBSTypes';
+import { ExtensionConfiguration, ActiveConfig, SupportedLanguage, PlayerInfoCard, TitleInfo, RateLimits } from '../common/EBSTypes';
 import { TwitchAuthCallbackContext, TwitchExtensionConfiguration } from "../common/TwitchExtension";
 import { Twitch } from "./TwitchService";
 
@@ -98,6 +98,14 @@ export default class EBSConfigurationService extends EBS.EBSBase {
 
     getXBoxLiveSupportedLanguages = async (titleId: string, xapiKey: string): Promise<SupportedLanguage[]> => {
         return this.serviceFetch("/xapi/languages/" + encodeURIComponent(titleId) + "?xApiKey=" + encodeURIComponent(xapiKey));
+    }
+
+    forceRefresh = async (): Promise<boolean> => {
+        return this.serviceFetch("/liveconfig/forcerefresh");
+    }
+
+    getXApiRateLimits = async (): Promise<RateLimits> => {
+        return this.serviceFetch("/liveconfig/ratelimits")
     }
 }
 

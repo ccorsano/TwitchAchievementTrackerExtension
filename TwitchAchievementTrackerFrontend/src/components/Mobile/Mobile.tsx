@@ -36,11 +36,21 @@ export default class Mobile extends React.Component<any, VideoOverlayState> {
         Twitch.listen("broadcast", (target, contentType, messageStr) => {
             let message = JSON.parse(messageStr);
             let configToken = AchievementsService.configuration.content;
-            if (message.configToken != configToken)
-            {
-                AchievementsService.configuration.content = message.configToken;
-                AchievementsService.configuration.version = message.version;
-                this.refreshAll();
+            
+            switch (message.type) {
+                case "refresh":
+                    this.refreshAll();
+                    break;
+                case "set-config":
+                    if (message.configToken != configToken)
+                    {
+                        AchievementsService.configuration.content = message.configToken;
+                        AchievementsService.configuration.version = message.version;
+                        this.refreshAll();
+                    }
+                    break;
+                default:
+                    break;
             }
         });
     }
