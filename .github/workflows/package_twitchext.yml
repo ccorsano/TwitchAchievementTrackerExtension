@@ -32,4 +32,5 @@ jobs:
     - name: Upload Twitch Extension package
       uses: actions/upload-artifact@v2
       with:
+        name: frontend-${{github.run_id}}
         path: ./TwitchAchievementTrackerFrontend/dist/
