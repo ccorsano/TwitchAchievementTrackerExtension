@@ -129,6 +129,7 @@ export default class ConfigSteam_01_WebAPIKey extends Base.ConfigStepBase<Base.C
                 <span className="icon-info"></span> You can apply for a WebAPI Key on <a href="https://steamcommunity.com/dev/apikey" target="_blank">https://steamcommunity.com/dev/apikey</a>.
             </div>,
             <ValidationErrorList errors={this.state.errors} />,
+            <input type="button" value="Cancel" onClick={this.props.onBack} />,
             <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onContinue} />
         ]
     }

@@ -15,6 +15,7 @@ import { TwitchExtensionConfiguration } from '../../common/TwitchExtension';
 type ConfigSteamConfigProps = {
     savedConfiguration: ExtensionConfiguration,
     onSaved: (savedConfig: TwitchExtensionConfiguration, configObject: ExtensionConfiguration) => void;
+    onCancel: () => void;
 }
 
 type ConfigSteamConfigState = {
@@ -65,6 +66,7 @@ export default class ConfigSteamConfigRoot extends React.Component<ConfigSteamCo
     }
 
     onCancelStep = (previousState: any) => {
+        this.props.onCancel();
     }
 
     render(){
@@ -84,7 +86,7 @@ export default class ConfigSteamConfigRoot extends React.Component<ConfigSteamCo
 
         return [
             <h2>Steam</h2>,
-            config,
+            config
         ]
     }
 }

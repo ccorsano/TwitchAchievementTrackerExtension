@@ -17,6 +17,7 @@ import { ConfigXBLConfigStateEnum } from '../../common/ConfigStepBase';
 type ConfigXBLConfigProps = {
     onSaved: (savedConfig: TwitchExtensionConfiguration, configObject: ExtensionConfiguration) => void;
     savedConfiguration: ExtensionConfiguration;
+    onCancel: () => void;
 }
 
 type ConfigXBLConfigState = {
@@ -71,6 +72,7 @@ export default class ConfigXBLConfigRoot extends React.Component<ConfigXBLConfig
     }
 
     onCancelStep = () => {
+        this.props.onCancel();
     }
 
     render(){

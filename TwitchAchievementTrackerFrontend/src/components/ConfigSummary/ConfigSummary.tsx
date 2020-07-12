@@ -27,7 +27,7 @@ export default class ConfigSummary extends React.Component<ConfigSummaryProps, C
         super(props);
 
         this.componentDidMount = this.componentDidMount.bind(this);
-        this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
+        this.UNSAFE_componentWillReceiveProps = this.UNSAFE_componentWillReceiveProps.bind(this);
         this.updateFromProps = this.updateFromProps.bind(this);
     }
 
@@ -35,7 +35,7 @@ export default class ConfigSummary extends React.Component<ConfigSummaryProps, C
         this.updateFromProps(this.props);
     }
 
-    componentWillReceiveProps = (props: ConfigSummaryProps) => {
+    UNSAFE_componentWillReceiveProps = (props: ConfigSummaryProps) => {
         this.updateFromProps(props);
     }
 

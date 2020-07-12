@@ -86,6 +86,7 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
 
     onBack = () => {
         this.setState({
+            isConfirmed: this.state.savedConfiguration != null,
             currentPlatform: CurrentPlatformEnum.None
         });
     }
@@ -145,6 +146,7 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
                                     <input type="button" value="Select" className="section" onClick={(e) => this.onSelect(e, CurrentPlatformEnum.Steam) } />
                                 </div>
                             </div>
+                            <input type="button" value="Cancel" onClick={this.onBack} />,
                         </div>
                     )
                     break;
@@ -152,7 +154,7 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
                 case CurrentPlatformEnum.Steam: {
                     element = (
                         <div className="ConfigSteam">
-                            <ConfigSteamConfigRoot onSaved={this.onSaved} savedConfiguration={this.state.savedConfiguration} />
+                            <ConfigSteamConfigRoot onSaved={this.onSaved} savedConfiguration={this.state.savedConfiguration} onCancel={this.onRestart} />
                         </div>
                     );
                     break;
@@ -160,7 +162,7 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
                 case CurrentPlatformEnum.XBoxLive: {
                     element = (
                         <div className="ConfigXBoxLive">
-                            <ConfigXBLConfigRoot onSaved={this.onSaved} savedConfiguration={this.state.savedConfiguration} />
+                            <ConfigXBLConfigRoot onSaved={this.onSaved} savedConfiguration={this.state.savedConfiguration} onCancel={this.onRestart} />
                         </div>
                     );
                     break;

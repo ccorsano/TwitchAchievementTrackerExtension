@@ -150,6 +150,7 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
             <input name="xapikey" type="text" pattern="[0-9a-f]{40}" size={45} value={this.state.enteredApiKey} placeholder="Enter your XApi.us key" onChange={this.onChangeXApiValue} className={this.state.isSyntaxValid ? '' : 'sf1-invalid'} />,
             helpMessage,
             <ValidationErrorList errors={this.state.errors} />,
+            <input type="button" value="Cancel" onClick={this.props.onBack} />,
             <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onContinue} />
         ]
     }
