@@ -30,7 +30,7 @@ table SteamConfiguration
     locale: string;
 }
 
-union PlatformConfiguration
+enum ActiveConfiguration : byte
 {
     XApiConfiguration,
     SteamConfiguration
@@ -39,7 +39,9 @@ union PlatformConfiguration
 table Configuration
 {
     version: string;
-    config: PlatformConfiguration;
+    active: ActiveConfiguration;
+    xBoxLiveConfig : XApiConfiguration;
+    steamConfig : SteamConfiguration;
 }
 
 root_type Configuration;

@@ -29,9 +29,6 @@ namespace TwitchAchievementTrackerBackendTests
 
             var decryptedPayload = tokenService.Decrypt(Convert.FromBase64String(encrypted));
             var configurationIn = tokenService.DeserializeConfigurationToken_v1(decryptedPayload);
-            var tokenOut = tokenService.SerializeConfigurationToken_v1(configurationIn);
-
-            Assert.Equal(decryptedPayload, tokenOut);
 
             // Test serialization from current version ExtensionConfiguration type
             var configuration = new ExtensionConfiguration
@@ -49,7 +46,12 @@ namespace TwitchAchievementTrackerBackendTests
             };
             var configurationOut = tokenService.SerializeConfigurationToken_v1(configuration);
 
-            Assert.Equal(decryptedPayload, configurationOut);
+            Assert.Equal(configuration.Version, configurationIn.Version);
+            Assert.Equal(configuration.SteamConfig, configurationIn.SteamConfig);
+            Assert.Equal(configuration.XBoxLiveConfig.XApiKey, configurationIn.XBoxLiveConfig.XApiKey);
+            Assert.Equal(configuration.XBoxLiveConfig.StreamerXuid, configurationIn.XBoxLiveConfig.StreamerXuid);
+            Assert.Equal(configuration.XBoxLiveConfig.TitleId, configurationIn.XBoxLiveConfig.TitleId);
+            Assert.Equal(configuration.XBoxLiveConfig.Locale, configurationIn.XBoxLiveConfig.Locale);
         }
     }
 }
