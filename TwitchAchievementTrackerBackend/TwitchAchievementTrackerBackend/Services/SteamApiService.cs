@@ -214,6 +214,7 @@ namespace TwitchAchievementTrackerBackend.Services
                 .Where(a => a.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
                 .Select(a => new TitleInfo
                 {
+                    Platform = ActiveConfig.Steam,
                     TitleId = a.AppId.ToString(),
                     ProductTitle = a.Name,
                     ProductDescription = "",

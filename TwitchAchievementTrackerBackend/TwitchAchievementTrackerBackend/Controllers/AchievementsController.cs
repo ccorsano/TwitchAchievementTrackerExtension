@@ -119,6 +119,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
                 return searchResult.Products.Select(product =>
                     new TitleInfo
                     {
+                        Platform = ActiveConfig.XBoxLive,
                         TitleId = product.AlternateIds?.FirstOrDefault(id => id.IdType == "XboxTitleId")?.Value ?? "",
                         ProductTitle = product.LocalizedProperties?.FirstOrDefault()?.ProductTitle ?? "Unknown",
                         ProductDescription = product.LocalizedProperties?.FirstOrDefault()?.ProductDescription ?? "-",
