@@ -299,7 +299,7 @@ namespace TwitchAchievementTrackerBackend.Services
             if (!_cache.TryGetValue(cacheKey, out SteamPlayerOwnedGameInfo[] result))
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, $"IPlayerService/GetOwnedGames/v1/?steamid={steamId}&include_appinfo=true&include_played_free_games=true");
-                request.Headers.Add("x-webapi-key", steamConfig.WebApiKey);
+                request.Headers.Add("x-webapi-key", webApiKey);
                 var response = await _httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
 
