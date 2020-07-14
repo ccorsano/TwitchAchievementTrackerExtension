@@ -106,17 +106,28 @@
         }
 
         .gameLogo {
-            height: 4em;
-            width: 4em;
             float: left;
             margin-right: 1em;
 
             cursor: pointer;
 
             background-image: url('../../../assets/nuja.png');
-            background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+
+            &.xboxlive {
+                height: 4em;
+                width: 4em;
+                background-size: cover;
+            }
+
+            &.steam {
+                height: 4em;
+                width: 6em;
+                background-size: contain;
+                background-position: top;
+                background-color: black;
+            }
         }
 
         .summaryWidget {

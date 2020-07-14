@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './Mobile.scss'
-import { TitleInfo, AchievementSummary, Achievement } from '../../common/EBSTypes';
+import { TitleInfo, AchievementSummary, Achievement, ActiveConfig } from '../../common/EBSTypes';
 import { AchievementsService } from '../../services/EBSAchievementsService';
 import { Twitch } from '../../services/TwitchService';
 import NujaCup from '../../../assets/nujacup.svg';
@@ -80,11 +80,12 @@ export default class Mobile extends React.Component<any, VideoOverlayState> {
         let percentage = this.state.achievementsSummary ? (this.state.achievementsSummary.completed / this.state.achievementsSummary.total) * 100.0 : 0.0;
         let completedCount = this.state.achievementsSummary?.completed ?? 0;
         let totalCount = this.state.achievementsSummary?.total ?? 0;
+        let logoClassName = "gameLogo noselect" + (this.state.titleInfo?.platform == ActiveConfig.XBoxLive ?  " steam" : " xboxlive");
 
         return (
             <div className="overlayBox open">
                 <div id="achievementsPanel">
-                    <div className="gameLogo noselect" style={{backgroundImage: `url(${this.state.titleInfo?.logoUri ?? NujaLogo})`}}>
+                    <div className={logoClassName} style={{backgroundImage: `url(${this.state.titleInfo?.logoUri ?? NujaLogo})`}}>
                     </div>
                     <div className="card-container">
                         <div id="completionHeadline">
