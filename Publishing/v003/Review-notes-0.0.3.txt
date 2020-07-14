@@ -3,21 +3,31 @@ Review channel: https://www.twitch.tv/miekyld
 Review team guidance:
 - For XBoxLive configuration:
   - XApi.us review key: 
-  - GamerTag: use any, or search for ""
+  - GamerTag: use any, or search for "Nuja3302"
   - Game selection: select any
   - Language selection: select any
 - For Steam configuration:
   - Steam WebAPI review Key: 
-  - Steam Profile Url: copy any, or use https://steamcommunity.com/id//
+  - Steam Profile Url: copy any, or use https://steamcommunity.com/id/miekyll/
   - Game selection: select any
   - Language selection: select any
+
+On the viewers side, just click the overlay to show the full list of achievements.
 
 Changelog, v0.0.3
 - Rewrite of frontend in React + TypeScript
   Please note that full-code sourcemap are included, code is easiest browsed using Developers Tools through WebPack source mapping.
-  Given full source maps are available, I enabled minification to keep the size low for the end users, I can provide the full frontend project upon request.
+  I can provide the full frontend project upon request, if the source maps are not enough.
+  As the WebPack developer tools might mix Twitch own source with mine, here is the file structure of my react project:
+    +-- src
+    |   +-- common/            -> Shared types and helpers
+    |   +-- components/        -> React components
+    |   +-- services/          -> Service classes
+    |   +-- Config.tsx         -> Root file for the broadcaster Configuration view
+    |   +-- Mobile.tsx         -> Root file for the Mobile viewer Twitch view
+    |   +-- VideoOverlay.tsx   -> Root file for the Video Overlay viewer Twitch view
 - Assisted configuration
   Configuration is now a proper React app, enabling for a much better UX.
-  It should now be much harder to save an invalid configuration, and the configuration will checks and give directions if the xapi.us token needs a refresh.
+  It should now be much harder to save an invalid configuration, and the configuration will check and give directions if the xapi.us token needs a refresh.
 - Reconfiguration support
   You can reconfigure if needed, the extension pushes to pub-sub in case the streamer went live with the wrong config
