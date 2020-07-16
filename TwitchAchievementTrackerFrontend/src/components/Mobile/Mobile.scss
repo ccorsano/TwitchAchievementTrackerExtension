@@ -3,8 +3,27 @@
         display: none;
     }
 
-    #achievementsPanel > .gameLogo {
-        margin-right: 0.2em;
+    #achievementsPanel {
+        &.steam {
+            height: 6.5em;
+        }
+
+        .gameLogo {
+           margin-right: 0.2em;
+   
+           &.steam {
+               width: 100%;
+               background-size: cover;
+               display: block;
+               float: none;
+           }
+       }
+    }
+
+    #list {
+        &.steam {
+            padding-top: 6.5em;
+        }
     }
 
     body .summaryWidget {
@@ -132,6 +151,16 @@ body {
     font-size: 1.2em;
     margin-top: 0.2em;
     margin-bottom: 0.2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.steam {
+        font-size: 1.0em;
+    }
+}
+
+.steam .overlayBox {
+    font-size: 1.0em;
 }
 
 .card-container {
@@ -142,7 +171,6 @@ body {
 
 .gameLogo {
     float: left;
-    margin-right: 1em;
 
     cursor: pointer;
 
@@ -154,11 +182,13 @@ body {
         height: 4em;
         width: 4em;
         background-size: cover;
+        margin-right: 1em;
     }
 
     &.steam {
         height: 4em;
-        width: 8em;
+        width: 8.56em;
+        margin-right: 0.5em;
         background-size: contain;
         background-position: top;
     }
@@ -192,6 +222,7 @@ body {
 #list {
     padding-top: 4.2em;
     padding-left: 0.5em;
+    font-size: 0.9em;
 }
 
 #list li {

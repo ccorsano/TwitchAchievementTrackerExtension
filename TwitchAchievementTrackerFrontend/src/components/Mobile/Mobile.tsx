@@ -80,11 +80,12 @@ export default class Mobile extends React.Component<any, VideoOverlayState> {
         let percentage = this.state.achievementsSummary ? (this.state.achievementsSummary.completed / this.state.achievementsSummary.total) * 100.0 : 0.0;
         let completedCount = this.state.achievementsSummary?.completed ?? 0;
         let totalCount = this.state.achievementsSummary?.total ?? 0;
-        let logoClassName = "gameLogo noselect" + (this.state.titleInfo?.platform == ActiveConfig.XBoxLive ?  " steam" : " xboxlive");
+        let platformClass = this.state.titleInfo?.platform == ActiveConfig.XBoxLive ?  "steam" : "xboxlive";
+        let logoClassName = "gameLogo noselect " + platformClass;
 
         return (
             <div className="overlayBox open">
-                <div id="achievementsPanel">
+                <div id="achievementsPanel" className={platformClass}>
                     <div className={logoClassName} style={{backgroundImage: `url(${this.state.titleInfo?.logoUri ?? NujaLogo})`}}>
                     </div>
                     <div className="card-container">
@@ -93,12 +94,12 @@ export default class Mobile extends React.Component<any, VideoOverlayState> {
                             <img src={NujaCup} alt="achievements" />
                             <span className="completedCount">{completedCount}</span>/<span className="totalCount">{totalCount}</span> 
                         </div>
-                        <h2 id="gameTitle">
+                        <h2 id="gameTitle" className={platformClass}>
                             {this.state.titleInfo?.productTitle ?? "Game"}
                         </h2>
                     </div>
                 </div>
-                <AchievementsList achievements={this.state.achievementsDetails} />
+                <AchievementsList achievements={this.state.achievementsDetails} platform={this.state.titleInfo?.platform} />
             </div>
         )
     }

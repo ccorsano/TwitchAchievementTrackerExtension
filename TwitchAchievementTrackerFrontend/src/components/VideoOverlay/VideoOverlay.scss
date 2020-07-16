@@ -65,6 +65,10 @@
             max-width: 25em;
             padding-left: 0.5em;
             padding-top: 0.2;
+
+            &.steam {
+                max-width: 30em;
+            }
         }
 
         #completionHeadline .percentage
@@ -123,7 +127,7 @@
 
             &.steam {
                 height: 4em;
-                width: 6em;
+                width: 8.56em;
                 background-size: contain;
                 background-position: top;
                 background-color: black;

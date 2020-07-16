@@ -95,7 +95,8 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
         let percentage = this.state.achievementsSummary ? (this.state.achievementsSummary.completed / this.state.achievementsSummary.total) * 100.0 : 0.0;
         let completedCount = this.state.achievementsSummary?.completed ?? 0;
         let totalCount = this.state.achievementsSummary?.total ?? 0;
-        let logoClassName = "gameLogo noselect" + (this.state.titleInfo?.platform == ActiveConfig.XBoxLive ?  " steam" : " xboxlive");
+        let platformClass = this.state.titleInfo?.platform == ActiveConfig.XBoxLive ?  "steam" : "xboxlive";
+        let logoClassName = "gameLogo noselect " + platformClass;
 
         return (
             <div className={this.state.isCollapsed ? "overlayBox collapsed" : "overlayBox open"}>
@@ -104,7 +105,7 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
                         { this.state.achievementsSummary ? percentage.toFixed(0) + '%' : ''}
                     </div>
                 </div>
-                <div id="achievementsPanel">
+                <div id="achievementsPanel" className={platformClass}>
                     <div className="card-container">
                         <h2 id="gameTitle">
                             {this.state.titleInfo?.productTitle ?? "Game"}
@@ -115,7 +116,7 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
                             <span className="completedCount">{completedCount}</span>/<span className="totalCount">{totalCount}</span> 
                         </div>
                     </div>
-                    <AchievementsList achievements={this.state.achievementsDetails} />
+                    <AchievementsList achievements={this.state.achievementsDetails} platform={this.state.titleInfo?.platform} />
                 </div>
             </div>
         )
