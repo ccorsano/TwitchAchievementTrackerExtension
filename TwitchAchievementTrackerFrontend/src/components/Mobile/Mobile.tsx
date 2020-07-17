@@ -80,7 +80,7 @@ export default class Mobile extends React.Component<any, VideoOverlayState> {
         let percentage = this.state.achievementsSummary ? (this.state.achievementsSummary.completed / this.state.achievementsSummary.total) * 100.0 : 0.0;
         let completedCount = this.state.achievementsSummary?.completed ?? 0;
         let totalCount = this.state.achievementsSummary?.total ?? 0;
-        let platformClass = this.state.titleInfo?.platform == ActiveConfig.XBoxLive ?  "steam" : "xboxlive";
+        let platformClass = this.state.titleInfo?.platform == ActiveConfig.Steam ?  "steam" : "xboxlive";
         let logoClassName = "gameLogo noselect " + platformClass;
 
         return (
