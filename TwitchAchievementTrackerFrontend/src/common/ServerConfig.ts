@@ -8,5 +8,5 @@ if (urlParams.get('state') == "testing")
 }
 
 
-export const EBSVersion = "0.0.3";
+export const EBSVersion = "2020.4";
 export const EBSBaseUrl = server;
