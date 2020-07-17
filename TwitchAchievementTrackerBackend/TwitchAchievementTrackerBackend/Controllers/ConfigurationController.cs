@@ -38,6 +38,12 @@ namespace TwitchAchievementTrackerBackend.Controllers
             };
         }
 
+        [HttpPost("title/validate")]
+        public Task<ValidationError[]> ValidateTitle(ExtensionConfiguration configuration)
+        {
+            return _service.ValidateTitle(configuration);
+        }
+
         [HttpPost("validate")]
         public Task<ValidationError[]> ValidateConfiguration(ExtensionConfiguration configuration)
         {

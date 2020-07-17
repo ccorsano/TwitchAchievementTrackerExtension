@@ -2,13 +2,15 @@ import './ConfigXBL_03_TitleId.scss';
 import * as React from 'react'
 import * as Base from '../../common/ConfigStepBase';
 import { AchievementsService } from '../../services/EBSAchievementsService';
-import { TitleInfo } from '../../common/EBSTypes';
-import { ConfigurationService } from '../../services/EBSConfigurationService';
+import { TitleInfo, ExtensionConfiguration, ActiveConfig } from '../../common/EBSTypes';
+import { ConfigurationService, ValidationError } from '../../services/EBSConfigurationService';
 import GameCard from '../GameCard/GameCard';
 import ConfigXBL_05_Confirm from '../ConfigXBL_05_Confirm/ConfigXBL_05_Confirm';
 import ConfigXBL_04_Locale from '../ConfigXBL_04_Locale/ConfigXBL_04_Locale';
 import ConfigXBL_02_XUID from '../ConfigXBL_02_XUID/ConfigXBL_02_XUID';
 import ConfigXBL_01_XApiKey from '../ConfigXBL_01_XApiKey/ConfigXBL_01_XApiKey';
+import { EBSVersion } from '../../common/ServerConfig';
+import ValidationErrorList from '../ValidationErrorList/ValidationErrorList';
 
 interface ConfigXBL_03_TitleIdProps extends Base.ConfigStepBaseProps {
     xApiKey: string,
@@ -21,6 +23,7 @@ type ConfigXBL_03_TitleIdState = {
     selectedTitle: TitleInfo;
     isLoading: boolean;
     isConfirmed: boolean;
+    errors: ValidationError[];
 }
 
 export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_03_TitleIdProps, ConfigXBL_03_TitleIdState> {
@@ -30,6 +33,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
         selectedTitle: null,
         isLoading: true,
         isConfirmed: false,
+        errors: [],
     }
 
     constructor(props: ConfigXBL_03_TitleIdProps) {
@@ -47,10 +51,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
         if (currentConfig?.xBoxLiveConfig?.titleId){
             ConfigurationService.resolveXBoxLiveTitleInfo(currentConfig.xBoxLiveConfig.titleId, currentConfig.xBoxLiveConfig.xApiKey)
             .then(titleInfo => {
-                this.setState({
-                    selectedTitle: titleInfo,
-                    isLoading:false,
-                });
+                this.validateTitle(titleInfo);
             })
             .catch(error => {
                 this.setState({
@@ -104,6 +105,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
             searchResults: [],
             selectedTitle: null,
             isLoading: true,
+            errors: [],
         });
         let titleInfos = await AchievementsService.searchXApiTitleInfo(this.state.titleSearch, this.props.xApiKey);
         this.setState({
@@ -114,16 +116,58 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
         });
     }
 
-    onSelectTitle = (e: React.MouseEvent<HTMLElement>, titleId: string) => {
+    onSelectTitle = async (e: React.MouseEvent<HTMLElement>, titleId: string) => {
         let titleInfo = this.state.searchResults.find(t => t.titleId == titleId);
 
         this.setState({
             titleSearch: this.state.titleSearch,
             searchResults: this.state.searchResults,
             selectedTitle: titleInfo,
+            isLoading: true,
+            errors: [],
         });
 
         // Validate and move on
+        await this.validateTitle(titleInfo);
+    }
+
+    validateTitle = async (titleInfo: TitleInfo) => {
+        this.setState({
+            isLoading: true,
+            errors: [],
+        });
+
+        const configuration: ExtensionConfiguration = {
+            activeConfig: ActiveConfig.XBoxLive,
+            steamConfig: null,
+            version: EBSVersion,
+            xBoxLiveConfig: {
+                xApiKey: this.props.xApiKey,
+                locale: this.props.savedConfiguration?.xBoxLiveConfig?.locale ?? "en",
+                streamerXuid: this.props.streamerXuid,
+                titleId: titleInfo.titleId,
+            }
+        }
+
+        let errors: ValidationError[] = [];
+        try
+        {
+            errors = await ConfigurationService.validateTitle(configuration);
+        }
+        catch(e)
+        {
+            errors.push({
+                errorCode: "EBSError",
+                errorDescription: "Error validating WebApiKey",
+                path: "",
+            });
+        }
+
+        this.setState({
+            errors: errors,
+            isLoading: false,
+            selectedTitle: titleInfo,
+        });
     }
 
     onResetTitle = (e: React.MouseEvent<HTMLInputElement>) => {
@@ -142,7 +186,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
     }
 
     render(){
-        const isContinueEnabled = this.state.selectedTitle;
+        const isContinueEnabled = this.state.selectedTitle && this.state.errors?.length == 0;
         let content;
 
         if (this.state.isConfirmed){
@@ -165,7 +209,10 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
         {
             let changeButton = (<input className="section" type="button" name="xBoxTitleChange" value="Change" onClick={this.onResetTitle} />);
             content = (
-                <GameCard titleInfo={this.state.selectedTitle} buttonSection={changeButton} />
+                <React.Fragment>
+                    <ValidationErrorList errors={this.state.errors} />
+                    <GameCard titleInfo={this.state.selectedTitle} buttonSection={changeButton} />
+                </React.Fragment>
             );
         }
         else

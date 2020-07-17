@@ -137,11 +137,6 @@ namespace TwitchAchievementTrackerBackend.Controllers
 
             if (config.ActiveConfig == ActiveConfig.XBoxLive)
             {
-                if (string.IsNullOrEmpty(config.XBoxLiveConfig.TitleId))
-                {
-
-                }
-
                 var achievements = await _xApiService.GetAchievementsAsync(config.XBoxLiveConfig);
                 var stateSummary = achievements.GroupBy(a => a.ProgressState).ToDictionary(a => a.Key, a => a.Count());
 
