@@ -52,6 +52,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
             {
                 var steamConfig = config.SteamConfig;
 
+                var libraryUrlTask = _steamApiService.GetLibraryTileImage(long.Parse(steamConfig.AppId));
                 var titleInfo = await _steamApiService.GetStoreDetails(uint.Parse(steamConfig.AppId));
 
                 return new TitleInfo
@@ -59,7 +60,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
                     TitleId = titleInfo.SteamAppid.ToString(),
                     ProductTitle = titleInfo.Name,
                     ProductDescription = titleInfo.ShortDescription,
-                    LogoUri = titleInfo.HeaderImage.ToString(),
+                    LogoUri =  (await libraryUrlTask) ?? titleInfo.HeaderImage.ToString(),
                 };
             }
 

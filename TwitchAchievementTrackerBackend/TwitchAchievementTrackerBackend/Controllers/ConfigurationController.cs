@@ -71,7 +71,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
                 .Select(game => new TitleInfo
             {
                 TitleId = game.AppId.ToString(),
-                LogoUri = game.ImgLogoUrl,
+                LogoUri = game.LibraryTileUrl ?? game.ImgLogoUrl,
                 ProductTitle = game.Name,
                 ProductDescription = "",
             }).ToArray();

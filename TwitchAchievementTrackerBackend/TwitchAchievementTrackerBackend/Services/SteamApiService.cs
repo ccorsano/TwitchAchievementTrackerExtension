@@ -121,11 +121,6 @@ namespace TwitchAchievementTrackerBackend.Services
             }
         }
 
-        public async Task GetAppInfo(SteamConfiguration steamConfig)
-        {
-            var storeDetails = await GetStoreDetails(uint.Parse(steamConfig.AppId));
-        }
-
         public async Task<SteamStoreDetails> GetStoreDetails(uint appId)
         {
             var cacheKey = $"steam:store:{appId}";
@@ -314,17 +309,42 @@ namespace TwitchAchievementTrackerBackend.Services
                 {
                     return new SteamPlayerOwnedGameInfo[0];
                 }
-                
+
                 Func<long, string, string> buildImageUri = (appId, imgId) => $"https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/{appId}/{imgId}.jpg";
-                foreach(var game in result)
+
+                var resolveTasks = result.Select(async game =>
                 {
+                    game.LibraryTileUrl = await GetLibraryTileImage(game.AppId);
                     game.ImgIconUrl = buildImageUri(game.AppId, game.ImgIconUrl);
                     game.ImgLogoUrl = buildImageUri(game.AppId, game.ImgLogoUrl);
-                }
+                });
+
+                await Task.WhenAll(resolveTasks);
 
                 _cache.Set(cacheKey, result, _options.ResultCacheTime);
             }
             return result;
+        }
+
+        public async Task<string> GetLibraryTileImage(long appId)
+        {
+
+            var cacheKey = $"steam:librarytile:{appId}";
+
+            if (!_cache.TryGetValue(cacheKey, out string tileUrl))
+            {
+                Func<long, string, string> buildLibraryImageUri = (appId, imgName) => $"https://steamcdn-a.akamaihd.net/steam/apps/{appId}/{imgName}";
+
+                var libraryTileImageUrl = $"https://steamcdn-a.akamaihd.net/steam/apps/{appId}/library_600x900.jpg";
+                var headRequest = new HttpRequestMessage(HttpMethod.Head, libraryTileImageUrl);
+                var libraryTileExistsResponse = await _httpClient.SendAsync(headRequest);
+                if (libraryTileExistsResponse.IsSuccessStatusCode)
+                {
+                    tileUrl = libraryTileImageUrl;
+                    _cache.Set(cacheKey, tileUrl, _options.AppListCacheTime);
+                }
+            }
+            return tileUrl;
         }
     }
 }
