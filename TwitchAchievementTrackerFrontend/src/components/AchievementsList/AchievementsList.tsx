@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Achievement } from "../../common/EBSTypes";
+import { Achievement, ActiveConfig } from "../../common/EBSTypes";
 
 interface AchievementsListProps {
     achievements: Achievement[],
+    platform: ActiveConfig,
 }
 
 interface AchievementsListState {
@@ -14,8 +15,9 @@ export default class AchievementsList extends React.Component<AchievementsListPr
     }
 
     render(){
+        let platformClass = this.props.platform == ActiveConfig.XBoxLive ?  "steam" : "xboxlive";
         return (
-            <ul id="list">
+            <ul id="list" className={platformClass}>
                 {this.props.achievements.map((achievement, i)=> 
                     (
                         <li key={"achievement_" + i + "_" + achievement.id} className={achievement.completed ? "completed" : "notCompleted"}>

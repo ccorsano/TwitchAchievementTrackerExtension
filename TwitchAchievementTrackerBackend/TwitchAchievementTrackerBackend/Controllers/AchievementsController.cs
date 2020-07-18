@@ -42,6 +42,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
 
                 return new TitleInfo
                 {
+                    Platform = ActiveConfig.XBoxLive,
                     TitleId = xConfig.TitleId,
                     ProductTitle = titleInfo.Products.FirstOrDefault()?.LocalizedProperties?.FirstOrDefault()?.ProductTitle ?? "Unknown",
                     ProductDescription = titleInfo.Products.FirstOrDefault()?.LocalizedProperties?.FirstOrDefault()?.ProductDescription ?? "-",
@@ -52,14 +53,16 @@ namespace TwitchAchievementTrackerBackend.Controllers
             {
                 var steamConfig = config.SteamConfig;
 
+                var libraryUrlTask = _steamApiService.GetLibraryTileImage(long.Parse(steamConfig.AppId));
                 var titleInfo = await _steamApiService.GetStoreDetails(uint.Parse(steamConfig.AppId));
 
                 return new TitleInfo
                 {
+                    Platform = ActiveConfig.Steam,
                     TitleId = titleInfo.SteamAppid.ToString(),
                     ProductTitle = titleInfo.Name,
                     ProductDescription = titleInfo.ShortDescription,
-                    LogoUri = titleInfo.HeaderImage.ToString(),
+                    LogoUri =  (await libraryUrlTask) ?? titleInfo.HeaderImage.ToString(),
                 };
             }
 
@@ -119,6 +122,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
                 return searchResult.Products.Select(product =>
                     new TitleInfo
                     {
+                        Platform = ActiveConfig.XBoxLive,
                         TitleId = product.AlternateIds?.FirstOrDefault(id => id.IdType == "XboxTitleId")?.Value ?? "",
                         ProductTitle = product.LocalizedProperties?.FirstOrDefault()?.ProductTitle ?? "Unknown",
                         ProductDescription = product.LocalizedProperties?.FirstOrDefault()?.ProductDescription ?? "-",
@@ -136,11 +140,6 @@ namespace TwitchAchievementTrackerBackend.Controllers
 
             if (config.ActiveConfig == ActiveConfig.XBoxLive)
             {
-                if (string.IsNullOrEmpty(config.XBoxLiveConfig.TitleId))
-                {
-
-                }
-
                 var achievements = await _xApiService.GetAchievementsAsync(config.XBoxLiveConfig);
                 var stateSummary = achievements.GroupBy(a => a.ProgressState).ToDictionary(a => a.Key, a => a.Count());
 

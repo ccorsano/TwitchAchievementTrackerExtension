@@ -37,6 +37,7 @@ export interface PlayerInfoCard {
 }
 
 export interface TitleInfo {
+    platform: ActiveConfig;
     titleId: string;
     productTitle: string;
     productDescription: string;

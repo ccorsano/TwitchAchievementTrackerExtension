@@ -7,6 +7,8 @@ import * as ServerConfig from '../../common/ServerConfig';
 import { AchievementsService } from '../../services/EBSAchievementsService';
 import ConfigSteam_02_SteamID from '../ConfigSteam_02_SteamID/ConfigSteam_02_SteamID'
 import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
+import ValidationErrorList from '../ValidationErrorList/ValidationErrorList';
+import SecretKeyInput from '../SecretKeyInput/SecretKeyInput';
 
 type ConfigSteam_01_WebApiKeyState = {
     isSyntaxValid: boolean,
@@ -123,17 +125,12 @@ export default class ConfigSteam_01_WebAPIKey extends Base.ConfigStepBase<Base.C
         
         return [
             <label htmlFor="webApiKey">Steam WebApi Key</label>,
-            <input name="webApiKey" type="text" pattern="[0-9a-fA-F]{32}" value={this.state.enteredApiKey} placeholder="Enter your Steam WebAPI key" onChange={this.onChangeWebApiValue} className={this.state.isSyntaxValid ? '' : 'sf1-invalid'} />,
+            <SecretKeyInput isSyntaxValid={this.state.isSyntaxValid} onChangeValue={this.onChangeWebApiValue} keyValue={this.state.enteredApiKey} size={37} pattern="[0-9a-fA-F]{32}" placeholder="Enter your Steam WebAPI key" />,
             <div>
                 <span className="icon-info"></span> You can apply for a WebAPI Key on <a href="https://steamcommunity.com/dev/apikey" target="_blank">https://steamcommunity.com/dev/apikey</a>.
             </div>,
-            <ul>
-                {this.state.errors.map((error, i) => (
-                    <li key={error.path + '_' + i}>
-                        {error.path}: {error.errorDescription}
-                    </li>
-                ))}
-            </ul>,
+            <ValidationErrorList errors={this.state.errors} />,
+            <input type="button" value="Cancel" onClick={this.props.onBack} />,
             <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onContinue} />
         ]
     }

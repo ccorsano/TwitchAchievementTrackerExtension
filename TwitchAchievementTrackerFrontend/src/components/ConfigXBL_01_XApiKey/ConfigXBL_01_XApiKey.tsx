@@ -6,6 +6,8 @@ import { ConfigurationService, ValidationError } from '../../services/EBSConfigu
 import { AchievementsService } from '../../services/EBSAchievementsService';
 import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
 import ConfigXBL_02_XUID from '../ConfigXBL_02_XUID/ConfigXBL_02_XUID';
+import ValidationErrorList from '../ValidationErrorList/ValidationErrorList';
+import SecretKeyInput from '../SecretKeyInput/SecretKeyInput';
 
 type ConfigXBL_01_XApiKeyState = {
     isSyntaxValid: boolean,
@@ -146,15 +148,10 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
         const isContinueEnabled = this.state.isSyntaxValid && !this.state.isValidating;
         return [
             <label htmlFor="xapikey">XApi Key</label>,
-            <input name="xapikey" type="text" pattern="[0-9a-f]{40}" size={45} value={this.state.enteredApiKey} placeholder="Enter your XApi.us key" onChange={this.onChangeXApiValue} className={this.state.isSyntaxValid ? '' : 'sf1-invalid'} />,
+            <SecretKeyInput isSyntaxValid={this.state.isSyntaxValid} onChangeValue={this.onChangeXApiValue} keyValue={this.state.enteredApiKey} size={45} pattern="[0-9a-f]{40}" placeholder="Enter your XApi.us key" />,
             helpMessage,
-            <ul>
-                {this.state.errors.map((error, i) => (
-                    <li key={error.path + '_' + i}>
-                        {error.path}: {error.errorDescription}
-                    </li>
-                ))}
-            </ul>,
+            <ValidationErrorList errors={this.state.errors} />,
+            <input type="button" value="Cancel" onClick={this.props.onBack} />,
             <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onContinue} />
         ]
     }

@@ -38,6 +38,12 @@ namespace TwitchAchievementTrackerBackend.Controllers
             };
         }
 
+        [HttpPost("title/validate")]
+        public Task<ValidationError[]> ValidateTitle(ExtensionConfiguration configuration)
+        {
+            return _service.ValidateTitle(configuration);
+        }
+
         [HttpPost("validate")]
         public Task<ValidationError[]> ValidateConfiguration(ExtensionConfiguration configuration)
         {
@@ -65,7 +71,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
                 .Select(game => new TitleInfo
             {
                 TitleId = game.AppId.ToString(),
-                LogoUri = game.ImgLogoUrl,
+                LogoUri = game.LibraryTileUrl ?? game.ImgLogoUrl,
                 ProductTitle = game.Name,
                 ProductDescription = "",
             }).ToArray();

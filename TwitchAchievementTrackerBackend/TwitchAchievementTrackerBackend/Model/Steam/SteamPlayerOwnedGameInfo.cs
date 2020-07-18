@@ -37,5 +37,8 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
 
         [JsonPropertyName("playtime_2weeks")]
         public long? Playtime2Weeks { get; set; }
+
+        [JsonPropertyName("library_tile_url")]
+        public string LibraryTileUrl { get; set; }
     }
 }

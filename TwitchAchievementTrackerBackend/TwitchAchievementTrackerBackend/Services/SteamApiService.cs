@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TwitchAchievementTrackerBackend.Configuration;
@@ -57,6 +58,25 @@ namespace TwitchAchievementTrackerBackend.Services
             new SupportedLanguage { DisplayName = "Ukrainian", LangCode = "ukrainian" },
             new SupportedLanguage { DisplayName = "Vietnamese", LangCode = "vietnamese" }
         };
+
+        public class GameDetailsProtectedException : Exception
+        {
+            public GameDetailsProtectedException()
+            {
+            }
+
+            public GameDetailsProtectedException(string message) : base(message)
+            {
+            }
+
+            public GameDetailsProtectedException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+
+            protected GameDetailsProtectedException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
+        }
 
         public SteamApiService(IHttpClientFactory httpClientFactory, IOptions<SteamApiOptions> options, IMemoryCache memoryCache, ILogger<SteamApiService> logger)
         {
@@ -209,6 +229,7 @@ namespace TwitchAchievementTrackerBackend.Services
                 .Where(a => a.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
                 .Select(a => new TitleInfo
                 {
+                    Platform = ActiveConfig.Steam,
                     TitleId = a.AppId.ToString(),
                     ProductTitle = a.Name,
                     ProductDescription = "",
@@ -218,13 +239,19 @@ namespace TwitchAchievementTrackerBackend.Services
 
         public async Task<SteamPlayerAchievement[]> GetAchievementsAsync(SteamConfiguration steamConfig)
         {
-            var cacheKey = GetCacheKey("achievements", steamConfig);
+            var cacheKey = $"steam:achievements:{steamConfig.AppId}:{steamConfig.SteamId}";
 
             if (!_cache.TryGetValue(cacheKey, out SteamPlayerAchievement[] result))
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, $"ISteamUserStats/GetPlayerAchievements/v1/?steamid={steamConfig.SteamId}&appid={steamConfig.AppId}");
                 request.Headers.Add("x-webapi-key", steamConfig.WebApiKey);
                 var response = await _httpClient.SendAsync(request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    throw new GameDetailsProtectedException("Could not get Game Details");
+                }
+
                 response.EnsureSuccessStatusCode();
 
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
@@ -287,25 +314,57 @@ namespace TwitchAchievementTrackerBackend.Services
 
             if (!_cache.TryGetValue(cacheKey, out SteamPlayerOwnedGameInfo[] result))
             {
-                var response = await _httpClient.GetAsync($"IPlayerService/GetOwnedGames/v1/?steamid={steamId}&include_appinfo=true&include_played_free_games=true");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"IPlayerService/GetOwnedGames/v1/?steamid={steamId}&include_appinfo=true&include_played_free_games=true");
+                request.Headers.Add("x-webapi-key", webApiKey);
+                var response = await _httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
 
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
                     var wrapper = await JsonSerializer.DeserializeAsync<SteamPlayerOwnedGamesResult>(responseStream);
-                    result = wrapper.Response.Games;
+                    result = wrapper?.Response?.Games;
+                }
+                
+                if (result == null)
+                {
+                    return new SteamPlayerOwnedGameInfo[0];
                 }
 
                 Func<long, string, string> buildImageUri = (appId, imgId) => $"https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/{appId}/{imgId}.jpg";
-                foreach(var game in result)
+
+                var resolveTasks = result.Select(async game =>
                 {
+                    game.LibraryTileUrl = await GetLibraryTileImage(game.AppId);
                     game.ImgIconUrl = buildImageUri(game.AppId, game.ImgIconUrl);
                     game.ImgLogoUrl = buildImageUri(game.AppId, game.ImgLogoUrl);
-                }
+                });
+
+                await Task.WhenAll(resolveTasks);
 
                 _cache.Set(cacheKey, result, _options.ResultCacheTime);
             }
             return result;
+        }
+
+        public async Task<string> GetLibraryTileImage(long appId)
+        {
+
+            var cacheKey = $"steam:librarytile:{appId}";
+
+            if (!_cache.TryGetValue(cacheKey, out string tileUrl))
+            {
+                Func<long, string, string> buildLibraryImageUri = (appId, imgName) => $"https://steamcdn-a.akamaihd.net/steam/apps/{appId}/{imgName}";
+
+                var libraryTileImageUrl = $"https://steamcdn-a.akamaihd.net/steam/apps/{appId}/library_600x900.jpg";
+                var headRequest = new HttpRequestMessage(HttpMethod.Head, libraryTileImageUrl);
+                var libraryTileExistsResponse = await _httpClient.SendAsync(headRequest);
+                if (libraryTileExistsResponse.IsSuccessStatusCode)
+                {
+                    tileUrl = libraryTileImageUrl;
+                    _cache.Set(cacheKey, tileUrl, _options.AppListCacheTime);
+                }
+            }
+            return tileUrl;
         }
     }
 }

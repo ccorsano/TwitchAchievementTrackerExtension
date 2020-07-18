@@ -1,10 +1,12 @@
 import * as React from 'react';
 import * as Base from '../../common/ConfigStepBase'
-import { ConfigurationService } from '../../services/EBSConfigurationService';
-import { TitleInfo } from '../../common/EBSTypes';
+import { ConfigurationService, ValidationError } from '../../services/EBSConfigurationService';
+import { TitleInfo, ExtensionConfiguration, ActiveConfig } from '../../common/EBSTypes';
 import GameCard from '../GameCard/GameCard';
 import ConfigSteam_04_Locale from '../ConfigSteam_04_Locale/ConfigSteam_04_Locale';
 import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
+import { EBSVersion } from '../../common/ServerConfig';
+import ValidationErrorList from '../ValidationErrorList/ValidationErrorList';
 
 
 interface ConfigSteam_03_AppIdProps extends Base.ConfigStepBaseProps {
@@ -19,6 +21,7 @@ type ConfigSteam_03_AppIdState = {
     ownedApps: TitleInfo[];
     filteredApps: TitleInfo[];
     selectedTitle: TitleInfo;
+    errors: ValidationError[];
 }
 
 export default class ConfigSteam_03_AppId extends Base.ConfigStepBase<ConfigSteam_03_AppIdProps, ConfigSteam_03_AppIdState> {
@@ -29,6 +32,7 @@ export default class ConfigSteam_03_AppId extends Base.ConfigStepBase<ConfigStea
         ownedApps: [],
         filteredApps: [],
         selectedTitle: null,
+        errors: [],
     }
 
     constructor(props: ConfigSteam_03_AppIdProps){
@@ -72,10 +76,11 @@ export default class ConfigSteam_03_AppId extends Base.ConfigStepBase<ConfigStea
         });
     }
 
-    onSelectTitle = (e: React.MouseEvent<HTMLElement>, titleId: string) => {
+    onSelectTitle = async (e: React.MouseEvent<HTMLElement>, titleId: string) => {
         let titleInfo = this.state.ownedApps.find(t => t.titleId == titleId);
 
         this.setState({
+            isLoading: true,
             titleSearch: "",
             filteredApps: this.state.ownedApps,
             ownedApps: this.state.ownedApps,
@@ -83,6 +88,26 @@ export default class ConfigSteam_03_AppId extends Base.ConfigStepBase<ConfigStea
         });
 
         // Validate and move on
+        const configuration: ExtensionConfiguration = {
+            activeConfig: ActiveConfig.Steam,
+            steamConfig: {
+                steamId: this.props.steamProfileId,
+                webApiKey: this.props.webApiKey,
+                appId: titleInfo.titleId,
+                locale: "english",
+            },
+            version: EBSVersion,
+            xBoxLiveConfig: null
+        }
+
+        let errors = await ConfigurationService.validateConfiguration(configuration);
+        errors = errors.filter(e => e.path == "SteamConfig.WebApiKey" || e.path == "SteamConfig.SteamId");
+
+        this.setState({
+            isLoading: false,
+            errors: errors,
+            selectedTitle: errors.length == 0 ? titleInfo : null,
+        });
     }
 
     onResetTitle = () => {
@@ -150,6 +175,7 @@ export default class ConfigSteam_03_AppId extends Base.ConfigStepBase<ConfigStea
         }
 
         return [
+            <ValidationErrorList errors={this.state.errors} />,
             selection,
             <input type="button" value="Back" onClick={this.onBack} />,
             <input type="button" value="Continue" disabled={!isContinueEnabled} onClick={this.onContinue} />

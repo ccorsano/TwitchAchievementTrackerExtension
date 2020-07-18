@@ -3,8 +3,10 @@
         display: none;
     }
 
-    #achievementsPanel > .gameLogo {
-        margin-right: 0.2em;
+    #achievementsPanel {
+        .gameLogo {
+           margin-right: 0.2em;
+       }
     }
 
     body .summaryWidget {
@@ -132,6 +134,12 @@ body {
     font-size: 1.2em;
     margin-top: 0.2em;
     margin-bottom: 0.2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.steam {
+        font-size: 1.0em;
+    }
 }
 
 .card-container {
@@ -141,17 +149,17 @@ body {
 }
 
 .gameLogo {
-    height: 4em;
-    width: 4em;
     float: left;
-    margin-right: 1em;
 
     cursor: pointer;
 
     background-image: url('../../../assets/nuja.png');
-    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    height: 4em;
+    width: 4em;
+    background-size: cover;
+    margin-right: 1em;
 }
 
 .summaryWidget {
@@ -182,6 +190,7 @@ body {
 #list {
     padding-top: 4.2em;
     padding-left: 0.5em;
+    font-size: 0.9em;
 }
 
 #list li {

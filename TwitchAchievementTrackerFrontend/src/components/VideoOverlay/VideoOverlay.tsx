@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './VideoOverlay.scss';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
-import { ExtensionConfiguration, AchievementSummary, Achievement, TitleInfo } from '../../common/EBSTypes';
+import { ExtensionConfiguration, AchievementSummary, Achievement, TitleInfo, ActiveConfig } from '../../common/EBSTypes';
 import { AchievementsService } from '../../services/EBSAchievementsService';
 import NujaCup from '../../../assets/nujacup.svg';
 import NujaLogo from '../../../assets/nuja.png';
@@ -105,15 +105,17 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
         let percentage = this.state.achievementsSummary ? (this.state.achievementsSummary.completed / this.state.achievementsSummary.total) * 100.0 : 0.0;
         let completedCount = this.state.achievementsSummary?.completed ?? 0;
         let totalCount = this.state.achievementsSummary?.total ?? 0;
+        let platformClass = this.state.titleInfo?.platform == ActiveConfig.Steam ?  "steam" : "xboxlive";
+        let logoClassName = "gameLogo noselect " + platformClass;
 
         return (
             <div className={this.state.isCollapsed ? "overlayBox collapsed" : "overlayBox open"}>
-                <div className="gameLogo noselect" onClick={this.togglePanel} style={{backgroundImage: `url(${this.state.titleInfo?.logoUri ?? NujaLogo})`}}>
+                <div className={logoClassName} onClick={this.togglePanel} style={{backgroundImage: `url(${this.state.titleInfo?.logoUri ?? NujaLogo})`}}>
                     <div className="summaryWidget">
                         { this.state.achievementsSummary ? percentage.toFixed(0) + '%' : ''}
                     </div>
                 </div>
-                <div id="achievementsPanel">
+                <div id="achievementsPanel" className={platformClass}>
                     <div className="card-container">
                         <h2 id="gameTitle">
                             {this.state.titleInfo?.productTitle ?? "Game"}
@@ -124,7 +126,7 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
                             <span className="completedCount">{completedCount}</span>/<span className="totalCount">{totalCount}</span> 
                         </div>
                     </div>
-                    <AchievementsList achievements={this.state.achievementsDetails} />
+                    <AchievementsList achievements={this.state.achievementsDetails} platform={this.state.titleInfo?.platform} />
                 </div>
             </div>
         )
