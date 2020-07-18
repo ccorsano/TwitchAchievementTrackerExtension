@@ -42,6 +42,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
 
                 return new TitleInfo
                 {
+                    Platform = ActiveConfig.XBoxLive,
                     TitleId = xConfig.TitleId,
                     ProductTitle = titleInfo.Products.FirstOrDefault()?.LocalizedProperties?.FirstOrDefault()?.ProductTitle ?? "Unknown",
                     ProductDescription = titleInfo.Products.FirstOrDefault()?.LocalizedProperties?.FirstOrDefault()?.ProductDescription ?? "-",
@@ -57,6 +58,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
 
                 return new TitleInfo
                 {
+                    Platform = ActiveConfig.Steam,
                     TitleId = titleInfo.SteamAppid.ToString(),
                     ProductTitle = titleInfo.Name,
                     ProductDescription = titleInfo.ShortDescription,

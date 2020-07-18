@@ -4,26 +4,9 @@
     }
 
     #achievementsPanel {
-        &.steam {
-            height: 6.5em;
-        }
-
         .gameLogo {
            margin-right: 0.2em;
-   
-           &.steam {
-               width: 100%;
-               background-size: cover;
-               display: block;
-               float: none;
-           }
        }
-    }
-
-    #list {
-        &.steam {
-            padding-top: 6.5em;
-        }
     }
 
     body .summaryWidget {
@@ -159,10 +142,6 @@ body {
     }
 }
 
-.steam .overlayBox {
-    font-size: 1.0em;
-}
-
 .card-container {
     padding-top: 0.1em;
     height: 4em;
@@ -177,21 +156,10 @@ body {
     background-image: url('../../../assets/nuja.png');
     background-position: center;
     background-repeat: no-repeat;
-
-    &.xboxlive {
-        height: 4em;
-        width: 4em;
-        background-size: cover;
-        margin-right: 1em;
-    }
-
-    &.steam {
-        height: 4em;
-        width: 8.56em;
-        margin-right: 0.5em;
-        background-size: contain;
-        background-position: top;
-    }
+    height: 4em;
+    width: 4em;
+    background-size: cover;
+    margin-right: 1em;
 }
 
 .summaryWidget {
