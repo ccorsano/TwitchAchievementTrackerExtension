@@ -1,4 +1,4 @@
-var server = "https://twitchext.conceptoire.com/v3"
+var server = "https://twitchext.conceptoire.com/v4"
 var intervalTimer = false;
 
 var urlParams = new URLSearchParams(window.location.search);

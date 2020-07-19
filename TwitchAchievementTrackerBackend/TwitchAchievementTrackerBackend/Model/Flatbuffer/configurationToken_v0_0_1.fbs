@@ -3,7 +3,7 @@
 //  compact format to store and transmit stream config
 //****************************************************
 
-namespace TwitchAchievementTracker;
+namespace TwitchAchievementTracker.Flatbuffer.v1;
 
 // Type holding configuration for a Stream
 table XApiConfiguration
@@ -30,7 +30,7 @@ table SteamConfiguration
     locale: string;
 }
 
-enum ActiveConfiguration : byte
+union PlatformConfiguration
 {
     XApiConfiguration,
     SteamConfiguration
@@ -39,9 +39,7 @@ enum ActiveConfiguration : byte
 table Configuration
 {
     version: string;
-    active: ActiveConfiguration;
-    xBoxLiveConfig : XApiConfiguration;
-    steamConfig : SteamConfiguration;
+    config: PlatformConfiguration;
 }
 
 root_type Configuration;

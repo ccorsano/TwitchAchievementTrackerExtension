@@ -136,6 +136,28 @@
         "height": 667
       },
       "viewerType": "Logged-In Viewer"
+    },
+    {
+      "channelId": "265737932",
+      "configurationAnchor": "video_overlay",
+      "displayChannelName": "miekyld",
+      "features": {
+        "isBitsEnabled": false,
+        "isChatEnabled": false,
+        "isSubscriptionStatusAvailable": false
+      },
+      "frameSize": {
+        "width": 1280,
+        "height": 720
+      },
+      "id": "5",
+      "isPopout": false,
+      "label": "Live Config",
+      "linked": true,
+      "linkedUserId": "265737932",
+      "orientation": "Portrait",
+      "type": "dashboard",
+      "viewerType": "Broadcaster"
     }
   ],
   "manifest": {
@@ -157,7 +179,7 @@
     },
     "id": "04ijuz20mxlw1wk5b6alh6l4mb48zu",
     "installationCount": -42,
-    "liveConfigUrl": "",
+    "liveConfigUrl": "https://localhost:8090/live_config.html",
     "name": "Nuja 100% Quest Achievements Tracker",
     "panelHeight": 0,
     "privacyPolicyUrl": "https://twitchext.conceptoire.com/PrivacyPolicy",
@@ -177,7 +199,7 @@
     "summary": "Steam and XBoxLive Achievements Tracker for the 100% Quest program on Nuja's stream",
     "supportEmail": "twitchext@conceptoire.com",
     "vendorCode": "",
-    "version": "0.0.3",
+    "version": "2020.04",
     "viewerSummary": "Achievements tracker, see what achievements are left to unlock",
     "viewerUrl": "",
     "viewerUrls": {
@@ -194,6 +216,10 @@
       },
       "config": {
         "viewerUrl": "https://localhost:8090/config.html",
+        "canLinkExternalContent": true
+      },
+      "liveConfig": {
+        "viewerUrl": "https://localhost:8090/live_config.html",
         "canLinkExternalContent": true
       }
     },

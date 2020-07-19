@@ -88,7 +88,7 @@ export default class ConfigSummary extends React.Component<ConfigSummaryProps, C
                     <h1 className="section">{this.state.gameInfo.productTitle}</h1>
                     <h3 className="section">{this.state.playerInfo.playerName} <small>{platformPlayerNaming}</small></h3>
                     <h4 className="section">{this.state.locale.displayName}  <small>Language</small></h4>
-                    <input type="button" value="Configure" className="section" onClick={this.props.onConfigure}></input>
+                    { this.props.onConfigure ? (<input type="button" value="Configure" className="section" onClick={this.props.onConfigure}></input>) : null }
                 </div>
             )
         }

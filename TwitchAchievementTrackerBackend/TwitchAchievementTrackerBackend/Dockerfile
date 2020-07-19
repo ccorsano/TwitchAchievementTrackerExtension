@@ -10,11 +10,19 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+RUN wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && \
+	dpkg -i packages-microsoft-prod.deb  && \
+	apt-get update; \
+	apt-get install -y apt-transport-https && \
+	apt-get update && \
+	apt-get install -y dotnet-sdk-2.1
 WORKDIR /src
 COPY ["TwitchAchievementTrackerBackend/TwitchAchievementTrackerBackend.csproj", "TwitchAchievementTrackerBackend/"]
 RUN dotnet restore "TwitchAchievementTrackerBackend/TwitchAchievementTrackerBackend.csproj"
 COPY . .
 WORKDIR "/src/TwitchAchievementTrackerBackend"
+# First run to generate files, will fail
+RUN dotnet build "TwitchAchievementTrackerBackend.csproj" -c Release -o /app/build; exit 0
 RUN dotnet build "TwitchAchievementTrackerBackend.csproj" -c Release -o /app/build
 
 FROM build AS publish

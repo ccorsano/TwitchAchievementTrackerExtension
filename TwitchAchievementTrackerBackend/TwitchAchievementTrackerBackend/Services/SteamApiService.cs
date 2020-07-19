@@ -121,6 +121,26 @@ namespace TwitchAchievementTrackerBackend.Services
             }
         }
 
+        public async Task<bool> PurgeCache(SteamConfiguration steamConfig)
+        {
+            var cacheKey = GetCacheKey("achievements", steamConfig);
+
+            var wasCached = _cache.TryGetValue<SteamPlayerAchievement[]>(cacheKey, out var cachedAchievements);
+            if (wasCached)
+            {
+                _cache.Remove(cacheKey);
+            }
+
+            var reloaded = await GetAchievementsAsync(steamConfig);
+
+            return reloaded.Count(a => a?.Achieved == 1) != cachedAchievements.Count(a => a?.Achieved == 1);
+        }
+
+        public async Task GetAppInfo(SteamConfiguration steamConfig)
+        {
+            var storeDetails = await GetStoreDetails(uint.Parse(steamConfig.AppId));
+        }
+
         public async Task<SteamStoreDetails> GetStoreDetails(uint appId)
         {
             var cacheKey = $"steam:store:{appId}";
