@@ -1,6 +1,6 @@
 import * as EBSConfig from "../common/ServerConfig"
 import * as EBS from './EBSBase'
-import { ExtensionConfiguration, SupportedLanguage, PlayerInfoCard, TitleInfo } from '../common/EBSTypes';
+import { ExtensionConfiguration, SupportedLanguage, PlayerInfoCard, TitleInfo, RateLimits } from '../common/EBSTypes';
 import { TwitchExtensionConfiguration } from "../common/TwitchExtension";
 
 export interface EncryptedConfigurationResponse {

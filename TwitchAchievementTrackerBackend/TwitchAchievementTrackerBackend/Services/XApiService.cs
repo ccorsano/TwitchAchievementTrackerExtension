@@ -58,17 +58,20 @@ namespace TwitchAchievementTrackerBackend.Services
 
         private void SaveRateLimit(string xApiKey, HttpResponseMessage response)
         {
-            var rateLimit = int.Parse(response.Headers.GetValues("X-RateLimit-Limit").FirstOrDefault() ?? "60");
-            var rateLimitRemaining = int.Parse(response.Headers.GetValues("X-RateLimit-Remaining").FirstOrDefault() ?? "60");
-            var rateLimitResetTime = int.Parse(response.Headers.GetValues("X-RateLimit-Reset").FirstOrDefault() ?? "3600");
-            var rateLimitObj = new RateLimits
+            if (response.Headers.Contains("X-RateLimit-Limit"))
             {
-                HourlyLimit = rateLimit,
-                Remaining = rateLimitRemaining,
-                ResetTime = DateTimeOffset.UtcNow.AddSeconds(rateLimitResetTime),
-            };
+                var rateLimit = int.Parse(response.Headers.GetValues("X-RateLimit-Limit").FirstOrDefault() ?? "60");
+                var rateLimitRemaining = int.Parse(response.Headers.GetValues("X-RateLimit-Remaining").FirstOrDefault() ?? "60");
+                var rateLimitResetTime = int.Parse(response.Headers.GetValues("X-RateLimit-Reset").FirstOrDefault() ?? "3600");
+                var rateLimitObj = new RateLimits
+                {
+                    HourlyLimit = rateLimit,
+                    Remaining = rateLimitRemaining,
+                    ResetTime = DateTimeOffset.UtcNow.AddSeconds(rateLimitResetTime),
+                };
 
-            _cache.Set($"ratelimit:{xApiKey}", rateLimitObj, rateLimitObj.ResetTime);
+                _cache.Set($"ratelimit:{xApiKey}", rateLimitObj, rateLimitObj.ResetTime);
+            }
         }
 
         public RateLimits GetRateLimit(string xApiKey)

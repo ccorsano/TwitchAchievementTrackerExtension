@@ -7,13 +7,20 @@ interface CountDownProps {
 
 export default class CountDown extends React.Component<CountDownProps, any>
 {
+    tickInterval: NodeJS.Timeout = null;
+
     constructor(props: CountDownProps)
     {
         super(props);
     }
 
     componentDidMount = () => {
-        setInterval(this.tick, 1000);
+        this.tickInterval = setInterval(this.tick, 1000);
+    }
+
+    componentWillUnmount = () => {
+        clearInterval(this.tickInterval);
+        this.tickInterval = null;
     }
 
     tick = () => {
@@ -22,11 +29,13 @@ export default class CountDown extends React.Component<CountDownProps, any>
 
     render(){
         let targetMoment = moment(this.props.targetDate);
-        let milliseconds = targetMoment.diff(moment.utc());
-        let f = moment.utc(milliseconds).format("HH:mm:ss.SSS");
+        let diffToTarget = targetMoment.diff(moment.utc());
+        let timeToTarget = moment.utc(diffToTarget);
 
         return (
-            <div>{f}</div>
+            <div>
+                <span className="rounded">{timeToTarget.format("HH")}</span>:<span className="rounded">{timeToTarget.format("mm")}</span>:<span className="rounded">{timeToTarget.format("ss")}</span>
+            </div>
         )
     }
 }

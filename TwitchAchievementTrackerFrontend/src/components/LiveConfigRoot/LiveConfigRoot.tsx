@@ -1,17 +1,19 @@
 import * as React from 'react';
 import { ConfigurationService, ValidationError } from '../../services/EBSConfigurationService';
-import { ExtensionConfiguration, ActiveConfig, RateLimits } from '../../common/EBSTypes';
+import { ExtensionConfiguration, ActiveConfig, RateLimits, TitleInfo } from '../../common/EBSTypes';
 import ConfigSummary from '../ConfigSummary/ConfigSummary';
 import { Twitch } from '../../services/TwitchService';
 import { EBSVersion } from '../../common/ServerConfig' 
 import { AchievementsService } from '../../services/EBSAchievementsService';
 import CountDown from '../CountDown/CountDown';
+import './LiveConfigRoot.scss';
 
 interface LiveConfigRootState {
     isLoading: boolean;
     isRefreshing: boolean;
     wasModified: boolean;
     configuration: ExtensionConfiguration;
+    titleInfo: TitleInfo;
     errors: ValidationError[];
     xApiRateLimits: RateLimits;
 }
@@ -25,6 +27,7 @@ export default class LiveConfigRoot extends React.Component<any,LiveConfigRootSt
         isRefreshing: false,
         wasModified: false,
         configuration: null,
+        titleInfo: null,
         errors: [],
         xApiRateLimits: null,
     }
@@ -36,21 +39,28 @@ export default class LiveConfigRoot extends React.Component<any,LiveConfigRootSt
     }
 
     componentDidMount = async () => {
+        let titleInfo: TitleInfo = null;
+
         await ConfigurationService.configuredPromise;
 
         let configuration = await ConfigurationService.getConfiguration();
         let validation = await ConfigurationService.validateConfiguration(configuration);
+        if (validation.length == 0)
+        {
+            titleInfo = await AchievementsService.getTitleInfo();
+        }
 
         this.setState({
             isLoading: false,
             configuration: configuration,
+            titleInfo: titleInfo,
             errors: validation,
         });
         
         if (configuration.activeConfig == ActiveConfig.XBoxLive)
         {
             this.refreshRateLimit();
-            this.refreshRateLimitsInterval = setInterval(this.refreshRateLimit, 5000);
+            this.refreshRateLimitsInterval = setInterval(this.refreshRateLimit, 1000);
         }
         
         Twitch.listen("broadcast", async (target, contentType, messageStr) => {
@@ -65,16 +75,27 @@ export default class LiveConfigRoot extends React.Component<any,LiveConfigRootSt
                     {
                         AchievementsService.configuration.content = message.configToken;
                         AchievementsService.configuration.version = message.version;
-                        let config = await ConfigurationService.getConfiguration();
+                        ConfigurationService.configuration.content = message.configToken;
+                        ConfigurationService.configuration.version = message.version;
+
                         this.setState({
-                            configuration: config
+                            isLoading: true,
+                        });
+                        let config = await ConfigurationService.getConfiguration();
+                        let titleInfo = await AchievementsService.getTitleInfo();
+
+                        this.setState({
+                            isLoading: false,
+                            configuration: config,
+                            titleInfo: titleInfo,
+                            errors: validation,
                         });
                         
-                        if (message. config.activeConfig == ActiveConfig.XBoxLive)
+                        if (config.activeConfig == ActiveConfig.XBoxLive)
                         {
                             if (! this.refreshRateLimitsInterval)
                             {
-                                this.refreshRateLimitsInterval = setInterval(this.refreshRateLimit, 5000);
+                                this.refreshRateLimitsInterval = setInterval(this.refreshRateLimit, 1000);
                             }
                         }
                     }
@@ -90,13 +111,16 @@ export default class LiveConfigRoot extends React.Component<any,LiveConfigRootSt
         {
             clearInterval(this.refreshRateLimitsInterval);
             this.refreshRateLimitsInterval = null;
+            this.setState({
+                xApiRateLimits: null
+            });
             return;
         }
 
         let rateLimits = await ConfigurationService.getXApiRateLimits();
         this.setState({
             xApiRateLimits: rateLimits
-        })
+        });
     }
 
     onForceRefresh = async () => {
@@ -131,15 +155,41 @@ export default class LiveConfigRoot extends React.Component<any,LiveConfigRootSt
 
         return (
             <div className="card small">
-                <h2 className="section">Achievements Tracker</h2>
-                <button className="section" onClick={this.onForceRefresh} disabled={this.state.isRefreshing}>Force refresh</button>
-                
-                {this.state.xApiRateLimits ? (
-                    <div className="section">
-                        xApi rate limits: {this.state.xApiRateLimits.remaining}/{this.state.xApiRateLimits.hourlyLimit}<br/>
-                        rate limit reset: <CountDown targetDate={this.state.xApiRateLimits.resetTime} />
+                <h3 className="section">Achievements Tracker</h3>
+                <div className="section titleinfo row">
+                    <div className="col-sm-4" >
+                        <img src={this.state.titleInfo.logoUri} />
                     </div>
-                ) : null}
+                    <div className="col-sm-8">
+                        <button className="large primary" onClick={this.onForceRefresh} disabled={this.state.isRefreshing}>Force refresh</button>
+                    </div>
+                </div>
+                
+                {this.state.xApiRateLimits ? [
+                    <div className="section">
+                        <h4>xApi.us calls</h4>
+                        <div className="row">
+                            <div className="col-sm-6">
+                                Remaining
+                            </div>
+                            <div className="col-sm-6">
+                                {this.state.xApiRateLimits.remaining}/{this.state.xApiRateLimits.hourlyLimit}
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-sm-6">
+                                Resets in
+                            </div>
+                            <div className="col-sm-6">
+                                <CountDown targetDate={this.state.xApiRateLimits.resetTime} />
+                            </div>
+                        </div>
+                    </div>,
+                    <div className="section">
+                        Force refresh typically uses 1 call.<br/>
+                        15 auto-refresh per hour.
+                    </div>
+                ] : null}
             </div>
         )
     }
