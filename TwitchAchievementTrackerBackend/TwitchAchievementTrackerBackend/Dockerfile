@@ -21,6 +21,8 @@ COPY ["TwitchAchievementTrackerBackend/TwitchAchievementTrackerBackend.csproj", 
 RUN dotnet restore "TwitchAchievementTrackerBackend/TwitchAchievementTrackerBackend.csproj"
 COPY . .
 WORKDIR "/src/TwitchAchievementTrackerBackend"
+# First run to generate files, will fail
+RUN dotnet build "TwitchAchievementTrackerBackend.csproj" -c Release -o /app/build; exit 0
 RUN dotnet build "TwitchAchievementTrackerBackend.csproj" -c Release -o /app/build
 
 FROM build AS publish
