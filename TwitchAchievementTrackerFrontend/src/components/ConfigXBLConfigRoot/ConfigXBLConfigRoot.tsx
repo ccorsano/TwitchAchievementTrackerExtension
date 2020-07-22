@@ -1,16 +1,10 @@
 import * as React from 'react';
-import * as Base from '../../common/ConfigStepBase';
-import { ConfigurationService, ValidationError, EncryptedConfigurationResponse } from '../../services/EBSConfigurationService';
+import { ConfigurationService } from '../../services/EBSConfigurationService';
 import ConfigXBL_01_XApiKey from '../ConfigXBL_01_XApiKey/ConfigXBL_01_XApiKey';
-import ConfigXBL_02_XUID from '../ConfigXBL_02_XUID/ConfigXBL_02_XUID';
-import ConfigXBL_03_TitleId from '../ConfigXBL_03_TitleId/ConfigXBL_03_TitleId';
-import ConfigXBL_04_Locale from '../ConfigXBL_04_Locale/ConfigXBL_04_Locale';
-import ConfigXBL_05_Confirm from '../ConfigXBL_05_Confirm/ConfigXBL_05_Confirm';
-import { ActiveConfig, ExtensionConfiguration, XApiConfiguration } from '../../common/EBSTypes';
+import { ActiveConfig, ExtensionConfiguration } from '../../common/EBSTypes';
 import { Twitch } from '../../services/TwitchService';
 import * as ServerConfig from '../../common/ServerConfig'
 import { TwitchExtensionConfiguration } from '../../common/TwitchExtension';
-import { EBSBase } from '../../services/EBSBase';
 import { ConfigXBLConfigStateEnum } from '../../common/ConfigStepBase';
 
 
@@ -53,7 +47,7 @@ export default class ConfigXBLConfigRoot extends React.Component<ConfigXBLConfig
         }
     }
 
-    onValidateStep = async (e: React.Component, config: ExtensionConfiguration) => {
+    onValidateStep = async (_e: React.Component, config: ExtensionConfiguration) => {
         let result = await ConfigurationService.setConfiguration(config);
         Twitch.setConfiguration(result.configToken, ServerConfig.EBSVersion);
 

@@ -1,5 +1,4 @@
 var server = "https://twitchext.conceptoire.com/v4"
-var intervalTimer = false;
 
 var urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get('state') == "testing")

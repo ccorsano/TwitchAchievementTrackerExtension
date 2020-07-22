@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { ExtensionConfiguration, SteamConfiguration, XApiConfiguration } from './EBSTypes';
+import { ExtensionConfiguration } from './EBSTypes';
 
 export enum ConfigSteamConfigStateEnum {
     WebApiKey = 0,

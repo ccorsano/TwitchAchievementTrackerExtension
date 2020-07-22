@@ -4,7 +4,6 @@ import { ConfigurationService, ValidationError } from '../../services/EBSConfigu
 import { TitleInfo, ExtensionConfiguration, ActiveConfig } from '../../common/EBSTypes';
 import GameCard from '../GameCard/GameCard';
 import ConfigSteam_04_Locale from '../ConfigSteam_04_Locale/ConfigSteam_04_Locale';
-import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
 import { EBSVersion } from '../../common/ServerConfig';
 import ValidationErrorList from '../ValidationErrorList/ValidationErrorList';
 
@@ -76,7 +75,7 @@ export default class ConfigSteam_03_AppId extends Base.ConfigStepBase<ConfigStea
         });
     }
 
-    onSelectTitle = async (e: React.MouseEvent<HTMLElement>, titleId: string) => {
+    onSelectTitle = async (_e: React.MouseEvent<HTMLElement>, titleId: string) => {
         let titleInfo = this.state.ownedApps.find(t => t.titleId == titleId);
 
         this.setState({

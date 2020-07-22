@@ -4,9 +4,7 @@ import * as Base from '../../common/ConfigStepBase';
 import { ValidationError, ConfigurationService } from '../../services/EBSConfigurationService';
 import { ActiveConfig, ExtensionConfiguration, SteamConfiguration } from '../../common/EBSTypes';
 import * as ServerConfig from '../../common/ServerConfig';
-import { AchievementsService } from '../../services/EBSAchievementsService';
 import ConfigSteam_02_SteamID from '../ConfigSteam_02_SteamID/ConfigSteam_02_SteamID'
-import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
 import ValidationErrorList from '../ValidationErrorList/ValidationErrorList';
 import SecretKeyInput from '../SecretKeyInput/SecretKeyInput';
 
@@ -61,7 +59,7 @@ export default class ConfigSteam_01_WebAPIKey extends Base.ConfigStepBase<Base.C
         });
     }
 
-    onContinue = async (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onContinue = async (_e: React.SyntheticEvent<HTMLInputElement>) => {
         this.setState({
             isValidating: true
         });
@@ -101,11 +99,10 @@ export default class ConfigSteam_01_WebAPIKey extends Base.ConfigStepBase<Base.C
 
         if (this.state.errors.length == 0)
         {
-            let newConfig = await ConfigurationService.setConfiguration(configuration);
         }
     }
 
-    unvalidate = (e: React.SyntheticEvent<HTMLElement>) => {
+    unvalidate = (_e: React.SyntheticEvent<HTMLElement>) => {
         this.setState({
             isKeyValid: false,
         });

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import './VideoOverlay.scss';
-import { ConfigurationService } from '../../services/EBSConfigurationService';
-import { ExtensionConfiguration, AchievementSummary, Achievement, TitleInfo, ActiveConfig } from '../../common/EBSTypes';
+import { AchievementSummary, Achievement, TitleInfo, ActiveConfig } from '../../common/EBSTypes';
 import { AchievementsService } from '../../services/EBSAchievementsService';
 import NujaCup from '../../../assets/nujacup.svg';
 import NujaLogo from '../../../assets/nuja.png';
@@ -37,7 +36,7 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
         this.refreshAll();
         setInterval(this.refreshSummary, 60000);
 
-        Twitch.listen("broadcast", (target, contentType, messageStr) => {
+        Twitch.listen("broadcast", (_target, _contentType, messageStr) => {
             let message = JSON.parse(messageStr);
             let configToken = AchievementsService.configuration.content;
             
@@ -59,7 +58,7 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
         });
     }
 
-    togglePanel = (e: React.SyntheticEvent<HTMLElement>) => {
+    togglePanel = (_e: React.SyntheticEvent<HTMLElement>) => {
         if (! this.state.isConfigurationValid) return;
 
         this.setState({
@@ -73,8 +72,7 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
 
     refreshAll = async () => {
         let titleInfoPromise = AchievementsService.getTitleInfo();
-        let summaryPromise = AchievementsService.getSummary().then(summary => this .setState({achievementsSummary: summary}));;
-        let achievementsPromise = AchievementsService.getAchievements().then(achievements => this .setState({achievementsDetails: achievements}));
+;
 
         try {
             let titleInfo = await titleInfoPromise;

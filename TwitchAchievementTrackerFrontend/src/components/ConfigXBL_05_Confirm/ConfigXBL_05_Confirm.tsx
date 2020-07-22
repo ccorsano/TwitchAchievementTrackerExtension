@@ -16,7 +16,7 @@ export default class ConfigXBL_05_Confirm extends Base.ConfigStepBase<ConfigXBL_
         super(props);
     }
 
-    onSave = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onSave = (_e: React.SyntheticEvent<HTMLInputElement>) => {
         let configuration: ExtensionConfiguration = {
             activeConfig: ActiveConfig.XBoxLive,
             version: EBSVersion,

@@ -1,5 +1,8 @@
-import * as React from "react"
-import * as moment from 'moment';
+import * as React from 'react';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+
+dayjs.extend(duration);
 
 interface CountDownProps {
     targetDate: Date,
@@ -28,13 +31,14 @@ export default class CountDown extends React.Component<CountDownProps, any>
     }
 
     render(){
-        let targetMoment = moment(this.props.targetDate);
-        let diffToTarget = targetMoment.diff(moment.utc());
-        let timeToTarget = moment.utc(diffToTarget);
+
+        let targetMoment = dayjs(this.props.targetDate);
+        let diffToTarget = targetMoment.diff(dayjs());
+        let timeToTarget = dayjs.duration(diffToTarget);
 
         return (
             <div>
-                <span className="rounded">{timeToTarget.format("HH")}</span>:<span className="rounded">{timeToTarget.format("mm")}</span>:<span className="rounded">{timeToTarget.format("ss")}</span>
+                <span className="rounded">{timeToTarget.hours()}</span>:<span className="rounded">{timeToTarget.minutes()}</span>:<span className="rounded">{timeToTarget.seconds()}</span>
             </div>
         )
     }

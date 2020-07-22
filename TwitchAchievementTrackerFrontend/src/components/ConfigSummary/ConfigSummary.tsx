@@ -1,5 +1,4 @@
 import * as React from "react";
-import { TwitchExtensionConfiguration, TwitchAuthCallbackContext } from "../../common/TwitchExtension";
 import { ExtensionConfiguration, PlayerInfoCard, TitleInfo, SupportedLanguage, ActiveConfig } from "../../common/EBSTypes";
 import { ConfigurationService } from "../../services/EBSConfigurationService";
 import XBoxLiveLogo from '../../../assets/XBox_Live_logo.svg';

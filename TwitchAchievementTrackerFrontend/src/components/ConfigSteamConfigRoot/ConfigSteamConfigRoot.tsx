@@ -1,12 +1,6 @@
 import * as React from 'react';
-import * as Base from '../../common/ConfigStepBase'
-import { ConfigSteamConfigStateEnum, ConfigXBLConfigStateEnum } from '../../common/ConfigStepBase'
 import ConfigSteam_01_WebAPIKey from '../ConfigSteam_01_WebAPIKey/ConfigSteam_01_WebAPIKey'
-import ConfigSteam_02_SteamID from '../ConfigSteam_02_SteamID/ConfigSteam_02_SteamID';
-import ConfigSteam_03_AppId from '../ConfigSteam_03_AppId/ConfigSteam_03_AppId';
-import ConfigSteam_04_Locale from '../ConfigSteam_04_Locale/ConfigSteam_04_Locale';
-import ConfigSteam_05_Confirm from '../ConfigSteam_05_Confirm/ConfigSteam_05_Confirm'
-import { ActiveConfig, ExtensionConfiguration, SteamConfiguration } from '../../common/EBSTypes';
+import { ActiveConfig, ExtensionConfiguration } from '../../common/EBSTypes';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
 import { Twitch } from '../../services/TwitchService';
 import * as ServerConfig from '../../common/ServerConfig';
@@ -48,7 +42,7 @@ export default class ConfigSteamConfigRoot extends React.Component<ConfigSteamCo
         }
     }
 
-    onValidateStep = async (e: React.Component, config: ExtensionConfiguration) => {
+    onValidateStep = async (_e: React.Component, config: ExtensionConfiguration) => {
         let result = await ConfigurationService.setConfiguration(config);
         Twitch.setConfiguration(result.configToken, ServerConfig.EBSVersion);
 
@@ -65,7 +59,7 @@ export default class ConfigSteamConfigRoot extends React.Component<ConfigSteamCo
         this.props.onSaved({content: result.configToken, version: ServerConfig.EBSVersion}, config);
     }
 
-    onCancelStep = (previousState: any) => {
+    onCancelStep = () => {
         this.props.onCancel();
     }
 

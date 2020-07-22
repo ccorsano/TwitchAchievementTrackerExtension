@@ -1,6 +1,5 @@
 import * as React from 'react'
 import ConfigChoosePlatform from '../ConfigChoosePlatform/ConfigChoosePlatform';
-import { createPortal } from 'react-dom';
 
 export default class ConfigurationRoot extends React.Component {
     constructor(props : any){
@@ -9,7 +8,7 @@ export default class ConfigurationRoot extends React.Component {
         this.onPlatformChosen = this.onPlatformChosen.bind(this);
     }
 
-    onPlatformChosen = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onPlatformChosen = () => {
     }
 
     render(){

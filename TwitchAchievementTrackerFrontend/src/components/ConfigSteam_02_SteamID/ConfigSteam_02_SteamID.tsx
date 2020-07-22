@@ -3,9 +3,7 @@ import * as Base from '../../common/ConfigStepBase'
 import { ConfigurationService, ValidationError } from '../../services/EBSConfigurationService';
 import { ExtensionConfiguration, ActiveConfig, PlayerInfoCard } from '../../common/EBSTypes';
 import * as ServerConfig from '../../common/ServerConfig'
-import EBSAchievementsService from '../../services/EBSAchievementsService';
 import GamerCardComponent from '../GamerCard/GamerCard';
-import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
 import ConfigSteam_03_AppId from '../ConfigSteam_03_AppId/ConfigSteam_03_AppId'
 import ValidationErrorList from '../ValidationErrorList/ValidationErrorList';
 
@@ -82,7 +80,7 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<ConfigSt
         });
     }
 
-    onValidate = async (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onValidate = async (_e: React.SyntheticEvent<HTMLInputElement>) => {
         if (this.state.isProfileValid)
         {
             this.setState({
@@ -145,7 +143,7 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<ConfigSt
         }
     }
     
-    onResetProfile = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onResetProfile = (_e: React.SyntheticEvent<HTMLInputElement>) => {
         this.setState({
             isProfileUrlFormatValid: true,
             isProfileValid: false,
@@ -154,7 +152,7 @@ export default class ConfigSteam_03_SteamID extends Base.ConfigStepBase<ConfigSt
         });
     }
 
-    unvalidate = (e: React.SyntheticEvent<HTMLElement>) => {
+    unvalidate = (_e: React.SyntheticEvent<HTMLElement>) => {
         this.setState({
             isConfirmed: false,
         });

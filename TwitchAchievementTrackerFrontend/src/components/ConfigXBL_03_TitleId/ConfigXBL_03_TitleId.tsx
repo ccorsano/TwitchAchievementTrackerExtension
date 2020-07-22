@@ -5,10 +5,7 @@ import { AchievementsService } from '../../services/EBSAchievementsService';
 import { TitleInfo, ExtensionConfiguration, ActiveConfig } from '../../common/EBSTypes';
 import { ConfigurationService, ValidationError } from '../../services/EBSConfigurationService';
 import GameCard from '../GameCard/GameCard';
-import ConfigXBL_05_Confirm from '../ConfigXBL_05_Confirm/ConfigXBL_05_Confirm';
 import ConfigXBL_04_Locale from '../ConfigXBL_04_Locale/ConfigXBL_04_Locale';
-import ConfigXBL_02_XUID from '../ConfigXBL_02_XUID/ConfigXBL_02_XUID';
-import ConfigXBL_01_XApiKey from '../ConfigXBL_01_XApiKey/ConfigXBL_01_XApiKey';
 import { EBSVersion } from '../../common/ServerConfig';
 import ValidationErrorList from '../ValidationErrorList/ValidationErrorList';
 
@@ -53,7 +50,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
             .then(titleInfo => {
                 this.validateTitle(titleInfo);
             })
-            .catch(error => {
+            .catch(() => {
                 this.setState({
                     selectedTitle: null,
                     isLoading: false,
@@ -87,7 +84,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
         });
     }
 
-    onContinue = async (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onContinue = async () => {
         this.setState({
             isConfirmed: true,
         });
@@ -100,7 +97,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
         });
     }
 
-    onSearch = async (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onSearch = async () => {
         this.setState({
             searchResults: [],
             selectedTitle: null,
@@ -116,7 +113,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
         });
     }
 
-    onSelectTitle = async (e: React.MouseEvent<HTMLElement>, titleId: string) => {
+    onSelectTitle = async (_e: React.MouseEvent<HTMLElement>, titleId: string) => {
         let titleInfo = this.state.searchResults.find(t => t.titleId == titleId);
 
         this.setState({
@@ -170,7 +167,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
         });
     }
 
-    onResetTitle = (e: React.MouseEvent<HTMLInputElement>) => {
+    onResetTitle = () => {
         this.setState({
             titleSearch: this.state.titleSearch,
             searchResults: this.state.searchResults,
@@ -179,7 +176,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
         this.fetchRecentTitles(this.props.streamerXuid, this.props.xApiKey);
     }
 
-    unvalidate = (e: any) => {
+    unvalidate = () => {
         this.setState({
             isConfirmed: false,
         });
@@ -224,7 +221,7 @@ export default class ConfigXBL_03_TitleId extends Base.ConfigStepBase<ConfigXBL_
                 <div className="searchResult container">
                     <div className="row">
                     {
-                        this.state.searchResults.map((titleInfo, i) => (
+                        this.state.searchResults.map((titleInfo) => (
                             <GameCard titleInfo={titleInfo} buttonSection={<input className="section" type="button" name="xBoxTitleChange" value="Select" onClick={(e) => this.onSelectTitle(e, titleInfo.titleId)} />} />
                         ))
                     }

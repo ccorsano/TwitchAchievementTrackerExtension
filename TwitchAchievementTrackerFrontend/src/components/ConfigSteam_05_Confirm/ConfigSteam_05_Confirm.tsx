@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as Base from '../../common/ConfigStepBase';
 import { ExtensionConfiguration, ActiveConfig } from '../../common/EBSTypes';
-import EBSAchievementsService from '../../services/EBSAchievementsService';
 import { EBSVersion } from '../../common/ServerConfig';
 import { ConfigurationService, ValidationError } from '../../services/EBSConfigurationService';
 import ValidationErrorList from '../ValidationErrorList/ValidationErrorList';
@@ -53,7 +52,7 @@ export default class ConfigSteam_05_Confirm extends Base.ConfigStepBase<ConfigSt
         });
     }
 
-    onSave = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onSave = (_e: React.SyntheticEvent<HTMLInputElement>) => {
         let configuration: ExtensionConfiguration = {
             activeConfig: ActiveConfig.Steam,
             version: EBSVersion,

@@ -3,8 +3,6 @@ import * as Base from '../../common/ConfigStepBase';
 import * as ServerConfig from '../../common/ServerConfig';
 import { ActiveConfig, ExtensionConfiguration } from '../../common/EBSTypes';
 import { ConfigurationService, ValidationError } from '../../services/EBSConfigurationService';
-import { AchievementsService } from '../../services/EBSAchievementsService';
-import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
 import ConfigXBL_02_XUID from '../ConfigXBL_02_XUID/ConfigXBL_02_XUID';
 import ValidationErrorList from '../ValidationErrorList/ValidationErrorList';
 import SecretKeyInput from '../SecretKeyInput/SecretKeyInput';
@@ -62,7 +60,7 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
         });
     }
 
-    onContinue = async (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onContinue = async () => {
         this.setState({
             isValidating: true
         });
@@ -102,11 +100,10 @@ export default class ConfigXBL_01_XApiKey extends Base.ConfigStepBase<Base.Confi
 
         if (this.state.errors.length == 0)
         {
-            let newConfig = await ConfigurationService.setConfiguration(configuration);
         }
     }
 
-    unvalidate = (e: any) => {
+    unvalidate = () => {
         this.setState({
             isConfirmed: false,
         })

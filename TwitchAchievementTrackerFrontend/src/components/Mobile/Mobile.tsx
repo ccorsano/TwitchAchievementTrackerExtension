@@ -33,7 +33,7 @@ export default class Mobile extends React.Component<any, VideoOverlayState> {
         this.refreshAll();
         setInterval(this.refreshSummary, 60000);
 
-        Twitch.listen("broadcast", (target, contentType, messageStr) => {
+        Twitch.listen("broadcast", (_target, _contentType, messageStr) => {
             let message = JSON.parse(messageStr);
             let configToken = AchievementsService.configuration.content;
             
@@ -57,8 +57,8 @@ export default class Mobile extends React.Component<any, VideoOverlayState> {
 
     refreshAll = async () => {
         let titleInfoPromise = AchievementsService.getTitleInfo();
-        let summaryPromise = AchievementsService.getSummary().then(summary => this .setState({achievementsSummary: summary}));;
-        let achievementsPromise = AchievementsService.getAchievements().then(achievements => this .setState({achievementsDetails: achievements}));
+        AchievementsService.getSummary().then(summary => this .setState({achievementsSummary: summary}));;
+        AchievementsService.getAchievements().then(achievements => this .setState({achievementsDetails: achievements}));
 
         try {
             let titleInfo = await titleInfoPromise;

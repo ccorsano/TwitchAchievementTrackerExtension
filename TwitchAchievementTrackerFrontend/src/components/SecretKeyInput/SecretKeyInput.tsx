@@ -1,5 +1,4 @@
 import * as React from "react";
-import { createPortal } from "react-dom";
 
 export interface SecretKeyInputProps {
     onChangeValue: (e: React.SyntheticEvent<HTMLInputElement>) => void;
@@ -23,7 +22,7 @@ export default class SecretKeyInput extends React.Component<SecretKeyInputProps,
         super(props);
     }
 
-    onToggleVisibility = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onToggleVisibility = () => {
         this.setState({
             isKeyVisible: !this.state.isKeyVisible
         });

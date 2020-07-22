@@ -98,7 +98,7 @@ export default class ConfigChoosePlatform extends React.Component<ConfigChoosePl
         });
     }
 
-    onSaved = (savedConfiguration: TwitchExtensionConfiguration, configurationObject: ExtensionConfiguration) => {
+    onSaved = (_savedConfiguration: TwitchExtensionConfiguration, configurationObject: ExtensionConfiguration) => {
         this.setState({
             isConfirmed: true,
             savedConfiguration: configurationObject,

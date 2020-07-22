@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ConfigurationService, ValidationError } from '../../services/EBSConfigurationService';
 import { ExtensionConfiguration, ActiveConfig, RateLimits, TitleInfo } from '../../common/EBSTypes';
-import ConfigSummary from '../ConfigSummary/ConfigSummary';
 import { Twitch } from '../../services/TwitchService';
 import { EBSVersion } from '../../common/ServerConfig' 
 import { AchievementsService } from '../../services/EBSAchievementsService';
@@ -63,7 +62,7 @@ export default class LiveConfigRoot extends React.Component<any,LiveConfigRootSt
             this.refreshRateLimitsInterval = setInterval(this.refreshRateLimit, 1000);
         }
         
-        Twitch.listen("broadcast", async (target, contentType, messageStr) => {
+        Twitch.listen("broadcast", async (_target, _contentType, messageStr) => {
             let message = JSON.parse(messageStr);
             let configToken = AchievementsService.configuration.content;
             

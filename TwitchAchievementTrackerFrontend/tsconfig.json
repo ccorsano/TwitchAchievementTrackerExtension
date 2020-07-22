@@ -6,9 +6,20 @@
         "outDir": "./dist/",
         "sourceMap": true,
         "noImplicitAny": true,
-        "module": "es6",
+        "module": "CommonJS",
         "target": "es5",
         "jsx": "react",
-        "allowJs": true
+        "allowJs": true,
+        "alwaysStrict": true,
+        // More checks
+        "noUnusedLocals": true /* Report errors on unused locals. */,
+        "noUnusedParameters": true /* Report errors on unused parameters. */,
+        "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
+        "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,    
+        
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "diagnostics": true,
+        "extendedDiagnostics":true
     }
 }

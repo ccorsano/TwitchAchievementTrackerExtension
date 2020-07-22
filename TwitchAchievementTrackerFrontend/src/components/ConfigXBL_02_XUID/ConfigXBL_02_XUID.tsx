@@ -1,10 +1,8 @@
 import * as React from 'react'
 import * as Base from '../../common/ConfigStepBase';
-import { AchievementsService } from '../../services/EBSAchievementsService';
 import { PlayerInfoCard } from '../../common/EBSTypes';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
 import GamerCardComponent from '../GamerCard/GamerCard';
-import { flatMap } from 'lodash';
 import ConfigXBL_03_TitleId from '../ConfigXBL_03_TitleId/ConfigXBL_03_TitleId';
 
 interface ConfigXBL_02_XUIDProps extends Base.ConfigStepBaseProps {
@@ -72,7 +70,7 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<ConfigXBL_02_
         })
     }
 
-    onSearch = async (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onSearch = async (_e: React.SyntheticEvent<HTMLInputElement>) => {
         this.setState({
             xuidSearch: this.state.xuidSearch,
             xuid: null,
@@ -89,7 +87,7 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<ConfigXBL_02_
         });
     }
 
-    onResetProfile = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onResetProfile = (_e: React.SyntheticEvent<HTMLInputElement>) => {
         this.setState({
             xuid: null,
             xuidSearch: '',
@@ -97,13 +95,13 @@ export default class ConfigXBL_02_XUID extends Base.ConfigStepBase<ConfigXBL_02_
         });
     }
 
-    onContinue = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onContinue = (_e: React.SyntheticEvent<HTMLInputElement>) => {
         this.setState({
             isConfirmed: true,
         });
     }
 
-    unvalidate = (e: any) => {
+    unvalidate = (_e: any) => {
         this.setState({
             isConfirmed: false,
         })

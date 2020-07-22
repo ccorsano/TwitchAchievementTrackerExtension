@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as Base from '../../common/ConfigStepBase'
-import { SupportedLanguage, ActiveConfig } from '../../common/EBSTypes';
+import { SupportedLanguage } from '../../common/EBSTypes';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
 import ConfigSteam_05_Confirm from '../ConfigSteam_05_Confirm/ConfigSteam_05_Confirm';
-import { ConfigSteamConfigStateEnum } from '../../common/ConfigStepBase';
 
 interface ConfigSteam_04_LocaleProps extends Base.ConfigStepBaseProps {
     webApiKey: string,
@@ -51,19 +50,19 @@ export default class ConfigSteam_04_Locale extends Base.ConfigStepBase<ConfigSte
         })
     }
 
-    onResetLanguage = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onResetLanguage = (_e: React.SyntheticEvent<HTMLInputElement>) => {
         this.setState({
             selectedLanguage: null,
         });
     }
 
-    onContinue = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onContinue = (_e: React.SyntheticEvent<HTMLInputElement>) => {
         this.setState({
             isConfirmed: true
         })
     }
 
-    unvalidate = (e: React.SyntheticEvent<HTMLElement>) => {
+    unvalidate = (_e: React.SyntheticEvent<HTMLElement>) => {
         this.setState({
             isConfirmed: false
         });
@@ -110,7 +109,7 @@ export default class ConfigSteam_04_Locale extends Base.ConfigStepBase<ConfigSte
                 <div className="card">
                     <select name="language" className="selectLanguage" onChange={this.onSelect}>
                         {
-                            this.state.supportedLanguages.map((language, i) => (
+                            this.state.supportedLanguages.map((language) => (
                                 <option value={language.langCode}>{language.displayName}</option>
                             ))
                         }

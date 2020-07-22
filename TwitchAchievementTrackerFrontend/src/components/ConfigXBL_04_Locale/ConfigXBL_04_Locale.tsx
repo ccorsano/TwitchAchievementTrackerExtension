@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as Base from '../../common/ConfigStepBase';
 import { ConfigurationService } from '../../services/EBSConfigurationService';
-import { ActiveConfig, SupportedLanguage } from '../../common/EBSTypes';
+import { SupportedLanguage } from '../../common/EBSTypes';
 import ConfigXBL_05_Confirm from '../ConfigXBL_05_Confirm/ConfigXBL_05_Confirm';
-import ConfigXBL_03_TitleId from '../ConfigXBL_03_TitleId/ConfigXBL_03_TitleId';
 
 
 interface ConfigXBL_04_LocaleProps extends Base.ConfigStepBaseProps {
@@ -52,19 +51,19 @@ export default class ConfigXBL_04_Locale extends Base.ConfigStepBase<ConfigXBL_0
         })
     }
 
-    onResetLanguage = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onResetLanguage = () => {
         this.setState({
             selectedLanguage: null,
         });
     }
 
-    onContinue = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    onContinue = () => {
         this.setState({
             isConfirmed: true,
         });
     }
 
-    unvalidate = (e: any) => {
+    unvalidate = () => {
         this.setState({
             isConfirmed: false,
         });
@@ -111,7 +110,7 @@ export default class ConfigXBL_04_Locale extends Base.ConfigStepBase<ConfigXBL_0
                 <div className="card">
                     <select name="language" className="selectLanguage" onChange={this.onSelect}>
                         {
-                            this.state.supportedLanguages.map((language, i) => (
+                            this.state.supportedLanguages.map((language) => (
                                 <option value={language.langCode}>{language.displayName}</option>
                             ))
                         }
