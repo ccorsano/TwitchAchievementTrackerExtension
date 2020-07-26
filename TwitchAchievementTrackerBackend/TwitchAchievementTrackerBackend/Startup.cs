@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -74,6 +75,7 @@ namespace TwitchAchievementTrackerBackend
             services.AddMemoryCache();
 
             services.AddApplicationInsightsTelemetry();
+            services.AddTransient<ITelemetryInitializer, TwitchUserTelemetryInitializer>();
 
             // For development mode
             if (Configuration.GetValue<bool>("config:IgnoreAuthentication", false))
