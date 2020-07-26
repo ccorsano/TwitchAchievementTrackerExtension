@@ -1,0 +1,40 @@
+Review channel: https://www.twitch.tv/miekyld
+
+Review team guidance:
+
+- For XBoxLive configuration:
+  - XApi.us review key: 
+  - GamerTag: use any, or search for "Nuja3302"
+  - Game selection: select any
+  - Language selection: select any
+- For Steam configuration:
+  - Steam WebAPI review Key: 
+  - Steam Profile Url: copy any, or use https://steamcommunity.com/id/miekyll/
+  - Game selection: select any
+  - Language selection: select any
+- Frontend is written in React + TypeScript
+  Please note that full-code sourcemap are included, code is easiest browsed using Developers Tools through WebPack source mapping.
+  I can provide the full frontend project upon request, if the source maps are not enough.
+  As the WebPack developer tools might mix Twitch own source with the extension's, here is the file structure of the react project:
+    +-- src
+    |   +-- common/            -> Shared types and helpers
+    |   +-- components/        -> React components
+    |   +-- services/          -> Service classes
+    |   +-- Config.tsx         -> Root file for the Broadcaster Configuration view
+    |   +-- LiveConfig.tsx     -> Root file for the Stream Dashboard view
+    |   +-- Mobile.tsx         -> Root file for the Mobile viewer Twitch view
+    |   +-- VideoOverlay.tsx   -> Root file for the Video Overlay viewer Twitch view
+
+- On the viewers side, just click the overlay to show the full list of achievements.
+
+- During the live, the Dashboard view allows to force the refresh of the achievement completion on the backend.
+  As this can exceed the XApi.us call limit, when configured with an XBoxLive game the live view also displays the current Rate limit and reset period.
+
+
+Changelog, v2020.04
+- Dashboard live config view:
+  - Force refresh the achievement list for all viewers, to reflect any new achievement you earned
+  - When using xapi.us, see in real time how much API calls you are using, as clicking refresh will use at least one.
+- For Steam integration, the extension now uses tiles from the new Steam store when available (looks much better)
+- Mask the API key as a password field when editing the config.
+  It avoids exposing the key if the config is edited on stream.
