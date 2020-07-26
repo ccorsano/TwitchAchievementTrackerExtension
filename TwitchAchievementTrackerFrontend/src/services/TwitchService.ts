@@ -4,6 +4,7 @@ export default class TwitchService {
     onAuthorized: {(context: TwitchAuthCallbackContext):void}[] = [];
     onConfiguration: {(config: TwitchExtensionConfiguration):void}[] = [];
     configuration: TwitchExtensionConfiguration = { content: "", version: "" };
+    authToken: TwitchAuthCallbackContext = null;
 
     constructor()
     {
@@ -27,7 +28,12 @@ export default class TwitchService {
         (<any>window).Twitch.ext.listen(channel, callback);
     }
 
+    unlisten = (channel: string, callback: {(target: string, contentType: string, message: string):void}) => {
+        (<any>window).Twitch.ext.unlisten(channel, callback);
+    }
+
     _onAuthorized = (context: TwitchAuthCallbackContext) => {
+        this.authToken = context;
         this.onAuthorized.forEach(handler => {
             handler(context);
         });

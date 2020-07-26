@@ -53,6 +53,9 @@ export class EBSBase {
         
         Twitch.listen("broadcast", (_target, _contentType, messageStr) => {
             let message = JSON.parse(messageStr);
+
+            if (message.type != "set-config") return;
+
             this.configuration = message;
             this.configurationPromise = new Promise<TwitchExtensionConfiguration>((resolve, _reject) => {
                 resolve(message);
