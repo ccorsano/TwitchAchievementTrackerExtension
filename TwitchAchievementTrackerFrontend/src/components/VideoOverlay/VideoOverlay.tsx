@@ -72,7 +72,8 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
 
     refreshAll = async () => {
         let titleInfoPromise = AchievementsService.getTitleInfo();
-;
+        AchievementsService.getSummary().then(summary => this .setState({achievementsSummary: summary}));
+        AchievementsService.getAchievements().then(achievements => this .setState({achievementsDetails: achievements}));
 
         try {
             let titleInfo = await titleInfoPromise;
