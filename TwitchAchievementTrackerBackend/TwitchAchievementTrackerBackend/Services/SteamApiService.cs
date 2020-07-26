@@ -123,7 +123,7 @@ namespace TwitchAchievementTrackerBackend.Services
 
         public async Task<bool> PurgeCache(SteamConfiguration steamConfig)
         {
-            var cacheKey = GetCacheKey("achievements", steamConfig);
+            var cacheKey = $"steam:achievements:{steamConfig.AppId}:{steamConfig.SteamId}";
 
             var wasCached = _cache.TryGetValue<SteamPlayerAchievement[]>(cacheKey, out var cachedAchievements);
             if (wasCached)
@@ -133,7 +133,7 @@ namespace TwitchAchievementTrackerBackend.Services
 
             var reloaded = await GetAchievementsAsync(steamConfig);
 
-            return reloaded.Count(a => a?.Achieved == 1) != cachedAchievements.Count(a => a?.Achieved == 1);
+            return reloaded.Count(a => a?.Achieved == 1) != cachedAchievements?.Count(a => a?.Achieved == 1);
         }
 
         public async Task GetAppInfo(SteamConfiguration steamConfig)

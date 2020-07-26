@@ -120,8 +120,10 @@ dotnet user-secrets set "steam:WebApiKey" "<a_default_steam_api_key>"
 
 
 #### Twitch configuration
-- twitch.ExtensionSecrets : List of enabled Twitch extension secret keys, used to validate Extension calls
-  ENV var name: twitch__ExtensionSecrets__0, twitch__ExtensionSecrets__1, ...
+- twitch.ClientId : Twitch extension cliend id, used for EBS calls to Twitch
+  ENV var name: twitch__ClientId
+- twitch.ExtensionSecret : Twitch extension secret key, used to validate Extension calls and sign EBS JWT Tokens
+  ENV var name: twitch__ExtensionSecret
   
-- config.EncryptionSecret : Secret key used to encrypt the configuration token
+- config.EncryptionSecret : Secret used to encrypt the configuration token.
   ENV var name: config__EncryptionSecret

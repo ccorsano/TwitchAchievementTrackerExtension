@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace TwitchAchievementTrackerBackend.Middleware
 {
@@ -41,7 +42,7 @@ namespace TwitchAchievementTrackerBackend.Middleware
             else if (ex is InvalidOperationException) code = HttpStatusCode.BadRequest;
             else code = HttpStatusCode.InternalServerError;
 
-            var result = JsonConvert.SerializeObject(new { error = ex.Message });
+            var result = JsonSerializer.Serialize(new { error = ex.Message });
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
             return context.Response.WriteAsync(result);
