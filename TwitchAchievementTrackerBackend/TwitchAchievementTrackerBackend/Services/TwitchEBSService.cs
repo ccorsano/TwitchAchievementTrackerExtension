@@ -34,6 +34,23 @@ namespace TwitchAchievementTrackerBackend.Services
             _jwtSigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         }
 
+        public string GetUserJWTToken(string userId, string channelId, string role)
+        {
+            var iat = DateTimeOffset.UtcNow - EPOCH;
+
+            var token = new JwtSecurityToken(null, null, null, null, DateTime.UtcNow.AddDays(1), _jwtSigningCredentials);
+            token.Payload["channel_id"] = channelId;
+            token.Payload["role"] = role;
+            token.Payload["opaque_user_id"] = userId;
+            token.Payload["iat"] = (int) iat.TotalSeconds;
+            token.Payload["pubsub_perms"] = new
+            {
+                listen = new string[] { "broadcast", "global" }
+            };
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
         public string GetJWTToken(string channelId)
         {
             var exp = DateTimeOffset.UtcNow - EPOCH;
