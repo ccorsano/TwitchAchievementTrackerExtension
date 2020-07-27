@@ -38,7 +38,17 @@ export default class CountDown extends React.Component<CountDownProps, any>
 
         return (
             <div>
-                <span className="rounded">{timeToTarget.hours()}</span>:<span className="rounded">{timeToTarget.minutes()}</span>:<span className="rounded">{timeToTarget.seconds()}</span>
+                <span className="rounded">
+                    {timeToTarget.hours().toString().padStart(2, "0")}
+                    </span>
+                    :
+                    <span className="rounded">
+                        {timeToTarget.minutes().toString().padStart(2, "0")}
+                    </span>
+                    :
+                    <span className="rounded">
+                        {timeToTarget.seconds().toString().padStart(2, "0")}
+                    </span>
             </div>
         )
     }
