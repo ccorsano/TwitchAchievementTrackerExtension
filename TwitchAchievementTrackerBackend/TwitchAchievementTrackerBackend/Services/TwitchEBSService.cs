@@ -89,5 +89,11 @@ namespace TwitchAchievementTrackerBackend.Services
             var contentStr = JsonSerializer.Serialize(payload);
             await BroadcastJson(channelId, contentStr);
         }
+
+        public async Task<string> GetChannelInfo(string channelId)
+        {
+            var channelInfo = await _twitchExtensionClient.GetAsync($"https://api.twitch.tv/helix/channels?broadcaster_id={channelId}");
+            return await channelInfo.Content.ReadAsStringAsync();
+        }
     }
 }

@@ -135,5 +135,16 @@ namespace TwitchAchievementTrackerBackend.Controllers
 
             return _service.GetXApiRateLimits(HttpContext.GetExtensionConfiguration());
         }
+
+        [HttpGet("liveconfig/refreshtitle")]
+        public RateLimits RefreshTitle()
+        {
+            if (!HttpContext.HasExtensionConfiguration())
+            {
+                throw new InvalidOperationException("Missing configuration");
+            }
+
+            return _service.RefreshFromTwitchCategory(HttpContext.GetExtensionConfiguration());
+        }
     }
 }

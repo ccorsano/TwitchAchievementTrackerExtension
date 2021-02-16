@@ -123,6 +123,11 @@ namespace TwitchAchievementTrackerBackend.Services
             return _xApiService.GetRateLimit(extensionConfiguration.XBoxLiveConfig.XApiKey);
         }
 
+        internal RateLimits RefreshFromTwitchCategory(ExtensionConfiguration extensionConfiguration)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<PlayerInfoCard> ResolveXBoxLiveGamertag(string gamertag, string xApiKey = null)
         {
             var xuid = await _xApiService.ResolveXuid(gamertag, xApiKey);
