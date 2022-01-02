@@ -235,5 +235,6 @@
   "frontendCommand": "npm run start",
   "frontendFolderName": "TwitchAchievementTrackerFrontend",
   "name": "XBoxLiveAchievementTracker",
-  "version": 2
+  "version": 3,
+  "usingRandomFrontendHostingPort": true
 }

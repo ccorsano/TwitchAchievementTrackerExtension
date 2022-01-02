@@ -2,8 +2,8 @@ import * as React from 'react';
 import './VideoOverlay.scss';
 import { AchievementSummary, Achievement, TitleInfo, ActiveConfig } from '../../common/EBSTypes';
 import { AchievementsService } from '../../services/EBSAchievementsService';
-import NujaCup from '../../../assets/nujacup.svg';
-import NujaLogo from '../../../assets/nuja.png';
+import Cup from '../../../assets/cup.svg';
+import Logo from '../../../assets/logo.png';
 import { Twitch } from '../../services/TwitchService';
 import AchievementsList from '../AchievementsList/AchievementsList';
 
@@ -109,7 +109,7 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
 
         return (
             <div className={this.state.isCollapsed ? "overlayBox collapsed" : "overlayBox open"}>
-                <div className={logoClassName} onClick={this.togglePanel} style={{backgroundImage: `url(${this.state.titleInfo?.logoUri ?? NujaLogo})`}}>
+                <div className={logoClassName} onClick={this.togglePanel} style={{backgroundImage: `url(${this.state.titleInfo?.logoUri ?? Logo})`}}>
                     <div className="summaryWidget">
                         { this.state.achievementsSummary ? percentage.toFixed(0) + '%' : ''}
                     </div>
@@ -121,7 +121,7 @@ export default class VideoOverlay extends React.Component<any, VideoOverlayState
                         </h2>
                         <div id="completionHeadline">
                             <span className="percentage">{percentage.toPrecision(2)}%</span>
-                            <img src={NujaCup} alt="achievements" />
+                            <img src={Cup} alt="achievements" />
                             <span className="completedCount">{completedCount}</span>/<span className="totalCount">{totalCount}</span> 
                         </div>
                     </div>

@@ -3,8 +3,8 @@ import './Mobile.scss'
 import { TitleInfo, AchievementSummary, Achievement, ActiveConfig } from '../../common/EBSTypes';
 import { AchievementsService } from '../../services/EBSAchievementsService';
 import { Twitch } from '../../services/TwitchService';
-import NujaCup from '../../../assets/nujacup.svg';
-import NujaLogo from '../../../assets/nuja.png';
+import Cup from '../../../assets/cup.svg';
+import Logo from '../../../assets/logo.png';
 import AchievementsList from '../AchievementsList/AchievementsList';
 
 type VideoOverlayState = {
@@ -96,12 +96,12 @@ export default class Mobile extends React.Component<any, VideoOverlayState> {
         return (
             <div className="overlayBox open">
                 <div id="achievementsPanel" className={platformClass}>
-                    <div className={logoClassName} style={{backgroundImage: `url(${this.state.titleInfo?.logoUri ?? NujaLogo})`}}>
+                    <div className={logoClassName} style={{backgroundImage: `url(${this.state.titleInfo?.logoUri ?? Logo})`}}>
                     </div>
                     <div className="card-container">
                         <div id="completionHeadline">
                             <span className="percentage">{percentage.toPrecision(2)}%</span>
-                            <img src={NujaCup} alt="achievements" />
+                            <img src={Cup} alt="achievements" />
                             <span className="completedCount">{completedCount}</span>/<span className="totalCount">{totalCount}</span> 
                         </div>
                         <h2 id="gameTitle" className={platformClass}>
