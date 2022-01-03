@@ -1,4 +1,17 @@
-Review channel: https://www.twitch.tv/miekyld
+Review channel: https://www.twitch.tv/blipbloopbot
+
+Source package for this version:
+https://github.com/ccorsano/TwitchAchievementTrackerExtension/releases/tag/2022.01
+
+Build instructions:
+> cd .\TwitchAchievementTrackerFrontend\
+> npm install
+> npm run build
+
+Changelog, v2022.01
+- Branding change: make the extension more generic, only mentioning originating community in description
+- Updated dependencies
+- Added backend base URL to connect-src CSP
 
 Review team guidance:
 
@@ -29,9 +42,3 @@ Review team guidance:
 
 - During the live, the Dashboard view allows to force the refresh of the achievement completion on the backend.
   As this can exceed the XApi.us call limit, when configured with an XBoxLive game the live view also displays the current Rate limit and reset period.
-
-
-Changelog, v2022.01
-- Branding change: make the extension more generic, only mentioning originating community in description
-- Updated dependencies
-- Added backend base URL to connect-src CSP
