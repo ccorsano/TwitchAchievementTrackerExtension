@@ -168,14 +168,14 @@
     "canInstall": true,
     "configUrl": "https://localhost:8090/config.html",
     "configurationLocation": "hosted",
-    "description": "Fifth iteration of the extension developed for Nuja's 100% Quest program !\ntwitch.tv/nuja\n\nThis overlay shows XBoxLive or Steam achievements for a given player and a given game.\nGo through the assisted configuration flow, then your viewers can keep track of how many achievements are left to unlock when streaming to complete a game 100%.\nWhile live, you can request to force refresh the achievements from Steam or XBoxLive using the Dashboard tool.\n\nVersion 2020.05:\n- Name change\n\nPre-requisite:\n- XBoxLive configuration uses xapi.us to query XBoxLive, the configuration will require the streamer to input an API key from xapi.us.\n- Steam configuration requires a Steam WebAPI key that any Steam User can request through https://steamcommunity.com/dev\n\nAuthors:\nNuja's Community\ntwitch.tv/miekyld\ntwitch.tv/xenomorpheapeuree\ntwitch.tv/kbinturong",
+    "description": "Fifth iteration of the extension originally developed for Nuja's 100% Quest program !\ntwitch.tv/nuja\n\nThis overlay shows XBoxLive or Steam achievements for a given player and a given game.\nGo through the assisted configuration flow, then your viewers can keep track of how many achievements are left to unlock when streaming to complete a game 100%.\nWhile live, you can request to force refresh the achievements from Steam or XBoxLive using the Dashboard tool.\n\nVersion 2021.01:\n- Name change\n- Implement new Twitch extension policies\n- Update dependencies\n\nPrerequisite:\n- XBoxLive configuration uses xapi.us to query XBoxLive, the configuration will require the streamer to input an API key from xapi.us.\n- Steam configuration requires a Steam WebAPI key that any Steam User can request through https://steamcommunity.com/dev\n\nAuthors:\nNuja's Community\ntwitch.tv/miekyld\ntwitch.tv/xenomorpheapeuree\ntwitch.tv/kbinturong",
     "eulaTosUrl": "",
     "hasChatSupport": false,
-    "iconUrl": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/logo808776b9-3269-473e-bc44-6566dc3f995a",
+    "iconUrl": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2021.01/logo5a020b81-8e72-491e-aa6e-1a2eefa0d4d3",
     "iconUrls": {
-      "100x100": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/logo808776b9-3269-473e-bc44-6566dc3f995a",
-      "24x24": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/taskbardc4d27e4-a354-482b-bf55-27b51f7cf4d7",
-      "300x200": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/0.0.1/discovery62785bd4-e588-45af-b319-9a5c0cb93a0a"
+      "100x100": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2021.01/logo5a020b81-8e72-491e-aa6e-1a2eefa0d4d3",
+      "24x24": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2021.01/taskbara13f53fb-0006-41e8-ac0f-f25fbdf3b70e",
+      "300x200": "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2021.01/discovery43847aed-dfd6-428a-b2f8-d1d5770e4230"
     },
     "id": "04ijuz20mxlw1wk5b6alh6l4mb48zu",
     "installationCount": -42,
@@ -186,12 +186,12 @@
     "requestIdentityLink": false,
     "requiredBroadcasterAbilities": [],
     "screenshotUrls": [
-      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2020.04/screenshotadbc8e45-e707-4fe4-addd-bcc48f3bec23",
-      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2020.04/screenshot76308062-91eb-47fb-a62b-fdc1eed310cb",
-      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2020.04/screenshot38038e93-86a1-497e-bfd4-25b04914a2d3",
-      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2020.04/screenshotc3c522cc-56b0-476f-894a-b4f7956ddb75",
-      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2020.04/screenshot3da2e43f-9c96-4317-8e6e-1b8d99960c4d",
-      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2020.04/screenshot61cf8630-e929-4052-8dc6-c8685987ea82"
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2021.01/screenshotf1284cea-3e43-4777-add5-607f63fbf120",
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2021.01/screenshot4063329b-2be1-4362-b7f3-d71f9c3a75af",
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2021.01/screenshot465dd284-8405-466a-9730-e9a2c767105a",
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2021.01/screenshot1ef9761d-b631-4320-bd06-df066b007347",
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2021.01/screenshota11d8667-e9d4-48a8-99ea-ea4c893843ff",
+      "https://extensions-discovery-images.twitch.tv/04ijuz20mxlw1wk5b6alh6l4mb48zu/2021.01/screenshot70eb0544-4c02-4d36-8736-c488c50b2e35"
     ],
     "sku": "",
     "state": "Testing",
@@ -199,7 +199,7 @@
     "summary": "Steam and XBoxLive Achievements Tracker",
     "supportEmail": "twitchext@conceptoire.com",
     "vendorCode": "",
-    "version": "2020.05",
+    "version": "2022.01",
     "viewerSummary": "Achievements tracker, see what achievements are left to unlock",
     "viewerUrl": "",
     "viewerUrls": {
