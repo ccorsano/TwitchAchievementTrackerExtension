@@ -1,4 +1,4 @@
-import { TwitchAuthCallbackContext, TwitchExtensionConfiguration } from "../common/TwitchExtension";
+import { TwitchAuthCallbackContext, TwitchExtensionConfiguration, TwitchExtHelper } from "../common/TwitchExtension";
 
 export default class TwitchService {
     onAuthorized: {(context: TwitchAuthCallbackContext):void}[] = [];
@@ -11,25 +11,25 @@ export default class TwitchService {
         this._onAuthorized = this._onAuthorized.bind(this);
         this._onConfiguration = this._onConfiguration.bind(this);
 
-        (<any>window).Twitch.ext.onAuthorized(this._onAuthorized);
-        (<any>window).Twitch.ext.configuration.onChanged(this._onConfiguration);
+        TwitchExtHelper.onAuthorized(this._onAuthorized);
+        TwitchExtHelper.configuration.onChanged(this._onConfiguration);
     }
 
     setConfiguration = (configuration: string, version: string) => {
-        (<any>window).Twitch.ext.configuration.set('broadcaster', version, configuration);
+        TwitchExtHelper.configuration.set('broadcaster', version, configuration);
         this.configuration = {content: configuration, version: version};
     }
 
     send = (target: string, contentType: string, message: any) => {
-        (<any>window).Twitch.ext.send(target, contentType, message);
+        TwitchExtHelper.send(target, contentType, message);
     }
 
     listen = (channel: string, callback: {(target: string, contentType: string, message: string):void}) => {
-        (<any>window).Twitch.ext.listen(channel, callback);
+        TwitchExtHelper.listen(channel, callback);
     }
 
     unlisten = (channel: string, callback: {(target: string, contentType: string, message: string):void}) => {
-        (<any>window).Twitch.ext.unlisten(channel, callback);
+        TwitchExtHelper.unlisten(channel, callback);
     }
 
     _onAuthorized = (context: TwitchAuthCallbackContext) => {
@@ -39,10 +39,10 @@ export default class TwitchService {
         });
     }
 
-    _onConfiguration = (config: TwitchExtensionConfiguration) => {
-        this.configuration = config;
+    _onConfiguration = () => {
+        this.configuration = TwitchExtHelper.configuration.broadcaster;
         this.onConfiguration.forEach(handler => {
-            handler(config);
+            handler(TwitchExtHelper.configuration.broadcaster);
         })
     }
 }

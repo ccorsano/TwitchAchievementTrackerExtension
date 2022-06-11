@@ -51,18 +51,18 @@ module.exports = (_env, argv) => {
 
     let entry = {};
 
-    for(name in entryPoints){
-      if(entryPoints[name].build){
-        entry[name]=entryPoints[name].path
-        if(argv.mode==='production'){
+    for(const entryName in entryPoints){
+      if(entryPoints[entryName].build){
+        entry[entryName]=entryPoints[entryName].path
+        // if(argv.mode==='production'){
           plugins.push(new HtmlWebpackPlugin({
             inject:true,
-            chunks:[name],
+            chunks:[entryName],
             template:'./template.html',
-            filename:entryPoints[name].outputHtml,
+            filename:entryPoints[entryName].outputHtml,
             minify: false
           }))
-        }
+        // }
       }    
     }
 
@@ -123,14 +123,23 @@ module.exports = (_env, argv) => {
 
     if(argv.mode==='development'){
       config.devServer = {
-        contentBase: path.join(__dirname,'public'),
+        static: [
+            path.resolve(__dirname, 'public')
+        ],
         host:argv.devrig ? 'localhost.rig.twitch.tv' : 'localhost',
         headers: {
           'Access-Control-Allow-Origin': '*'
         },
-        port: 8090
+        port: 8090,
+        https: true,
+        hot: true,
       }
-      config.devServer.https = true
+      config.watchOptions = {
+          aggregateTimeout: 1000
+      };
+      config.cache = {
+          type: 'filesystem'
+      };
       plugins.push(new webpack.HotModuleReplacementPlugin())
     }
     if(argv.mode==='production'){
