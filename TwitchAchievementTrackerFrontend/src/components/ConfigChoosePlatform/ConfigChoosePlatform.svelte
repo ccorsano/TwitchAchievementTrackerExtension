@@ -99,7 +99,7 @@ ConfigurationService.configurationPromise.then(async configurationToken => {
                 <input type="button" value="Select" class="section" on:click={(e) => onSelect(CurrentPlatformEnum.Steam) } />
             </div>
         </div>
-        <input type="button" value="Cancel" on:click={onBack} />,
+        <input type="button" value="Cancel" on:click={onBack} />
     </div>
     {:else if currentPlatform == CurrentPlatformEnum.Steam}
     <div class="ConfigSteam">

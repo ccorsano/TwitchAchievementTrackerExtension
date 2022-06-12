@@ -45,7 +45,7 @@ async function doValidate(_e: any)
     isLoading = true
 
     try {
-        let split = this.formatRegexp.exec(steamProfileUrl);
+        let split = formatRegexp.exec(steamProfileUrl);
         let profileId = split[2];
         let resolvedProfile: PlayerInfoCard = null;
 
@@ -155,6 +155,6 @@ $: isContinueEnabled = isProfileUrlFormatValid || isProfileValid;
             <div class="spinner"></div>
         </div>
     {/if}
-    <input type="button" value="Back" onClick={onBack} />,
+    <input type="button" value="Back" onClick={onBack} />
     <input type="button" value="Continue" disabled={!isContinueEnabled} on:click={doValidate} />
 {/if}

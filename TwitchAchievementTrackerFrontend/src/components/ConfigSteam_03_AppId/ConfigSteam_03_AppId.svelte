@@ -2,8 +2,9 @@
 import { EBSVersion } from "../../common/ServerConfig"
 import { ActiveConfig, ExtensionConfiguration, TitleInfo } from "../../common/EBSTypes"
 import { ConfigurationService, ValidationError } from "../../services/EBSConfigurationService"
-import ValidationErrorList from "../ValidationErrorList/ValidationErrorList.svelte";
+import ValidationErrorList from "../ValidationErrorList/ValidationErrorList.svelte"
 import GameCard from "../GameCard/GameCard.svelte"
+import ConfigSteam_04_Locale from "../ConfigSteam_04_Locale/ConfigSteam_04_Locale.svelte"
 
 export let onValidate: (e: any, configuration: ExtensionConfiguration) => void
 export let onBack: (e: any) => void
@@ -89,13 +90,13 @@ $: isContinueEnabled = selectedTitle != null
 </script>
 
 {#if isConfirmed}
-<!-- <ConfigSteam_04_Locale
-    savedConfiguration={savedConfiguration}
-    onValidate={onValidate}
-    onBack={unvalidate}
-    webApiKey={webApiKey}
-    steamProfileId={steamProfileId}
-    steamAppId={selectedTitle.titleId} /> -->
+    <ConfigSteam_04_Locale
+        savedConfiguration={savedConfiguration}
+        onValidate={onValidate}
+        onBack={unvalidate}
+        webApiKey={webApiKey}
+        steamProfileId={steamProfileId}
+        steamAppId={selectedTitle.titleId} />
 {:else}
     <ValidationErrorList errors={errors} />
     {#if isLoading}
@@ -107,8 +108,8 @@ $: isContinueEnabled = selectedTitle != null
             <input slot="buttonSection" type="button" class="section" name="TitleChange" value="Change" on:click={onResetTitle} />
         </GameCard>
     {:else}
-        <label for="titleSearch">Owned Game list</label>,
-        <input name="titleSearch" type="text" placeholder="Filter your Steam games" on:change={e => onChangeTitleSearch(e.currentTarget.value)} />,,
+        <label for="titleSearch">Owned Game list</label>
+        <input name="titleSearch" type="text" placeholder="Filter your Steam games" on:change={e => onChangeTitleSearch(e.currentTarget.value)} />
         <div class="searchResult container">
             <div class="row">
                 {#each filteredApps as titleInfo}
