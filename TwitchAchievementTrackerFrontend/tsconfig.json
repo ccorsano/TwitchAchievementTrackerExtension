@@ -1,25 +1,24 @@
 {
-    "include": [
-        "./custom.d.ts"
-    ],
+    "extends": "@tsconfig/svelte/tsconfig.json",
     "compilerOptions": {
-        "outDir": "./dist/",
-        "sourceMap": true,
-        "noImplicitAny": true,
-        "module": "CommonJS",
-        "target": "es5",
-        "jsx": "react",
-        "allowJs": true,
-        "alwaysStrict": true,
-        // More checks
-        "noUnusedLocals": true /* Report errors on unused locals. */,
-        "noUnusedParameters": true /* Report errors on unused parameters. */,
-        "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
-        "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,    
-        
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "diagnostics": true,
-        "extendedDiagnostics":true
-    }
-}
+      "target": "esnext",
+      "useDefineForClassFields": true,
+      "module": "esnext",
+      "resolveJsonModule": true,
+      "baseUrl": ".",
+      "allowJs": true,
+      "checkJs": true,
+      "isolatedModules": true,
+      "composite": true,
+      "moduleResolution": "node"
+    },
+    "include": [
+      "src/**/*.d.ts",
+      "src/**/*.ts",
+      "src/**/*.js",
+      "src/**/*.svelte",
+      "vite.config.ts",
+      "custom.d.ts"
+    ]
+  }
+  

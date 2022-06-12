@@ -1,7 +1,6 @@
 import { Twitch } from '../services/TwitchService';
 import * as ServerConfig from '../common/ServerConfig';
-import { TwitchAuthCallbackContext, TwitchExtensionConfiguration } from "../common/TwitchExtension";
-require('../common/TwitchExtension')
+import type { TwitchAuthCallbackContext, TwitchExtensionConfiguration } from '../common/TwitchExtension'
 
 var urlParams = new URLSearchParams(window.location.search);
 
