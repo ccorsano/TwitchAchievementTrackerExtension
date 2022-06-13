@@ -12,7 +12,8 @@ export default defineConfig({
                 live_config: resolve(__dirname, 'live_config.html'),
                 mobile: resolve(__dirname, 'mobile.html')
             }
-        }
+        },
+        assetsDir: "."
     },
     server: {
         https: true,
