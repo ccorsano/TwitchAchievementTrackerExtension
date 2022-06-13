@@ -5,7 +5,8 @@ import SteamLogo from '../../../assets/Steam_icon_logo.svg'
 import type { TwitchExtensionConfiguration } from "../../common/TwitchExtension"
 import { ConfigurationService } from "../../services/EBSConfigurationService"
 import ConfigSteamConfigRoot from "../ConfigSteamConfigRoot/ConfigSteamConfigRoot.svelte"
-import ConfigSummary from "../ConfigSummary/ConfigSummary.svelte";
+import ConfigSummary from "../ConfigSummary/ConfigSummary.svelte"
+import ConfigXBLConfigRoot from "../ConfigXBLConfigRoot/ConfigXBLConfigRoot.svelte"
 
 type onChangeCallback = () => void
 
@@ -107,7 +108,7 @@ ConfigurationService.configurationPromise.then(async configurationToken => {
     </div>
     {:else if currentPlatform == CurrentPlatformEnum.XBoxLive}
     <div class="ConfigXBoxLive">
-        <!-- <ConfigXBLConfigRoot onSaved={this.onSaved} savedConfiguration={this.state.savedConfiguration} onCancel={this.onRestart} /> -->
+        <ConfigXBLConfigRoot onSaved={onSaved} savedConfiguration={savedConfiguration} onCancel={onRestart} />
     </div>
     {/if}
 {/if}
