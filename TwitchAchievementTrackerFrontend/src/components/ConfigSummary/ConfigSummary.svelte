@@ -37,7 +37,7 @@ async function updateFromProps(configuration: ExtensionConfiguration)
     }
 }
 
-updateFromProps(extensionConfig)
+$: updateFromProps(extensionConfig)
 
 let platformLogo: string;
 let platformPlayerNaming: string;

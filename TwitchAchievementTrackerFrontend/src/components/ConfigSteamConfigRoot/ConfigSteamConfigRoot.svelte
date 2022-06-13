@@ -13,7 +13,7 @@ export let onCancel: () => void
 let isValid:boolean = false
 
 
-async function onValidateStep(config: ExtensionConfiguration)
+async function onValidateStep(_e: any, config: ExtensionConfiguration)
 {
     let result = await ConfigurationService.setConfiguration(config);
     Twitch.setConfiguration(result.configToken, EBSVersion);
