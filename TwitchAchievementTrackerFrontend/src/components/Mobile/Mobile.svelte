@@ -17,7 +17,7 @@ let refreshAll = async () => {
     AchievementsService.getAchievements().then(achievements => achievementsDetails = achievements)
 
     try {
-        let titleInfo = await titleInfoPromise;
+        titleInfo = await titleInfoPromise;
         isConfigurationValid = true
     }
     catch(error)
@@ -63,6 +63,7 @@ let completedCount:number = 0
 let totalCount:number = 0
 let platformClass = ""
 let logoClassName = ""
+let logoUri = `url(${Logo})`
 
 $:{
     percentage = achievementsSummary ? (achievementsSummary.completed / achievementsSummary.total) * 100.0 : 0.0;
@@ -70,6 +71,7 @@ $:{
     totalCount = achievementsSummary?.total ?? 0;
     platformClass = titleInfo?.platform == ActiveConfig.Steam ?  "steam" : "xboxlive";
     logoClassName = "gameLogo noselect " + platformClass;
+    logoUri = `url(${titleInfo?.logoUri ?? Logo})`
 }
 
 </script>
@@ -82,7 +84,7 @@ $:{
 
 <div class="overlayBox open">
     <div id="achievementsPanel" class={platformClass}>
-        <div class={logoClassName} style="backgroundImage: {`url(${titleInfo?.logoUri ?? Logo})`}">
+        <div class={logoClassName} style:background-image={logoUri}>
         </div>
         <div class="card-container">
             <div id="completionHeadline">
