@@ -27,7 +27,7 @@ jobs:
     - name: Build Twitch Extension
       working-directory: ./TwitchAchievementTrackerFrontend
       run: |
-        npm install
+        npm ci
         npm run build
     - name: Upload Twitch Extension package
       uses: actions/upload-artifact@v2
