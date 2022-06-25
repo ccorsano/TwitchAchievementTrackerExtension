@@ -84,7 +84,7 @@ $:{
                 {titleInfo?.productTitle ?? "Game"}
             </h2>
             <div id="completionHeadline">
-                <span class="percentage">{percentage.toPrecision(2)}%</span>
+                <span class="percentage">{percentage.toFixed(0)}%</span>
                 <img src={Cup} alt="achievements" />
                 <span class="completedCount">{completedCount}</span>/<span class="totalCount">{totalCount}</span> 
             </div>
