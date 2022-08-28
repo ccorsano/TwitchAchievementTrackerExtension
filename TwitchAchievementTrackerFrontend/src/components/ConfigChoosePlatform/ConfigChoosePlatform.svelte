@@ -56,7 +56,7 @@ function onSaved(_savedConfiguration: TwitchExtensionConfiguration, configuratio
 }
 
 ConfigurationService.configurationPromise.then(async configurationToken => {
-    if (configurationToken)
+    if (configurationToken?.content)
     {
         let configuration = await ConfigurationService.fetchConfiguration(configurationToken);
         

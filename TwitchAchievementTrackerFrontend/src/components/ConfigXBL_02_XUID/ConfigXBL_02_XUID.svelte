@@ -40,7 +40,7 @@ async function onSearch(_e: any)
     gamerCard = null
     isLoading = true
 
-    let resolvedGamerCard = await ConfigurationService.resolveXBoxLiveGamertag(this.state.xuidSearch, this.props.xApiKey);
+    let resolvedGamerCard = await ConfigurationService.resolveXBoxLiveGamertag(xuidSearch, xApiKey);
 
     xuid = resolvedGamerCard.playerId
     gamerCard = resolvedGamerCard
