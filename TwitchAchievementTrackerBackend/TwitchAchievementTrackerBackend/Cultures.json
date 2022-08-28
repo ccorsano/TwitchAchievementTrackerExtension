@@ -17,7 +17,8 @@
     },
     {
         "DisplayName": "Afrikaans",
-        "LangCode": "af"
+        "LangCode": "af",
+        "DefaultRegion": "af-ZA"
     },
     {
         "DisplayName": "Afrikaans (Namibia)",
@@ -37,16 +38,18 @@
     },
     {
         "DisplayName": "Amharic",
-        "LangCode": "am"
+        "LangCode": "am",
+        "DefaultRegion": "am-ET"
     },
     {
         "DisplayName": "Amharic (Ethiopia)",
         "LangCode": "am-ET"
     },
-    {
-        "DisplayName": "Arabic",
-        "LangCode": "ar"
-    },
+  {
+    "DisplayName": "Arabic",
+    "LangCode": "ar",
+    "DefaultRegion": "ar-AE"
+  },
     {
         "DisplayName": "Arabic (World)",
         "LangCode": "ar-001"
@@ -157,7 +160,8 @@
     },
     {
         "DisplayName": "Mapuche",
-        "LangCode": "arn"
+        "LangCode": "arn",
+        "DefaultRegion": "arn-CL"
     },
     {
         "DisplayName": "Mapuche (Chile)",
@@ -165,7 +169,8 @@
     },
     {
         "DisplayName": "Assamese",
-        "LangCode": "as"
+        "LangCode": "as",
+        "DefaultRegion": "as-IN"
     },
     {
         "DisplayName": "Assamese (India)",
@@ -181,7 +186,8 @@
     },
     {
         "DisplayName": "Azerbaijani",
-        "LangCode": "az"
+        "LangCode": "az",
+        "DefaultRegion": "az-Cyrl-AZ"
     },
     {
         "DisplayName": "Azerbaijani (Cyrillic)",
@@ -201,7 +207,8 @@
     },
     {
         "DisplayName": "Bashkir",
-        "LangCode": "ba"
+        "LangCode": "ba",
+        "DefaultRegion": "ba-RU"
     },
     {
         "DisplayName": "Bashkir (Russia)",
@@ -213,7 +220,8 @@
     },
     {
         "DisplayName": "Belarusian",
-        "LangCode": "be"
+        "LangCode": "be",
+        "DefaultRegion": "be-BY"
     },
     {
         "DisplayName": "Belarusian (Belarus)",
@@ -229,7 +237,8 @@
     },
     {
         "DisplayName": "Bulgarian",
-        "LangCode": "bg"
+        "LangCode": "bg",
+        "DefaultRegion": "bg-BG"
     },
     {
         "DisplayName": "Bulgarian (Bulgaria)",
@@ -237,7 +246,8 @@
     },
     {
         "DisplayName": "Edo",
-        "LangCode": "bin"
+        "LangCode": "bin",
+        "DefaultRegion": "bin-NG"
     },
     {
         "DisplayName": "Edo (Nigeria)",
@@ -249,7 +259,8 @@
     },
     {
         "DisplayName": "Bangla",
-        "LangCode": "bn"
+        "LangCode": "bn",
+        "DefaultRegion": "bn-BD"
     },
     {
         "DisplayName": "Bangla (Bangladesh)",
@@ -261,7 +272,8 @@
     },
     {
         "DisplayName": "Tibetan",
-        "LangCode": "bo"
+        "LangCode": "bo",
+        "DefaultRegion": "bo-IN"
     },
     {
         "DisplayName": "Tibetan (China)",
@@ -273,7 +285,8 @@
     },
     {
         "DisplayName": "Breton",
-        "LangCode": "br"
+        "LangCode": "br",
+        "DefaultRegion": "br-FR"
     },
     {
         "DisplayName": "Breton (France)",
@@ -285,7 +298,8 @@
     },
     {
         "DisplayName": "Bosnian",
-        "LangCode": "bs"
+        "LangCode": "bs",
+        "DefaultRegion": "bs-Latn"
     },
     {
         "DisplayName": "Bosnian (Cyrillic)",
@@ -309,7 +323,8 @@
     },
     {
         "DisplayName": "Catalan",
-        "LangCode": "ca"
+        "LangCode": "ca",
+        "DefaultRegion": "ca-ES"
     },
     {
         "DisplayName": "Catalan (Andorra)",
@@ -353,7 +368,8 @@
     },
     {
         "DisplayName": "Cherokee",
-        "LangCode": "chr"
+        "LangCode": "chr",
+        "DefaultRegion": "chr-Cher"
     },
     {
         "DisplayName": "Cherokee",
@@ -365,7 +381,8 @@
     },
     {
         "DisplayName": "Corsican",
-        "LangCode": "co"
+        "LangCode": "co",
+        "DefaultRegion": "co-FR"
     },
     {
         "DisplayName": "Corsican (France)",
@@ -373,7 +390,8 @@
     },
     {
         "DisplayName": "Czech",
-        "LangCode": "cs"
+        "LangCode": "cs",
+        "DefaultRegion": "cs-CZ"
     },
     {
         "DisplayName": "Czech (Czechia)",
@@ -385,7 +403,8 @@
     },
     {
         "DisplayName": "Welsh",
-        "LangCode": "cy"
+        "LangCode": "cy",
+        "DefaultRegion": "cy-GB"
     },
     {
         "DisplayName": "Welsh (United Kingdom)",
@@ -393,7 +412,8 @@
     },
     {
         "DisplayName": "Danish",
-        "LangCode": "da"
+        "LangCode": "da",
+        "DefaultRegion": "da-DK"
     },
     {
         "DisplayName": "Danish (Denmark)",
@@ -409,7 +429,8 @@
     },
     {
         "DisplayName": "German",
-        "LangCode": "de"
+        "LangCode": "de",
+        "DefaultRegion": "de-DE"
     },
     {
         "DisplayName": "German (Austria)",
@@ -457,7 +478,8 @@
     },
     {
         "DisplayName": "Divehi",
-        "LangCode": "dv"
+        "LangCode": "dv",
+        "DefaultRegion": "dv-MV"
     },
     {
         "DisplayName": "Divehi (Maldives)",
@@ -485,7 +507,8 @@
     },
     {
         "DisplayName": "Greek",
-        "LangCode": "el"
+        "LangCode": "el",
+        "DefaultRegion": "el-GR"
     },
     {
         "DisplayName": "Greek (Cyprus)",
@@ -497,7 +520,8 @@
     },
     {
         "DisplayName": "English",
-        "LangCode": "en"
+        "LangCode": "en",
+        "DefaultRegion": "en-US"
     },
     {
         "DisplayName": "English (World)",
@@ -929,7 +953,8 @@
     },
     {
         "DisplayName": "Spanish",
-        "LangCode": "es"
+        "LangCode": "es",
+        "DefaultRegion": "es-ES"
     },
     {
         "DisplayName": "Spanish (Latin America)",
@@ -1037,7 +1062,8 @@
     },
     {
         "DisplayName": "Estonian",
-        "LangCode": "et"
+        "LangCode": "et",
+        "DefaultRegion": "et-EE"
     },
     {
         "DisplayName": "Estonian (Estonia)",
@@ -1045,7 +1071,8 @@
     },
     {
         "DisplayName": "Basque",
-        "LangCode": "eu"
+        "LangCode": "eu",
+        "DefaultRegion": "eu-ES"
     },
     {
         "DisplayName": "Basque (Basque)",
@@ -1057,7 +1084,8 @@
     },
     {
         "DisplayName": "Persian",
-        "LangCode": "fa"
+        "LangCode": "fa",
+        "DefaultRegion": "fa-IR"
     },
     {
         "DisplayName": "Persian (Iran)",
@@ -1121,7 +1149,8 @@
     },
     {
         "DisplayName": "Finnish",
-        "LangCode": "fi"
+        "LangCode": "fi",
+        "DefaultRegion": "fi-FI"
     },
     {
         "DisplayName": "Finnish (Finland)",
@@ -1137,7 +1166,8 @@
     },
     {
         "DisplayName": "Faroese",
-        "LangCode": "fo"
+        "LangCode": "fo",
+        "DefaultRegion": "fo-FO"
     },
     {
         "DisplayName": "Faroese (Denmark)",
@@ -1149,7 +1179,8 @@
     },
     {
         "DisplayName": "French",
-        "LangCode": "fr"
+        "LangCode": "fr",
+        "DefaultRegion": "fr-FR"
     },
     {
         "DisplayName": "French (Caribbean)",
@@ -1353,7 +1384,8 @@
     },
     {
         "DisplayName": "Irish",
-        "LangCode": "ga"
+        "LangCode": "ga",
+        "DefaultRegion": "ga-IE"
     },
     {
         "DisplayName": "Irish (Ireland)",
@@ -1385,7 +1417,8 @@
     },
     {
         "DisplayName": "Swiss German",
-        "LangCode": "gsw"
+        "LangCode": "gsw",
+        "DefaultRegion": "gsw-CH"
     },
     {
         "DisplayName": "Swiss German (Switzerland)",
@@ -1453,7 +1486,8 @@
     },
     {
         "DisplayName": "Hindi",
-        "LangCode": "hi"
+        "LangCode": "hi",
+        "DefaultRegion": "hi-IN"
     },
     {
         "DisplayName": "Hindi (India)",
@@ -1461,7 +1495,8 @@
     },
     {
         "DisplayName": "Croatian",
-        "LangCode": "hr"
+        "LangCode": "hr",
+        "DefaultRegion": "hr-HR"
     },
     {
         "DisplayName": "Croatian (Bosnia & Herzegovina)",
@@ -1481,7 +1516,8 @@
     },
     {
         "DisplayName": "Hungarian",
-        "LangCode": "hu"
+        "LangCode": "hu",
+        "DefaultRegion": "hu-HU"
     },
     {
         "DisplayName": "Hungarian (Hungary)",
@@ -1489,7 +1525,8 @@
     },
     {
         "DisplayName": "Armenian",
-        "LangCode": "hy"
+        "LangCode": "hy",
+        "DefaultRegion": "hy-AM"
     },
     {
         "DisplayName": "Armenian (Armenia)",
@@ -1509,7 +1546,8 @@
     },
     {
         "DisplayName": "Indonesian",
-        "LangCode": "id"
+        "LangCode": "id",
+        "DefaultRegion": "id-ID"
     },
     {
         "DisplayName": "Indonesian (Indonesia)",
@@ -1525,7 +1563,8 @@
     },
     {
         "DisplayName": "Yi",
-        "LangCode": "ii"
+        "LangCode": "ii",
+        "DefaultRegion": "ii-CN"
     },
     {
         "DisplayName": "Yi (China)",
@@ -1533,7 +1572,8 @@
     },
     {
         "DisplayName": "Icelandic",
-        "LangCode": "is"
+        "LangCode": "is",
+        "DefaultRegion": "is-IS"
     },
     {
         "DisplayName": "Icelandic (Iceland)",
@@ -1541,7 +1581,8 @@
     },
     {
         "DisplayName": "Italian",
-        "LangCode": "it"
+        "LangCode": "it",
+        "DefaultRegion": "it-IT"
     },
     {
         "DisplayName": "Italian (Switzerland)",
@@ -1581,7 +1622,8 @@
     },
     {
         "DisplayName": "Japanese",
-        "LangCode": "ja"
+        "LangCode": "ja",
+        "DefaultRegion": "ja-JP"
     },
     {
         "DisplayName": "Japanese (Japan)",
@@ -1605,7 +1647,8 @@
     },
     {
         "DisplayName": "Georgian",
-        "LangCode": "ka"
+        "LangCode": "ka",
+        "DefaultRegion": "ka-GE"
     },
     {
         "DisplayName": "Georgian (Georgia)",
@@ -1637,7 +1680,8 @@
     },
     {
         "DisplayName": "Kazakh",
-        "LangCode": "kk"
+        "LangCode": "kk",
+        "DefaultRegion": "kk-KZ"
     },
     {
         "DisplayName": "Kazakh (Kazakhstan)",
@@ -1661,7 +1705,8 @@
     },
     {
         "DisplayName": "Khmer",
-        "LangCode": "km"
+        "LangCode": "km",
+        "DefaultRegion": "km-KH"
     },
     {
         "DisplayName": "Khmer (Cambodia)",
@@ -1677,7 +1722,8 @@
     },
     {
         "DisplayName": "Korean",
-        "LangCode": "ko"
+        "LangCode": "ko",
+        "DefaultRegion": "ko-KR"
     },
     {
         "DisplayName": "Korean (North Korea)",
@@ -1753,7 +1799,8 @@
     },
     {
         "DisplayName": "Kyrgyz",
-        "LangCode": "ky"
+        "LangCode": "ky",
+        "DefaultRegion": "ky-KG"
     },
     {
         "DisplayName": "Kyrgyz (Kyrgyzstan)",
@@ -1773,7 +1820,8 @@
     },
     {
         "DisplayName": "Luxembourgish",
-        "LangCode": "lb"
+        "LangCode": "lb",
+        "DefaultRegion": "lb-LU"
     },
     {
         "DisplayName": "Luxembourgish (Luxembourg)",
@@ -1821,7 +1869,8 @@
     },
     {
         "DisplayName": "Lithuanian",
-        "LangCode": "lt"
+        "LangCode": "lt",
+        "DefaultRegion": "lt-LT"
     },
     {
         "DisplayName": "Lithuanian (Lithuania)",
@@ -1841,7 +1890,8 @@
     },
     {
         "DisplayName": "Latvian",
-        "LangCode": "lv"
+        "LangCode": "lv",
+        "DefaultRegion": "lv-LV"
     },
     {
         "DisplayName": "Latvian (Latvia)",
@@ -1877,7 +1927,8 @@
     },
     {
         "DisplayName": "Maori",
-        "LangCode": "mi"
+        "LangCode": "mi",
+        "DefaultRegion": "mi-NZ"
     },
     {
         "DisplayName": "Maori (New Zealand)",
@@ -1885,7 +1936,8 @@
     },
     {
         "DisplayName": "Macedonian",
-        "LangCode": "mk"
+        "LangCode": "mk",
+        "DefaultRegion": "mk-MK"
     },
     {
         "DisplayName": "Macedonian (North Macedonia)",
@@ -1901,7 +1953,8 @@
     },
     {
         "DisplayName": "Mongolian",
-        "LangCode": "mn"
+        "LangCode": "mn",
+        "DefaultRegion": "mn-MN"
     },
     {
         "DisplayName": "Mongolian",
@@ -1949,7 +2002,8 @@
     },
     {
         "DisplayName": "Malay",
-        "LangCode": "ms"
+        "LangCode": "ms",
+        "DefaultRegion": "ms-MY"
     },
     {
         "DisplayName": "Malay (Brunei)",
@@ -1965,7 +2019,8 @@
     },
     {
         "DisplayName": "Maltese",
-        "LangCode": "mt"
+        "LangCode": "mt",
+        "DefaultRegion": "mt-MT"
     },
     {
         "DisplayName": "Maltese (Malta)",
@@ -1977,7 +2032,8 @@
     },
     {
         "DisplayName": "Burmese",
-        "LangCode": "my"
+        "LangCode": "my",
+        "DefaultRegion": "my-MM"
     },
     {
         "DisplayName": "Burmese (Myanmar)",
@@ -1993,7 +2049,8 @@
     },
     {
         "DisplayName": "Norwegian Bokmål",
-        "LangCode": "nb"
+        "LangCode": "nb",
+        "DefaultRegion": "nb-NO"
     },
     {
         "DisplayName": "Norwegian Bokmål (Norway)",
@@ -2017,7 +2074,8 @@
     },
     {
         "DisplayName": "Nepali",
-        "LangCode": "ne"
+        "LangCode": "ne",
+        "DefaultRegion": "ne-NP"
     },
     {
         "DisplayName": "Nepali (India)",
@@ -2029,7 +2087,8 @@
     },
     {
         "DisplayName": "Dutch",
-        "LangCode": "nl"
+        "LangCode": "nl",
+        "DefaultRegion": "nl-NL"
     },
     {
         "DisplayName": "Dutch (Aruba)",
@@ -2065,7 +2124,8 @@
     },
     {
         "DisplayName": "Norwegian Nynorsk",
-        "LangCode": "nn"
+        "LangCode": "nn",
+        "DefaultRegion": "nn-NO"
     },
     {
         "DisplayName": "Norwegian Nynorsk (Norway)",
@@ -2105,7 +2165,8 @@
     },
     {
         "DisplayName": "Occitan",
-        "LangCode": "oc"
+        "LangCode": "oc",
+        "DefaultRegion": "oc-FR"
     },
     {
         "DisplayName": "Occitan (France)",
@@ -2113,7 +2174,8 @@
     },
     {
         "DisplayName": "Oromo",
-        "LangCode": "om"
+        "LangCode": "om",
+        "DefaultRegion": "om-KE"
     },
     {
         "DisplayName": "Oromo (Ethiopia)",
@@ -2141,7 +2203,8 @@
     },
     {
         "DisplayName": "Punjabi",
-        "LangCode": "pa"
+        "LangCode": "pa",
+        "DefaultRegion": "pa-IN"
     },
     {
         "DisplayName": "Punjabi",
@@ -2165,7 +2228,8 @@
     },
     {
         "DisplayName": "Polish",
-        "LangCode": "pl"
+        "LangCode": "pl",
+        "DefaultRegion": "pl-PL"
     },
     {
         "DisplayName": "Polish (Poland)",
@@ -2197,7 +2261,8 @@
     },
     {
         "DisplayName": "Portuguese",
-        "LangCode": "pt"
+        "LangCode": "pt",
+        "DefaultRegion": "pt-PT"
     },
     {
         "DisplayName": "Portuguese (Angola)",
@@ -2277,7 +2342,8 @@
     },
     {
         "DisplayName": "Romansh",
-        "LangCode": "rm"
+        "LangCode": "rm",
+        "DefaultRegion": "rm-CH"
     },
     {
         "DisplayName": "Romansh (Switzerland)",
@@ -2289,7 +2355,8 @@
     },
     {
         "DisplayName": "Romanian",
-        "LangCode": "ro"
+        "LangCode": "ro",
+        "DefaultRegion": "ro-RO"
     },
     {
         "DisplayName": "Romanian (Moldova)",
@@ -2305,7 +2372,8 @@
     },
     {
         "DisplayName": "Russian",
-        "LangCode": "ru"
+        "LangCode": "ru",
+        "DefaultRegion": "ru-RU"
     },
     {
         "DisplayName": "Russian (Belarus)",
@@ -2345,7 +2413,8 @@
     },
     {
         "DisplayName": "Sanskrit",
-        "LangCode": "sa"
+        "LangCode": "sa",
+        "DefaultRegion": "sa-IN"
     },
     {
         "DisplayName": "Sanskrit (India)",
@@ -2385,7 +2454,8 @@
     },
     {
         "DisplayName": "Northern Sami",
-        "LangCode": "se"
+        "LangCode": "se",
+        "DefaultRegion": "se-SE"
     },
     {
         "DisplayName": "Sami, Northern (Finland)",
@@ -2429,7 +2499,8 @@
     },
     {
         "DisplayName": "Slovak",
-        "LangCode": "sk"
+        "LangCode": "sk",
+        "DefaultRegion": "sk-SK"
     },
     {
         "DisplayName": "Slovak (Slovakia)",
@@ -2437,7 +2508,8 @@
     },
     {
         "DisplayName": "Slovenian",
-        "LangCode": "sl"
+        "LangCode": "sl",
+        "DefaultRegion": "sl-SI"
     },
     {
         "DisplayName": "Slovenian (Slovenia)",
@@ -2489,7 +2561,8 @@
     },
     {
         "DisplayName": "Somali",
-        "LangCode": "so"
+        "LangCode": "so",
+        "DefaultRegion": "so-SO"
     },
     {
         "DisplayName": "Somali (Djibouti)",
@@ -2509,7 +2582,8 @@
     },
     {
         "DisplayName": "Albanian",
-        "LangCode": "sq"
+        "LangCode": "sq",
+        "DefaultRegion": "sq-AL"
     },
     {
         "DisplayName": "Albanian (Albania)",
@@ -2593,7 +2667,8 @@
     },
     {
         "DisplayName": "Swedish",
-        "LangCode": "sv"
+        "LangCode": "sv",
+        "DefaultRegion": "sv-SE"
     },
     {
         "DisplayName": "Swedish (Åland Islands)",
@@ -2609,7 +2684,8 @@
     },
     {
         "DisplayName": "Kiswahili",
-        "LangCode": "sw"
+        "LangCode": "sw",
+        "DefaultRegion": "sw-UG"
     },
     {
         "DisplayName": "Kiswahili (Congo DRC)",
@@ -2629,7 +2705,8 @@
     },
     {
         "DisplayName": "Syriac",
-        "LangCode": "syr"
+        "LangCode": "syr",
+        "DefaultRegion": "syr-SY"
     },
     {
         "DisplayName": "Syriac (Syria)",
@@ -2637,7 +2714,8 @@
     },
     {
         "DisplayName": "Tamil",
-        "LangCode": "ta"
+        "LangCode": "ta",
+        "DefaultRegion": "ta-IN"
     },
     {
         "DisplayName": "Tamil (India)",
@@ -2657,7 +2735,8 @@
     },
     {
         "DisplayName": "Telugu",
-        "LangCode": "te"
+        "LangCode": "te",
+        "DefaultRegion": "te-IN"
     },
     {
         "DisplayName": "Telugu (India)",
@@ -2685,7 +2764,8 @@
     },
     {
         "DisplayName": "Thai",
-        "LangCode": "th"
+        "LangCode": "th",
+        "DefaultRegion": "th-TH"
     },
     {
         "DisplayName": "Thai (Thailand)",
@@ -2693,7 +2773,8 @@
     },
     {
         "DisplayName": "Tigrinya",
-        "LangCode": "ti"
+        "LangCode": "ti",
+        "DefaultRegion": "ti-ER"
     },
     {
         "DisplayName": "Tigrinya (Eritrea)",
@@ -2709,7 +2790,8 @@
     },
     {
         "DisplayName": "Turkmen",
-        "LangCode": "tk"
+        "LangCode": "tk",
+        "DefaultRegion": "tk-TM"
     },
     {
         "DisplayName": "Turkmen (Turkmenistan)",
@@ -2717,7 +2799,8 @@
     },
     {
         "DisplayName": "Setswana",
-        "LangCode": "tn"
+        "LangCode": "tn",
+        "DefaultRegion": "tn-BW"
     },
     {
         "DisplayName": "Setswana (Botswana)",
@@ -2733,7 +2816,8 @@
     },
     {
         "DisplayName": "Turkish",
-        "LangCode": "tr"
+        "LangCode": "tr",
+        "DefaultRegion": "tr-TR"
     },
     {
         "DisplayName": "Turkish (Cyprus)",
@@ -2745,7 +2829,8 @@
     },
     {
         "DisplayName": "Xitsonga",
-        "LangCode": "ts"
+        "LangCode": "ts",
+        "DefaultRegion": "ts-ZA"
     },
     {
         "DisplayName": "Xitsonga (South Africa)",
@@ -2753,7 +2838,8 @@
     },
     {
         "DisplayName": "Tatar",
-        "LangCode": "tt"
+        "LangCode": "tt",
+        "DefaultRegion": "tt-RU"
     },
     {
         "DisplayName": "Tatar (Russia)",
@@ -2793,7 +2879,8 @@
     },
     {
         "DisplayName": "Uyghur",
-        "LangCode": "ug"
+        "LangCode": "ug",
+        "DefaultRegion": "ug-CN"
     },
     {
         "DisplayName": "Uyghur (China)",
@@ -2801,7 +2888,8 @@
     },
     {
         "DisplayName": "Ukrainian",
-        "LangCode": "uk"
+        "LangCode": "uk",
+        "DefaultRegion": "uk-UA"
     },
     {
         "DisplayName": "Ukrainian (Ukraine)",
@@ -2809,7 +2897,8 @@
     },
     {
         "DisplayName": "Urdu",
-        "LangCode": "ur"
+        "LangCode": "ur",
+        "DefaultRegion": "ur-PK"
     },
     {
         "DisplayName": "Urdu (India)",
@@ -2853,7 +2942,8 @@
     },
     {
         "DisplayName": "Venda",
-        "LangCode": "ve"
+        "LangCode": "ve",
+        "DefaultRegion": "ve-ZA"
     },
     {
         "DisplayName": "Venda (South Africa)",
@@ -2861,7 +2951,8 @@
     },
     {
         "DisplayName": "Vietnamese",
-        "LangCode": "vi"
+        "LangCode": "vi",
+        "DefaultRegion": "vi-VN"
     },
     {
         "DisplayName": "Vietnamese (Vietnam)",
@@ -2885,7 +2976,8 @@
     },
     {
         "DisplayName": "Wolof",
-        "LangCode": "wo"
+        "LangCode": "wo",
+        "DefaultRegion": "wo-SN"
     },
     {
         "DisplayName": "Wolof (Senegal)",
@@ -2893,7 +2985,8 @@
     },
     {
         "DisplayName": "isiXhosa",
-        "LangCode": "xh"
+        "LangCode": "xh",
+        "DefaultRegion": "xh-ZA"
     },
     {
         "DisplayName": "isiXhosa (South Africa)",
@@ -2909,7 +3002,8 @@
     },
     {
         "DisplayName": "Yiddish",
-        "LangCode": "yi"
+        "LangCode": "yi",
+        "DefaultRegion": "yi-001"
     },
     {
         "DisplayName": "Yiddish (World)",
@@ -2917,7 +3011,8 @@
     },
     {
         "DisplayName": "Yoruba",
-        "LangCode": "yo"
+        "LangCode": "yo",
+        "DefaultRegion": "yo-BJ"
     },
     {
         "DisplayName": "Yoruba (Benin)",
@@ -2933,7 +3028,8 @@
     },
     {
         "DisplayName": "Chinese",
-        "LangCode": "zh"
+        "LangCode": "zh",
+        "DefaultRegion": "zh-CN"
     },
     {
         "DisplayName": "Chinese (Simplified, China)",
@@ -2973,7 +3069,8 @@
     },
     {
         "DisplayName": "isiZulu",
-        "LangCode": "zu"
+        "LangCode": "zu",
+        "DefaultRegion": "zu-ZA"
     },
     {
         "DisplayName": "isiZulu (South Africa)",

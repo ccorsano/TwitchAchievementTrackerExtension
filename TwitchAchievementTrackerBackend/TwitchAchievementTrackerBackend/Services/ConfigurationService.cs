@@ -18,7 +18,7 @@ namespace TwitchAchievementTrackerBackend.Services
     {
         private readonly SteamApiService _steamApiService;
         private readonly XApiService _xApiService;
-        private readonly Regex XAPI_REGEX = new Regex("^[0-9a-fA-F]{40}$", RegexOptions.Compiled);
+        private readonly Regex XAPI_REGEX = new Regex("^[0-9a-zA-Z]{40}$", RegexOptions.Compiled);
         private readonly IMemoryCache _cache;
         private readonly ILogger _logger;
 
@@ -66,7 +66,19 @@ namespace TwitchAchievementTrackerBackend.Services
             // Resolve cultures based on embeded definition
             var cultures = await GetEmbededCulturesNames();
             return supportedLanguages
-                .Select(l => cultures.TryGetValue(l.ToLowerInvariant(), out var language) ? language : new SupportedLanguage { LangCode = l, DisplayName = l })
+                .Select(l =>
+                {
+                    if (cultures.TryGetValue(l.ToLowerInvariant(), out var language))
+                    {
+                        if (language.DefaultRegion != null)
+                        {
+                            return cultures.GetValueOrDefault(language.DefaultRegion.ToLowerInvariant())
+                                ?? throw new Exception($"Language default region not found {l}; {language.DefaultRegion}");
+                        }
+                        return language;
+                    }
+                    return new SupportedLanguage { LangCode = l, DisplayName = l };
+                })
                 .ToArray();
         }
 
@@ -315,7 +327,12 @@ namespace TwitchAchievementTrackerBackend.Services
                     {
                         try
                         {
-                            await _xApiService.GetApiKeyXuid(configuration.XBoxLiveConfig.XApiKey);
+                            await _xApiService.GetApiKeyProfile(configuration.XBoxLiveConfig.XApiKey);
+
+                            if (!string.IsNullOrEmpty(configuration.XBoxLiveConfig.StreamerXuid) && !string.IsNullOrEmpty(configuration.XBoxLiveConfig.TitleId))
+                            {
+                                errors.AddRange(await ValidateTitle(configuration));
+                            }
                         }
                         catch (XApiException ex)
                         {
@@ -356,11 +373,6 @@ namespace TwitchAchievementTrackerBackend.Services
                                 ErrorCode = "MissingValue",
                                 ErrorDescription = "Missing XBoxLive Title Id",
                             });
-                        }
-
-                        if (! string.IsNullOrEmpty(configuration.XBoxLiveConfig.StreamerXuid) && !string.IsNullOrEmpty(configuration.XBoxLiveConfig.TitleId))
-                        {
-                            errors.AddRange(await ValidateTitle(configuration));
                         }
                     }
                     break;
