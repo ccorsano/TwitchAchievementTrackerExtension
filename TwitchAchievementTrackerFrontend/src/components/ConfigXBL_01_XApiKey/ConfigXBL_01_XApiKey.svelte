@@ -16,8 +16,8 @@ export let enteredApiKey: string  =''
 export let errors: ValidationError[]  =[]
 export let isConfirmed: boolean = false
 
-const formatRegexp = /^[0-9a-f]+$/i
-const formatFullMatchRegexp = (/^[0-9a-f]{40}$/i)
+const formatRegexp = /^[0-9a-zA-Z]+$/i
+const formatFullMatchRegexp = (/^[0-9a-zA-Z]{40}$/i)
 
 function onChangeXApiValue(value: string)
 {
