@@ -3,12 +3,11 @@
 Frontend for the Twitch Achievement Tracker Extension.
 
 ## How to run
-This is a React + TypeScript + WebPack application.
-WebPack is used to ease development and bundle the production output.
+This is a Svelte + TypeScript + Vite application.
 
 ### Pre-requisites
 - NodeJS / NPM
-- A code editor that works well with WebPack and TypeScript editing
+- A code editor that works well with Vite and TypeScript editing
   - Visual Studio Code
 - Twitch Developer Rig to run the extension
 
@@ -44,18 +43,29 @@ The bat file both runs the npm build and zip the generated files.
 +-- public                 -> HTML sample pages and mini.css bundle
 +-- src
 |   +-- common/            -> Shared types and helpers
-|   +-- components/        -> React components
+|   +-- components/        -> Svelte components
 |   +-- services/          -> Service classes
-|   +-- Config.tsx         -> Root file for the broadcaster Configuration view
-|   +-- Mobile.tsx         -> Root file for the Mobile viewer Twitch view
-|   +-- VideoOverlay.tsx   -> Root file for the Video Overlay viewer Twitch view
+|   +-- Config.svelte      -> Root Svelte component for the broadcaster Configuration view
+|   +-- Config.ts          -> Root file for the broadcaster Configuration view
+|   +-- LiveConfig.svelte  -> Root Svelte component for the broadcaster Live Configuration view
+|   +-- LiveConfig.ts      -> Root file for the broadcaster Live Configuration view
+|   +-- Mobile.svelte      -> Root Svelte component for the Mobile viewer Twitch view
+|   +-- Mobile.ts          -> Root file for the Mobile viewer Twitch view
+|   +-- VideoOverlay.svelte-> Root Svelte component for the Video Overlay viewer Twitch view
+|   +-- VideoOverlay.ts    -> Root file for the Video Overlay viewer Twitch view
++-- config.html            -> Host html page for broadcaster configuration view
 +-- custom.d.ts            -> Custom TypeScript modules to embed image assets
++-- live_config.html       -> Host html page for broadcaster live configuration view
++-- mobile.html            -> Host html page for mobile view
 +-- pack_assets.bat        -> Bat file to easily launch the PS script below
 +-- pack_assets.ps1        -> PowerShell script to package assets
 +-- package.json           -> NPM Dependencies and project configuration
++-- svelte.config.js       -> Svelte config
++-- config.html            -> Host html page for broadcaster configuration view
 +-- template.html          -> HTML Template to generate the views from
 +-- tsconfig.json          -> TypeScript configuration
-+-- webpack.config.js      -> WebPack configuration
++-- video_overlay.html     -> Host html page for video overlay view
++-- vite.config.js         -> Vite configuration
 ```
 
 
