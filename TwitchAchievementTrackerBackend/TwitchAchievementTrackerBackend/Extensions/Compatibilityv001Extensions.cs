@@ -86,10 +86,12 @@ namespace TwitchAchievementTrackerBackend.Extensions
             if (fbConfiguration.config?.Kind == PlatformConfiguration.ItemKind.SteamConfiguration)
             {
                 activeConfig = Model.ActiveConfig.Steam;
+                steamFbConfig = fbConfiguration.config?.SteamConfiguration;
             }
             if (fbConfiguration.config?.Kind == PlatformConfiguration.ItemKind.XApiConfiguration)
             {
                 activeConfig = Model.ActiveConfig.XBoxLive;
+                xApiFbConfig= fbConfiguration.config?.XApiConfiguration;
             }
             else
             {
