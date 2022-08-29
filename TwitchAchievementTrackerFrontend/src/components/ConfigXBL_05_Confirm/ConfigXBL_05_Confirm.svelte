@@ -1,6 +1,7 @@
 <script lang="ts">
 import { EBSVersion } from "../../common/ServerConfig";
 import { ActiveConfig, ExtensionConfiguration } from "../../common/EBSTypes";
+import SecretKeySpan from "../SecretKeySpan/SecretKeySpan.svelte";
 
 export let onValidate: (e: any, configuration: ExtensionConfiguration) => void
 export let onBack: (e: any) => void
@@ -33,7 +34,7 @@ function onSave(e: any)
         ActiveConfig: XBoxLive
     </div>
     <div class="section">
-        XApiKey: {xApiKey}
+        XApiKey: <SecretKeySpan keyValue={xApiKey} />
     </div>
     <div class="section">
         StreamerXuid: {streamerXuid}

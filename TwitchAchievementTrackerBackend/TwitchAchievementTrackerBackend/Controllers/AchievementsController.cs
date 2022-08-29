@@ -38,7 +38,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
             {
                 var xConfig = config.XBoxLiveConfig;
 
-                var titleInfo = await _xApiService.GetMarketplaceAsync(xConfig.TitleId, xConfig.XApiKey, xConfig.Locale);
+                var titleInfo = await _xApiService.GetMarketplaceAsync(xConfig.TitleId, xConfig.XApiKey);
 
                 return new TitleInfo
                 {
@@ -78,7 +78,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
         [HttpGet("/api/title/xapi/search/{query}")]
         public async Task<IEnumerable<TitleInfo>> SearchXApiTitleInfo(string query, string xApiKey = null)
         {
-            XApiConfiguration xConfig = null;
+            XApiConfiguration xConfig = new XApiConfiguration();
             if (this.HasExtensionConfiguration())
             {
                 var config = this.GetExtensionConfiguration();
@@ -152,8 +152,8 @@ namespace TwitchAchievementTrackerBackend.Controllers
                     CurrentPoints = achievements
                         .Where(a => a.ProgressState == ProgressState.Achieved)
                         .SelectMany(a => a.Rewards.Where(r => r.Type == "Gamerscore"))
-                        .Sum(r => r.Value ?? 0),
-                    TotalPoints = achievements.SelectMany(a => a.Rewards.Where(r => r.Type == "Gamerscore")).Sum(r => r.Value ?? 0)
+                        .Sum(r => r.Value),
+                    TotalPoints = achievements.SelectMany(a => a.Rewards.Where(r => r.Type == "Gamerscore")).Sum(r => r.Value)
                 };
             }
             else if (config.ActiveConfig == ActiveConfig.Steam)

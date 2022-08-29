@@ -16,8 +16,8 @@ export let enteredApiKey: string  =''
 export let errors: ValidationError[]  =[]
 export let isConfirmed: boolean = false
 
-const formatRegexp = /^[0-9a-f]+$/i
-const formatFullMatchRegexp = (/^[0-9a-f]{40}$/i)
+const formatRegexp = /^[0-9a-zA-Z]+$/i
+const formatFullMatchRegexp = (/^[0-9a-zA-Z]{40}$/i)
 
 function onChangeXApiValue(value: string)
 {
@@ -94,7 +94,13 @@ $: isContinueEnabled = isSyntaxValid && !isValidating
         xApiKey={enteredApiKey} />
 {:else}
     <label for="xapikey">XApi Key</label>
-    <SecretKeyInput isSyntaxValid={isSyntaxValid} onChangeValue={e => onChangeXApiValue(e.currentTarget.value)} keyValue={enteredApiKey} size={45} pattern="[0-9a-f]{40}" placeholder="Enter your XApi.us key" />
+    <SecretKeyInput
+        isSyntaxValid={isSyntaxValid}
+        onChangeValue={e => onChangeXApiValue(e.currentTarget.value)}
+        keyValue={enteredApiKey}
+        size={45}
+        pattern="[0-9a-f]{40}"
+        placeholder="Enter your XApi.us key" />
 
     {#if errors.some(e => e.errorCode == "ExpiredXBLToken")}
     <div>
