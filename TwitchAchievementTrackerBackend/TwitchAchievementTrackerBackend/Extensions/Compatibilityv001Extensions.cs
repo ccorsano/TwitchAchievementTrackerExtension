@@ -40,7 +40,7 @@ namespace TwitchAchievementTrackerBackend.Extensions
                     flatBufferXBoxConfig.streamerXuid = string.IsNullOrEmpty(xConfig.StreamerXuid) ? 0 : UInt64.Parse(xConfig.StreamerXuid);
                     flatBufferXBoxConfig.titleId = string.IsNullOrEmpty(xConfig.TitleId) ? 0 : UInt32.Parse(xConfig.TitleId);
                     flatBufferXBoxConfig.locale = xConfig.Locale ?? "en-US";
-                    fbConfiguration.config = new FlatBufferUnion<XApiConfiguration, SteamConfiguration>(flatBufferXBoxConfig);
+                    fbConfiguration.config = new PlatformConfiguration(flatBufferXBoxConfig);
 
                     break;
                 case Model.ActiveConfig.Steam:
@@ -52,7 +52,7 @@ namespace TwitchAchievementTrackerBackend.Extensions
                     flatBufferSteamConfig.webApiKey = steamConfig.WebApiKey;
                     flatBufferSteamConfig.steamId = string.IsNullOrEmpty(steamConfig.SteamId) ? 0 : UInt64.Parse(steamConfig.SteamId);
                     flatBufferSteamConfig.appId = string.IsNullOrEmpty(steamConfig.AppId) ? 0 : UInt32.Parse(steamConfig.AppId);
-                    fbConfiguration.config = new FlatBufferUnion<XApiConfiguration, SteamConfiguration>(flatBufferSteamConfig);
+                    fbConfiguration.config = new PlatformConfiguration(flatBufferSteamConfig);
 
                     break;
                 default:
@@ -83,11 +83,11 @@ namespace TwitchAchievementTrackerBackend.Extensions
             XApiConfiguration xApiFbConfig = null;
 
             Model.ActiveConfig activeConfig;
-            if (fbConfiguration.config.TryGet(out steamFbConfig))
+            if (fbConfiguration.config?.Kind == PlatformConfiguration.ItemKind.SteamConfiguration)
             {
                 activeConfig = Model.ActiveConfig.Steam;
             }
-            else if (fbConfiguration.config.TryGet(out xApiFbConfig))
+            if (fbConfiguration.config?.Kind == PlatformConfiguration.ItemKind.XApiConfiguration)
             {
                 activeConfig = Model.ActiveConfig.XBoxLive;
             }
