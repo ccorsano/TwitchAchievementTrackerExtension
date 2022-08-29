@@ -3,6 +3,7 @@ import { EBSVersion } from "../../common/ServerConfig";
 import { ActiveConfig, ExtensionConfiguration } from "../../common/EBSTypes";
 import { ConfigurationService, ValidationError } from "../../services/EBSConfigurationService";
 import ValidationErrorList from "../ValidationErrorList/ValidationErrorList.svelte";
+import SecretKeySpan from "../SecretKeySpan/SecretKeySpan.svelte";
 
 export let onValidate: (e: any, configuration: ExtensionConfiguration) => void
 export let onBack: (e: any) => void
@@ -66,7 +67,7 @@ $: isSaveDisabled = isLoading || errors.length > 0
         ActiveConfig: Steam
     </div>
     <div class="section">
-        WebApiKey: {webApiKey}
+        WebApiKey: <SecretKeySpan keyValue={webApiKey} />
     </div>
     <div class="section">
         StreamerSteamId: {steamProfileId}

@@ -28,7 +28,7 @@ let errors: ValidationError[] = []
 
 function onChangeProfileUrl(value: string)
 {
-    let formatCheck = this.formatRegexp.test(value);
+    let formatCheck = formatRegexp.test(value);
     isProfileUrlFormatValid = formatCheck
     isProfileValid = false
     unvalidatedUrl = value
@@ -139,15 +139,16 @@ $: isContinueEnabled = isProfileUrlFormatValid || isProfileValid;
                 <input slot="buttonSection" type="button" value="Change" class="section" on:click={onResetProfile} />
             </GamerCard>
         {:else}
-            <label for="vanityUrl">Steam Profile URL</label>,
+            <label for="vanityUrl">Steam Profile URL</label>
             <input name="vanityUrl" type="text"
                 pattern="https:\/\/steamcommunity\.com\/(profiles|id)\/([^\/]+)(\/.*)?$"
                 placeholder="Enter your Steam profile URL"
                 value={unvalidatedUrl}
-                on:change={e => onChangeProfileUrl(e.currentTarget.value)} />,
+                on:input={e => onChangeProfileUrl(e.currentTarget.value)}
+                on:change={e => onChangeProfileUrl(e.currentTarget.value)} />
             <div>
                 <span class="icon-info"></span> You can copy your Profile URL by right-clicking on your profile page on the Steam application, and selecting 'Copy Page URL'.
-            </div>,
+            </div>
             <ValidationErrorList errors={errors} />
         {/if}
     {:else}

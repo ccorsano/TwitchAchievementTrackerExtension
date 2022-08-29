@@ -11,5 +11,14 @@ let isKeyVisible: boolean = false
 console.log(`isSyntaxValid: ${isSyntaxValid}`)
 </script>
 
-<input name="xapikey" type={isKeyVisible ? "text" : "password"} pattern={pattern} size={size} value={keyValue} placeholder={placeholder} on:change={onChangeValue} class={isSyntaxValid ? '' : 'sf1-invalid'} />
+<input
+    name="xapikey"
+    type={isKeyVisible ? "text" : "password"}
+    pattern={pattern}
+    size={size}
+    value={keyValue}
+    placeholder={placeholder}
+    on:change={onChangeValue}
+    on:input={onChangeValue}
+    class={isSyntaxValid ? '' : 'sf1-invalid'} />
 <input type="button" on:click={() => isKeyVisible = !isKeyVisible} value={isKeyVisible ? "Hide" : "Show"} />
