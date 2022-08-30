@@ -5,6 +5,7 @@ on:
     workflows: [ ".NET" ]
     branches:
       - master
+      - version-*
     types:
       - completed
 env:

@@ -2,7 +2,10 @@ name: .NET
 
 on:
   push:
-    branches: [ master, web-service ]
+    branches:
+      - master
+      - web-service
+      - version-*
   pull_request:
     branches: [ master ]
 
