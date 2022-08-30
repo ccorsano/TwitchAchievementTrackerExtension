@@ -3,12 +3,11 @@
 Frontend for the Twitch Achievement Tracker Extension.
 
 ## How to run
-This is a React + TypeScript + WebPack application.
-WebPack is used to ease development and bundle the production output.
+This is a Svelte + TypeScript + Vite application.
 
 ### Pre-requisites
 - NodeJS / NPM
-- A code editor that works well with WebPack and TypeScript editing
+- A code editor that works well with Vite and TypeScript editing
   - Visual Studio Code
 - Twitch Developer Rig to run the extension
 
@@ -44,18 +43,29 @@ The bat file both runs the npm build and zip the generated files.
 +-- public                 -> HTML sample pages and mini.css bundle
 +-- src
 |   +-- common/            -> Shared types and helpers
-|   +-- components/        -> React components
+|   +-- components/        -> Svelte components
 |   +-- services/          -> Service classes
-|   +-- Config.tsx         -> Root file for the broadcaster Configuration view
-|   +-- Mobile.tsx         -> Root file for the Mobile viewer Twitch view
-|   +-- VideoOverlay.tsx   -> Root file for the Video Overlay viewer Twitch view
+|   +-- Config.svelte      -> Root Svelte component for the broadcaster Configuration view
+|   +-- Config.ts          -> Root file for the broadcaster Configuration view
+|   +-- LiveConfig.svelte  -> Root Svelte component for the broadcaster Live Configuration view
+|   +-- LiveConfig.ts      -> Root file for the broadcaster Live Configuration view
+|   +-- Mobile.svelte      -> Root Svelte component for the Mobile viewer Twitch view
+|   +-- Mobile.ts          -> Root file for the Mobile viewer Twitch view
+|   +-- VideoOverlay.svelte-> Root Svelte component for the Video Overlay viewer Twitch view
+|   +-- VideoOverlay.ts    -> Root file for the Video Overlay viewer Twitch view
++-- config.html            -> Host html page for broadcaster configuration view
 +-- custom.d.ts            -> Custom TypeScript modules to embed image assets
++-- live_config.html       -> Host html page for broadcaster live configuration view
++-- mobile.html            -> Host html page for mobile view
 +-- pack_assets.bat        -> Bat file to easily launch the PS script below
 +-- pack_assets.ps1        -> PowerShell script to package assets
 +-- package.json           -> NPM Dependencies and project configuration
++-- svelte.config.js       -> Svelte config
++-- config.html            -> Host html page for broadcaster configuration view
 +-- template.html          -> HTML Template to generate the views from
 +-- tsconfig.json          -> TypeScript configuration
-+-- webpack.config.js      -> WebPack configuration
++-- video_overlay.html     -> Host html page for video overlay view
++-- vite.config.js         -> Vite configuration
 ```
 
 
@@ -120,8 +130,10 @@ dotnet user-secrets set "steam:WebApiKey" "<a_default_steam_api_key>"
 
 
 #### Twitch configuration
-- twitch.ExtensionSecrets : List of enabled Twitch extension secret keys, used to validate Extension calls
-  ENV var name: twitch__ExtensionSecrets__0, twitch__ExtensionSecrets__1, ...
+- twitch.ClientId : Twitch extension cliend id, used for EBS calls to Twitch
+  ENV var name: twitch__ClientId
+- twitch.ExtensionSecret : Twitch extension secret key, used to validate Extension calls and sign EBS JWT Tokens
+  ENV var name: twitch__ExtensionSecret
   
-- config.EncryptionSecret : Secret key used to encrypt the configuration token
+- config.EncryptionSecret : Secret used to encrypt the configuration token.
   ENV var name: config__EncryptionSecret

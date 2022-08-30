@@ -18,7 +18,7 @@ namespace TwitchAchievementTrackerBackend.Services
     {
         private readonly SteamApiService _steamApiService;
         private readonly XApiService _xApiService;
-        private readonly Regex XAPI_REGEX = new Regex("^[0-9a-fA-F]{40}$", RegexOptions.Compiled);
+        private readonly Regex XAPI_REGEX = new Regex("^[0-9a-zA-Z]{40}$", RegexOptions.Compiled);
         private readonly IMemoryCache _cache;
         private readonly ILogger _logger;
 
@@ -66,7 +66,19 @@ namespace TwitchAchievementTrackerBackend.Services
             // Resolve cultures based on embeded definition
             var cultures = await GetEmbededCulturesNames();
             return supportedLanguages
-                .Select(l => cultures.TryGetValue(l.ToLowerInvariant(), out var language) ? language : new SupportedLanguage { LangCode = l, DisplayName = l })
+                .Select(l =>
+                {
+                    if (cultures.TryGetValue(l.ToLowerInvariant(), out var language))
+                    {
+                        if (language.DefaultRegion != null)
+                        {
+                            return cultures.GetValueOrDefault(language.DefaultRegion.ToLowerInvariant())
+                                ?? throw new Exception($"Language default region not found {l}; {language.DefaultRegion}");
+                        }
+                        return language;
+                    }
+                    return new SupportedLanguage { LangCode = l, DisplayName = l };
+                })
                 .ToArray();
         }
 
@@ -99,6 +111,28 @@ namespace TwitchAchievementTrackerBackend.Services
                 PlayerName = playerInfo.First().PersonaName,
                 AvatarUrl = playerInfo.First().AvatarFull.AbsoluteUri,
             };
+        }
+
+        public async Task<bool> ForceRefresh(ExtensionConfiguration extensionConfiguration)
+        {
+            switch (extensionConfiguration.ActiveConfig)
+            {
+                case ActiveConfig.XBoxLive:
+                    return await _xApiService.PurgeCache(extensionConfiguration.XBoxLiveConfig);
+                case ActiveConfig.Steam:
+                    return await _steamApiService.PurgeCache(extensionConfiguration.SteamConfig);
+                default:
+                    throw new NotSupportedException("Unknown config type");
+            }
+        }
+
+        internal RateLimits GetXApiRateLimits(ExtensionConfiguration extensionConfiguration)
+        {
+            if (extensionConfiguration.ActiveConfig != ActiveConfig.XBoxLive)
+            {
+                throw new ArgumentException("Only valid on XBoxLive configs");
+            }
+            return _xApiService.GetRateLimit(extensionConfiguration.XBoxLiveConfig.XApiKey);
         }
 
         public async Task<PlayerInfoCard> ResolveXBoxLiveGamertag(string gamertag, string xApiKey = null)
@@ -184,6 +218,95 @@ namespace TwitchAchievementTrackerBackend.Services
             return await _steamApiService.GetOwnedGames(steamId, webApiKey);
         }
 
+        public async Task<ValidationError[]> ValidateTitle(ExtensionConfiguration configuration)
+        {
+            var errors = new List<ValidationError>();
+
+            switch (configuration.ActiveConfig)
+            {
+                case ActiveConfig.XBoxLive:
+                    if (string.IsNullOrEmpty(configuration.XBoxLiveConfig.Locale))
+                    {
+                        configuration.XBoxLiveConfig.Locale = "en";
+                    }
+
+                    if (!string.IsNullOrEmpty(configuration.XBoxLiveConfig.StreamerXuid) && !string.IsNullOrEmpty(configuration.XBoxLiveConfig.TitleId))
+                    {
+                        try
+                        {
+                            var achievements = await _xApiService.GetAchievementsAsync(configuration.XBoxLiveConfig);
+
+                            if (achievements.Count() == 0)
+                            {
+                                _logger.LogError($"No achievements found for title {configuration.XBoxLiveConfig.TitleId}");
+
+                                errors.Add(new ValidationError
+                                {
+                                    Path = "XBoxLiveConfig.TitleId",
+                                    ErrorCode = "NoAchievements",
+                                    ErrorDescription = "This XBoxLive title doesn't have any achievements defined.",
+                                });
+                            }
+                        }
+                        catch(HttpRequestException ex)
+                        {
+                            _logger.LogError(ex, $"Error validating title {configuration.XBoxLiveConfig.TitleId}");
+
+                            errors.Add(new ValidationError
+                            {
+                                Path = "XBoxLiveConfig.TitleId",
+                                ErrorCode = "TitleError",
+                                ErrorDescription = "Error fetching title information.",
+                            });
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Incomplete configuration to validate title, xuid and titleid are required");
+                    }
+                    break;
+                case ActiveConfig.Steam:
+                    
+                    if (!string.IsNullOrEmpty(configuration.SteamConfig.AppId))
+                    {
+                        try
+                        {
+                            await _steamApiService.GetAchievementsAsync(configuration.SteamConfig);
+                        }
+                        catch (SteamApiService.GameDetailsProtectedException)
+                        {
+                            errors.Add(new ValidationError
+                            {
+                                Path = "SteamConfig.SteamId",
+                                ErrorCode = "PrivateProfile",
+                                ErrorDescription = "The provided Steam profile does not allow access to achievements, please edit your profile and set the \"Game details\" privacy setting to public.",
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            errors.Add(new ValidationError
+                            {
+                                Path = "SteamConfig",
+                                ErrorCode = "AchievementsError",
+                                ErrorDescription = $"Unknown error retrieving achievements: {ex.Message}",
+                            });
+                        }
+                    }
+
+                    break;
+                default:
+                    errors.Add(new ValidationError
+                    {
+                        Path = "ActiveConfig",
+                        ErrorCode = "InvalidConfigType",
+                        ErrorDescription = "Invalid active configuration type",
+                    });
+                    break;
+            }
+
+            return errors.ToArray();
+        }
+
         public async Task<ValidationError[]> ValidateConfiguration(ExtensionConfiguration configuration)
         {
             var errors = new List<ValidationError>();
@@ -204,7 +327,12 @@ namespace TwitchAchievementTrackerBackend.Services
                     {
                         try
                         {
-                            await _xApiService.GetApiKeyXuid(configuration.XBoxLiveConfig.XApiKey);
+                            await _xApiService.GetApiKeyProfile(configuration.XBoxLiveConfig.XApiKey);
+
+                            if (!string.IsNullOrEmpty(configuration.XBoxLiveConfig.StreamerXuid) && !string.IsNullOrEmpty(configuration.XBoxLiveConfig.TitleId))
+                            {
+                                errors.AddRange(await ValidateTitle(configuration));
+                            }
                         }
                         catch (XApiException ex)
                         {
@@ -224,6 +352,26 @@ namespace TwitchAchievementTrackerBackend.Services
                                 Path = "XBoxLiveConfig.XApiKey",
                                 ErrorCode = "XApiError",
                                 ErrorDescription = "Error calling into XApi",
+                            });
+                        }
+
+                        if (string.IsNullOrEmpty(configuration.XBoxLiveConfig.StreamerXuid))
+                        {
+                            errors.Add(new ValidationError
+                            {
+                                Path = "XBoxLiveConfig.StreamerXuid",
+                                ErrorCode = "MissingValue",
+                                ErrorDescription = "Missing Streamer XBoxLive Id",
+                            });
+                        }
+                        
+                        if (string.IsNullOrEmpty(configuration.XBoxLiveConfig.TitleId))
+                        {
+                            errors.Add(new ValidationError
+                            {
+                                Path = "XBoxLiveConfig.TitleId",
+                                ErrorCode = "MissingValue",
+                                ErrorDescription = "Missing XBoxLive Title Id",
                             });
                         }
                     }
@@ -267,27 +415,17 @@ namespace TwitchAchievementTrackerBackend.Services
                         }
                         else if (! string.IsNullOrEmpty(configuration.SteamConfig.AppId))
                         {
-                            try
+                            errors.AddRange(await ValidateTitle(configuration));
+                        }
+
+                        if (string.IsNullOrEmpty(configuration.SteamConfig.AppId))
+                        {
+                            errors.Add(new ValidationError
                             {
-                                await _steamApiService.GetAchievementsAsync(configuration.SteamConfig);
-                            } catch (SteamApiService.GameDetailsProtectedException)
-                            {
-                                errors.Add(new ValidationError
-                                {
-                                    Path = "SteamConfig.SteamId",
-                                    ErrorCode = "PrivateProfile",
-                                    ErrorDescription = "The provided Steam profile does not allow access to achievements, please edit your profile and set the \"Game details\" privacy setting to public.",
-                                });
-                            }
-                            catch (Exception ex)
-                            {
-                                errors.Add(new ValidationError
-                                {
-                                    Path = "SteamConfig",
-                                    ErrorCode = "AchievementsError",
-                                    ErrorDescription = $"Unknown error retrieving achievements: {ex.Message}",
-                                });
-                            }
+                                Path = "SteamConfig.AppId",
+                                ErrorCode = "MissingValue",
+                                ErrorDescription = "Steam AppId is not set.",
+                            });
                         }
                     }
 

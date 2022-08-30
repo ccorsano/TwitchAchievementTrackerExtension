@@ -1,8 +1,7 @@
 import * as EBSConfig from "../common/ServerConfig"
 import * as EBS from './EBSBase'
-import { ExtensionConfiguration, ActiveConfig, SupportedLanguage, PlayerInfoCard, TitleInfo } from '../common/EBSTypes';
-import { TwitchAuthCallbackContext, TwitchExtensionConfiguration } from "../common/TwitchExtension";
-import { Twitch } from "./TwitchService";
+import type { ExtensionConfiguration, SupportedLanguage, PlayerInfoCard, TitleInfo, RateLimits, PublicAnnouncement } from '../common/EBSTypes';
+import type { TwitchExtensionConfiguration } from "../common/TwitchExtension";
 
 export interface EncryptedConfigurationResponse {
     configToken: string;
@@ -23,7 +22,7 @@ export interface SteamLanguage {
 export default class EBSConfigurationService extends EBS.EBSBase {
     constructor(){
         super(EBSConfig.EBSBaseUrl + "/api/configuration");
-        this.onConfigured = (auth: TwitchAuthCallbackContext, config: TwitchExtensionConfiguration) => {
+        this.onConfigured = () => {
             this.getConfiguration()
                 .then(config=> {
                     if (config)
@@ -49,12 +48,23 @@ export default class EBSConfigurationService extends EBS.EBSBase {
         return this.serviceFetch("/", null, configuration.content, configuration.version);
     }
 
+    getMessages = async (): Promise<PublicAnnouncement[]> => {
+        return this.serviceFetch("/messages");
+    }
+
     getConfiguration = async (): Promise<ExtensionConfiguration> => {
         if (! this.configuration?.content)
         {
             return Promise.resolve(null);
         }
         return this.serviceFetch("/");
+    }
+
+    validateTitle = async (config: ExtensionConfiguration): Promise<ValidationError[]> => {
+        return this.serviceFetch("/title/validate", {
+            method: 'POST',
+            body: JSON.stringify(config)
+        });
     }
 
     validateConfiguration = async (config: ExtensionConfiguration): Promise<ValidationError[]> => {
@@ -98,6 +108,14 @@ export default class EBSConfigurationService extends EBS.EBSBase {
 
     getXBoxLiveSupportedLanguages = async (titleId: string, xapiKey: string): Promise<SupportedLanguage[]> => {
         return this.serviceFetch("/xapi/languages/" + encodeURIComponent(titleId) + "?xApiKey=" + encodeURIComponent(xapiKey));
+    }
+
+    forceRefresh = async (): Promise<boolean> => {
+        return this.serviceFetch("/liveconfig/forcerefresh");
+    }
+
+    getXApiRateLimits = async (): Promise<RateLimits> => {
+        return this.serviceFetch("/liveconfig/ratelimits")
     }
 }
 

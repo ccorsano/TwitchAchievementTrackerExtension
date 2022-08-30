@@ -1,179 +1,179 @@
 
-        @media screen and (max-width: 55em) {
-            .overlayBox {
-                display: none;
-            }
-        }
+@media screen and (max-width: 55em) {
+    .overlayBox {
+        display: none;
+    }
+}
 
-        @media screen and (min-width: 55em) {
-            .overlayBox {
-                display: block;
-            }
-        }
+@media screen and (min-width: 55em) {
+    .overlayBox {
+        display: block;
+    }
+}
 
-        .overlayBox {
-            height: fit-content;
-            margin-top: 5rem;
-            color: black;
-        }
+.overlayBox {
+    height: fit-content;
+    margin-top: 5rem;
+    color: black;
+}
 
-        .noselect {
-            -webkit-touch-callout: none; /* iOS Safari */
-            -webkit-user-select: none; /* Safari */
-            -khtml-user-select: none; /* Konqueror HTML */
-            -moz-user-select: none; /* Old versions of Firefox */
-                -ms-user-select: none; /* Internet Explorer/Edge */
-                    user-select: none; /* Non-prefixed version, currently
-                                        supported by Chrome, Edge, Opera and Firefox */
-        }
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                supported by Chrome, Edge, Opera and Firefox */
+}
 
-        .overlayBox.collapsed .gameLogo:hover {
-            -webkit-box-shadow: 0em 0em 2em 0.5em rgba(255,255,255,1);
-            -moz-box-shadow: 0em 0em 2em 0.5em rgba(255,255,255,1);
-            box-shadow: 0em 0em 2em 0.5em rgba(255,255,255,1);
-        }
+.overlayBox.collapsed .gameLogo:hover {
+    -webkit-box-shadow: 0em 0em 2em 0.5em rgba(255,255,255,1);
+    -moz-box-shadow: 0em 0em 2em 0.5em rgba(255,255,255,1);
+    box-shadow: 0em 0em 2em 0.5em rgba(255,255,255,1);
+}
 
-        .overlayBox.open .summaryWidget
-        {
-            visibility: hidden;
-        }
+.overlayBox.open .summaryWidget
+{
+    visibility: hidden;
+}
 
-        .overlayBox.collapsed > .card-container
-        {
-            visibility: hidden;
-        }
+.overlayBox.collapsed > .card-container
+{
+    visibility: hidden;
+}
 
-        #achievementsPanel
-        {
-            min-height: 3em;
-        }
+#achievementsPanel
+{
+    min-height: 3em;
+}
 
-        .overlayBox.collapsed > #achievementsPanel
-        {
-            visibility: hidden;
-        }
+.overlayBox.collapsed > #achievementsPanel
+{
+    visibility: hidden;
+}
 
-        .overlayBox.open > .card-container
-        {
-            visibility: visible;
-        }
+.overlayBox.open > .card-container
+{
+    visibility: visible;
+}
 
-        .overlayBox.open > #achievementsPanel
-        {
-            visibility: visible;
-            background-color: rgba(255, 255, 255, 0.75);
-            max-width: 25em;
-            padding-left: 0.5em;
-            padding-top: 0.2;
-        }
+.overlayBox.open > #achievementsPanel
+{
+    visibility: visible;
+    background-color: rgba(255, 255, 255, 0.75);
+    max-width: 25em;
+    padding-left: 0.5em;
+    padding-top: 0.2;
+}
 
-        #completionHeadline .percentage
-        {
-            font-size: 1.5em;
-        }
+#completionHeadline .percentage
+{
+    font-size: 1.5em;
+}
 
-        #completionHeadline .completedCount
-        {
-            font-size: 2em;
-        }
+#completionHeadline .completedCount
+{
+    font-size: 2em;
+}
 
-        #completionHeadline .percentage
-        {
-            font-size: 2em;
-        }
+#completionHeadline .percentage
+{
+    font-size: 2em;
+}
 
-        #completionHeadline img
-        {
-            width: 2em;
-            height: 2em;
-            margin-left: 1.5em;
-            margin-right: 0.5em;
-            vertical-align: text-bottom;
-        }
+#completionHeadline img
+{
+    width: 2em;
+    height: 2em;
+    margin-left: 1.5em;
+    margin-right: 0.5em;
+    vertical-align: text-bottom;
+}
 
-        .overlayBox h2 {
-            font-size: 1.2em;
-            margin-top: 0.2em;
-            margin-bottom: 0.2em;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+.overlayBox h2 {
+    font-size: 1.2em;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-        .card-container {
-            padding-top: 0.1em;
-            height: 4em;
-        }
+.card-container {
+    padding-top: 0.1em;
+    height: 4em;
+}
 
-        .gameLogo {
-            height: 4em;
-            width: 4em;
-            float: left;
-            margin-right: 1em;
+.gameLogo {
+    float: left;
+    margin-right: 1em;
 
-            cursor: pointer;
+    cursor: pointer;
 
-            background-image: url('../../../assets/nuja.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+    background-image: url('../../../assets/logo.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 4em;
+    width: 4em;
+    background-size: cover;
+}
 
-        .summaryWidget {
-            width: 100%;
-            font-size: 1.3em;
-            text-align: center;
-            padding-top: 2.0em;
-            text-shadow: 0px 0px 0.5em black;
-            color: white;
-        }
+.summaryWidget {
+    width: 100%;
+    font-size: 1.3em;
+    text-align: center;
+    padding-top: 2.0em;
+    text-shadow: 0px 0px 0.5em black;
+    color: white;
+}
 
-        #gameLogo {
-            width: 100%;
-            height: 100%;
-        }
+#gameLogo {
+    width: 100%;
+    height: 100%;
+}
 
-        #showDetails {
-            width: 100%;
-            height: 1.5em;
-            text-align: right;
-            vertical-align: bottom;
-            cursor: pointer;
-            background-position: bottom right;
-            background-repeat: no-repeat;
-            background-size: 1.5rem;
-        }
+#showDetails {
+    width: 100%;
+    height: 1.5em;
+    text-align: right;
+    vertical-align: bottom;
+    cursor: pointer;
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    background-size: 1.5rem;
+}
 
-        #list {
-            max-height: 20rem;
-            margin-top: 0.2em;
-            padding-left: 0.5em;
-            overflow-y: scroll;
-        }
+#list {
+    max-height: 20rem;
+    margin-top: 0.2em;
+    padding-left: 0.5em;
+    overflow-y: scroll;
+}
 
-        #list li {
-            min-width: 2em;
-            min-height: 2em;
-            list-style: none;
-            padding-bottom: 1em;
-            padding-left: 1.2em;
-            background-size: 1em;
-            background-repeat: no-repeat;
-            background-position-x: left;
-            background-position-y: top;
-        }
+#list li {
+    min-width: 2em;
+    min-height: 2em;
+    list-style: none;
+    padding-bottom: 1em;
+    padding-left: 1.2em;
+    background-size: 1em;
+    background-repeat: no-repeat;
+    background-position-x: left;
+    background-position-y: top;
+}
 
-        #list li.completed {
-            color: #252525;
-            background-image: url('../../../assets/checkbox_true.svg');
-        }
+#list li.completed {
+    color: #252525;
+    background-image: url('../../../assets/checkbox_true.svg');
+}
 
-        #list li.notCompleted {
-            font-weight: bold;
-            background-image: url('../../../assets/checkbox_false.svg');
-        }
+#list li.notCompleted {
+    font-weight: bold;
+    background-image: url('../../../assets/checkbox_false.svg');
+}
 
-        #list .achievementDescription {
-            font-size: 0.9em;
-            font-weight: normal;
-        }
+#list .achievementDescription {
+    font-size: 0.9em;
+    font-weight: normal;
+}

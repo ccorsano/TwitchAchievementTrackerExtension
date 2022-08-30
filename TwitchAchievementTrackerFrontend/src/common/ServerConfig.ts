@@ -1,5 +1,6 @@
-var server = "https://twitchext.conceptoire.com/v3"
-var intervalTimer = false;
+import { TwitchExtHelper } from "./TwitchExtension";
+
+var server = "https://twitchext.conceptoire.com/v5"
 
 var urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get('state') == "testing")
@@ -8,5 +9,5 @@ if (urlParams.get('state') == "testing")
 }
 
 
-export const EBSVersion = "0.0.3";
+export const EBSVersion = "2020.4";
 export const EBSBaseUrl = server;

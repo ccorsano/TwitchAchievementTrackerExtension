@@ -1,7 +1,6 @@
 import * as EBSConfig from "../common/ServerConfig"
 import * as EBS from './EBSBase'
-import { ExtensionConfiguration, TitleInfo, Achievement, AchievementSummary } from '../common/EBSTypes';
-import { Twitch } from '../services/TwitchService';
+import { TitleInfo, Achievement, AchievementSummary } from '../common/EBSTypes';
 
 export default class EBSAchievementsService extends EBS.EBSBase {
     constructor(){

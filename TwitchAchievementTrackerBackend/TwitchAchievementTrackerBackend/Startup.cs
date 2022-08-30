@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -67,9 +71,11 @@ namespace TwitchAchievementTrackerBackend
             services.AddSingleton<SteamApiService>();
             services.AddSingleton<ConfigurationTokenService>();
             services.AddSingleton<ConfigurationService>();
+            services.AddSingleton<TwitchEBSService>();
             services.AddMemoryCache();
 
             services.AddApplicationInsightsTelemetry();
+            services.AddTransient<ITelemetryInitializer, TwitchUserTelemetryInitializer>();
 
             // For development mode
             if (Configuration.GetValue<bool>("config:IgnoreAuthentication", false))
@@ -80,14 +86,37 @@ namespace TwitchAchievementTrackerBackend
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    var secretsBase64 = new List<string>();
-                    Configuration.GetSection("twitch:ExtensionSecrets").Bind(secretsBase64);
-                    var signingKeys = secretsBase64.Select(base64Secret => new SymmetricSecurityKey(Convert.FromBase64String(base64Secret)));
+                    TwitchOptions twitchOptions = new TwitchOptions();
+                    Configuration.GetSection("twitch").Bind(twitchOptions);
+                    var signingKey = new SymmetricSecurityKey(Convert.FromBase64String(twitchOptions.ExtensionSecret));
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        IssuerSigningKeys = signingKeys,
+                        IssuerSigningKey = signingKey,
                         ValidateAudience = false, // No audience on extension tokens
                         ValidateIssuer = false, // No issuer either
+                    };
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnTokenValidated = (validationContext) =>
+                        {
+                            var token = validationContext.SecurityToken as JwtSecurityToken;
+
+                            options.TokenValidationParameters.NameClaimTypeRetriever = (token, _) =>
+                            {
+                                var jwtToken = token as JwtSecurityToken;
+                                if (jwtToken.Payload.ContainsKey("user_id"))
+                                {
+                                    return "user_id";
+                                }
+                                else
+                                {
+                                    return "opaque_user_id";
+                                }
+                            };
+
+                            return Task.CompletedTask;
+                        }
                     };
                 });
         }

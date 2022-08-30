@@ -11,7 +11,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "broadcaster")]
     public class ConfigurationController : ControllerBase
     {
         private ConfigurationService _service;
@@ -29,6 +29,12 @@ namespace TwitchAchievementTrackerBackend.Controllers
             return this.GetExtensionConfiguration();
         }
 
+        [HttpGet("messages")]
+        public PublicAnnouncement[] GetPublicAnnoucements()
+        {
+            return new PublicAnnouncement[0];
+        }
+
         [HttpPost("")]
         public ConfigurationToken SetConfiguration(ExtensionConfiguration configuration)
         {
@@ -36,6 +42,12 @@ namespace TwitchAchievementTrackerBackend.Controllers
             {
                 ConfigToken = Convert.ToBase64String(_tokenService.EncodeConfigurationToken(configuration))
             };
+        }
+
+        [HttpPost("title/validate")]
+        public Task<ValidationError[]> ValidateTitle(ExtensionConfiguration configuration)
+        {
+            return _service.ValidateTitle(configuration);
         }
 
         [HttpPost("validate")]
@@ -65,7 +77,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
                 .Select(game => new TitleInfo
             {
                 TitleId = game.AppId.ToString(),
-                LogoUri = game.ImgLogoUrl,
+                LogoUri = game.LibraryTileUrl ?? game.ImgLogoUrl,
                 ProductTitle = game.Name,
                 ProductDescription = "",
             }).ToArray();
@@ -105,6 +117,29 @@ namespace TwitchAchievementTrackerBackend.Controllers
         public Task<SupportedLanguage[]> GetXBoxLiveGameSupportedLanguages(string titleId, string xApiKey = null)
         {
             return _service.GetXBoxLiveSupportedLanguages(titleId, xApiKey);
+        }
+
+        [HttpGet("liveconfig/forcerefresh")]
+        public async Task<bool> ForceRefresh()
+        {
+            if (! HttpContext.HasExtensionConfiguration())
+            {
+                throw new InvalidOperationException("Missing configuration");
+            }
+
+            await _service.ForceRefresh(HttpContext.GetExtensionConfiguration());
+            return true;
+        }
+
+        [HttpGet("liveconfig/ratelimits")]
+        public RateLimits GetRateLimits()
+        {
+            if (!HttpContext.HasExtensionConfiguration())
+            {
+                throw new InvalidOperationException("Missing configuration");
+            }
+
+            return _service.GetXApiRateLimits(HttpContext.GetExtensionConfiguration());
         }
     }
 }

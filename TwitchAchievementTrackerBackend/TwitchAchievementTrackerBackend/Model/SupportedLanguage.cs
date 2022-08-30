@@ -9,5 +9,6 @@ namespace TwitchAchievementTrackerBackend.Model
     {
         public string LangCode { get; set; }
         public string DisplayName { get; set; }
+        public string DefaultRegion { get; set; }
     }
 }

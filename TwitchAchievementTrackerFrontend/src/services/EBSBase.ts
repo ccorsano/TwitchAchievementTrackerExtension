@@ -1,15 +1,11 @@
-import { version } from "webpack";
 import { Twitch } from '../services/TwitchService';
 import * as ServerConfig from '../common/ServerConfig';
-import { TwitchAuthCallbackContext, TwitchExtensionConfiguration } from "../common/TwitchExtension";
-require('../common/TwitchExtension')
+import type { TwitchAuthCallbackContext, TwitchExtensionConfiguration } from '../common/TwitchExtension'
 
 var urlParams = new URLSearchParams(window.location.search);
-let isDebug: boolean = false;
 
 if (urlParams.get('state') == "testing")
 {
-    isDebug = true;
 }
 
 export class EBSBase {
@@ -32,15 +28,15 @@ export class EBSBase {
         Twitch.onAuthorized.push(this._onAuthorized);
         Twitch.onConfiguration.push(this._onConfiguration);
 
-        this.contextPromise = new Promise<TwitchAuthCallbackContext>((resolve, reject) => {
+        this.contextPromise = new Promise<TwitchAuthCallbackContext>((resolve, _reject) => {
             Twitch.onAuthorized.push(context => {
                 this._onAuthorized(context);
                 resolve(context);
             });
         });
 
-        this.configurationPromise = new Promise<TwitchExtensionConfiguration>((resolve, reject) => {
-            Twitch.onConfiguration.push(config => {
+        this.configurationPromise = new Promise<TwitchExtensionConfiguration>((resolve, _reject) => {
+            Twitch.onConfiguration.push(_config => {
                 this._onConfiguration();
                 resolve(this.configuration);
             });
@@ -54,10 +50,13 @@ export class EBSBase {
             }
         });
         
-        Twitch.listen("broadcast", (target, contentType, messageStr) => {
+        Twitch.listen("broadcast", (_target, _contentType, messageStr) => {
             let message = JSON.parse(messageStr);
+
+            if (message.type != "set-config") return;
+
             this.configuration = message;
-            this.configurationPromise = new Promise<TwitchExtensionConfiguration>((resolve, reject) => {
+            this.configurationPromise = new Promise<TwitchExtensionConfiguration>((resolve, _reject) => {
                 resolve(message);
             });
             this.configuredPromise = Promise.all([this.contextPromise, this.configurationPromise]);
@@ -66,7 +65,7 @@ export class EBSBase {
     }
 
     serviceFetch = async <T>(path: string, init: RequestInit = null, configTokenOverride: string = null, versionOverride: string = null): Promise<T> => {
-        let [context, config] = await this.configuredPromise;
+        let [] = await this.configuredPromise;
 
         const opts: RequestInit = {
             method: init?.method ?? 'GET',

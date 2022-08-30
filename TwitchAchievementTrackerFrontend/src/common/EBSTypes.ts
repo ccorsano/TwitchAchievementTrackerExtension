@@ -37,6 +37,7 @@ export interface PlayerInfoCard {
 }
 
 export interface TitleInfo {
+    platform: ActiveConfig;
     titleId: string;
     productTitle: string;
     productDescription: string;
@@ -59,4 +60,16 @@ export interface AchievementSummary {
     notStarter: number;
     currentPoints: number;
     totalPoints: number;
+}
+
+export interface RateLimits {
+    hourlyLimit: number,
+    remaining: number,
+    resetTime: Date,
+}
+
+export interface PublicAnnouncement {
+    title: string;
+    severity: string;
+    message: string;
 }

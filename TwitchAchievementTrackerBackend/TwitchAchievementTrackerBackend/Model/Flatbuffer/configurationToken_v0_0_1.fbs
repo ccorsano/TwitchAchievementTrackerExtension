@@ -1,0 +1,45 @@
+﻿//****************************************************
+// Configuration schema file
+//  compact format to store and transmit stream config
+//****************************************************
+
+namespace TwitchAchievementTracker.Flatbuffer.v1;
+
+// Type holding configuration for a Stream
+table XApiConfiguration
+{
+    // Private key for xapi.us
+    xApiKey: string;
+    // XBoxLive XUID of the streamer
+    streamerXuid: ulong;
+    // TitleId for the played game
+    titleId: uint;
+    // Locale
+    locale: string;
+}
+
+table SteamConfiguration
+{
+    // Steam WebAPI key
+    webApiKey: string;
+    // Steam AppId of the played game
+    appId: uint;
+    // Steam 64bit user id of the streamed
+    steamId: ulong;
+    // Locale
+    locale: string;
+}
+
+union PlatformConfiguration
+{
+    XApiConfiguration,
+    SteamConfiguration
+}
+
+table Configuration
+{
+    version: string;
+    config: PlatformConfiguration;
+}
+
+root_type Configuration;

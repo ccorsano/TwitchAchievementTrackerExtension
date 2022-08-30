@@ -55,6 +55,46 @@ export interface TwitchExtensionPosition {
     y: number;
 }
 
+export interface TwitchExtensionConfigurationHelper {
+    broadcaster: TwitchExtensionConfiguration;
+    developer: TwitchExtensionConfiguration;
+    global: TwitchExtensionConfiguration;
+    onChanged: (callback: (config: TwitchExtensionConfiguration) => void) => void;
+    set: (segment: string, version: string, content: string) => void;
+}
+
+export interface SubscriptionStatus {
+    tier: string;
+}
+
+export interface TwitchExtensionViewerHelper {
+    opaqueId: string;
+    id: string;
+    role: string;
+    isLinked: boolean;
+    sessionToken: string;
+    subscriptionStatus: SubscriptionStatus;
+    onChange: (callback: () => void) => void;
+}
+
+export interface TwitchExtensionRigHelper {
+    log: (message: string) => void;
+}
+
+export interface TwitchExtensionActionsHelper {
+    followChannel: (channelName: string) => void;
+    minimize: () => void;
+    onFollow: (callback: (didFollow: boolean, channelName: string) => void) => void;
+    requestIdShare: () => void;
+}
+
+export interface TwitchExtensionFeaturesHelper {
+    isBitsEnabled: boolean;
+    isChatEnabled: boolean;
+    isSubscriptionStatusAvailable: boolean;
+    onChanged: (callback: (changed: string[]) => void) => void;
+}
+
 export interface TwitchExtensionHelper {
     onAuthorized: (authCallback: (context: TwitchAuthCallbackContext) => void) => void;
     onContext: (contextCallback: (context: TwitchContext, changedProperties: string[]) => void) => void;
@@ -65,4 +105,36 @@ export interface TwitchExtensionHelper {
     send: (target: string, contentType: string, message: any) => void;
     listen: (target: string, callback: (target: string, contentType: string, message: string) => void) => void;
     unlisten: (target: string, callback: (target: string, contentType: string, message: string) => void) => void;
+    actions: TwitchExtensionActionsHelper;
+    configuration: TwitchExtensionConfigurationHelper;
+    viewer: TwitchExtensionViewerHelper;
+    rig: TwitchExtensionRigHelper;
+    features: TwitchExtensionFeaturesHelper;
 }
+
+type TwitchExtensionQueryParameters = {
+    anchor: string;
+    language: string;
+    locale: string;
+    mode: string;
+    platform: string;
+    popout: boolean;
+    state: string;
+}
+
+function readTwitchQueryParameters(): TwitchExtensionQueryParameters
+{
+    var queryParams = new URLSearchParams(window.location.search);
+    return {
+        anchor: queryParams.get('anchor'),
+        language: queryParams.get('language'),
+        locale: queryParams.get('locale'),
+        mode: queryParams.get('mode'),
+        platform: queryParams.get('platform'),
+        popout: queryParams.get('popout') === 'true',
+        state: queryParams.get('state'),
+    }
+}
+
+export const TwitchExtHelper: TwitchExtensionHelper = (<any>window).Twitch.ext;
+export const TwitchExtQuery: TwitchExtensionQueryParameters= readTwitchQueryParameters();
