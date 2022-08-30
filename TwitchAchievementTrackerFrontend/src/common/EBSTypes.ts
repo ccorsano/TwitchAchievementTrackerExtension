@@ -67,3 +67,9 @@ export interface RateLimits {
     remaining: number,
     resetTime: Date,
 }
+
+export interface PublicAnnouncement {
+    title: string;
+    severity: string;
+    message: string;
+}

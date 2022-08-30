@@ -1,4 +1,6 @@
-var server = "https://twitchext.conceptoire.com/v4"
+import { TwitchExtHelper } from "./TwitchExtension";
+
+var server = "https://twitchext.conceptoire.com/v5"
 
 var urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get('state') == "testing")

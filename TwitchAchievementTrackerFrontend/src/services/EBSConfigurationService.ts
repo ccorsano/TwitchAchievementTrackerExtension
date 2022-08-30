@@ -1,6 +1,6 @@
 import * as EBSConfig from "../common/ServerConfig"
 import * as EBS from './EBSBase'
-import type { ExtensionConfiguration, SupportedLanguage, PlayerInfoCard, TitleInfo, RateLimits } from '../common/EBSTypes';
+import type { ExtensionConfiguration, SupportedLanguage, PlayerInfoCard, TitleInfo, RateLimits, PublicAnnouncement } from '../common/EBSTypes';
 import type { TwitchExtensionConfiguration } from "../common/TwitchExtension";
 
 export interface EncryptedConfigurationResponse {
@@ -46,6 +46,10 @@ export default class EBSConfigurationService extends EBS.EBSBase {
 
     fetchConfiguration = async (configuration: TwitchExtensionConfiguration): Promise<ExtensionConfiguration> => {
         return this.serviceFetch("/", null, configuration.content, configuration.version);
+    }
+
+    getMessages = async (): Promise<PublicAnnouncement[]> => {
+        return this.serviceFetch("/messages");
     }
 
     getConfiguration = async (): Promise<ExtensionConfiguration> => {

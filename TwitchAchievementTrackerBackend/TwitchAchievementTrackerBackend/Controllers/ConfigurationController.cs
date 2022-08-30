@@ -29,6 +29,12 @@ namespace TwitchAchievementTrackerBackend.Controllers
             return this.GetExtensionConfiguration();
         }
 
+        [HttpGet("messages")]
+        public PublicAnnouncement[] GetPublicAnnoucements()
+        {
+            return new PublicAnnouncement[0];
+        }
+
         [HttpPost("")]
         public ConfigurationToken SetConfiguration(ExtensionConfiguration configuration)
         {
