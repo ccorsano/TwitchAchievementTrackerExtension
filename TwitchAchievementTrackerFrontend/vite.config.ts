@@ -14,6 +14,7 @@ export default defineConfig({
                 mobile: resolve(__dirname, 'mobile.html')
             }
         },
+        sourcemap: true,
         assetsDir: "."
     },
     server: {
