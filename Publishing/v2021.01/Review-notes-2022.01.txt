@@ -8,10 +8,10 @@ Build instructions:
 > npm install
 > npm run build
 
-Changelog, v2022.01
-- Fixed XBoxLive service to match breaking changes from the service provider
-- Ported extension from React + WebPack to Svelte + vite, now even lighter
-- Fixed completion percentage formatting when reaching 100%
+Changelog, v2021.01
+- Branding change: make the extension more generic, only mentioning originating community in description
+- Updated dependencies
+- Added backend base URL to connect-src CSP
 
 Review team guidance:
 
@@ -25,10 +25,18 @@ Review team guidance:
   - Steam Profile Url: copy any, or use https://steamcommunity.com/id/miekyll/
   - Game selection: select any
   - Language selection: select any
-- Frontend is written in Svelte + TypeScript
+- Frontend is written in React + TypeScript
   Please note that full-code sourcemap are included, code is easiest browsed using Developers Tools through WebPack source mapping.
   I can provide the full frontend project upon request, if the source maps are not enough.
-  It can also be found at https://github.com/ccorsano/TwitchAchievementTrackerExtension/tree/master/TwitchAchievementTrackerFrontend
+  As the WebPack developer tools might mix Twitch own source with the extension's, here is the file structure of the react project:
+    +-- src
+    |   +-- common/            -> Shared types and helpers
+    |   +-- components/        -> React components
+    |   +-- services/          -> Service classes
+    |   +-- Config.tsx         -> Root file for the Broadcaster Configuration view
+    |   +-- LiveConfig.tsx     -> Root file for the Stream Dashboard view
+    |   +-- Mobile.tsx         -> Root file for the Mobile viewer Twitch view
+    |   +-- VideoOverlay.tsx   -> Root file for the Video Overlay viewer Twitch view
 
 - On the viewers side, just click the overlay to show the full list of achievements.
 
