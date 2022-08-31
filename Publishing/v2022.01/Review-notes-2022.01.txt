@@ -9,12 +9,19 @@ Build instructions:
 > npm run build
 
 Changelog, v2022.01
-- Fixed XBoxLive service to match breaking changes from the service provider
-- Ported extension from React + WebPack to Svelte + vite, now even lighter
+- Fixed the XBoxLive service integration to match breaking changes from the service provider
+- Ported extension from React + WebPack to Svelte + vite, now lighter and faster
 - Fixed completion percentage formatting when reaching 100%
+- Allow displaying a message from the EBS to the configuration page, to be able to warn users about issues
 
 Review team guidance:
 
+- Frontend is written in Svelte + TypeScript, which is why the code is minified
+  The full-code sourcemaps are included, non transformed code can be browsed using Developers Tools.
+  It can also be found at https://github.com/ccorsano/TwitchAchievementTrackerExtension/releases/tag/2022.01
+  Of course it is also available upon request.
+
+Configuring the extension
 - For XBoxLive configuration:
   - XApi.us review key: 
   - GamerTag: use any, or search for "Miekyll"
@@ -25,10 +32,6 @@ Review team guidance:
   - Steam Profile Url: copy any, or use https://steamcommunity.com/id/miekyll/
   - Game selection: select any
   - Language selection: select any
-- Frontend is written in Svelte + TypeScript
-  Please note that full-code sourcemap are included, code is easiest browsed using Developers Tools through WebPack source mapping.
-  I can provide the full frontend project upon request, if the source maps are not enough.
-  It can also be found at https://github.com/ccorsano/TwitchAchievementTrackerExtension/tree/master/TwitchAchievementTrackerFrontend
 
 - On the viewers side, just click the overlay to show the full list of achievements.
 
