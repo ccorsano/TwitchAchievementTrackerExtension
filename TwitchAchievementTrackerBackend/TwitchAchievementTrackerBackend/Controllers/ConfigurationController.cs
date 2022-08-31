@@ -38,7 +38,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
                 {
                     Severity = "Warning",
                     Title = "Welcome",
-                    Message = "This is an example of the EBS messages feature."
+                    Message = "This is an example of the new EBS notice feature."
                 }
             };
         }
