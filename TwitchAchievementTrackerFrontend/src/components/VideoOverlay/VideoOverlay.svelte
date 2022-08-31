@@ -5,6 +5,7 @@ import AchievementsList from '../AchievementsList/AchievementsList.svelte'
 import Cup from '../../../assets/cup.svg';
 import Logo from '../../../assets/logo.png';
 import { AchievementsService } from '../../services/EBSAchievementsService'
+import { Twitch } from '../../services/TwitchService';
 
 let isCollapsed: boolean = true
 let isConfigurationValid: boolean = false
@@ -45,6 +46,27 @@ function togglePanel()
         refreshSummary();
     }
 }
+
+Twitch.listen("broadcast", (_target, _contentType, messageStr) => {
+    let message = JSON.parse(messageStr);
+    let configToken = AchievementsService.configuration.content;
+    
+    switch (message.type) {
+        case "refresh":
+            refreshAll();
+            break;
+        case "set-config":
+            if (message.configToken != configToken)
+            {
+                AchievementsService.configuration.content = message.configToken;
+                AchievementsService.configuration.version = message.version;
+                refreshAll();
+            }
+            break;
+        default:
+            break;
+    }
+});
 
 refreshAll()
 setInterval(refreshSummary, 60000)
