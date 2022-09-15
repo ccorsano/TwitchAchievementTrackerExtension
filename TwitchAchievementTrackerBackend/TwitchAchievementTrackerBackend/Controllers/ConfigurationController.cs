@@ -32,15 +32,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
         [HttpGet("messages")]
         public PublicAnnouncement[] GetPublicAnnoucements()
         {
-            return new PublicAnnouncement[]
-            {
-                new PublicAnnouncement
-                {
-                    Severity = "Warning",
-                    Title = "Welcome",
-                    Message = "This is an example of the EBS messages feature."
-                }
-            };
+            return new PublicAnnouncement[0];
         }
 
         [HttpPost("")]
