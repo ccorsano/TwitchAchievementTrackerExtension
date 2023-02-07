@@ -1,6 +1,9 @@
-# Twitch Achievement Tracker Extension : Frontend
+# Twitch Achievement Tracker Extension
 
-Frontend for the Twitch Achievement Tracker Extension.
+Frontend and backend for the Twitch Achievement Tracker Extension.
+
+## Learn more about the extension
+- https://conceptoire.com/achievements-tracker/
 
 ## How to run
 This is a Svelte + TypeScript + Vite application.
