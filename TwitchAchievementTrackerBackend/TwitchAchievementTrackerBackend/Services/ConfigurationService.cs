@@ -18,7 +18,7 @@ namespace TwitchAchievementTrackerBackend.Services
     {
         private readonly SteamApiService _steamApiService;
         private readonly XApiService _xApiService;
-        private readonly Regex XAPI_REGEX = new Regex("^[0-9a-zA-Z]{40}$", RegexOptions.Compiled);
+        private readonly Regex XAPI_REGEX = new Regex("^[0-9a-zA-Z]{30,50}$", RegexOptions.Compiled);
         private readonly IMemoryCache _cache;
         private readonly ILogger _logger;
 
@@ -320,7 +320,7 @@ namespace TwitchAchievementTrackerBackend.Services
                         {
                             Path = "XBoxLiveConfig.XApiKey",
                             ErrorCode = "InvalidFormat",
-                            ErrorDescription = "XApi.us key missing or invalid. It must be 40 character long and hexadecimal.",
+                            ErrorDescription = "XApi.us key missing or invalid.",
                         });
                     }
                     else
