@@ -1,10 +1,10 @@
-import { TwitchAuthCallbackContext, TwitchExtensionConfiguration, TwitchExtHelper } from "../common/TwitchExtension";
+import { type TwitchAuthCallbackContext, type TwitchExtensionConfiguration, TwitchExtHelper } from "../common/TwitchExtension";
 
 export default class TwitchService {
     onAuthorized: {(context: TwitchAuthCallbackContext):void}[] = [];
     onConfiguration: {(config: TwitchExtensionConfiguration):void}[] = [];
     configuration: TwitchExtensionConfiguration = { content: "", version: "" };
-    authToken: TwitchAuthCallbackContext = null;
+    authToken: TwitchAuthCallbackContext | null = null;
 
     constructor()
     {

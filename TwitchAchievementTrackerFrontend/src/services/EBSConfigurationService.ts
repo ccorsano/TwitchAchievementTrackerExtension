@@ -45,14 +45,14 @@ export default class EBSConfigurationService extends EBS.EBSBase {
     }
 
     fetchConfiguration = async (configuration: TwitchExtensionConfiguration): Promise<ExtensionConfiguration> => {
-        return this.serviceFetch("/", null, configuration.content, configuration.version);
+        return this.serviceFetch("/", undefined, configuration.content, configuration.version);
     }
 
     getMessages = async (): Promise<PublicAnnouncement[]> => {
         return this.serviceFetch("/messages");
     }
 
-    getConfiguration = async (): Promise<ExtensionConfiguration> => {
+    getConfiguration = async (): Promise<ExtensionConfiguration | null> => {
         if (! this.configuration?.content)
         {
             return Promise.resolve(null);

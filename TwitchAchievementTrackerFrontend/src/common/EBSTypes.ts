@@ -5,24 +5,24 @@ export enum ActiveConfig {
 }
 
 export interface XApiConfiguration {
-    xApiKey: string;
-    streamerXuid: string;
-    titleId: string;
-    locale: string;
+    xApiKey?: string;
+    streamerXuid?: string;
+    titleId?: string;
+    locale?: string;
 }
 
 export interface SteamConfiguration {
-    webApiKey: string;
-    steamId: string;
-    appId: string;
-    locale: string;
+    webApiKey?: string;
+    steamId?: string;
+    appId?: string;
+    locale?: string;
 }
 
 export interface ExtensionConfiguration {
-    version: string;
-    activeConfig: ActiveConfig;
-    xBoxLiveConfig: XApiConfiguration;
-    steamConfig: SteamConfiguration;
+    version: string | null;
+    activeConfig: ActiveConfig | null;
+    xBoxLiveConfig: XApiConfiguration | null;
+    steamConfig: SteamConfiguration | null;
 }
 
 export interface SupportedLanguage {

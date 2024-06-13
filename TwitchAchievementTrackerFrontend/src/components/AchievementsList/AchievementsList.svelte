@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Achievement, ActiveConfig } from "../../common/EBSTypes"
+    import { type Achievement, ActiveConfig } from "../../common/EBSTypes"
 
     export let achievements: Achievement[]
     export let platform: ActiveConfig

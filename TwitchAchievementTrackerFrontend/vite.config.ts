@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+import sveltePreprocess from 'svelte-preprocess'
 import { resolve } from 'path';
-
+import basicSsl from '@vitejs/plugin-basic-ssl';
 
 export default defineConfig({
     base: './',
@@ -22,6 +23,14 @@ export default defineConfig({
         port: 8090,
     },
     plugins: [
-        svelte()
+        svelte({
+            preprocess: sveltePreprocess()
+        }),
+        basicSsl({
+            name: "localhost",
+            domains: [
+                "localhost"
+            ],
+        })
     ]
 });

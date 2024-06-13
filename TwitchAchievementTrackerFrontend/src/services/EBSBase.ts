@@ -9,12 +9,12 @@ if (urlParams.get('state') == "testing")
 }
 
 export class EBSBase {
-    context: TwitchAuthCallbackContext;
-    configuration: TwitchExtensionConfiguration;
+    context: TwitchAuthCallbackContext | undefined;
+    configuration: TwitchExtensionConfiguration | undefined;
     baseUrl: string;
-    onConfigured: (auth: TwitchAuthCallbackContext, config: TwitchExtensionConfiguration) => void;
-    onAuthorized: (context: TwitchAuthCallbackContext) => void;
-    onConfiguration: (configuration: TwitchExtensionConfiguration) => void;
+    onConfigured: (auth: TwitchAuthCallbackContext, config: TwitchExtensionConfiguration) => void = (a,c) => {};
+    onAuthorized: (context: TwitchAuthCallbackContext) => void = (c) => {};
+    onConfiguration: (configuration: TwitchExtensionConfiguration) => void = (c) => {};
 
     configuredPromise: Promise<[TwitchAuthCallbackContext, TwitchExtensionConfiguration]>;
     contextPromise: Promise<TwitchAuthCallbackContext>;
@@ -38,7 +38,7 @@ export class EBSBase {
         this.configurationPromise = new Promise<TwitchExtensionConfiguration>((resolve, _reject) => {
             Twitch.onConfiguration.push(_config => {
                 this._onConfiguration();
-                resolve(this.configuration);
+                resolve(this.configuration!);
             });
         });
 
@@ -64,13 +64,13 @@ export class EBSBase {
         });
     }
 
-    serviceFetch = async <T>(path: string, init: RequestInit = null, configTokenOverride: string = null, versionOverride: string = null): Promise<T> => {
+    serviceFetch = async <T>(path: string, init: RequestInit | null = null, configTokenOverride: string | null = null, versionOverride: string | null = null): Promise<T> => {
         let [] = await this.configuredPromise;
 
         const opts: RequestInit = {
             method: init?.method ?? 'GET',
             headers: new Headers({
-                'Authorization': 'Bearer ' + this.context.token,
+                'Authorization': 'Bearer ' + this.context!.token,
                 'Content-Type': 'application/json',
                 'X-Config-Token': configTokenOverride ?? this.configuration?.content ?? '',
                 'X-Config-Version': versionOverride ?? this.configuration?.version ?? ServerConfig.EBSVersion,

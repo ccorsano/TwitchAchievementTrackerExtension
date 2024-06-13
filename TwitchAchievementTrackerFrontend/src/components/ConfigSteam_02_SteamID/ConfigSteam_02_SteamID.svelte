@@ -1,6 +1,6 @@
 <script lang="ts">
-import { ActiveConfig, ExtensionConfiguration, PlayerInfoCard } from "../../common/EBSTypes"
-import { ConfigurationService, ValidationError } from "../../services/EBSConfigurationService"
+import { ActiveConfig, type ExtensionConfiguration, type PlayerInfoCard } from "../../common/EBSTypes"
+import { ConfigurationService, type ValidationError } from "../../services/EBSConfigurationService"
 import { EBSVersion } from "../../common/ServerConfig"
 import GamerCard from "../GamerCard/GamerCard.svelte"
 import ValidationErrorList from "../ValidationErrorList/ValidationErrorList.svelte"
@@ -19,10 +19,10 @@ let isLoading: boolean = true
 let isProfileUrlFormatValid: boolean = false
 let isProfileValid: boolean = false
 let isConfirmed: boolean = false
-let unvalidatedUrl: string = null
-let steamProfileUrl: string = null
-let steamProfileId: string = null
-let steamProfile: PlayerInfoCard = null
+let unvalidatedUrl: string | null = null
+let steamProfileUrl: string | null = null
+let steamProfileId: string | null = null
+let steamProfile: PlayerInfoCard | null = null
 let errors: ValidationError[] = []
 
 
@@ -45,9 +45,9 @@ async function doValidate(_e: any)
     isLoading = true
 
     try {
-        let split = formatRegexp.exec(steamProfileUrl);
-        let profileId = split[2];
-        let resolvedProfile: PlayerInfoCard = null;
+        let split = formatRegexp.exec(steamProfileUrl!);
+        let profileId = split![2];
+        let resolvedProfile: PlayerInfoCard | null = null;
 
         if (! steamIdRegexp.test(profileId))
         {
@@ -64,8 +64,6 @@ async function doValidate(_e: any)
             steamConfig: {
                 steamId: profileId,
                 webApiKey: webApiKey,
-                appId: null,
-                locale: null
             },
             version: EBSVersion,
             xBoxLiveConfig: null
@@ -100,7 +98,7 @@ function unvalidate(_e: any)
     isConfirmed = false
 }
 
-let steamId:string
+let steamId:string | undefined
 $:{
     steamId = savedConfiguration?.steamConfig?.steamId
     if (steamId && steamIdRegexp.test(steamId)) {
@@ -109,7 +107,7 @@ $:{
                 isLoading = false
                 isProfileUrlFormatValid = false
                 isProfileValid = true
-                steamProfileId = steamId
+                steamProfileId = steamId!
                 steamProfile = playerInfo
             });
     }
@@ -131,7 +129,7 @@ $: isContinueEnabled = isProfileUrlFormatValid || isProfileValid;
     onValidate={onValidate}
     onBack={unvalidate}
     webApiKey={webApiKey}
-    steamProfileId={steamProfileId} />
+    steamProfileId={steamProfileId ?? ""} />
 {:else}
     {#if !isLoading}
         {#if steamProfile}
@@ -156,6 +154,6 @@ $: isContinueEnabled = isProfileUrlFormatValid || isProfileValid;
             <div class="spinner"></div>
         </div>
     {/if}
-    <input type="button" value="Back" onClick={onBack} />
+    <input type="button" value="Back" on:click={onBack} />
     <input type="button" value="Continue" disabled={!isContinueEnabled} on:click={doValidate} />
 {/if}

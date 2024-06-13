@@ -1,7 +1,7 @@
 <script lang="ts">
 import { EBSVersion } from "../../common/ServerConfig";
-import { ActiveConfig, ExtensionConfiguration } from "../../common/EBSTypes";
-import { ConfigurationService, ValidationError } from "../../services/EBSConfigurationService";
+import { ActiveConfig, type ExtensionConfiguration } from "../../common/EBSTypes";
+import { ConfigurationService, type ValidationError } from "../../services/EBSConfigurationService";
 import ValidationErrorList from "../ValidationErrorList/ValidationErrorList.svelte";
 import SecretKeySpan from "../SecretKeySpan/SecretKeySpan.svelte";
 

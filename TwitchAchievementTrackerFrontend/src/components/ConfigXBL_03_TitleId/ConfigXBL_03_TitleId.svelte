@@ -1,6 +1,6 @@
 <script lang="ts">
-import { ConfigurationService, ValidationError } from "../../services/EBSConfigurationService"
-import { ActiveConfig, ExtensionConfiguration, TitleInfo } from "../../common/EBSTypes"
+import { ConfigurationService, type ValidationError } from "../../services/EBSConfigurationService"
+import { ActiveConfig, type ExtensionConfiguration, type TitleInfo } from "../../common/EBSTypes"
 import { AchievementsService } from "../../services/EBSAchievementsService"
 import { EBSVersion } from "../../common/ServerConfig"
 import ValidationErrorList from "../ValidationErrorList/ValidationErrorList.svelte"
@@ -15,7 +15,7 @@ export let streamerXuid: string
 
 let titleSearch: string = ""
 let searchResults: TitleInfo[] = []
-let selectedTitle: TitleInfo = null
+let selectedTitle: TitleInfo | null = null
 let isLoading: boolean = true
 let isConfirmed: boolean = false
 let errors: ValidationError[] = []
@@ -68,12 +68,12 @@ async function onSelectTitle(_e: any, titleId: string)
     let titleInfo = searchResults.find(t => t.titleId == titleId);
 
     searchResults = searchResults
-    selectedTitle = titleInfo
+    selectedTitle = titleInfo!
     isLoading = true
     errors = []
 
     // Validate and move on
-    await validateTitle(titleInfo);
+    await validateTitle(titleInfo!);
 }
 
 async function validateTitle(titleInfo: TitleInfo)
@@ -140,7 +140,7 @@ else
     fetchRecentTitles(streamerXuid, xApiKey);
 }
 let isContinueEnabled: boolean
-$: isContinueEnabled = selectedTitle && errors?.length == 0;
+$: isContinueEnabled = selectedTitle != null && errors?.length == 0;
 </script>
 
 {#if isConfirmed}

@@ -3,14 +3,14 @@
     "compilerOptions": {
       "target": "esnext",
       "useDefineForClassFields": true,
-      "module": "esnext",
+      "module": "ES2022",
       "resolveJsonModule": true,
       "baseUrl": ".",
       "allowJs": true,
       "checkJs": true,
       "isolatedModules": true,
       "composite": true,
-      "moduleResolution": "node"
+      "moduleResolution": "Node"
     },
     "include": [
       "src/**/*.d.ts",
