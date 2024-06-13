@@ -1,7 +1,7 @@
 <script lang="ts">
 import { EBSVersion } from "../../common/ServerConfig"
-import { ActiveConfig, ExtensionConfiguration } from "../../common/EBSTypes"
-import { ConfigurationService, ValidationError } from "../../services/EBSConfigurationService"
+import { ActiveConfig, type ExtensionConfiguration } from "../../common/EBSTypes"
+import { ConfigurationService, type ValidationError } from "../../services/EBSConfigurationService"
 import SecretKeyInput from "../SecretKeyInput/SecretKeyInput.svelte"
 import ValidationErrorList from "../ValidationErrorList/ValidationErrorList.svelte"
 import ConfigXBL_02_XUID from "../ConfigXBL_02_XUID/ConfigXBL_02_XUID.svelte"
@@ -42,9 +42,6 @@ async function onContinue() {
         version: EBSVersion,
         xBoxLiveConfig: {
             xApiKey: enteredApiKey,
-            locale: null,
-            streamerXuid: null,
-            titleId: null,
         }
     }
 

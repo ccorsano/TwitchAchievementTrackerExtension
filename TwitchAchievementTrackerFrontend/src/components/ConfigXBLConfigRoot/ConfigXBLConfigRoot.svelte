@@ -1,7 +1,7 @@
 <script lang="ts">
 import { EBSVersion } from "../../common/ServerConfig";
 import { ConfigXBLConfigStateEnum } from "../../common/ConfigStepBase";
-import { ActiveConfig, ExtensionConfiguration } from "../../common/EBSTypes"
+import { ActiveConfig, type ExtensionConfiguration } from "../../common/EBSTypes"
 import type { TwitchExtensionConfiguration } from "../../common/TwitchExtension"
 import { ConfigurationService } from "../../services/EBSConfigurationService";
 import { Twitch } from "../../services/TwitchService";
@@ -43,12 +43,7 @@ $:{
     currentConfig.activeConfig = ActiveConfig.XBoxLive
     if (! currentConfig.xBoxLiveConfig)
     {
-        currentConfig.xBoxLiveConfig = {
-            xApiKey: null,
-            streamerXuid: null,
-            locale: null,
-            titleId: null,
-        }
+        currentConfig.xBoxLiveConfig = {}
     }
 }
 </script>

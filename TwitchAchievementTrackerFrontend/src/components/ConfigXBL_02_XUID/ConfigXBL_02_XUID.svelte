@@ -10,8 +10,8 @@ export let savedConfiguration: ExtensionConfiguration
 export let xApiKey: string
 
 let xuidSearch: string = ""
-let xuid: string = null
-let gamerCard: PlayerInfoCard = null
+let xuid: string | null = null
+let gamerCard: PlayerInfoCard | null = null
 let isLoading: boolean = true
 let isConfirmed: boolean = false
 

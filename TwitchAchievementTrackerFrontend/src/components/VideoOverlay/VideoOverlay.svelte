@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Achievement, AchievementSummary, ActiveConfig, TitleInfo } from '../../common/EBSTypes';
+import { type Achievement, type AchievementSummary, ActiveConfig, type TitleInfo } from '../../common/EBSTypes';
 import AchievementsList from '../AchievementsList/AchievementsList.svelte'
 
 import Cup from '../../../assets/cup.svg';
@@ -9,8 +9,8 @@ import { Twitch } from '../../services/TwitchService';
 
 let isCollapsed: boolean = true
 let isConfigurationValid: boolean = false
-let titleInfo: TitleInfo = null
-let achievementsSummary: AchievementSummary = null
+let titleInfo: TitleInfo | null = null
+let achievementsSummary: AchievementSummary | null = null
 let achievementsDetails: Achievement[] = []
 
 let refreshAll = async () => {
@@ -49,7 +49,7 @@ function togglePanel()
 
 Twitch.listen("broadcast", (_target, _contentType, messageStr) => {
     let message = JSON.parse(messageStr);
-    let configToken = AchievementsService.configuration.content;
+    let configToken = AchievementsService.configuration!.content;
     
     switch (message.type) {
         case "refresh":
@@ -58,8 +58,8 @@ Twitch.listen("broadcast", (_target, _contentType, messageStr) => {
         case "set-config":
             if (message.configToken != configToken)
             {
-                AchievementsService.configuration.content = message.configToken;
-                AchievementsService.configuration.version = message.version;
+                AchievementsService.configuration!.content = message.configToken;
+                AchievementsService.configuration!.version = message.version;
                 refreshAll();
             }
             break;
@@ -111,6 +111,6 @@ $:{
                 <span class="completedCount">{completedCount}</span>/<span class="totalCount">{totalCount}</span> 
             </div>
         </div>
-        <AchievementsList achievements={achievementsDetails} platform={titleInfo?.platform} />
+        <AchievementsList achievements={achievementsDetails} platform={titleInfo?.platform ?? ActiveConfig.None} />
     </div>
 </div>

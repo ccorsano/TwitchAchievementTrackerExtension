@@ -1,6 +1,6 @@
 <script lang="ts">
 import { EBSVersion } from "../../common/ServerConfig";
-import { ActiveConfig, ExtensionConfiguration } from "../../common/EBSTypes";
+import { ActiveConfig, type ExtensionConfiguration } from "../../common/EBSTypes";
 import SecretKeySpan from "../SecretKeySpan/SecretKeySpan.svelte";
 
 export let onValidate: (e: any, configuration: ExtensionConfiguration) => void

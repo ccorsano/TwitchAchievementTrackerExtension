@@ -1,7 +1,7 @@
 <script lang="ts">
 import { EBSVersion } from "../../common/ServerConfig"
-import { ActiveConfig, ExtensionConfiguration, TitleInfo } from "../../common/EBSTypes"
-import { ConfigurationService, ValidationError } from "../../services/EBSConfigurationService"
+import { ActiveConfig, type ExtensionConfiguration, type TitleInfo } from "../../common/EBSTypes"
+import { ConfigurationService, type ValidationError } from "../../services/EBSConfigurationService"
 import ValidationErrorList from "../ValidationErrorList/ValidationErrorList.svelte"
 import GameCard from "../GameCard/GameCard.svelte"
 import ConfigSteam_04_Locale from "../ConfigSteam_04_Locale/ConfigSteam_04_Locale.svelte"
@@ -17,7 +17,7 @@ let isLoading: boolean = true
 let isConfirmed: boolean = false
 let ownedApps: TitleInfo[] = []
 let filteredApps: TitleInfo[] = []
-let selectedTitle: TitleInfo = null
+let selectedTitle: TitleInfo | null = null
 let errors: ValidationError[] = []
 
 async function onContinue()
@@ -33,12 +33,12 @@ async function onChangeTitleSearch(value: string)
 
 async function onSelectTitle(titleId: string)
 {
-    let titleInfo = ownedApps.find(t => t.titleId == titleId);
+    let titleInfo = ownedApps.find(t => t.titleId == titleId) ?? null;
 
     isLoading = true
     titleSearch = ""
     filteredApps = ownedApps
-    selectedTitle = titleInfo
+    selectedTitle = titleInfo!
 
     // Validate and move on
     const configuration: ExtensionConfiguration = {
@@ -46,7 +46,7 @@ async function onSelectTitle(titleId: string)
         steamConfig: {
             steamId: steamProfileId,
             webApiKey: webApiKey,
-            appId: titleInfo.titleId,
+            appId: titleInfo!.titleId,
             locale: "english",
         },
         version: EBSVersion,
@@ -74,10 +74,10 @@ function unvalidate()
 
 ConfigurationService.getSteamOwnedGames(steamProfileId, webApiKey)
     .then(gameList => {
-        let gameInfo: TitleInfo = null;
+        let gameInfo: TitleInfo | null = null;
         if (selectedTitle)
         {
-            gameInfo = gameList.find(g => g.titleId == selectedTitle.titleId);
+            gameInfo = gameList.find(g => g.titleId == selectedTitle!.titleId) ?? null;
         }
         
         isLoading = false
@@ -96,7 +96,7 @@ $: isContinueEnabled = selectedTitle != null
         onBack={unvalidate}
         webApiKey={webApiKey}
         steamProfileId={steamProfileId}
-        steamAppId={selectedTitle.titleId} />
+        steamAppId={selectedTitle?.titleId ?? ""}/>
 {:else}
     <ValidationErrorList errors={errors} />
     {#if isLoading}

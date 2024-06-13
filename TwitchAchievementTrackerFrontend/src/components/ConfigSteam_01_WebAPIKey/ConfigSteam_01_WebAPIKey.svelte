@@ -1,6 +1,6 @@
 <script lang="ts">
-import { ConfigurationService, ValidationError } from "../../services/EBSConfigurationService";
-import { ActiveConfig, ExtensionConfiguration, SteamConfiguration } from "../../common/EBSTypes";
+import { ConfigurationService, type ValidationError } from "../../services/EBSConfigurationService";
+import { ActiveConfig, type ExtensionConfiguration, type SteamConfiguration } from "../../common/EBSTypes";
 import { EBSVersion } from "../../common/ServerConfig";
 import SecretKeyInput from "../SecretKeyInput/SecretKeyInput.svelte";
 import ValidationErrorList from "../ValidationErrorList/ValidationErrorList.svelte";
@@ -42,9 +42,6 @@ async function onContinue(_e: any)
         version: EBSVersion,
         steamConfig: {
             webApiKey: enteredApiKey,
-            locale: null,
-            steamId: null,
-            appId: null,
         }
     }
 
@@ -73,7 +70,7 @@ async function onContinue(_e: any)
 }
 
 $:{
-    let currentConfig: SteamConfiguration = savedConfiguration?.steamConfig;
+    let currentConfig: SteamConfiguration | null = savedConfiguration?.steamConfig;
     if (currentConfig?.webApiKey)
     {
         changeWebApiValue(currentConfig.webApiKey);

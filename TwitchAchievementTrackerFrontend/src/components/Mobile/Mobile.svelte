@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Achievement, AchievementSummary, ActiveConfig, TitleInfo } from "../../common/EBSTypes";
+import { type Achievement, type AchievementSummary, ActiveConfig, type TitleInfo } from "../../common/EBSTypes";
 import { AchievementsService } from "../../services/EBSAchievementsService";
 import { Twitch } from "../../services/TwitchService";
 import AchievementsList from "../AchievementsList/AchievementsList.svelte";
@@ -7,8 +7,14 @@ import Cup from '../../../assets/cup.svg';
 import Logo from '../../../assets/logo.png';
 
 let isConfigurationValid: boolean = false
-let titleInfo: TitleInfo = null
-let achievementsSummary: AchievementSummary = null
+let titleInfo: TitleInfo = {
+    platform: ActiveConfig.None,
+    titleId: "",
+    productTitle: "",
+    productDescription: "",
+    logoUri: "",
+}
+let achievementsSummary: AchievementSummary | null = null
 let achievementsDetails: Achievement[] = []
 
 let refreshAll = async () => {
@@ -39,7 +45,7 @@ setInterval(refreshSummary, 60000);
 
 Twitch.listen("broadcast", (_target, _contentType, messageStr) => {
     let message = JSON.parse(messageStr);
-    let configToken = AchievementsService.configuration.content;
+    let configToken = AchievementsService.configuration!.content;
     
     switch (message.type) {
         case "refresh":
@@ -48,8 +54,8 @@ Twitch.listen("broadcast", (_target, _contentType, messageStr) => {
         case "set-config":
             if (message.configToken != configToken)
             {
-                AchievementsService.configuration.content = message.configToken;
-                AchievementsService.configuration.version = message.version;
+                AchievementsService.configuration!.content = message.configToken;
+                AchievementsService.configuration!.version = message.version;
                 refreshAll();
             }
             break;

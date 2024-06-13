@@ -1,5 +1,5 @@
 <script lang="ts">
-import { ActiveConfig, ExtensionConfiguration } from "../../common/EBSTypes"
+import { ActiveConfig, type ExtensionConfiguration } from "../../common/EBSTypes"
 import XBoxLiveLogo from '../../../assets/XBox_Live_logo.svg'
 import SteamLogo from '../../../assets/Steam_icon_logo.svg'
 import type { TwitchExtensionConfiguration } from "../../common/TwitchExtension"
@@ -16,11 +16,11 @@ enum CurrentPlatformEnum {
     Steam,
 }
 
-export let changeHandler:onChangeCallback = null
+export let changeHandler:onChangeCallback
 
 let isLoading:boolean = true
 let isConfirmed:boolean = false
-let savedConfiguration: ExtensionConfiguration = null
+let savedConfiguration: ExtensionConfiguration
 let currentPlatform : CurrentPlatformEnum = CurrentPlatformEnum.None
 let hasSaved: boolean = false
    
@@ -71,7 +71,12 @@ ConfigurationService.configurationPromise.then(async configurationToken => {
     {
         isLoading = false
         isConfirmed = false
-        savedConfiguration = null
+        savedConfiguration = {
+            version: null,
+            activeConfig: null,
+            xBoxLiveConfig: null,
+            steamConfig: null,
+        }
     }
 })
 

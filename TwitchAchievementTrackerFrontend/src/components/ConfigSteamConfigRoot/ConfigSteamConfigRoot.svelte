@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { TwitchExtensionConfiguration } from "../../common/TwitchExtension";
-import { ActiveConfig, ExtensionConfiguration } from "../../common/EBSTypes";
+import { ActiveConfig, type ExtensionConfiguration } from "../../common/EBSTypes";
 import { ConfigurationService } from "../../services/EBSConfigurationService";
 import { Twitch } from "../../services/TwitchService";
 import { EBSVersion } from "../../common/ServerConfig";
@@ -40,12 +40,7 @@ currentConfig.activeConfig = ActiveConfig.Steam
 
 if (! currentConfig.steamConfig)
 {
-    currentConfig.steamConfig = {
-        webApiKey: null,
-        steamId: null,
-        locale: null,
-        appId: null,
-    }
+    currentConfig.steamConfig = {}
 }
 </script>
 
