@@ -118,7 +118,7 @@ namespace TwitchAchievementTrackerBackend.Services
                     PropertyNameCaseInsensitive = true
                 });
                 var errorCode = "XApiUnauthorizedError";
-                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized && errorMessage.Error_Message.Contains("fresh login"))
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized && (errorMessage.Error_Message?.Contains("fresh login") ?? false))
                 {
                     errorCode = "ExpiredXBLToken";
                 }
