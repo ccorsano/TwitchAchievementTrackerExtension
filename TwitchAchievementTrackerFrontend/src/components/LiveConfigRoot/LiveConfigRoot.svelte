@@ -19,11 +19,7 @@ let titleInfo: TitleInfo = {
     logoUri: "",
 }
 let errors: ValidationError[] = []
-let xApiRateLimits: RateLimits = {
-    hourlyLimit: 0,
-    remaining: 0,
-    resetTime: new Date(),
-}
+let xApiRateLimits: RateLimits | null = null
 
 let refreshRateLimitsInterval: NodeJS.Timeout | null = null
 
@@ -34,11 +30,7 @@ async function refreshRateLimit()
     {
         clearInterval(refreshRateLimitsInterval!)
         refreshRateLimitsInterval = null
-        xApiRateLimits = {
-            hourlyLimit: 0,
-            remaining: 0,
-            resetTime: new Date(),
-        }
+        xApiRateLimits = null
         return;
     }
 
@@ -130,6 +122,12 @@ onDestroy(() => {
 })
 
 </script>
+
+<style lang="scss">
+:global{
+    @import "./LiveConfigRoot.scss";
+}
+</style>
 
 {#if isLoading}
     <div class="card small">

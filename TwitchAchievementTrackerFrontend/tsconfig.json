@@ -3,21 +3,20 @@
     "compilerOptions": {
       "target": "esnext",
       "useDefineForClassFields": true,
-      "module": "ES2022",
+      "module": "ESNext",
       "resolveJsonModule": true,
       "baseUrl": ".",
       "allowJs": true,
       "checkJs": true,
       "isolatedModules": true,
       "composite": true,
-      "moduleResolution": "Node"
+      "moduleResolution": "Bundler"
     },
     "include": [
       "src/**/*.d.ts",
       "src/**/*.ts",
       "src/**/*.js",
       "src/**/*.svelte",
-      "vite.config.ts",
       "custom.d.ts"
     ]
   }

@@ -82,7 +82,7 @@ $:{
 
 </script>
 
-<style type="text/scss">
+<style lang="scss">
     :global{
         @import "./Mobile.scss";
     }

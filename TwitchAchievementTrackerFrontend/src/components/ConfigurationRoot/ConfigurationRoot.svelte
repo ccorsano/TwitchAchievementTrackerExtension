@@ -28,6 +28,12 @@ function severityToClass(severity: string)
 
 </script>
 
+<style lang="scss">
+    :global{
+        @import './ConfigurationRoot.scss';
+    }
+</style>
+
 <form>
     <h1>Configuration</h1>
     {#each publicAnnouncements as announcement}
