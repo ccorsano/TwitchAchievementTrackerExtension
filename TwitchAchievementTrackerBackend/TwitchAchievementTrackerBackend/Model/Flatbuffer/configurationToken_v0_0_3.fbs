@@ -3,6 +3,8 @@
 //  compact format to store and transmit stream config
 //****************************************************
 
+attribute "fs_serializer";
+
 namespace TwitchAchievementTracker.Flatbuffer.v2;
 
 // Type holding configuration for a Stream
@@ -36,7 +38,7 @@ enum ActiveConfiguration : byte
     SteamConfiguration
 }
 
-table Configuration
+table Configuration (fs_serializer)
 {
     version: string;
     active: ActiveConfiguration;

@@ -1,13 +1,10 @@
 ﻿using IdentityModel.Client;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Buffers.Text;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -43,9 +40,9 @@ namespace TwitchAchievementTrackerBackend.Services
             token.Payload["role"] = role;
             token.Payload["opaque_user_id"] = userId;
             token.Payload["iat"] = (int) iat.TotalSeconds;
-            token.Payload["pubsub_perms"] = new
+            token.Payload["pubsub_perms"] = new Dictionary<string, string[]>
             {
-                listen = new string[] { "broadcast", "global" }
+                { "listen", ["broadcast", "global"] }
             };
 
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -58,10 +55,10 @@ namespace TwitchAchievementTrackerBackend.Services
             var token = new JwtSecurityToken(null, null, null, null, DateTime.UtcNow.AddDays(1), _jwtSigningCredentials);
             token.Payload["channel_id"] = channelId;
             token.Payload["role"] = "external";
-            token.Payload["pubsub_perms"] = new
+            token.Payload["pubsub_perms"] = new Dictionary<string, string[]>
             {
-                listen = new string[] { "broadcast" },
-                send = new string[] { "broadcast", "global" }
+                { "listen", ["broadcast"] },
+                { "send", ["broadcast", "global"] },
             };
 
             return new JwtSecurityTokenHandler().WriteToken(token);

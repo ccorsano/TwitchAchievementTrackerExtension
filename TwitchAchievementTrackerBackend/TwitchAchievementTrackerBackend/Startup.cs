@@ -23,6 +23,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using TwitchAchievementTrackerBackend.Configuration;
@@ -104,8 +105,16 @@ namespace TwitchAchievementTrackerBackend
 
                             options.TokenValidationParameters.NameClaimTypeRetriever = (token, _) =>
                             {
-                                var jwtToken = token as JwtSecurityToken;
-                                if (jwtToken.Payload.ContainsKey("user_id"))
+                                bool hasUserId = false;
+                                if (token is JwtSecurityToken jwtToken)
+                                {
+                                    hasUserId = jwtToken.Payload.ContainsKey("user_id");
+                                }
+                                else if (token is JsonWebToken jsonWebToken)
+                                {
+                                    hasUserId = jsonWebToken.TryGetPayloadValue("user_id", out string _);
+                                }
+                                if (hasUserId)
                                 {
                                     return "user_id";
                                 }

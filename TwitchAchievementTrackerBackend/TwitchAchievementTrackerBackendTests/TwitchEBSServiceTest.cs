@@ -20,7 +20,8 @@ namespace TwitchAchievementTrackerBackendTests
         {
             // Create a byte array to hold the random value.
             byte[] secret = new byte[32];
-            using (var rngCsp = new RNGCryptoServiceProvider())
+            
+            using (var rngCsp = RandomNumberGenerator.Create())
             {
                 // Fill the array with a random value.
                 rngCsp.GetBytes(secret);
