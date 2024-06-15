@@ -88,7 +88,7 @@ $: isContinueEnabled = isSyntaxValid && !isValidating
             webApiKey={enteredApiKey} />
 {:else}
 <label for="webApiKey">Steam WebApi Key</label>
-<SecretKeyInput isSyntaxValid={isSyntaxValid} onChangeValue={e => changeWebApiValue(e.currentTarget.value)} keyValue={enteredApiKey} size={37} pattern="[0-9a-fA-F]{32}" placeholder="Enter your Steam WebAPI key" />
+<SecretKeyInput isSyntaxValid={isSyntaxValid} onChangeValue={e => changeWebApiValue(e.currentTarget.value)} keyValue={enteredApiKey} size={37} pattern="[0-9a-fA-F]&lcub;32&rcub;" placeholder="Enter your Steam WebAPI key" />
 <div>
     <span class="icon-info"></span> You can apply for a WebAPI Key on <a href="https://steamcommunity.com/dev/apikey" target="_blank">https://steamcommunity.com/dev/apikey</a>.
 </div>
