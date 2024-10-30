@@ -7,7 +7,7 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
 {
     public class SteamPlayerAchievement
     {
-        public string Apiname { get; set; }
+        public string? Apiname { get; set; }
 
         public long Achieved { get; set; }
 

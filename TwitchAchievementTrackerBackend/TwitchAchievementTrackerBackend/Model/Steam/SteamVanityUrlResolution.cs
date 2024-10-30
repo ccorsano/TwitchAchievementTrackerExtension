@@ -9,12 +9,12 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
     public class SteamVanityUrlResolution
     {
         [JsonPropertyName("steamid")]
-        public string SteamId { get; set; }
+        public string? SteamId { get; set; }
 
         [JsonPropertyName("success")]
         public uint Success { get; set; }
 
         [JsonPropertyName("message")]
-        public string Message { get; set; }
+        public string? Message { get; set; }
     }
 }

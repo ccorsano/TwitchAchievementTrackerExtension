@@ -9,6 +9,6 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
     public class SteamPlayerOwnedGamesResult
     {
         [JsonPropertyName("response")]
-        public SteamPlayerOwnedGamesResponse Response { get; set; }
+        public SteamPlayerOwnedGamesResponse? Response { get; set; }
     }
 }

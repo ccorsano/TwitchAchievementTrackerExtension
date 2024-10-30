@@ -7,6 +7,6 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
 {
     public class SteamUserStatsAchievementsResult
     {
-        public SteamPlayerStats Playerstats { get; set; }
+        public SteamPlayerStats? Playerstats { get; set; }
     }
 }

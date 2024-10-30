@@ -57,19 +57,19 @@ namespace TwitchAchievementTrackerBackend.Controllers
         }
 
         [HttpGet("steam/resolveVanity/{vanityUrl}")]
-        public Task<PlayerInfoCard> ResolveSteamProfileUrl(string vanityUrl, string webApiKey = null)
+        public Task<PlayerInfoCard> ResolveSteamProfileUrl(string vanityUrl, string? webApiKey = null)
         {
-            return _service.ResolveSteamProfileUrl(vanityUrl, webApiKey);
+            return _service.ResolveSteamProfileUrl(vanityUrl, webApiKey)!;
         }
 
         [HttpGet("steam/playerInfo/{steamid}")]
-        public Task<PlayerInfoCard> GetSteamPlayerInfo(string steamid, string webApiKey = null)
+        public Task<PlayerInfoCard> GetSteamPlayerInfo(string steamid, string? webApiKey = null)
         {
             return _service.GetSteamPlayerInfo(steamid, webApiKey);
         }
 
         [HttpGet("steam/{steamId}/ownedGames")]
-        public async Task<TitleInfo[]> GetSteamOwnedGames(string steamId, string webApiKey = null)
+        public async Task<TitleInfo[]> GetSteamOwnedGames(string steamId, string webApiKey)
         {
             var ownedGames = await _service.GetSteamOwnedGames(steamId, webApiKey);
             return ownedGames
@@ -84,37 +84,37 @@ namespace TwitchAchievementTrackerBackend.Controllers
         }
 
         [HttpGet("steam/languages/{gameid}")]
-        public Task<SupportedLanguage[]> GetSteamGameSupportedLanguages(string gameId, string webApiKey = null)
+        public Task<SupportedLanguage[]> GetSteamGameSupportedLanguages(string gameId, string webApiKey)
         {
             return _service.GetSteamSupportedLanguages(gameId, webApiKey);
         }
 
         [HttpGet("xapi/gamertag/{gamertag}")]
-        public Task<PlayerInfoCard> ResolveXBoxLiveGamerTag(string gamertag, string xApiKey = null)
+        public Task<PlayerInfoCard> ResolveXBoxLiveGamerTag(string gamertag, string xApiKey)
         {
             return _service.ResolveXBoxLiveGamertag(gamertag, xApiKey);
         }
 
         [HttpGet("xapi/playerInfo/{xuid}")]
-        public Task<PlayerInfoCard> GetXBoxLivePlayerInfo(string xuid, string xApiKey = null)
+        public Task<PlayerInfoCard> GetXBoxLivePlayerInfo(string xuid, string xApiKey)
         {
             return _service.GetXBoxLivePlayerInfo(xuid, xApiKey);
         }
 
         [HttpGet("xapi/titleInfo/{titleId}")]
-        public Task<TitleInfo> GetXBoxLiveTitleInfo(string titleId, string xApiKey = null)
+        public Task<TitleInfo> GetXBoxLiveTitleInfo(string titleId, string xApiKey)
         {
             return _service.GetXBoxLiveTitleInfo(titleId, xApiKey);
         }
 
         [HttpGet("xapi/recentTitles/{xuid}")]
-        public Task<TitleInfo[]> GetRecentTitles(string xuid, string xApiKey = null)
+        public Task<TitleInfo[]> GetRecentTitles(string xuid, string xApiKey)
         {
             return _service.GetXBoxLiveRecentTitles(xuid, xApiKey);
         }
 
         [HttpGet("xapi/languages/{titleId}")]
-        public Task<SupportedLanguage[]> GetXBoxLiveGameSupportedLanguages(string titleId, string xApiKey = null)
+        public Task<SupportedLanguage[]> GetXBoxLiveGameSupportedLanguages(string titleId, string xApiKey)
         {
             return _service.GetXBoxLiveSupportedLanguages(titleId, xApiKey);
         }

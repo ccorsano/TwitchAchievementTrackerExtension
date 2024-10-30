@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace TwitchAchievementTrackerBackend.Services
 {
-    [Serializable]
     internal class RateLimitException : Exception
     {
         public RateLimitException()
@@ -15,10 +14,6 @@ namespace TwitchAchievementTrackerBackend.Services
         }
 
         public RateLimitException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected RateLimitException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

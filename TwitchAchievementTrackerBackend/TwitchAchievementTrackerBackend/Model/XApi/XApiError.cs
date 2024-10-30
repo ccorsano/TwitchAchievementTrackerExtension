@@ -11,6 +11,6 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
         public bool Success { get; set; }
         public int Error_Code { get; set; }
         [JsonPropertyName("message")]
-        public string Error_Message { get; set; }
+        public string? Error_Message { get; set; }
     }
 }

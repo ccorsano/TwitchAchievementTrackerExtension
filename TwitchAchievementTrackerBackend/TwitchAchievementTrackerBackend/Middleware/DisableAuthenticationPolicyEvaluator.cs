@@ -24,7 +24,7 @@ namespace TwitchAchievementTrackerBackend.Middleware
             return await Task.FromResult(AuthenticateResult.Success(authenticationTicket));
         }
 
-        public async Task<PolicyAuthorizationResult> AuthorizeAsync(AuthorizationPolicy policy, AuthenticateResult authenticationResult, HttpContext context, object resource)
+        public async Task<PolicyAuthorizationResult> AuthorizeAsync(AuthorizationPolicy policy, AuthenticateResult authenticationResult, HttpContext context, object? resource)
         {
             // Always pass authorization
             return await Task.FromResult(PolicyAuthorizationResult.Success());

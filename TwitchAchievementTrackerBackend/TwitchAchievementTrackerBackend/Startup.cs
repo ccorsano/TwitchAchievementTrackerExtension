@@ -88,7 +88,7 @@ namespace TwitchAchievementTrackerBackend
                 {
                     TwitchOptions twitchOptions = new TwitchOptions();
                     Configuration.GetSection("twitch").Bind(twitchOptions);
-                    var signingKey = new SymmetricSecurityKey(Convert.FromBase64String(twitchOptions.ExtensionSecret));
+                    var signingKey = new SymmetricSecurityKey(Convert.FromBase64String(twitchOptions.ExtensionSecret!));
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         IssuerSigningKey = signingKey,
@@ -105,6 +105,12 @@ namespace TwitchAchievementTrackerBackend
                             options.TokenValidationParameters.NameClaimTypeRetriever = (token, _) =>
                             {
                                 var jwtToken = token as JwtSecurityToken;
+
+                                if (jwtToken is null)
+                                {
+                                    throw new Exception($"JWT token null or of unexpected type: {jwtToken?.GetType()?.FullName}");
+                                }
+
                                 if (jwtToken.Payload.ContainsKey("user_id"))
                                 {
                                     return "user_id";
@@ -158,6 +164,9 @@ namespace TwitchAchievementTrackerBackend
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
             // Register Twitch configuration middleware
             app.UseMiddleware<ConfigurationHeaderMiddleware>();
 

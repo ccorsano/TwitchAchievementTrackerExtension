@@ -8,6 +8,6 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
         public long GameCount { get; set; }
 
         [JsonPropertyName("games")]
-        public SteamPlayerOwnedGameInfo[] Games { get; set; }
+        public SteamPlayerOwnedGameInfo[] Games { get; set; } = new SteamPlayerOwnedGameInfo[0];
     }
 }

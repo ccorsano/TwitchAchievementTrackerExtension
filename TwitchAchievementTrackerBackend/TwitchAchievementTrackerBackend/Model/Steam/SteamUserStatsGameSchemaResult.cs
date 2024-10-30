@@ -7,6 +7,6 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
 {
     public class SteamUserStatsGameSchemaResult
     {
-        public SteamUserStatsGameSchema Game { get; set; }
+        public SteamUserStatsGameSchema? Game { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace TwitchAchievementTrackerBackend.Services
             _twitchExtensionClient.BaseAddress = new Uri("https://api.twitch.tv/extensions/");
             _twitchExtensionClient.DefaultRequestHeaders.Add("Client-Id", _options.ClientId);
 
-            var securityKey = new SymmetricSecurityKey(Convert.FromBase64String(_options.ExtensionSecret));
+            var securityKey = new SymmetricSecurityKey(Convert.FromBase64String(_options.ExtensionSecret!));
             _jwtSigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         }
 
@@ -58,10 +58,10 @@ namespace TwitchAchievementTrackerBackend.Services
             var token = new JwtSecurityToken(null, null, null, null, DateTime.UtcNow.AddDays(1), _jwtSigningCredentials);
             token.Payload["channel_id"] = channelId;
             token.Payload["role"] = "external";
-            token.Payload["pubsub_perms"] = new
+            token.Payload["pubsub_perms"] = new Dictionary<string, string[]>
             {
-                listen = new string[] { "broadcast" },
-                send = new string[] { "broadcast", "global" }
+                { "listen", new string[] { "broadcast" } },
+                { "send", new string[] { "broadcast", "global" } }
             };
 
             return new JwtSecurityTokenHandler().WriteToken(token);

@@ -44,20 +44,20 @@ namespace TwitchAchievementTrackerBackend.Services
         {
             if (!_cache.TryGetValue<Dictionary<string, SupportedLanguage>>("culturesnames", out var cultures))
             {
-                using (var culturesStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TwitchAchievementTrackerBackend.Cultures.json"))
+                using (var culturesStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TwitchAchievementTrackerBackend.Cultures.json")!)
                 {
                     var definitions = await JsonSerializer.DeserializeAsync<SupportedLanguage[]>(culturesStream);
-                    cultures = definitions.ToDictionary(d => d.LangCode.ToLowerInvariant(), d => d);
+                    cultures = definitions!.ToDictionary(d => d.LangCode.ToLowerInvariant(), d => d);
                     _cache.Set("culturesnames", cultures);
                 }
             }
-            return cultures;
+            return cultures!;
         }
 
         public async Task<SupportedLanguage[]> GetXBoxLiveSupportedLanguages(string titleId, string xApiKey)
         {
             var marketPlace = await _xApiService.GetMarketplaceAsync(titleId, xApiKey);
-            var supportedLanguages = marketPlace.Products
+            var supportedLanguages = marketPlace!.Products
                 .SelectMany(p => p.DisplaySkuAvailabilities?
                     .SelectMany(dsa => dsa.Sku?.MarketProperties?
                         .SelectMany(mp => mp.SupportedLanguages) ?? new string[] { }) ?? new string[] { })
@@ -89,10 +89,10 @@ namespace TwitchAchievementTrackerBackend.Services
 
             // Supported language are given in a readable, customizable format. Do our best guess here.
             var supportedLanguage = new List<SupportedLanguage>();
-            var lowercaseGameLanguages = storeDetails.SupportedLanguages.ToLowerInvariant();
+            var lowercaseGameLanguages = storeDetails.SupportedLanguages?.ToLowerInvariant();
             foreach (var langEntry in SteamApiService.STEAM_SUPPORTED_LANGUAGES)
             {
-                if (lowercaseGameLanguages.Contains(langEntry.DisplayName.ToLowerInvariant()))
+                if (lowercaseGameLanguages is not null && langEntry.DisplayName is not null && lowercaseGameLanguages.Contains(langEntry.DisplayName.ToLowerInvariant()))
                 {
                     supportedLanguage.Add(langEntry);
                 }
@@ -101,7 +101,7 @@ namespace TwitchAchievementTrackerBackend.Services
             return supportedLanguage.ToArray();
         }
 
-        public async Task<PlayerInfoCard> GetSteamPlayerInfo(string steamId, string webApiKey = null)
+        public async Task<PlayerInfoCard> GetSteamPlayerInfo(string steamId, string? webApiKey = null)
         {
             var playerInfo = await _steamApiService.GetPlayersSummaries(new string[] { steamId }, webApiKey);
 
@@ -109,7 +109,7 @@ namespace TwitchAchievementTrackerBackend.Services
             {
                 PlayerId = steamId,
                 PlayerName = playerInfo.First().PersonaName,
-                AvatarUrl = playerInfo.First().AvatarFull.AbsoluteUri,
+                AvatarUrl = playerInfo.First().AvatarFull?.AbsoluteUri,
             };
         }
 
@@ -118,9 +118,9 @@ namespace TwitchAchievementTrackerBackend.Services
             switch (extensionConfiguration.ActiveConfig)
             {
                 case ActiveConfig.XBoxLive:
-                    return await _xApiService.PurgeCache(extensionConfiguration.XBoxLiveConfig);
+                    return await _xApiService.PurgeCache(extensionConfiguration.XBoxLiveConfig!);
                 case ActiveConfig.Steam:
-                    return await _steamApiService.PurgeCache(extensionConfiguration.SteamConfig);
+                    return await _steamApiService.PurgeCache(extensionConfiguration.SteamConfig!);
                 default:
                     throw new NotSupportedException("Unknown config type");
             }
@@ -132,13 +132,13 @@ namespace TwitchAchievementTrackerBackend.Services
             {
                 throw new ArgumentException("Only valid on XBoxLive configs");
             }
-            return _xApiService.GetRateLimit(extensionConfiguration.XBoxLiveConfig.XApiKey);
+            return _xApiService.GetRateLimit(extensionConfiguration.XBoxLiveConfig!.XApiKey!);
         }
 
-        public async Task<PlayerInfoCard> ResolveXBoxLiveGamertag(string gamertag, string xApiKey = null)
+        public async Task<PlayerInfoCard> ResolveXBoxLiveGamertag(string gamertag, string xApiKey)
         {
-            var xuid = await _xApiService.ResolveXuid(gamertag, xApiKey);
-            var playerInfo = await _xApiService.GetGamerCard(xuid, xApiKey);
+            var xuid = (await _xApiService.ResolveXuid(gamertag, xApiKey))!;
+            var playerInfo = (await _xApiService.GetGamerCard(xuid, xApiKey))!;
 
             return new PlayerInfoCard
             {
@@ -148,9 +148,9 @@ namespace TwitchAchievementTrackerBackend.Services
             };
         }
 
-        public async Task<PlayerInfoCard> GetXBoxLivePlayerInfo(string xuid, string xApiKey = null)
+        public async Task<PlayerInfoCard> GetXBoxLivePlayerInfo(string xuid, string xApiKey)
         {
-            var playerInfo = await _xApiService.GetGamerCard(xuid, xApiKey);
+            var playerInfo = (await _xApiService.GetGamerCard(xuid, xApiKey))!;
 
             return new PlayerInfoCard
             {
@@ -162,7 +162,7 @@ namespace TwitchAchievementTrackerBackend.Services
 
         public async Task<TitleInfo> GetXBoxLiveTitleInfo(string titleId, string xApiKey)
         {
-            var titleInfo = await _xApiService.GetMarketplaceAsync(titleId, xApiKey);
+            var titleInfo = (await _xApiService.GetMarketplaceAsync(titleId, xApiKey))!;
 
             return new TitleInfo
             {
@@ -179,7 +179,7 @@ namespace TwitchAchievementTrackerBackend.Services
 
         public async Task<TitleInfo[]> GetXBoxLiveRecentTitles(string xuid, string xApiKey)
         {
-            var titleHistory = await _xApiService.GetRecentTitlesAsync(xuid, xApiKey);
+            var titleHistory = (await _xApiService.GetRecentTitlesAsync(xuid, xApiKey))!;
 
             return titleHistory.Titles
                 // Exclude non XBoxLive titles
@@ -194,26 +194,26 @@ namespace TwitchAchievementTrackerBackend.Services
                 }).ToArray();
         }
 
-        public async Task<PlayerInfoCard> ResolveSteamProfileUrl(string profileUrl, string webApiKey = null)
+        public async Task<PlayerInfoCard?> ResolveSteamProfileUrl(string profileUrl, string? webApiKey = null)
         {
-            var response = await _steamApiService.ResolveVanityUrl(profileUrl, webApiKey);
+            var response = (await _steamApiService.ResolveVanityUrl(profileUrl, webApiKey))!;
 
             if (string.IsNullOrEmpty(response.SteamId))
             {
                 return null;
             }
 
-            var playerInfo = await _steamApiService.GetPlayersSummaries(new string[] { response.SteamId }, webApiKey);
+            var playerInfo = (await _steamApiService.GetPlayersSummaries(new string[] { response.SteamId }, webApiKey))!;
 
             return new PlayerInfoCard
             {
                 PlayerId = response.SteamId,
                 PlayerName = playerInfo.First().PersonaName,
-                AvatarUrl = playerInfo.First().AvatarFull.AbsoluteUri,
+                AvatarUrl = playerInfo.First().AvatarFull?.AbsoluteUri,
             };
         }
 
-        public async Task<SteamPlayerOwnedGameInfo[]> GetSteamOwnedGames(string steamId, string webApiKey = null)
+        public async Task<SteamPlayerOwnedGameInfo[]> GetSteamOwnedGames(string steamId, string webApiKey)
         {
             return await _steamApiService.GetOwnedGames(steamId, webApiKey);
         }
@@ -225,7 +225,7 @@ namespace TwitchAchievementTrackerBackend.Services
             switch (configuration.ActiveConfig)
             {
                 case ActiveConfig.XBoxLive:
-                    if (string.IsNullOrEmpty(configuration.XBoxLiveConfig.Locale))
+                    if (string.IsNullOrEmpty(configuration.XBoxLiveConfig!.Locale))
                     {
                         configuration.XBoxLiveConfig.Locale = "en";
                     }
@@ -267,7 +267,7 @@ namespace TwitchAchievementTrackerBackend.Services
                     break;
                 case ActiveConfig.Steam:
                     
-                    if (!string.IsNullOrEmpty(configuration.SteamConfig.AppId))
+                    if (!string.IsNullOrEmpty(configuration.SteamConfig!.AppId))
                     {
                         try
                         {
@@ -314,7 +314,7 @@ namespace TwitchAchievementTrackerBackend.Services
             switch (configuration.ActiveConfig)
             {
                 case ActiveConfig.XBoxLive:
-                    if (string.IsNullOrEmpty(configuration.XBoxLiveConfig.XApiKey) || !XAPI_REGEX.IsMatch(configuration.XBoxLiveConfig.XApiKey))
+                    if (string.IsNullOrEmpty(configuration.XBoxLiveConfig!.XApiKey) || !XAPI_REGEX.IsMatch(configuration.XBoxLiveConfig.XApiKey))
                     {
                         errors.Add(new ValidationError
                         {
@@ -377,7 +377,7 @@ namespace TwitchAchievementTrackerBackend.Services
                     }
                     break;
                 case ActiveConfig.Steam:
-                    if (!await _steamApiService.TestApiKey(configuration.SteamConfig.WebApiKey))
+                    if (!await _steamApiService.TestApiKey(configuration.SteamConfig!.WebApiKey!))
                     {
                         errors.Add(new ValidationError
                         {

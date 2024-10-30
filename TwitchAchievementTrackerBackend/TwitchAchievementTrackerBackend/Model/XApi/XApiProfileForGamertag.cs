@@ -6,13 +6,13 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
     public class XApiProfileForGamertag
     {
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         [JsonPropertyName("hostId")]
-        public string HostId { get; set; }
+        public string? HostId { get; set; }
 
         [JsonPropertyName("settings")]
-        public XApiProfileForGamertagSetting[] Settings { get; set; }
+        public XApiProfileForGamertagSetting[] Settings { get; set; } = new XApiProfileForGamertagSetting[0];
 
         [JsonPropertyName("isSponsoredUser")]
         public bool IsSponsoredUser { get; set; }
@@ -21,9 +21,9 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
     public partial class XApiProfileForGamertagSetting
     {
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         [JsonPropertyName("value")]
-        public string Value { get; set; }
+        public string? Value { get; set; }
     }
 }

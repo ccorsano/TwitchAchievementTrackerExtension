@@ -1,26 +1,11 @@
 ﻿using FlatSharp;
-using Google.FlatBuffers;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Reflection;
 using System.Security.Cryptography;
-using System.Security.Cryptography.Xml;
-using System.Text;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using TwitchAchievementTracker;
 using TwitchAchievementTrackerBackend.Configuration;
 using TwitchAchievementTrackerBackend.Model;
-using TwitchAchievementTrackerBackend.Model.Steam;
-using TwitchAchievementTrackerBackend.Model.XApi;
 
 namespace TwitchAchievementTrackerBackend.Services
 {
@@ -57,35 +42,35 @@ namespace TwitchAchievementTrackerBackend.Services
         {
             var configurationRoot = new TwitchAchievementTracker.Flatbuffer.Configuration();
 
-            configurationRoot.active = configuration.ActiveConfig switch
+            configurationRoot.Active = configuration.ActiveConfig switch
             {
                 ActiveConfig.Steam => TwitchAchievementTracker.Flatbuffer.ActiveConfiguration.SteamConfiguration,
                 ActiveConfig.XBoxLive => TwitchAchievementTracker.Flatbuffer.ActiveConfiguration.XApiConfiguration,
                 _ => throw new NotSupportedException(),
             };
-            configurationRoot.version = configuration.Version;
+            configurationRoot.Version = configuration.Version;
             if (configuration.XBoxLiveConfig != null)
             {
                 var xApiFbConfig = new TwitchAchievementTracker.Flatbuffer.XApiConfiguration();
-                xApiFbConfig.xApiKey = configuration.XBoxLiveConfig.XApiKey;
-                xApiFbConfig.streamerXuid = string.IsNullOrEmpty(configuration.XBoxLiveConfig.StreamerXuid) ? 0 : UInt64.Parse(configuration.XBoxLiveConfig.StreamerXuid);
-                xApiFbConfig.titleId = string.IsNullOrEmpty(configuration.XBoxLiveConfig.TitleId) ? 0 : UInt32.Parse(configuration.XBoxLiveConfig.TitleId);
-                xApiFbConfig.locale = configuration.XBoxLiveConfig.Locale ?? "en-US";
-                configurationRoot.xBoxLiveConfig = xApiFbConfig;
+                xApiFbConfig.XApiKey = configuration.XBoxLiveConfig.XApiKey;
+                xApiFbConfig.StreamerXuid = string.IsNullOrEmpty(configuration.XBoxLiveConfig.StreamerXuid) ? 0 : UInt64.Parse(configuration.XBoxLiveConfig.StreamerXuid);
+                xApiFbConfig.TitleId = string.IsNullOrEmpty(configuration.XBoxLiveConfig.TitleId) ? 0 : UInt32.Parse(configuration.XBoxLiveConfig.TitleId);
+                xApiFbConfig.Locale = configuration.XBoxLiveConfig.Locale ?? "en-US";
+                configurationRoot.XBoxLiveConfig = xApiFbConfig;
             }
             if (configuration.SteamConfig != null)
             {
                 var steamFbConfig = new TwitchAchievementTracker.Flatbuffer.SteamConfiguration();
-                steamFbConfig.webApiKey = configuration.SteamConfig.WebApiKey;
-                steamFbConfig.steamId = string.IsNullOrEmpty(configuration.SteamConfig.SteamId) ? 0 : UInt64.Parse(configuration.SteamConfig.SteamId);
-                steamFbConfig.appId = string.IsNullOrEmpty(configuration.SteamConfig.AppId) ? 0 : uint.Parse(configuration.SteamConfig.AppId);
-                steamFbConfig.locale = configuration.SteamConfig.Locale ?? "english";
-                configurationRoot.steamConfig = steamFbConfig;
+                steamFbConfig.WebApiKey = configuration.SteamConfig.WebApiKey;
+                steamFbConfig.SteamId = string.IsNullOrEmpty(configuration.SteamConfig.SteamId) ? 0 : UInt64.Parse(configuration.SteamConfig.SteamId);
+                steamFbConfig.AppId = string.IsNullOrEmpty(configuration.SteamConfig.AppId) ? 0 : uint.Parse(configuration.SteamConfig.AppId);
+                steamFbConfig.Locale = configuration.SteamConfig.Locale ?? "english";
+                configurationRoot.SteamConfig = steamFbConfig;
             }
 
-            int maxBytesNeeded = FlatBufferSerializer.Default.GetMaxSize(configurationRoot);
+            int maxBytesNeeded = TwitchAchievementTracker.Flatbuffer.Configuration.Serializer.GetMaxSize(configurationRoot);
             byte[] outBuffer = new byte[maxBytesNeeded];
-            int bytesWritten = FlatBufferSerializer.Default.Serialize(configurationRoot, outBuffer);
+            int bytesWritten = TwitchAchievementTracker.Flatbuffer.Configuration.Serializer.Write(outBuffer, configurationRoot);
 
             return new ArraySegment<byte>(outBuffer, 0, bytesWritten).ToArray();
         }
@@ -110,30 +95,30 @@ namespace TwitchAchievementTrackerBackend.Services
         /// <returns>Configuration object</returns>
         private static ExtensionConfiguration DeserializeConfigurationToken(byte[] decrypted)
         {
-            var fbConfiguration = FlatBufferSerializer.Default.Parse<TwitchAchievementTracker.Flatbuffer.Configuration>(decrypted);
+            var fbConfiguration = TwitchAchievementTracker.Flatbuffer.Configuration.Serializer.Parse<TwitchAchievementTracker.Flatbuffer.Configuration>(decrypted);
 
             return new ExtensionConfiguration
             {
-                Version = fbConfiguration.version,
-                ActiveConfig = fbConfiguration.active switch
+                Version = fbConfiguration.Version,
+                ActiveConfig = fbConfiguration.Active switch
                 {
                     TwitchAchievementTracker.Flatbuffer.ActiveConfiguration.SteamConfiguration => ActiveConfig.Steam,
                     TwitchAchievementTracker.Flatbuffer.ActiveConfiguration.XApiConfiguration => ActiveConfig.XBoxLive,
                     _ => throw new NotSupportedException("Unknown type"),
                 },
-                XBoxLiveConfig = fbConfiguration.xBoxLiveConfig == null ? null : new XApiConfiguration
+                XBoxLiveConfig = fbConfiguration.XBoxLiveConfig == null ? null : new XApiConfiguration
                 {
-                    XApiKey = fbConfiguration.xBoxLiveConfig.xApiKey,
-                    StreamerXuid = fbConfiguration.xBoxLiveConfig.streamerXuid == 0 ? null : fbConfiguration.xBoxLiveConfig.streamerXuid.ToString(),
-                    TitleId = fbConfiguration.xBoxLiveConfig.titleId == 0 ? null : fbConfiguration.xBoxLiveConfig.titleId.ToString(),
-                    Locale = fbConfiguration.xBoxLiveConfig.locale,
+                    XApiKey = fbConfiguration.XBoxLiveConfig.XApiKey,
+                    StreamerXuid = fbConfiguration.XBoxLiveConfig.StreamerXuid == 0 ? null : fbConfiguration.XBoxLiveConfig.StreamerXuid.ToString(),
+                    TitleId = fbConfiguration.XBoxLiveConfig.TitleId == 0 ? null : fbConfiguration.XBoxLiveConfig.TitleId.ToString(),
+                    Locale = fbConfiguration.XBoxLiveConfig.Locale,
                 },
-                SteamConfig = fbConfiguration.steamConfig == null ? null : new SteamConfiguration
+                SteamConfig = fbConfiguration.SteamConfig == null ? null : new SteamConfiguration
                 {
-                    WebApiKey = fbConfiguration.steamConfig.webApiKey,
-                    SteamId = fbConfiguration.steamConfig.steamId == 0 ? null : fbConfiguration.steamConfig.steamId.ToString(),
-                    AppId = fbConfiguration.steamConfig.appId == 0 ? null : fbConfiguration.steamConfig.appId.ToString(),
-                    Locale = fbConfiguration.steamConfig.locale,
+                    WebApiKey = fbConfiguration.SteamConfig.WebApiKey,
+                    SteamId = fbConfiguration.SteamConfig.SteamId == 0 ? null : fbConfiguration.SteamConfig.SteamId.ToString(),
+                    AppId = fbConfiguration.SteamConfig.AppId == 0 ? null : fbConfiguration.SteamConfig.AppId.ToString(),
+                    Locale = fbConfiguration.SteamConfig.Locale,
                 },
             };
         }
@@ -145,14 +130,7 @@ namespace TwitchAchievementTrackerBackend.Services
         /// <returns>16 bytes salt</returns>
         private byte[] GenerateSalt()
         {
-            // Create a byte array to hold the random value.
-            byte[] salt = new byte[16];
-            using (var rngCsp = new RNGCryptoServiceProvider())
-            {
-                // Fill the array with a random value.
-                rngCsp.GetBytes(salt);
-            }
-            return salt;
+            return RandomNumberGenerator.GetBytes(16);
         }
 
         /// <summary>
@@ -162,7 +140,7 @@ namespace TwitchAchievementTrackerBackend.Services
         /// <returns></returns>
         private Aes CreateAes(byte[] salt)
         {
-            var rfc = new Rfc2898DeriveBytes(_options.EncryptionSecret, salt);
+            var rfc = new Rfc2898DeriveBytes(_options.EncryptionSecret!, salt, 1000, HashAlgorithmName.SHA1);
             byte[] Key = rfc.GetBytes(16);
             byte[] IV = rfc.GetBytes(16);
 

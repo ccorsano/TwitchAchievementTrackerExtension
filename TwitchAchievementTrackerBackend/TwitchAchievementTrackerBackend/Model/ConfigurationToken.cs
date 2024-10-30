@@ -7,6 +7,6 @@ namespace TwitchAchievementTrackerBackend.Model
 {
     public class ConfigurationToken
     {
-        public string ConfigToken { get; set; }
+        public string? ConfigToken { get; set; }
     }
 }

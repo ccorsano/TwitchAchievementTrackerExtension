@@ -9,6 +9,6 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
     public class SteamResolveVanityUrlResult
     {
         [JsonPropertyName("response")]
-        public SteamVanityUrlResolution Response { get; set; }
+        public SteamVanityUrlResolution? Response { get; set; }
     }
 }

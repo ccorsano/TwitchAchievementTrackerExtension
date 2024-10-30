@@ -52,7 +52,7 @@ namespace TwitchAchievementTrackerBackend.Middleware
                     if (ctx.Request.Headers.ContainsKey("Authorization"))
                     {
                         var authzHeader = ctx.Request.Headers["Authorization"];
-                        var hashBytes = _sessionHashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(authzHeader));
+                        var hashBytes = _sessionHashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(authzHeader!));
                         telemetry.Context.Session.Id = Convert.ToBase64String(hashBytes);
                     }
                 }

@@ -8,6 +8,6 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
     public class XUIDInfo
     {
         public UInt64 Xuid { get; set; }
-        public string GamerTag { get; set; }
+        public string? GamerTag { get; set; }
     }
 }

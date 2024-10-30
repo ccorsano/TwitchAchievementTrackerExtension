@@ -9,9 +9,9 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
         public Guid Name { get; set; }
 
         [JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string? Type { get; set; }
 
         [JsonPropertyName("url")]
-        public Uri Url { get; set; }
+        public Uri? Url { get; set; }
     }
 }
