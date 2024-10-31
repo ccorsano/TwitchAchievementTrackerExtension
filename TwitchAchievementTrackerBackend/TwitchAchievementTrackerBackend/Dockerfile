@@ -15,7 +15,7 @@ RUN wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod
 	apt-get update; \
 	apt-get install -y apt-transport-https && \
 	apt-get update && \
-	apt-get install -y dotnet-sdk-6.0
+	apt-get install -y dotnet-sdk-8.0
 WORKDIR /src
 COPY ["TwitchAchievementTrackerBackend/TwitchAchievementTrackerBackend.csproj", "TwitchAchievementTrackerBackend/"]
 RUN dotnet restore "TwitchAchievementTrackerBackend/TwitchAchievementTrackerBackend.csproj"
