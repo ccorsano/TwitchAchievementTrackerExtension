@@ -36,9 +36,9 @@ namespace TwitchAchievementTrackerBackend.Controllers
 
             if (config.ActiveConfig == ActiveConfig.XBoxLive)
             {
-                var xConfig = config.XBoxLiveConfig;
+                var xConfig = config.XBoxLiveConfig!;
 
-                var titleInfo = await _xApiService.GetMarketplaceAsync(xConfig.TitleId, xConfig.XApiKey);
+                var titleInfo = (await _xApiService.GetMarketplaceAsync(xConfig.TitleId!, xConfig.XApiKey!))!;
 
                 return new TitleInfo
                 {
@@ -51,10 +51,10 @@ namespace TwitchAchievementTrackerBackend.Controllers
             }
             else if (config.ActiveConfig == ActiveConfig.Steam)
             {
-                var steamConfig = config.SteamConfig;
+                var steamConfig = config.SteamConfig!;
 
-                var libraryUrlTask = _steamApiService.GetLibraryTileImage(long.Parse(steamConfig.AppId));
-                var titleInfo = await _steamApiService.GetStoreDetails(uint.Parse(steamConfig.AppId));
+                var libraryUrlTask = _steamApiService.GetLibraryTileImage(long.Parse(steamConfig.AppId!));
+                var titleInfo = await _steamApiService.GetStoreDetails(uint.Parse(steamConfig.AppId!));
 
                 return new TitleInfo
                 {
@@ -62,7 +62,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
                     TitleId = titleInfo.SteamAppid.ToString(),
                     ProductTitle = titleInfo.Name,
                     ProductDescription = titleInfo.ShortDescription,
-                    LogoUri =  (await libraryUrlTask) ?? titleInfo.HeaderImage.ToString(),
+                    LogoUri =  (await libraryUrlTask) ?? titleInfo.HeaderImage?.ToString(),
                 };
             }
 
@@ -76,7 +76,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
         }
 
         [HttpGet("/api/title/xapi/search/{query}")]
-        public async Task<IEnumerable<TitleInfo>> SearchXApiTitleInfo(string query, string xApiKey = null)
+        public async Task<IEnumerable<TitleInfo>> SearchXApiTitleInfo(string query, string? xApiKey = null)
         {
             XApiConfiguration xConfig = new XApiConfiguration();
             if (this.HasExtensionConfiguration())
@@ -91,7 +91,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
 
             var searchResult = await _xApiService.SearchTitle(query, xConfig);
 
-            return searchResult.Products.Select(product =>
+            return searchResult!.Products.Select(product =>
                 new TitleInfo
                 {
                     TitleId = product.AlternateIds?.FirstOrDefault(id => id.IdType == "XboxTitleId")?.Value ?? "",
@@ -105,21 +105,17 @@ namespace TwitchAchievementTrackerBackend.Controllers
         [HttpGet("/api/title/search/{query}")]
         public async Task<IEnumerable<TitleInfo>> SearchTitleInfo(string query)
         {
-            ExtensionConfiguration config = null;
-            if (this.HasExtensionConfiguration())
-            {
-                config = this.GetExtensionConfiguration();
-            }
+            ExtensionConfiguration config = this.GetExtensionConfiguration();
 
-            if (config?.ActiveConfig == ActiveConfig.Steam)
+            if (config.ActiveConfig == ActiveConfig.Steam)
             {
                 return await _steamApiService.SearchTitle(query);
             }
             else
             {
-                var searchResult = await _xApiService.SearchTitle(query, config?.XBoxLiveConfig);
+                var searchResult = await _xApiService.SearchTitle(query, config.XBoxLiveConfig!);
 
-                return searchResult.Products.Select(product =>
+                return searchResult!.Products.Select(product =>
                     new TitleInfo
                     {
                         Platform = ActiveConfig.XBoxLive,
@@ -140,7 +136,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
 
             if (config.ActiveConfig == ActiveConfig.XBoxLive)
             {
-                var achievements = await _xApiService.GetAchievementsAsync(config.XBoxLiveConfig);
+                var achievements = await _xApiService.GetAchievementsAsync(config.XBoxLiveConfig!);
                 var stateSummary = achievements.GroupBy(a => a.ProgressState).ToDictionary(a => a.Key, a => a.Count());
 
                 return new AchievementSummary
@@ -158,7 +154,7 @@ namespace TwitchAchievementTrackerBackend.Controllers
             }
             else if (config.ActiveConfig == ActiveConfig.Steam)
             {
-                var achievements = await _steamApiService.GetAchievementsAsync(config.SteamConfig);
+                var achievements = await _steamApiService.GetAchievementsAsync(config.SteamConfig!);
                 var notCompleted = achievements.Count(a => a.Achieved == 0);
                 var completed = achievements.Length - notCompleted;
 
@@ -183,29 +179,29 @@ namespace TwitchAchievementTrackerBackend.Controllers
 
             if (config.ActiveConfig == ActiveConfig.XBoxLive)
             {
-                return (await _xApiService.GetAchievementsAsync(config.XBoxLiveConfig).ContinueWith(t => t.Result.OrderByDescending(a => $"{a.ProgressState}:{a.Id}"))).Select(x => new Achievement
+                return (await _xApiService.GetAchievementsAsync(config.XBoxLiveConfig!).ContinueWith(t => t.Result.OrderByDescending(a => $"{a.ProgressState}:{a.Id}"))).Select(x => new Achievement
                 {
-                    Id = x.Id.ToString(),
+                    Id = x.Id!.ToString(),
                     Name = x.Name,
                     Completed = x.ProgressState == ProgressState.Achieved,
                     Description = x.ProgressState == ProgressState.Achieved ? x.Description : x.LockedDescription,
-                    UnlockTime = x.Progression.TimeUnlocked,
+                    UnlockTime = x.Progression?.TimeUnlocked ?? DateTimeOffset.MaxValue,
                 });
             }
             else if (config.ActiveConfig == ActiveConfig.Steam)
             {
-                var gameSchemaTask = _steamApiService.GetGameSchema(config.SteamConfig.AppId, config.SteamConfig.Locale);
+                var gameSchemaTask = _steamApiService.GetGameSchema(config.SteamConfig!.AppId!, config.SteamConfig!.Locale!);
                 var userAchievements = await _steamApiService.GetAchievementsAsync(config.SteamConfig);
-                return (await gameSchemaTask).AvailableGameStats.Achievements.Select(aDev =>
+                return (await gameSchemaTask).AvailableGameStats!.Achievements.Select(aDev =>
                 {
                     var userAchievement = userAchievements.FirstOrDefault(ua => ua.Apiname == aDev.Name);
                     return new Achievement
                     {
                         Id = aDev.Name,
                         Name = aDev.DisplayName,
-                        Completed = userAchievement.Achieved != 0,
+                        Completed = userAchievement is not null && userAchievement.Achieved != 0,
                         Description = aDev.Hidden == 0 ? aDev.Description : "*************",
-                        UnlockTime = userAchievement.Unlocktime != 0 ? DateTime.UnixEpoch.AddSeconds(userAchievement.Unlocktime) : DateTimeOffset.MinValue,
+                        UnlockTime = userAchievement is null || userAchievement.Unlocktime == 0 ? DateTimeOffset.MinValue : DateTime.UnixEpoch.AddSeconds(userAchievement.Unlocktime),
                     };
                 }).OrderBy(a => a.Completed);
             }

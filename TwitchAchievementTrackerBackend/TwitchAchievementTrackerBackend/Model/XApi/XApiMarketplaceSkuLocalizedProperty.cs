@@ -6,19 +6,19 @@
 
         //public object[] Features { get; set; }
 
-        public string MinimumNotes { get; set; }
+        public string? MinimumNotes { get; set; }
 
-        public string RecommendedNotes { get; set; }
+        public string? RecommendedNotes { get; set; }
 
-        public string ReleaseNotes { get; set; }
+        public string? ReleaseNotes { get; set; }
 
         //public object DisplayPlatformProperties { get; set; }
 
-        public string SkuDescription { get; set; }
+        public string? SkuDescription { get; set; }
 
-        public string SkuTitle { get; set; }
+        public string? SkuTitle { get; set; }
 
-        public string SkuButtonTitle { get; set; }
+        public string? SkuButtonTitle { get; set; }
 
         //public object DeliveryDateOverlay { get; set; }
 
@@ -30,8 +30,8 @@
 
         //public LegalText LegalText { get; set; }
 
-        public string Language { get; set; }
+        public string? Language { get; set; }
 
-        public string[] Markets { get; set; }
+        public string[] Markets { get; set; } = new string[0];
     }
 }

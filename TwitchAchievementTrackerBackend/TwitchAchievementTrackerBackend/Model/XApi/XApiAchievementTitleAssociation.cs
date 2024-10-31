@@ -6,7 +6,7 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
     public class XApiAchievementTitleAssociation
     {
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonPropertyName("id")]
         public long Id { get; set; }

@@ -7,8 +7,8 @@ namespace TwitchAchievementTrackerBackend.Model
 {
     public class ValidationError
     {
-        public string Path { get; set; }
-        public string ErrorCode { get; set; }
-        public string ErrorDescription { get; set; }
+        public string? Path { get; set; }
+        public string? ErrorCode { get; set; }
+        public string? ErrorDescription { get; set; }
     }
 }

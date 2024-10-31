@@ -9,10 +9,10 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
     public class XApiTitleInfo
     {
         [JsonPropertyName("titleId")]
-        public string TitleId { get; set; }
+        public string? TitleId { get; set; }
 
         [JsonPropertyName("pfn")]
-        public string Pfn { get; set; }
+        public string? Pfn { get; set; }
 
         [JsonPropertyName("bingId")]
         public Guid? BingId { get; set; }
@@ -24,28 +24,28 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
         public Guid? WindowsPhoneProductId { get; set; }
 
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string? Type { get; set; }
 
         [JsonPropertyName("devices")]
-        public string[] Devices { get; set; }
+        public string[] Devices { get; set; } = new string[0];
 
         [JsonPropertyName("displayImage")]
-        public Uri DisplayImage { get; set; }
+        public Uri? DisplayImage { get; set; }
 
         [JsonPropertyName("mediaItemType")]
-        public string MediaItemType { get; set; }
+        public string? MediaItemType { get; set; }
 
         [JsonPropertyName("modernTitleId")]
-        public string ModernTitleId { get; set; }
+        public string? ModernTitleId { get; set; }
 
         [JsonPropertyName("isBundle")]
         public bool IsBundle { get; set; }
 
         [JsonPropertyName("achievement")]
-        public Achievement Achievement { get; set; }
+        public Achievement? Achievement { get; set; }
 
         //[JsonPropertyName("stats")]
         //public object Stats { get; set; }
@@ -54,10 +54,10 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
         //public object GamePass { get; set; }
 
         [JsonPropertyName("images")]
-        public XApiTitleInfoImage[] Images { get; set; }
+        public XApiTitleInfoImage[] Images { get; set; } = new XApiTitleInfoImage[0];
 
         [JsonPropertyName("titleHistory")]
-        public XApiTitleHistorySummary TitleHistory { get; set; }
+        public XApiTitleHistorySummary? TitleHistory { get; set; }
 
         //[JsonPropertyName("detail")]
         //public object Detail { get; set; }
@@ -69,9 +69,9 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
         //public object AlternateTitleIds { get; set; }
 
         [JsonPropertyName("contentBoards")]
-        public object ContentBoards { get; set; }
+        public object? ContentBoards { get; set; }
 
         [JsonPropertyName("xboxLiveTier")]
-        public string XboxLiveTier { get; set; }
+        public string? XboxLiveTier { get; set; }
     }
 }

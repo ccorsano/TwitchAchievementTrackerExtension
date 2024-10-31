@@ -18,12 +18,12 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
         public long Target { get; set; }
 
         [JsonPropertyName("operationType")]
-        public string OperationType { get; set; }
+        public string? OperationType { get; set; }
 
         [JsonPropertyName("valueType")]
-        public string ValueType { get; set; }
+        public string? ValueType { get; set; }
 
         [JsonPropertyName("ruleParticipationType")]
-        public string RuleParticipationType { get; set; }
+        public string? RuleParticipationType { get; set; }
     }
 }

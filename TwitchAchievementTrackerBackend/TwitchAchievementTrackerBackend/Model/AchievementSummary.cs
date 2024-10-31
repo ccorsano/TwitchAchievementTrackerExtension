@@ -7,7 +7,7 @@ namespace TwitchAchievementTrackerBackend.Model
 {
     public class AchievementSummary
     {
-        public string GameName { get; set; }
+        public string? GameName { get; set; }
         public int Total { get; set; }
         public int Completed { get; set; }
         public int InProgress { get; set; }

@@ -12,6 +12,6 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
     public class SteamStoreWrapper
     {
         public bool Success { get; set; }
-        public SteamStoreDetails Data { get; set; }
+        public SteamStoreDetails? Data { get; set; }
     }
 }

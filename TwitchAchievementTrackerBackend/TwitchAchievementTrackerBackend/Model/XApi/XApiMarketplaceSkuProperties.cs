@@ -4,13 +4,13 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
 {
     public class XApiMarketplaceSkuProperties
     {
-        public object EarlyAdopterEnrollmentUrl { get; set; }
+        public object? EarlyAdopterEnrollmentUrl { get; set; }
 
         //public FulfillmentData FulfillmentData { get; set; }
 
-        public object FulfillmentType { get; set; }
+        public object? FulfillmentType { get; set; }
 
-        public object FulfillmentPluginId { get; set; }
+        public object? FulfillmentPluginId { get; set; }
 
         public bool HasThirdPartyIaPs { get; set; }
 
@@ -22,13 +22,13 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
 
         //public object[] HardwareWarningList { get; set; }
 
-        public string InstallationTerms { get; set; }
+        public string? InstallationTerms { get; set; }
 
         //public Package[] Packages { get; set; }
 
-        public string VersionString { get; set; }
+        public string? VersionString { get; set; }
 
-        public string[] SkuDisplayGroupIds { get; set; }
+        public string[] SkuDisplayGroupIds { get; set; } = new string[0];
 
         public bool XboxXpa { get; set; }
 

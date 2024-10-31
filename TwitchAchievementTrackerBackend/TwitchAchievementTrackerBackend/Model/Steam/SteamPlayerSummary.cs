@@ -6,7 +6,7 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
     public class SteamPlayerSummary
     {
         [JsonPropertyName("steamid")]
-        public string SteamId { get; set; }
+        public string? SteamId { get; set; }
 
         [JsonPropertyName("communityvisibilitystate")]
         public long CommunityVisibilityState { get; set; }
@@ -15,22 +15,22 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
         public long ProfileState { get; set; }
 
         [JsonPropertyName("personaname")]
-        public string PersonaName { get; set; }
+        public string? PersonaName { get; set; }
 
         [JsonPropertyName("profileurl")]
-        public Uri ProfileUrl { get; set; }
+        public Uri? ProfileUrl { get; set; }
 
         [JsonPropertyName("avatar")]
-        public Uri Avatar { get; set; }
+        public Uri? Avatar { get; set; }
 
         [JsonPropertyName("avatarmedium")]
-        public Uri AvatarMedium { get; set; }
+        public Uri? AvatarMedium { get; set; }
 
         [JsonPropertyName("avatarfull")]
-        public Uri AvatarFull { get; set; }
+        public Uri? AvatarFull { get; set; }
 
         [JsonPropertyName("avatarhash")]
-        public string AvatarHash { get; set; }
+        public string? AvatarHash { get; set; }
 
         [JsonPropertyName("lastlogoff")]
         public long LastLogOff { get; set; }
@@ -39,10 +39,10 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
         public long PersonaState { get; set; }
 
         [JsonPropertyName("realname")]
-        public string RealName { get; set; }
+        public string? RealName { get; set; }
 
         [JsonPropertyName("primaryclanid")]
-        public string PrimaryClanId { get; set; }
+        public string? PrimaryClanId { get; set; }
 
         [JsonPropertyName("timecreated")]
         public long TimeCreated { get; set; }
@@ -51,10 +51,10 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
         public long PersonaStateFlags { get; set; }
 
         [JsonPropertyName("loccountrycode")]
-        public string LocCountryCode { get; set; }
+        public string? LocCountryCode { get; set; }
 
         [JsonPropertyName("locstatecode")]
-        public string LocStateCode { get; set; }
+        public string? LocStateCode { get; set; }
 
         [JsonPropertyName("loccityid")]
         public long LocCityId { get; set; }

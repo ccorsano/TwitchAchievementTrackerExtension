@@ -12,16 +12,16 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
         public long AppId { get; set; }
 
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonPropertyName("playtime_forever")]
         public long PlaytimeForever { get; set; }
 
         [JsonPropertyName("img_icon_url")]
-        public string ImgIconUrl { get; set; }
+        public string? ImgIconUrl { get; set; }
 
         [JsonPropertyName("img_logo_url")]
-        public string ImgLogoUrl { get; set; }
+        public string? ImgLogoUrl { get; set; }
 
         [JsonPropertyName("has_community_visible_stats")]
         public bool? HasCommunityVisibleStats { get; set; }
@@ -39,6 +39,6 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
         public long? Playtime2Weeks { get; set; }
 
         [JsonPropertyName("library_tile_url")]
-        public string LibraryTileUrl { get; set; }
+        public string? LibraryTileUrl { get; set; }
     }
 }

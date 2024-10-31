@@ -7,8 +7,8 @@ namespace TwitchAchievementTrackerBackend.Model
 {
     public class SupportedLanguage
     {
-        public string LangCode { get; set; }
-        public string DisplayName { get; set; }
-        public string DefaultRegion { get; set; }
+        public required string LangCode { get; init; }
+        public required string DisplayName { get; init; }
+        public string? DefaultRegion { get; init; }
     }
 }

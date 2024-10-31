@@ -80,7 +80,7 @@ namespace TwitchAchievementTrackerBackend.Services
         {
             if (_cache.TryGetValue<RateLimits>($"ratelimit:{xApiKey}", out var rateLimit))
             {
-                return rateLimit;
+                return rateLimit!;
             }
             return new RateLimits
             {
@@ -92,16 +92,16 @@ namespace TwitchAchievementTrackerBackend.Services
 
         private void CheckRateLimit(string xApiKey)
         {
-            if (_cache.TryGetValue<RateLimits>($"ratelimit:{xApiKey}", out var rateLimit))
+            if (_cache.TryGetValue<RateLimits>($"ratelimit:{xApiKey}", out RateLimits? rateLimit))
             {
-                if (rateLimit.Remaining < rateLimit.HourlyLimit * 0.1)
+                if (rateLimit!.Remaining < rateLimit.HourlyLimit * 0.1)
                 {
                     _logger.LogWarning($"Nearing xApi rate limit with {rateLimit.Remaining}/{rateLimit.HourlyLimit}, reset in {rateLimit.ResetTime - DateTimeOffset.UtcNow}");
                 }
             }
         }
 
-        public async Task<XApiKeyProfile> GetApiKeyProfile(string xApiKey)
+        public async Task<XApiKeyProfile?> GetApiKeyProfile(string xApiKey)
         {
             var message = new HttpRequestMessage(HttpMethod.Get, "/api/profile");
             message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", xApiKey);
@@ -118,13 +118,13 @@ namespace TwitchAchievementTrackerBackend.Services
                     PropertyNameCaseInsensitive = true
                 });
                 var errorCode = "XApiUnauthorizedError";
-                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized && (errorMessage.Error_Message?.Contains("fresh login") ?? false))
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized && (errorMessage?.Error_Message?.Contains("fresh login") ?? false))
                 {
                     errorCode = "ExpiredXBLToken";
                 }
-                throw new XApiException(errorCode, errorMessage.Error_Message);
+                throw new XApiException(errorCode, errorMessage?.Error_Message ?? "Empty error");
             }
-            else if (response.Content.Headers.ContentType.MediaType != "application/json")
+            else if (response.Content.Headers.ContentType?.MediaType != "application/json")
             {
                 throw new XApiException("XApiUnauthorizedError", "Invalid xapi.us token");
             }
@@ -135,25 +135,22 @@ namespace TwitchAchievementTrackerBackend.Services
             });
         }
 
-        public async Task<XApiMarketplaceSearchResult> SearchTitle(string query, XApiConfiguration config = null)
+        public async Task<XApiMarketplaceSearchResult?> SearchTitle(string query, XApiConfiguration config)
         {
             var cacheKey = $"titlesearch:{query}";
             if (!_cache.TryGetValue<XApiMarketplaceSearchResult>(cacheKey, out var result))
             {
                 var message = new HttpRequestMessage(HttpMethod.Get, $"marketplace/search/{query}");
 
-                if (config != null)
+                message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", config.XApiKey);
+                if (config.Locale != null)
                 {
-                    message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", config.XApiKey);
-                    if (config.Locale != null)
-                    {
-                        message.Headers.Add("Accept-Language", $"{config.Locale}");
-                    }
+                    message.Headers.Add("Accept-Language", $"{config.Locale}");
                 }
 
                 var response = await _httpClient.SendAsync(message);
 
-                SaveRateLimit(config.XApiKey, response);
+                SaveRateLimit(config.XApiKey!, response);
 
                 response.EnsureSuccessStatusCode();
 
@@ -171,21 +168,21 @@ namespace TwitchAchievementTrackerBackend.Services
             return result;
         }
 
-        public async Task<string> ResolveXuid(string gamerTag, string xApiKey)
+        public async Task<string?> ResolveXuid(string gamerTag, string xApiKey)
         {
             var cacheKey = $"xuid:{gamerTag}";
 
             if (!_cache.TryGetValue<string>(cacheKey, out var result))
             {
                 var profile = await ProfileForGamertag(gamerTag, xApiKey);
-                result = profile.Id;
+                result = profile?.Id;
                 _cache.Set(cacheKey, result);
             }
 
             return result;
         }
 
-        public async Task<XApiProfileForGamertag> ProfileForGamertag(string gamerTag, string xApiKey)
+        public async Task<XApiProfileForGamertag?> ProfileForGamertag(string gamerTag, string xApiKey)
         {
             var cacheKey = $"pfg:{gamerTag}";
 
@@ -225,10 +222,10 @@ namespace TwitchAchievementTrackerBackend.Services
 
             var reloaded = await GetAchievementsAsync(config);
 
-            return reloaded.Count(a => a?.ProgressState == ProgressState.Achieved) != cachedAchievements.Count(a => a?.ProgressState == ProgressState.Achieved);
+            return reloaded.Count(a => a?.ProgressState == ProgressState.Achieved) != cachedAchievements!.Count(a => a?.ProgressState == ProgressState.Achieved);
         }
 
-        public async Task<XApiProfile> GetProfile(string xuid, string xApiKey)
+        public async Task<XApiProfile?> GetProfile(string xuid, string xApiKey)
         {
             var cacheKey = $"profile:{xuid}";
             if (!_cache.TryGetValue<XApiProfile>(cacheKey, out var result))
@@ -251,7 +248,7 @@ namespace TwitchAchievementTrackerBackend.Services
             return result;
         }
 
-        public async Task<XApiGamerCard> GetGamerCard(string xuid, string xApiKey)
+        public async Task<XApiGamerCard?> GetGamerCard(string xuid, string xApiKey)
         {
             var cacheKey = $"gamercard:{xuid}";
             if (!_cache.TryGetValue<XApiGamerCard>(cacheKey, out var result))
@@ -281,8 +278,8 @@ namespace TwitchAchievementTrackerBackend.Services
                 throw new ArgumentNullException("config");
             }
 
-            string xuid = config.StreamerXuid;
-            string titleId = config.TitleId;
+            string xuid = config.StreamerXuid!;
+            string titleId = config.TitleId!;
 
             var cacheKey = GetCacheKey($"achievements", config);
             if (! _cache.TryGetValue<XApiAchievement[]>(cacheKey, out var result))
@@ -292,7 +289,7 @@ namespace TwitchAchievementTrackerBackend.Services
                 message.Headers.Add("Accept-Language", $"{config.Locale}");
                 var response = await _httpClient.SendAsync(message);
 
-                SaveRateLimit(config.XApiKey, response);
+                SaveRateLimit(config.XApiKey!, response);
 
                 response.EnsureSuccessStatusCode();
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
@@ -301,21 +298,21 @@ namespace TwitchAchievementTrackerBackend.Services
                     {
                         PropertyNameCaseInsensitive = true
                     });
-                    if (paginatedResult.PagingInfo.ContinuationToken != null)
+                    if (paginatedResult?.PagingInfo?.ContinuationToken != null)
                     {
                         _logger.LogWarning("Achievements for titleId {titleId} returned paginated results !", titleId);
                     }
                     // TODO: when xapi.us documents how to pass the continuation token, handle pagination properly
-                    result = paginatedResult.Achievements;
+                    result = paginatedResult?.Achievements ?? Array.Empty<XApiAchievement>();
                     // Cache for 1 minute (configurable)
                     _cache.Set(cacheKey, result, _options.ResultCacheTime);
                 }
             }
 
-            return result;
+            return result!;
         }
 
-        public async Task<XApiMarketplaceTitleInfo> GetMarketplaceAsync(string titleId, string xApiKey, string locale = null)
+        public async Task<XApiMarketplaceTitleInfo?> GetMarketplaceAsync(string titleId, string xApiKey, string? locale = null)
         {
             var cacheKey = $"marketplace:{titleId}:{locale}";
             if (!_cache.TryGetValue<XApiMarketplaceTitleInfo>(cacheKey, out var result))
@@ -337,7 +334,7 @@ namespace TwitchAchievementTrackerBackend.Services
                     {
                         PropertyNameCaseInsensitive = true
                     });
-                    // Cache indefinitly
+                    // Cache indefinitely
                     _cache.Set(cacheKey, result);
                 }
             }
@@ -345,7 +342,7 @@ namespace TwitchAchievementTrackerBackend.Services
             return result;
         }
 
-        public async Task<XApiTitleHistoryResult> GetRecentTitlesAsync(string xuid, string xApiKey, string locale = null)
+        public async Task<XApiTitleHistoryResult?> GetRecentTitlesAsync(string xuid, string xApiKey, string? locale = null)
         {
             var cacheKey = $"recenttitles:{xuid}:{locale}";
             if (!_cache.TryGetValue<XApiTitleHistoryResult>(cacheKey, out var result))
@@ -365,11 +362,11 @@ namespace TwitchAchievementTrackerBackend.Services
                 {
                     result = await JsonSerializer.DeserializeAsync<XApiTitleHistoryResult>(responseStream);
 
-                    foreach(var game in result.Titles)
+                    foreach(var game in result!.Titles)
                     {
                         foreach(var image in game.Images)
                         {
-                            if (image.Url.Scheme != "https")
+                            if (image.Url is not null && image.Url.Scheme != "https")
                             {
                                 var httpsUrl = new UriBuilder(image.Url);
                                 httpsUrl.Scheme = "https";

@@ -31,9 +31,9 @@ namespace TwitchAchievementTrackerBackend.Helpers
         {
             if (!context.Items.ContainsKey(CONFIGURATION_KEY))
             {
-                throw new InvalidOperationException("Configuration header is missing");
+                throw new MissingConfigurationException("Configuration header is missing");
             }
-            return context.Items[CONFIGURATION_KEY] as ExtensionConfiguration;
+            return (context.Items[CONFIGURATION_KEY] as ExtensionConfiguration)!;
         }
 
         public static void SetExtensionConfiguration(this HttpContext context, ExtensionConfiguration configuration)

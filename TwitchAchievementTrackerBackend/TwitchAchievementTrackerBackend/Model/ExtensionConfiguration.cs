@@ -15,11 +15,11 @@ namespace TwitchAchievementTrackerBackend.Model
 
     public class ExtensionConfiguration
     {
-        public string Version { get; set; }
+        public string? Version { get; set; }
 
         public ActiveConfig ActiveConfig { get; set; }
         
-        public XApiConfiguration XBoxLiveConfig { get; set; }
-        public SteamConfiguration SteamConfig { get; set; }
+        public XApiConfiguration? XBoxLiveConfig { get; set; }
+        public SteamConfiguration? SteamConfig { get; set; }
     }
 }

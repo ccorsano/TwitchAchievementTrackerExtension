@@ -9,42 +9,42 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
     public class XApiGamerCard
     {
         [JsonPropertyName("gamertag")]
-        public string Gamertag { get; set; }
+        public string? Gamertag { get; set; }
 
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonPropertyName("location")]
-        public string Location { get; set; }
+        public string? Location { get; set; }
 
         [JsonPropertyName("bio")]
-        public string Bio { get; set; }
+        public string? Bio { get; set; }
 
         [JsonPropertyName("gamerscore")]
         public long Gamerscore { get; set; }
 
         [JsonPropertyName("tier")]
-        public string Tier { get; set; }
+        public string? Tier { get; set; }
 
         [JsonPropertyName("motto")]
-        public string Motto { get; set; }
+        public string? Motto { get; set; }
 
         [JsonPropertyName("avatarBodyImagePath")]
-        public Uri AvatarBodyImagePath { get; set; }
+        public Uri? AvatarBodyImagePath { get; set; }
 
         [JsonPropertyName("gamerpicSmallImagePath")]
-        public string GamerpicSmallImagePath { get; set; }
+        public string? GamerpicSmallImagePath { get; set; }
 
         [JsonPropertyName("gamerpicLargeImagePath")]
-        public string GamerpicLargeImagePath { get; set; }
+        public string? GamerpicLargeImagePath { get; set; }
 
         [JsonPropertyName("gamerpicSmallSslImagePath")]
-        public string GamerpicSmallSslImagePath { get; set; }
+        public string? GamerpicSmallSslImagePath { get; set; }
 
         [JsonPropertyName("gamerpicLargeSslImagePath")]
-        public string GamerpicLargeSslImagePath { get; set; }
+        public string? GamerpicLargeSslImagePath { get; set; }
 
         [JsonPropertyName("avatarManifest")]
-        public byte[] AvatarManifest { get; set; }
+        public byte[]? AvatarManifest { get; set; }
     }
 }

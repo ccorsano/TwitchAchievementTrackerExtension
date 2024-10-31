@@ -7,7 +7,7 @@ namespace TwitchAchievementTrackerBackend.Configuration
 {
     public class TwitchOptions
     {
-        public string ClientId { get; set; }
-        public string ExtensionSecret { get; set; }
+        public string? ClientId { get; set; }
+        public string? ExtensionSecret { get; set; }
     }
 }

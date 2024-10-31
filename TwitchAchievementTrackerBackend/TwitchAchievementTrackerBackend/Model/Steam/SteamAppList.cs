@@ -7,6 +7,6 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
 {
     public class SteamAppList
     {
-        public SteamApp[] Apps { get; set; }
+        public SteamApp[] Apps { get; set; } = new SteamApp[0];
     }
 }

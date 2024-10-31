@@ -7,20 +7,20 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
 {
     public class SteamAchievementsResult
     {
-        public SteamAchievementsGame Game { get; set; }
+        public SteamAchievementsGame? Game { get; set; }
     }
 
     public class SteamAchievementsGame
     {
-        public string GameName { get; set; }
+        public string? GameName { get; set; }
 
         public long GameVersion { get; set; }
 
-        public SteamAchievementsAvailableGameStats AvailableGameStats { get; set; }
+        public SteamAchievementsAvailableGameStats? AvailableGameStats { get; set; }
     }
 
     public partial class SteamAchievementsAvailableGameStats
     {
-        public SteamAchievement[] Achievements { get; set; }
+        public SteamAchievement[] Achievements { get; set; } = new SteamAchievement[0];
     }
 }

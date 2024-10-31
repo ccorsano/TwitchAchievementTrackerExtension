@@ -10,22 +10,22 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
     public class XApiAchievementReward
     {
         [JsonPropertyName("name")]
-        public object Name { get; set; }
+        public object? Name { get; set; }
 
         [JsonPropertyName("description")]
-        public object Description { get; set; }
+        public object? Description { get; set; }
 
         [JsonPropertyName("value")]
         [JsonConverter(typeof(ParseStringConverter<int>))]
         public int Value { get; set; }
 
         [JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string? Type { get; set; }
 
         [JsonPropertyName("mediaAsset")]
-        public XApiMediaAsset MediaAsset { get; set; }
+        public XApiMediaAsset? MediaAsset { get; set; }
 
         [JsonPropertyName("valueType")]
-        public string ValueType { get; set; }
+        public string? ValueType { get; set; }
     }
 }

@@ -7,13 +7,13 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
 {
     public class XApiMarketplaceSearchResult
     {
-        public string[] ProductIds { get; set; }
+        public string[] ProductIds { get; set; } = new string[0];
 
-        public object[] Aggregations { get; set; }
+        public object[] Aggregations { get; set; } = new object[0];
 
         public bool HasMorePages { get; set; }
 
-        public XApiMarketplaceProduct[] Products { get; set; }
+        public XApiMarketplaceProduct[] Products { get; set; } = new XApiMarketplaceProduct[0];
 
         public long TotalResultCount { get; set; }
     }

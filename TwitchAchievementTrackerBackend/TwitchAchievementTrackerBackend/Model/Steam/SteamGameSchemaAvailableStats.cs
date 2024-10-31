@@ -7,6 +7,6 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
 {
     public class SteamGameSchemaAvailableStats
     {
-        public SteamAchievement[] Achievements { get; set; }
+        public SteamAchievement[] Achievements { get; set; } = new SteamAchievement[0];
     }
 }

@@ -7,6 +7,6 @@ namespace TwitchAchievementTrackerBackend.Configuration
 {
     public class ConfigurationTokenOptions
     {
-        public string EncryptionSecret { get; set; }
+        public string? EncryptionSecret { get; set; }
     }
 }

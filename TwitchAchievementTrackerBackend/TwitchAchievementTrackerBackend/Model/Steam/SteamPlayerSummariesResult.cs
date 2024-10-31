@@ -9,6 +9,6 @@ namespace TwitchAchievementTrackerBackend.Model.Steam
     public class SteamPlayerSummariesResult
     {
         [JsonPropertyName("response")]
-        public SteamPlayerSummariesResponse Response { get; set; }
+        public SteamPlayerSummariesResponse? Response { get; set; }
     }
 }

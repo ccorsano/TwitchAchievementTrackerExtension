@@ -55,7 +55,7 @@ namespace TwitchAchievementTrackerBackend.Middleware
                 {
                     var configService = context.RequestServices.GetRequiredService<ConfigurationTokenService>();
 
-                    ExtensionConfiguration configuration = null;
+                    ExtensionConfiguration? configuration = null;
                     try
                     {
                         switch (version)

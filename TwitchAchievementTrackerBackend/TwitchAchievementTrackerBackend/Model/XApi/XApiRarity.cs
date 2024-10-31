@@ -9,7 +9,7 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
     public class XApiRarity
     {
         [JsonPropertyName("currentCategory")]
-        public string CurrentCategory { get; set; }
+        public string? CurrentCategory { get; set; }
 
         [JsonPropertyName("currentPercentage")]
         public double CurrentPercentage { get; set; }

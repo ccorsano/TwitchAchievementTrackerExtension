@@ -9,9 +9,9 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
     public class XApiTitleHistoryResult
     {
         [JsonPropertyName("xuid")]
-        public string Xuid { get; set; }
+        public string? Xuid { get; set; }
 
         [JsonPropertyName("titles")]
-        public XApiTitleInfo[] Titles { get; set; }
+        public XApiTitleInfo[] Titles { get; set; } = new XApiTitleInfo[0];
     }
 }

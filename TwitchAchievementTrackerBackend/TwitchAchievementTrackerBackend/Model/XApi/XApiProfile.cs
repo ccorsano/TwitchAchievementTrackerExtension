@@ -7,7 +7,7 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
     public class XApiProfile
     {
         [JsonPropertyName("xuid")]
-        public string Xuid { get; set; }
+        public string? Xuid { get; set; }
 
         [JsonPropertyName("isFavorite")]
         public bool IsFavorite { get; set; }
@@ -22,47 +22,47 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
         public bool IsIdentityShared { get; set; }
 
         [JsonPropertyName("addedDateTimeUtc")]
-        public object AddedDateTimeUtc { get; set; }
+        public object? AddedDateTimeUtc { get; set; }
 
         [JsonPropertyName("displayName")]
-        public object DisplayName { get; set; }
+        public object? DisplayName { get; set; }
 
         [JsonPropertyName("realName")]
-        public string RealName { get; set; }
+        public string? RealName { get; set; }
 
         [JsonPropertyName("displayPicRaw")]
-        public Uri DisplayPicRaw { get; set; }
+        public Uri? DisplayPicRaw { get; set; }
 
         [JsonPropertyName("showUserAsAvatar")]
-        public string ShowUserAsAvatar { get; set; }
+        public string? ShowUserAsAvatar { get; set; }
 
         [JsonPropertyName("gamertag")]
-        public string Gamertag { get; set; }
+        public string? Gamertag { get; set; }
 
         [JsonPropertyName("gamerScore")]
         [JsonConverter(typeof(ParseStringConverter<long>))]
         public long GamerScore { get; set; }
 
         [JsonPropertyName("modernGamertag")]
-        public string ModernGamertag { get; set; }
+        public string? ModernGamertag { get; set; }
 
         [JsonPropertyName("modernGamertagSuffix")]
-        public string ModernGamertagSuffix { get; set; }
+        public string? ModernGamertagSuffix { get; set; }
 
         [JsonPropertyName("uniqueModernGamertag")]
-        public string UniqueModernGamertag { get; set; }
+        public string? UniqueModernGamertag { get; set; }
 
         [JsonPropertyName("xboxOneRep")]
-        public string XboxOneRep { get; set; }
+        public string? XboxOneRep { get; set; }
 
         [JsonPropertyName("presenceState")]
-        public string PresenceState { get; set; }
+        public string? PresenceState { get; set; }
 
         [JsonPropertyName("presenceText")]
-        public string PresenceText { get; set; }
+        public string? PresenceText { get; set; }
 
         [JsonPropertyName("presenceDevices")]
-        public object PresenceDevices { get; set; }
+        public object? PresenceDevices { get; set; }
 
         [JsonPropertyName("isBroadcasting")]
         public bool IsBroadcasting { get; set; }
@@ -77,94 +77,94 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
         public bool IsXbox360Gamerpic { get; set; }
 
         [JsonPropertyName("lastSeenDateTimeUtc")]
-        public object LastSeenDateTimeUtc { get; set; }
+        public object? LastSeenDateTimeUtc { get; set; }
 
         [JsonPropertyName("suggestion")]
-        public object Suggestion { get; set; }
+        public object? Suggestion { get; set; }
 
         [JsonPropertyName("recommendation")]
-        public object Recommendation { get; set; }
+        public object? Recommendation { get; set; }
 
         [JsonPropertyName("search")]
-        public object Search { get; set; }
+        public object? Search { get; set; }
 
         [JsonPropertyName("titleHistory")]
-        public object TitleHistory { get; set; }
+        public object? TitleHistory { get; set; }
 
         [JsonPropertyName("multiplayerSummary")]
-        public XApiMultiplayerSummary MultiplayerSummary { get; set; }
+        public XApiMultiplayerSummary? MultiplayerSummary { get; set; }
 
         [JsonPropertyName("recentPlayer")]
-        public object RecentPlayer { get; set; }
+        public object? RecentPlayer { get; set; }
 
         [JsonPropertyName("follower")]
-        public object Follower { get; set; }
+        public object? Follower { get; set; }
 
         [JsonPropertyName("preferredColor")]
-        public XApiPreferredColor PreferredColor { get; set; }
+        public XApiPreferredColor? PreferredColor { get; set; }
 
         [JsonPropertyName("presenceDetails")]
-        public object[] PresenceDetails { get; set; }
+        public object[] PresenceDetails { get; set; } = new object[0];
 
         [JsonPropertyName("titlePresence")]
-        public object TitlePresence { get; set; }
+        public object? TitlePresence { get; set; }
 
         [JsonPropertyName("titleSummaries")]
-        public object TitleSummaries { get; set; }
+        public object? TitleSummaries { get; set; }
 
         [JsonPropertyName("presenceTitleIds")]
-        public object PresenceTitleIds { get; set; }
+        public object? PresenceTitleIds { get; set; }
 
         [JsonPropertyName("detail")]
-        public XApiProfileDetail Detail { get; set; }
+        public XApiProfileDetail? Detail { get; set; }
 
         [JsonPropertyName("communityManagerTitles")]
-        public object CommunityManagerTitles { get; set; }
+        public object? CommunityManagerTitles { get; set; }
 
         [JsonPropertyName("socialManager")]
-        public object SocialManager { get; set; }
+        public object? SocialManager { get; set; }
 
         [JsonPropertyName("broadcast")]
-        public object Broadcast { get; set; }
+        public object? Broadcast { get; set; }
 
         [JsonPropertyName("tournamentSummary")]
-        public object TournamentSummary { get; set; }
+        public object? TournamentSummary { get; set; }
 
         [JsonPropertyName("avatar")]
-        public object Avatar { get; set; }
+        public object? Avatar { get; set; }
 
         [JsonPropertyName("linkedAccounts")]
-        public object[] LinkedAccounts { get; set; }
+        public object[] LinkedAccounts { get; set; } = new object[0];
 
         [JsonPropertyName("colorTheme")]
-        public string ColorTheme { get; set; }
+        public string? ColorTheme { get; set; }
 
         [JsonPropertyName("preferredFlag")]
-        public string PreferredFlag { get; set; }
+        public string? PreferredFlag { get; set; }
 
         [JsonPropertyName("preferredPlatforms")]
-        public object[] PreferredPlatforms { get; set; }
+        public object[] PreferredPlatforms { get; set; } = new object[0];
     }
 
     public class XApiProfileDetail
     {
         [JsonPropertyName("accountTier")]
-        public string AccountTier { get; set; }
+        public string? AccountTier { get; set; }
 
         [JsonPropertyName("bio")]
-        public object Bio { get; set; }
+        public object? Bio { get; set; }
 
         [JsonPropertyName("isVerified")]
         public bool IsVerified { get; set; }
 
         [JsonPropertyName("location")]
-        public object Location { get; set; }
+        public object? Location { get; set; }
 
         [JsonPropertyName("tenure")]
-        public object Tenure { get; set; }
+        public object? Tenure { get; set; }
 
         [JsonPropertyName("watermarks")]
-        public object[] Watermarks { get; set; }
+        public object[] Watermarks { get; set; } = new object[0];
 
         [JsonPropertyName("blocked")]
         public bool Blocked { get; set; }
@@ -185,13 +185,13 @@ namespace TwitchAchievementTrackerBackend.Model.XApi
     public class XApiPreferredColor
     {
         [JsonPropertyName("primaryColor")]
-        public string PrimaryColor { get; set; }
+        public string? PrimaryColor { get; set; }
 
         [JsonPropertyName("secondaryColor")]
-        public string SecondaryColor { get; set; }
+        public string? SecondaryColor { get; set; }
 
         [JsonPropertyName("tertiaryColor")]
-        public string TertiaryColor { get; set; }
+        public string? TertiaryColor { get; set; }
     }
 
     public class XApiMultiplayerSummary
