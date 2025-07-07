@@ -12,7 +12,7 @@ export let steamAppId: string
 
 let isLoading: boolean =  true
 let supportedLanguages: SupportedLanguage[] =  [ { langCode: '', displayName: "Loading..." } ]
-let selectedLanguage: SupportedLanguage =  null
+let selectedLanguage: SupportedLanguage | undefined =  undefined
 let isConfirmed: boolean =  false
 
 function onSelect(value: string)
@@ -22,7 +22,7 @@ function onSelect(value: string)
 
 function onResetLanguage(_e: any)
 {
-    selectedLanguage = null
+    selectedLanguage = undefined
 }
 
 function onContinue(_e: any)
@@ -36,13 +36,13 @@ function unvalidate(_e: any)
 }
 
 let currentLanguage: string
-$: currentLanguage = savedConfiguration?.steamConfig?.locale
+$: currentLanguage = savedConfiguration?.steamConfig?.locale ?? "english"
 
 ConfigurationService.getSteamSupportedLanguages(steamAppId, webApiKey)
     .then(languages => {
         isLoading = false
         supportedLanguages = [{ langCode: '', displayName: "Select language ..."}].concat(languages)
-        selectedLanguage = currentLanguage ? languages.find(l => l.langCode == currentLanguage) : null
+        selectedLanguage = currentLanguage ? languages.find(l => l.langCode == currentLanguage) : undefined
     });
 
 let isContinueEnabled
@@ -58,16 +58,16 @@ $: isContinueEnabled = selectedLanguage != null;
     webApiKey={webApiKey}
     steamProfileId={steamProfileId}
     steamAppId={steamAppId}
-    locale={selectedLanguage.langCode} />
+    locale={selectedLanguage?.langCode ?? "english"} />
 {:else}
     {#if isLoading}
         <div class="card">
             <div class="spinner"></div>
         </div>
-    {:else if selectedLanguage != null}
+    {:else if selectedLanguage != undefined}
         <div class="card">
             <h2>{selectedLanguage.displayName}</h2>
-            <input type="button" class="section" name="LanguageChange" value="Change" onClick={onResetLanguage} />
+            <input type="button" class="section" name="LanguageChange" value="Change" on:click={onResetLanguage} />
         </div>
     {:else if supportedLanguages != null}
     <div class="card">

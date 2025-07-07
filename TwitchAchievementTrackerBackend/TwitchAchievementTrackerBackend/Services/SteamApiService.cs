@@ -143,7 +143,7 @@ namespace TwitchAchievementTrackerBackend.Services
 
             if (!_cache.TryGetValue(cacheKey, out SteamStoreDetails? result))
             {
-                var response = await _storeClient.GetAsync($"api/appdetails/?appids={appId}");
+                var response = await _storeClient.GetAsync($"api/appdetails/?l=english&appids={appId}");
                 response.EnsureSuccessStatusCode();
 
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
